@@ -1,0 +1,39 @@
+{
+  "name": "digital-garden",
+  "version": "1.0.0",
+  "description": "Digital Garden template",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianhomer/digital-garden.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ianhomer/digital-garden/issues"
+  },
+  "homepage": "https://github.com/ianhomer/digital-garden#readme",
+  "author": "",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "eslint": "eslint src --ext .ts",
+    "eslint:fix": "eslint src --ext .ts --fix",
+    "lint": "yarn prettier && yarn eslint",
+    "lint:fix": "yarn package:fix && yarn prettier:fix && yarn eslint:fix",
+    "package:fix": "format-package -w",
+    "prepare": "husky install",
+    "prettier": "npx prettier --check .",
+    "prettier:fix": "npx prettier --write ."
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "format-package": "^6.1.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.3",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  }
+}
