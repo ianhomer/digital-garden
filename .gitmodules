@@ -1,0 +1,3 @@
+[submodule "gardens/boxofjam"]
+	path = gardens/boxofjam
+	url = https://github.com/purplepip/boxofjam.git
