@@ -2,7 +2,7 @@ import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
 
-import { findFiles } from "./find";
+import { findFile, findFiles } from "./find";
 
 const gardensDirectory = join(process.cwd(), "gardens");
 
@@ -23,11 +23,11 @@ export class Item {
   }
 }
 
-export function getItem(name: string) {
-  return new Item("boxofjam/practice/" + name, true);
+export async function findItem(name: string) {
+  return new Item(await findFile(gardensDirectory, name), true);
 }
 
 export async function getAllItems(): Promise<Item[]> {
   const files = await findFiles(gardensDirectory);
-  return files.map((file) => new Item(file));
+  return files.map((filename) => new Item(filename));
 }
