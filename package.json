@@ -16,8 +16,8 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "eslint": "eslint src --ext .tsx",
-    "eslint:fix": "eslint src --ext .tsx --fix",
+    "eslint": "eslint src --ext .tsx --ext .ts",
+    "eslint:fix": "eslint src --ext .tsx --ext .ts --fix",
     "lint": "yarn prettier && yarn eslint",
     "lint:fix": "yarn package:fix && yarn prettier:fix && yarn eslint:fix",
     "package:fix": "format-package -w",
