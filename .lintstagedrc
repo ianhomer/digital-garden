@@ -1,5 +1,5 @@
 {
-  "*.{ts,md}": "prettier --write .",
-  "*.ts": "eslint"
+  "*.{tsx,md}": "prettier --write .",
+  "*.tsx": "eslint"
 }
 
