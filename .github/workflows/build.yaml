@@ -16,7 +16,7 @@ jobs:
           node-version: 16.x
       - name: yarn install, test and build
         run: |
-          yarn
-          yarn lint
+          pnpm install
+          pnpm lint
         env:
           CI: true
