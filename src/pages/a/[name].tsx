@@ -1,4 +1,4 @@
-import { getAllItems, getItem, Item } from "../../lib/content";
+import { findItem, getAllItems, Item } from "../../lib/content";
 import markdownToHtml from "../../lib/markdownToHtml";
 
 function ItemPage({ item }) {
@@ -6,7 +6,7 @@ function ItemPage({ item }) {
 }
 
 export async function getStaticProps({ params }) {
-  const item = getItem(params.name);
+  const item = await findItem(params.name);
   const content = await markdownToHtml(item.content || "no content");
 
   return {
