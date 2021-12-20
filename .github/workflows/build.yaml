@@ -13,10 +13,12 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
-      - name: yarn install, test and build
+          node-version: 16.
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.22.2x
+      - name: pnpm install and lint
         run: |
           pnpm install
           pnpm lint
-        env:
-          CI: true
