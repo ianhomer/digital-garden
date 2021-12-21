@@ -25,14 +25,15 @@ export class Item {
   }
 }
 
-const splitLines = (s:string) => s.split(/\n/);
+const splitLines = (s: string) => s.split(/\n/);
 
 export async function findBackLinks(filename: string): Promise<string[]> {
   const cmd = `rg -l '\\[${filename}' ${gardensDirectory}`;
   return promisify(exec)(cmd)
     .then((ok) => {
-      console.log(ok.stdout);
-      return splitLines(ok.stdout);
+      return splitLines(ok.stdout)
+        .filter((line) => line.length > 0)
+        .map((backlink) => /([^/]*).md$/.exec(backlink)[1]);
     })
     .catch((error) => {
       console.log(`Error : ${error}`);
