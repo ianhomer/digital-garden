@@ -33,7 +33,7 @@ export async function findAbsoluteFile(
       }
     }
   }
-  throw "Cannot find " + filename + " in " + directory;
+  return null;
 }
 
 export async function findFile(
@@ -41,6 +41,10 @@ export async function findFile(
   filename: string
 ): Promise<string> {
   const found = await findAbsoluteFile(directory, filename);
+  if (!found) {
+    throw "Cannot find " + filename + " in " + directory;
+  }
+
   return found.substring(directory.length);
 }
 

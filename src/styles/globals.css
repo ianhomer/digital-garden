@@ -15,4 +15,7 @@
   blockquote {
     @apply m-2 p-2 border-l-4;
   }
+  ol {
+    @apply list-decimal ml-8 m-4;
+  }
 }
