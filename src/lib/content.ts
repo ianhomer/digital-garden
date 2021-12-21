@@ -2,6 +2,7 @@ import { exec } from "child_process";
 import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
+import { promisify } from "util";
 
 import { findFile, findFiles } from "./find";
 
@@ -25,18 +26,19 @@ export class Item {
 }
 
 export async function findBackLinks(filename: string): Promise<string[]> {
-  const cmd = "rg -l '\\[" + filename + "' " + gardensDirectory;
-  const lines = []
-  exec(cmd, function (err, stdout:string, stderr) {
-    const split = (str:string) => str.split(/\r?\n/);
-    console.log(stdout)
-    lines.push(split(stdout))
-    if (err) {
-      console.log(`No backlinks found for {filename}`)
-    }
-    process.stdout.write(stderr);
-  });
-  console.log(lines)
+  const cmd = `rg -l '\\[${filename}' ${gardensDirectory}`;
+  const result = await promisify(exec)(cmd)
+    .then((ok) => {
+      console.log(ok.stdout);
+      return ["ok"];
+    })
+    .catch((error) => {
+      console.log(`Error : ${error}`);
+      return ["nok"];
+    });
+  console.log(result);
+  //lines.push(split(stdout));
+  //console.log(lines);
   return [];
 }
 

@@ -7,7 +7,7 @@ function ItemPage({ item }) {
 
 export async function getStaticProps({ params }) {
   const item = await findItem(params.name);
-  const backlinks = findBackLinks(params.name);
+  const backlinks = await findBackLinks(params.name);
   console.log(backlinks);
   const content = await markdownToHtml(item.content || "no content");
 
