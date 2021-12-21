@@ -1,3 +1,4 @@
+import { exec } from "child_process";
 import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
@@ -13,7 +14,7 @@ export class Item {
 
   constructor(filename: string, load = false) {
     this.filename = filename;
-    this.name = /[^/]*$/.exec(filename)[0];
+    this.name = /([^/]*).md$/.exec(filename)[1];
     if (load) {
       const path = join(gardensDirectory, `${filename}`);
       const fileContents = fs.readFileSync(path, "utf8");
@@ -23,8 +24,18 @@ export class Item {
   }
 }
 
+export function findBackLinks(filename: string): string[] {
+  const cmd = "rg -l '\\[" + filename + "' " + gardensDirectory;
+  exec(cmd, function (err, stdout, stderr) {
+    process.stdout.write(stdout);
+    process.stdout.write(String(err));
+    process.stdout.write(stderr);
+  });
+  return [];
+}
+
 export async function findItem(name: string) {
-  return new Item(await findFile(gardensDirectory, name), true);
+  return new Item(await findFile(gardensDirectory, name + ".md"), true);
 }
 
 export async function getAllItems(): Promise<Item[]> {

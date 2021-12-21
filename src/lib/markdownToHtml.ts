@@ -10,7 +10,7 @@ function shortenLocalLinks() {
     visit(tree, (node: { type: string; url: string }) => {
       if (node.type === "link") {
         if (node.url.startsWith("./")) {
-          node.url = "./" + /[^/]*$/.exec(node.url)[0];
+          node.url = "./" + /([^/]*).md$/.exec(node.url)[1];
         }
       }
     });
