@@ -15,6 +15,9 @@
   blockquote {
     @apply m-2 p-2 border-l-4;
   }
+  p {
+    @apply my-2;
+  }
   ol,
   ul {
     @apply ml-8 m-4;
@@ -24,5 +27,8 @@
   }
   ul {
     @apply list-disc;
+  }
+  code {
+    @apply font-mono bg-slate-200 p-1;
   }
 }

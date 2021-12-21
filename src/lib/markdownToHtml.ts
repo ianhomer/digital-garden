@@ -13,8 +13,6 @@ function shortenLocalLinks() {
         if (node.url.startsWith("./")) {
           node.url = "./" + /([^/]*).md$/.exec(node.url)[1];
         }
-      } else if (node.type === "wikiLink") {
-        console.log(node);
       }
     });
   };
