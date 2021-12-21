@@ -6,9 +6,11 @@ function ItemPage({ item }) {
     <div>
       <div dangerouslySetInnerHTML={{ __html: item.content }} />
       <ul>
-        {item.backlinks.map((link) => (
+        {item.backlinks.map((link: string) => (
           <li>
-            <a href={link}>{link}</a>
+            <a key={link} href={link}>
+              {link}
+            </a>
           </li>
         ))}
       </ul>
