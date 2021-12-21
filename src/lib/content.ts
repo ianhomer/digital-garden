@@ -1,6 +1,8 @@
+import { exec } from "child_process";
 import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
+import { promisify } from "util";
 
 import { findFile, findFiles } from "./find";
 
@@ -13,7 +15,7 @@ export class Item {
 
   constructor(filename: string, load = false) {
     this.filename = filename;
-    this.name = /[^/]*$/.exec(filename)[0];
+    this.name = /([^/]*).md$/.exec(filename)[1];
     if (load) {
       const path = join(gardensDirectory, `${filename}`);
       const fileContents = fs.readFileSync(path, "utf8");
@@ -23,8 +25,24 @@ export class Item {
   }
 }
 
+const splitLines = (s: string) => s.split(/\n/);
+
+export async function findBackLinks(filename: string): Promise<string[]> {
+  const cmd = `rg -l '\\[${filename}' ${gardensDirectory}`;
+  return promisify(exec)(cmd)
+    .then((ok) => {
+      return splitLines(ok.stdout)
+        .filter((line) => line.length > 0)
+        .map((backlink) => /([^/]*).md$/.exec(backlink)[1]);
+    })
+    .catch((error) => {
+      console.log(`Error : ${error}`);
+      return [];
+    });
+}
+
 export async function findItem(name: string) {
-  return new Item(await findFile(gardensDirectory, name), true);
+  return new Item(await findFile(gardensDirectory, name + ".md"), true);
 }
 
 export async function getAllItems(): Promise<Item[]> {
