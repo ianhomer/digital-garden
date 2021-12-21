@@ -15,7 +15,8 @@
   blockquote {
     @apply m-2 p-2 border-l-4;
   }
-  ol, ul {
+  ol,
+  ul {
     @apply ml-8 m-4;
   }
   ol {
