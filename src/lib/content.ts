@@ -24,13 +24,19 @@ export class Item {
   }
 }
 
-export function findBackLinks(filename: string): string[] {
+export async function findBackLinks(filename: string): Promise<string[]> {
   const cmd = "rg -l '\\[" + filename + "' " + gardensDirectory;
-  exec(cmd, function (err, stdout, stderr) {
-    process.stdout.write(stdout);
-    process.stdout.write(String(err));
+  const lines = []
+  exec(cmd, function (err, stdout:string, stderr) {
+    const split = (str:string) => str.split(/\r?\n/);
+    console.log(stdout)
+    lines.push(split(stdout))
+    if (err) {
+      console.log(`No backlinks found for {filename}`)
+    }
     process.stdout.write(stderr);
   });
+  console.log(lines)
   return [];
 }
 
