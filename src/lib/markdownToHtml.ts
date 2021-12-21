@@ -14,7 +14,7 @@ function shortenLocalLinks() {
           node.url = "./" + /([^/]*).md$/.exec(node.url)[1];
         }
       } else if (node.type === "wikiLink") {
-        console.log(node)
+        console.log(node);
       }
     });
   };
@@ -22,7 +22,9 @@ function shortenLocalLinks() {
 
 export default async function markdownToHtml(markdown: string) {
   const vfile = await unified()
-    .use(remarkWikiLink)
+    .use(remarkWikiLink, {
+      hrefTemplate: (permalink: string) => `${permalink}`,
+    })
     .use(remarkParse)
     .use(shortenLocalLinks)
     .use(remarkRehype)
