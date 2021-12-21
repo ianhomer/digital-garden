@@ -37,7 +37,7 @@ export async function findBackLinks(filename: string): Promise<string[]> {
     })
     .catch((error) => {
       console.log(`Error : ${error}`);
-      return ["no-back-links"];
+      return [];
     });
 }
 
