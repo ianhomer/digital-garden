@@ -1,3 +1,4 @@
 .pnpm-debug.log
 .next/
 node_modules/
+gardens/
