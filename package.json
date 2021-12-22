@@ -14,6 +14,7 @@
   "author": "",
   "main": ".eslintrc.js",
   "scripts": {
+    "build:pre": "node src/scripts/pre-build.js",
     "build": "next build",
     "dev": "next dev",
     "eslint": "eslint src --ext .tsx --ext .ts",
