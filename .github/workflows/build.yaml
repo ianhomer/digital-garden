@@ -22,4 +22,5 @@ jobs:
         run: |
           pnpm install
           pnpm lint
+          pnpm prebuild
           pnpm build
