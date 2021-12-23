@@ -33,7 +33,7 @@ export async function findBackLinks(filename: string): Promise<string[]> {
     .then((ok) => {
       return splitLines(ok.stdout)
         .filter((line) => line.length > 0)
-        .map((backlink) => /([^/]*).md$/.exec(backlink)[1]);
+        .map((backlink) => /([^/]*).md$/.exec(backlink)[1]).sort();
     })
     .catch((error) => {
       console.log(`Error : ${error}`);
