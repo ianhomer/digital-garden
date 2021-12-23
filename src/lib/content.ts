@@ -28,12 +28,13 @@ export class Item {
 const splitLines = (s: string) => s.split(/\n/);
 
 export async function findBackLinks(filename: string): Promise<string[]> {
-  const cmd = `rg -l '\\[${filename}' ${gardensDirectory}`;
+  const cmd = `rg -L -l '\\[${filename}' ${gardensDirectory}`;
   return promisify(exec)(cmd)
     .then((ok) => {
       return splitLines(ok.stdout)
         .filter((line) => line.length > 0)
-        .map((backlink) => /([^/]*).md$/.exec(backlink)[1]);
+        .map((backlink) => /([^/]*).md$/.exec(backlink)[1])
+        .sort();
     })
     .catch((error) => {
       console.log(`Error : ${error}`);
@@ -41,11 +42,16 @@ export async function findBackLinks(filename: string): Promise<string[]> {
     });
 }
 
-export async function findItem(name: string) {
-  return new Item(await findFile(gardensDirectory, name + ".md"), true);
+export async function findItem(name: string | false) {
+  return new Item(
+    await findFile(gardensDirectory, (name ? name : "README") + ".md"),
+    true
+  );
 }
 
 export async function getAllItems(): Promise<Item[]> {
   const files = await findFiles(gardensDirectory);
-  return files.map((filename) => new Item(filename));
+  return files.map((filename) => {
+    return new Item(filename);
+  });
 }

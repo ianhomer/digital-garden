@@ -39,7 +39,7 @@ export async function getStaticPaths() {
     paths: items.map((item: Item) => {
       return {
         params: {
-          name: item.name,
+          name: item.name == "README" ? [] : [item.name],
         },
       };
     }),

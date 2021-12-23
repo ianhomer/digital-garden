@@ -5,7 +5,7 @@ async function* findFilesDeep(directory: string) {
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
     const resolved = resolve(directory, child.name);
-    if (child.isDirectory()) {
+    if (child.isDirectory() || child.isSymbolicLink()) {
       yield* findFilesDeep(resolved);
     } else {
       if (child.name.endsWith(".md")) {
@@ -22,7 +22,7 @@ export async function findAbsoluteFile(
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
     const resolved = resolve(directory, child.name);
-    if (child.isDirectory()) {
+    if (child.isDirectory() || child.isSymbolicLink()) {
       const candidate = await findAbsoluteFile(resolved, filename);
       if (candidate) {
         return candidate;
