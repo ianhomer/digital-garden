@@ -41,11 +41,16 @@ export async function findBackLinks(filename: string): Promise<string[]> {
     });
 }
 
-export async function findItem(name: string) {
-  return new Item(await findFile(gardensDirectory, name + ".md"), true);
+export async function findItem(name: string | false) {
+  return new Item(
+    await findFile(gardensDirectory, (name ? name : "README") + ".md"),
+    true
+  );
 }
 
 export async function getAllItems(): Promise<Item[]> {
   const files = await findFiles(gardensDirectory);
-  return files.map((filename) => new Item(filename));
+  return files.map((filename) => {
+    return new Item(filename);
+  });
 }
