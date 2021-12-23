@@ -28,7 +28,7 @@ export class Item {
 const splitLines = (s: string) => s.split(/\n/);
 
 export async function findBackLinks(filename: string): Promise<string[]> {
-  const cmd = `rg -l '\\[${filename}' ${gardensDirectory}`;
+  const cmd = `rg -L -l '\\[${filename}' ${gardensDirectory}`;
   return promisify(exec)(cmd)
     .then((ok) => {
       return splitLines(ok.stdout)
