@@ -15,6 +15,26 @@ async function* findFilesDeep(directory: string) {
   }
 }
 
+// Find all files within a given named directory 
+async function* findFilesInNameDirectoryDeep(directory: string, name: string) {
+  const directories = await readdir(directory, { withFileTypes: true });
+  for (const child of directories) {
+    const resolved = resolve(directory, child.name);
+    if (child.isDirectory() || child.isSymbolicLink()) {
+      if (child.name == name) {
+        const children = await readdir(directory, { withFileTypes: true });
+        for (const candidate of children) {
+          if (candidate.isFile()) {
+            console.log(`Found : ${candidate.name}`)
+            yield(candidate.name)
+          }
+        }
+      }
+      yield* findFilesInNameDirectoryDeep(resolved, name);
+    } 
+  }
+}
+
 export async function findAbsoluteFile(
   directory: string,
   filename: string
@@ -55,3 +75,12 @@ export async function findFiles(directory: string): Promise<string[]> {
   }
   return files;
 }
+
+export async function findFilesInNamedDirectory(directory: string, name:string): Promise<string[]> {
+  const files: string[] = [];
+  for await (const file of findFilesInNameDirectoryDeep(directory, name)) {
+    files.push(file);
+  }
+  return files;
+}
+
