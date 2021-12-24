@@ -28,8 +28,10 @@ export class Item {
 const splitLines = (s: string) => s.split(/\n/);
 
 export async function findImplicitBackLinks(name: string): Promise<string[]> {
-  console.log(`Finding implicit : ${name}`)
-  return findFilesInNamedDirectory(gardensDirectory, name); 
+  console.log(`Finding implicit : ${name}`);
+  return (await findFilesInNamedDirectory(gardensDirectory, name)).map(
+    (backlink:string) => /([^/]*).md$/.exec(backlink)[1]
+  );
 }
 
 export async function findBackLinks(name: string): Promise<string[]> {
