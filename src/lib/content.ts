@@ -4,7 +4,7 @@ import matter from "gray-matter";
 import { join } from "path";
 import { promisify } from "util";
 
-import { findFile, findFiles } from "./find";
+import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
 
 const gardensDirectory = join(process.cwd(), "gardens");
 
@@ -27,8 +27,15 @@ export class Item {
 
 const splitLines = (s: string) => s.split(/\n/);
 
-export async function findBackLinks(filename: string): Promise<string[]> {
-  const cmd = `rg -L -l '\\[${filename}' ${gardensDirectory}`;
+export async function findImplicitBackLinks(name: string): Promise<string[]> {
+  console.log(`Finding implicit : ${name}`);
+  return (await findFilesInNamedDirectory(gardensDirectory, name)).map(
+    (backlink:string) => /([^/]*).md$/.exec(backlink)[1]
+  );
+}
+
+export async function findBackLinks(name: string): Promise<string[]> {
+  const cmd = `rg -L -l '\\[${name}' ${gardensDirectory}`;
   return promisify(exec)(cmd)
     .then((ok) => {
       return splitLines(ok.stdout)
