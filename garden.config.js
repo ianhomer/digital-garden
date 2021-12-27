@@ -1,5 +1,5 @@
 import { join } from "path";
-const result = require("dotenv").config();
+require("dotenv").config();
 
 function resolveDirectory() {
   if (process.env.GARDENS_DIRECTORY) {

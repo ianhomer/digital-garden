@@ -1,0 +1,3 @@
+# Lesson
+
+Lesson in [[vocabulary]].

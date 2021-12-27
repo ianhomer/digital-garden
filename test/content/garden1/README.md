@@ -1,3 +1,5 @@
 # Garden 1 README
 
-Test content
+Test content.
+
+Link to [[vocabulary]]
