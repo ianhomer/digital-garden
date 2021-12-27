@@ -1,4 +1,10 @@
-import { findBackLinks, findItem, getAllItems, Item } from "../lib/content";
+import {
+  findBackLinks,
+  findImplicitBackLinks,
+  findItem,
+  getAllItems,
+  Item,
+} from "../lib/content";
 import markdownToHtml from "../lib/markdownToHtml";
 
 function ItemPage({ item }) {
@@ -6,7 +12,7 @@ function ItemPage({ item }) {
     <div>
       <div dangerouslySetInnerHTML={{ __html: item.content }} />
       <ul>
-        {item.backlinks.map((link: string) => (
+        {item.backLinks.map((link: string) => (
           <li key={link}>
             <a href={link}>{link}</a>
           </li>
@@ -18,14 +24,19 @@ function ItemPage({ item }) {
 
 export async function getStaticProps({ params }) {
   const item = await findItem(params.name);
-  const backlinks = await findBackLinks(params.name);
+  const explicitBackLinks = await findBackLinks(params.name);
+  const implicitBackLinks = await findImplicitBackLinks(params.name);
+  const backLinks = Array.from(
+    new Set([...explicitBackLinks, ...implicitBackLinks]).values()
+  ).sort();
+  console.log(`Implicit Backlinks : ${implicitBackLinks}`);
   const content = await markdownToHtml(item.content || "no content");
 
   return {
     props: {
       item: {
         ...item,
-        backlinks,
+        backLinks,
         content,
       },
     },
