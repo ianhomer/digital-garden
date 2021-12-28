@@ -1,6 +1,6 @@
 const common = `
   --require-module ts-node/register
-  --require src/**/*.ts
+  --require src/test/cucumber/**/*.ts
   --format summary 
   --format progress-bar
   `;
