@@ -29,7 +29,7 @@
     "start": "next start",
     "test": "next test",
     "test:build": "GARDENS_DIRECTORY=src/test/content next build",
-    "test:cucumber": "cucumber-js src/test/features",
+    "test:cucumber": "cucumber-js",
     "test:dev": "GARDENS_DIRECTORY=src/test/content next dev",
     "test:e2e": "playwright test"
   },

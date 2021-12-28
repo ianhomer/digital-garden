@@ -1,8 +1,4 @@
-const {
-  Given,
-  When,
-  Then
-} = require("@cucumber/cucumber");
+import { Given, Then, When } from "@cucumber/cucumber";
 
 Given("I am on the word-1 page", async () => {
   console.log("Given I am on");
