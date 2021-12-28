@@ -1,4 +1,4 @@
-import { PlaywrightTestConfig, devices } from "@playwright/test";
+import { devices,PlaywrightTestConfig } from "@playwright/test";
 import path from "path";
 
 // Reference: https://playwright.dev/docs/test-configuration
@@ -9,7 +9,7 @@ const config: PlaywrightTestConfig = {
   reporter: [
     [process.env.CI ? "dot" : "list"],
     ["json", { outputFile: "results/test-results.json" }],
-    ["html", { open: "never", outputFolder: "results/" }],
+    ["html", { open: "never", outputFolder: "results/playwright-report" }],
   ],
   outputDir: "results/",
 
