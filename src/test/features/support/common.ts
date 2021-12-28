@@ -12,7 +12,7 @@ BeforeAll(async function () {
   browser = await chromium.launch(browserOptions);
 });
 
-Before(async function (world) {
+Before(async function () {
   this.context = await browser.newContext({
     baseURL: "http://localhost:3000",
   });

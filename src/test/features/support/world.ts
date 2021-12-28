@@ -1,5 +1,5 @@
 import { setWorldConstructor, World } from "@cucumber/cucumber";
 
-class CustomWorld extends World {}
+//class CustomWorld extends World {}
 
 setWorldConstructor(World);
