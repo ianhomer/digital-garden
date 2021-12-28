@@ -1,10 +1,10 @@
 import { After, AfterAll, Before, BeforeAll } from "@cucumber/cucumber";
-import { Browser, chromium } from "playwright";
+import { Browser, chromium, LaunchOptions } from "playwright";
 
 import config from "../../../../playwright.config";
 
 let browser: Browser;
-const browserOptions = {
+const browserOptions: LaunchOptions = {
   headless: config.use.headless,
 };
 
