@@ -21,7 +21,7 @@ const config: PlaywrightTestConfig = {
 
   use: {
     trace: "retry-with-trace",
-    headless: true,
+    headless: process.env.HEAD ? false : true,
   },
 
   projects: [
