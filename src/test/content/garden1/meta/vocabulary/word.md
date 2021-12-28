@@ -1,0 +1,3 @@
+# Word
+
+Word in [[vocabulary]].
