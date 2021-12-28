@@ -33,8 +33,4 @@ configured. Only public GitHub URLs are supported for now.
 
 ### e2e
 
-    pnpm e2e
-
-With browser on screen
-
-    HEADED=1 pnpm e2e
+    pnpm test:e2e
