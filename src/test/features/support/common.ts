@@ -12,12 +12,11 @@ BeforeAll(async function () {
   browser = await chromium.launch(browserOptions);
 });
 
-Before({ tags: "@ignore" }, async function () {
-  return "skipped";
-});
-
-Before({ tags: "@debug" }, async function () {
-  this.debug = true;
+Before(async function (world) {
+  this.context = await browser.newContext({
+    baseURL: "http://localhost:3000",
+  });
+  this.page = await this.context.newPage();
 });
 
 AfterAll(async function () {

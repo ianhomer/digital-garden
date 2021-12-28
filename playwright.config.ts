@@ -17,7 +17,6 @@ const config: PlaywrightTestConfig = {
     command: process.env.CI ? "pnpm start" : "pnpm test:dev",
     port: 3000,
     timeout: (process.env.ci ? 30 : 10) * 1000,
-    reuseExistingServer: !process.env.CI,
   },
 
   use: {
