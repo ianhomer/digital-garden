@@ -7,9 +7,9 @@ const config: PlaywrightTestConfig = {
   testDir: path.join(__dirname, "src/test/e2e"),
   retries: 0,
   reporter: [
-    [ process.env.CI ? 'dot' : 'list' ],
-    ['json', { outputFile: 'results/test-results.json' }],
-    ['html', { open: 'never', outputFolder: 'results/' }]
+    [process.env.CI ? "dot" : "list"],
+    ["json", { outputFile: "results/test-results.json" }],
+    ["html", { open: "never", outputFolder: "results/" }],
   ],
   outputDir: "results/",
 
