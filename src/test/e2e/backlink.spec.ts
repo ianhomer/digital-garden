@@ -1,4 +1,4 @@
-import { expect,test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test("should navigate to explicit link", async ({ page }) => {
   await page.goto("/word-1");
