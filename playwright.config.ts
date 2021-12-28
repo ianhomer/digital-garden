@@ -6,7 +6,12 @@ const config: PlaywrightTestConfig = {
   timeout: 30 * 1000,
   testDir: path.join(__dirname, "src/test/e2e"),
   retries: 0,
-  outputDir: "test-results/",
+  reporter: [
+    [ process.env.CI ? 'dot' : 'list' ],
+    ['json', { outputFile: 'results/test-results.json' }],
+    ['html', { open: 'never', outputFolder: 'results/' }]
+  ],
+  outputDir: "results/",
 
   webServer: {
     command: "GARDENS_DIRECTORY=src/test/content pnpm dev",

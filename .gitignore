@@ -1,5 +1,7 @@
-.pnpm-debug.log
 .next/
-node_modules/
 gardens/
+node_modules/
+results/
+
 .env
+.pnpm-debug.log
