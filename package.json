@@ -29,6 +29,7 @@
     "start": "next start",
     "test": "next test",
     "test:build": "GARDENS_DIRECTORY=src/test/content next build",
+    "test:cucumber": "cucumber-js src/test/features",
     "test:dev": "GARDENS_DIRECTORY=src/test/content next dev",
     "test:e2e": "playwright test"
   },
@@ -43,6 +44,7 @@
     "unist-util-visit": "^4.1.0"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "^8.0.0-rc.1",
     "@playwright/test": "^1.17.1",
     "@types/react": "^17.0.37",
     "@typescript-eslint/eslint-plugin": "^5.7.0",

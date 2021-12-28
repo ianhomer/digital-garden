@@ -20,15 +20,18 @@ jobs:
           version: next
       - name: Install ripgrep
         run: sudo apt-get install -y ripgrep
-      - name: pnpm install and lint
+      - name: install and lint
         run: |
           pnpm install
           pnpm lint
-      - name: pnpm e2e test
+      - name: e2e test
         run: |
           pnpm test:build
           pnpm test:e2e
-      - name: pnpm build
+      - name: cucumber
+        run: |
+          pnpm test:cucumber
+      - name: build
         run: |
           pnpm prebuild
           pnpm build
