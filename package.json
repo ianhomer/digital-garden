@@ -17,6 +17,7 @@
     "prebuild": "node src/scripts/pre-build.js",
     "build": "next build",
     "dev": "next dev",
+    "e2e": "cucumber-js",
     "eslint": "eslint src --ext .js --ext .tsx --ext .ts",
     "eslint:fix": "eslint src --ext .js --ext .tsx --ext .ts --fix",
     "lint": "yarn prettier && yarn eslint",
@@ -26,8 +27,7 @@
     "prettier": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
     "start": "next start",
-    "test": "next test",
-    "e2e": "cucumber-js"
+    "test": "next test"
   },
   "dependencies": {
     "dotenv": "^10.0.0",

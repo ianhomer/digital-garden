@@ -4,9 +4,8 @@ import matter from "gray-matter";
 import { join } from "path";
 import { promisify } from "util";
 
-import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
-
 import config from "../../garden.config";
+import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
 
 const gardensDirectory = config.directory;
 
