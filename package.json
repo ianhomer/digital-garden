@@ -25,12 +25,12 @@
     "prepare": "husky install",
     "prettier": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
+    "report:html": "npx playwright show-report",
     "start": "next start",
     "test": "next test",
     "test:build": "GARDENS_DIRECTORY=src/test/content next build",
     "test:dev": "GARDENS_DIRECTORY=src/test/content next dev",
-    "test:e2e": "playwright test",
-    "report:html": "npx playwright show-report"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "dotenv": "^10.0.0",
