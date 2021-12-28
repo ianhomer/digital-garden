@@ -28,3 +28,13 @@ Change the build command to
 
 The gardens are configured in garden.config.js. Multiple gardens can be
 configured. Only public GitHub URLs are supported for now.
+
+## Testing
+
+### e2e
+
+    pnpm e2e
+
+With browser on screen
+
+    HEADED=1 pnpm e2e

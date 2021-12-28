@@ -1,4 +1,4 @@
-import { join } from "path";
+const { join } = require("path");
 require("dotenv").config();
 
 function resolveDirectory() {
