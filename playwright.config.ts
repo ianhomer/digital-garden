@@ -14,7 +14,7 @@ const config: PlaywrightTestConfig = {
   outputDir: "results/",
 
   webServer: {
-    command: "GARDENS_DIRECTORY=src/test/content pnpm dev",
+    command: process.env.CI ? "pnpm start" : "pnpm test:dev",
     port: 3000,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,

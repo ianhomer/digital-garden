@@ -22,5 +22,11 @@ jobs:
         run: |
           pnpm install
           pnpm lint
+      - name: pnpm test build
+        run: |
+          pnpm test:build
+          pnpm test:e2e
+      - name: pnpm build
+        run: |
           pnpm prebuild
           pnpm build
