@@ -31,7 +31,7 @@
     "test": "next test",
     "test:build": "GARDENS_DIRECTORY=src/test/content next build",
     "test:e2e": "playwright test",
-    "test:e2e:cucumber:dev": "start-server-and-test dev:test http://localhost:3000 cucumber-js"
+    "test:e2e:cucumber:dev": "server-test dev:test 3000 cucumber-js"
   },
   "dependencies": {
     "dotenv": "^10.0.0",
