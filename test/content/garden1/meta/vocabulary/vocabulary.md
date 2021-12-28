@@ -1,3 +1,3 @@
 # Vocabulary
 
-Vocabulary
+Vocabulary content.

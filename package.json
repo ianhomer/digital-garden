@@ -26,7 +26,8 @@
     "prettier": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
     "start": "next start",
-    "test": "next test"
+    "test": "next test",
+    "e2e": "cucumber-js"
   },
   "dependencies": {
     "dotenv": "^10.0.0",
@@ -39,6 +40,8 @@
     "unist-util-visit": "^4.1.0"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "^8.0.0-rc.1",
+    "@playwright/test": "^1.17.1",
     "@types/react": "^17.0.37",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
@@ -49,6 +52,7 @@
     "format-package": "^6.1.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.1.3",
+    "playwright": "^1.17.1",
     "postcss": "^8.4.5",
     "prettier": "^2.5.1",
     "remark": "^14.0.2",
