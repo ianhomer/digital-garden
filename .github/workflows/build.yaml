@@ -18,6 +18,8 @@ jobs:
         uses: pnpm/action-setup@v2.0.1
         with:
           version: next
+      - name: Install ripgrep
+        run: apt-get install ripgrep
       - name: pnpm install and lint
         run: |
           pnpm install
