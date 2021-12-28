@@ -30,7 +30,7 @@ jobs:
           pnpm test:e2e
       - name: cucumber
         run: |
-          pnpm test:cucumber
+          pnpm test:e2e:cucumber:dev
       - name: build
         run: |
           pnpm prebuild

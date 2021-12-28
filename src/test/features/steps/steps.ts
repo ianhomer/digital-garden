@@ -1,14 +1,15 @@
 import { Given, Then, When } from "@cucumber/cucumber";
+import { expect } from "@playwright/test";
 
 Given("I am on the {word} page", async function (name) {
-  //await this.page.goto(`/${name}`);
-  console.log(`Given I am on the ${name} page`);
+  await this.page.goto(`/${name}`);
 });
 
 When("I click {word}", async function (name) {
-  console.log(`When I click ${name}`);
+  await this.page.click(`text=${name}`);
+  await expect(this.page).toHaveURL(`/${name}`);
 });
 
-Then("I see the word-2 page", async () => {
-  console.log("Then I see");
+Then("I see the heading {string}", async function (heading) {
+  await expect(this.page.locator("h1")).toContainText(heading);
 });
