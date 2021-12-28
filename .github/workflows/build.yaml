@@ -19,7 +19,7 @@ jobs:
         with:
           version: next
       - name: Install ripgrep
-        run: apt-get install ripgrep
+        run: sudo apt-get install -y ripgrep
       - name: pnpm install and lint
         run: |
           pnpm install
