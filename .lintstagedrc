@@ -1,5 +1,5 @@
 {
-  "*.{tsx,md}": "prettier --write .",
-  "*.tsx": "eslint"
+  "*.{ts,tsx,md}": "prettier --write .",
+  "*.{ts,tsx}": "eslint src --ext .js --ext .tsx --ext .ts --fix"
 }
 
