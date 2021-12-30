@@ -29,6 +29,6 @@
     @apply list-disc;
   }
   code {
-    @apply font-mono bg-slate-200 p-1;
+    @apply font-mono bg-slate-200 px-0.5 text-sm;
   }
 }
