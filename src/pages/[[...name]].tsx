@@ -28,7 +28,9 @@ export async function getStaticProps({ params }) {
   const implicitBackLinks = await findImplicitBackLinks(params.name);
   const backLinks = Array.from(
     new Set([...explicitBackLinks, ...implicitBackLinks]).values()
-  ).sort();
+  )
+    .filter((name) => name !== "README")
+    .sort();
   const content = await markdownToHtml(item.content || "no content");
 
   return {
