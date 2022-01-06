@@ -1,3 +1,4 @@
+import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
@@ -27,6 +28,7 @@ export default async function markdownToHtml(markdown: string) {
     .use(shortenLocalLinks)
     .use(remarkRehype)
     .use(rehypeStringify)
+    .use(rehypeHighlight)
     .process(markdown);
   return String(vfile);
 }
