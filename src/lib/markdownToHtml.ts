@@ -1,3 +1,4 @@
+import langGherkin from "highlight.js/lib/languages/gherkin";
 import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
@@ -6,6 +7,10 @@ import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
 import { Data, Node } from "unist";
 import { visit } from "unist-util-visit";
+
+const languages = {
+  gherkin: langGherkin,
+};
 
 function shortenLocalLinks() {
   return (tree: Node<Data>) => {
@@ -28,7 +33,7 @@ export default async function markdownToHtml(markdown: string) {
     .use(shortenLocalLinks)
     .use(remarkRehype)
     .use(rehypeStringify)
-    .use(rehypeHighlight)
+    .use(rehypeHighlight, { languages: languages })
     .process(markdown);
   return String(vfile);
 }
