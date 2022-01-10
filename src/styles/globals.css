@@ -37,7 +37,8 @@
   tr {
     @apply border-y odd:bg-white even:bg-gray-50;
   }
-  td, th {
+  td,
+  th {
     @apply border-x py-2 px-4;
   }
 }
