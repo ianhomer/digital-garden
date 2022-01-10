@@ -1,6 +1,7 @@
 import langGherkin from "highlight.js/lib/languages/gherkin";
 import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
+import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import remarkWikiLink from "remark-wiki-link";
@@ -30,6 +31,7 @@ export default async function markdownToHtml(markdown: string) {
       hrefTemplate: (permalink: string) => `${permalink}`,
     })
     .use(remarkParse)
+    .use(remarkGfm)
     .use(shortenLocalLinks)
     .use(remarkRehype)
     .use(rehypeStringify)
