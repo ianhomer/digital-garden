@@ -6,6 +6,10 @@
   a {
     @apply underline;
   }
+  a[href*="//"]
+  {
+    @apply decoration-dashed;
+  }
   h1 {
     @apply text-3xl py-2;
   }
