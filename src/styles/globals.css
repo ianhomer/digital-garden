@@ -6,7 +6,8 @@
   a {
     @apply underline;
   }
-  a[href*="//"] {
+  a[href*="//"]
+  {
     @apply decoration-dashed;
   }
   h1 {
