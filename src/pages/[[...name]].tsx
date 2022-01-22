@@ -1,6 +1,7 @@
 import {
   findBackLinks,
   findImplicitBackLinks,
+  findImplicitForwardLinks,
   findItem,
   getAllItems,
   Item,
@@ -12,7 +13,7 @@ function ItemPage({ item }) {
     <div>
       <div dangerouslySetInnerHTML={{ __html: item.content }} />
       <ul>
-        {item.backLinks.map((link: string) => (
+        {item.links.map((link: string) => (
           <li key={link}>
             <a href={link}>{link}</a>
           </li>
@@ -26,10 +27,15 @@ export async function getStaticProps({ params }) {
   const item = await findItem(params.name);
   const explicitBackLinks = await findBackLinks(params.name);
   const implicitBackLinks = await findImplicitBackLinks(params.name);
-  const backLinks = Array.from(
-    new Set([...explicitBackLinks, ...implicitBackLinks]).values()
+  const implicitForwardLinks = await findImplicitForwardLinks(item);
+  const links = Array.from(
+    new Set([
+      ...implicitForwardLinks,
+      ...explicitBackLinks,
+      ...implicitBackLinks,
+    ]).values()
   )
-    .filter((name) => name !== "README")
+    .filter((name) => name !== "README" && name !== item.name)
     .sort();
   const content = await markdownToHtml(item.content || "no content");
 
@@ -37,7 +43,7 @@ export async function getStaticProps({ params }) {
     props: {
       item: {
         ...item,
-        backLinks,
+        links,
         content,
       },
     },
