@@ -1,7 +1,7 @@
 import { exec } from "child_process";
 import fs from "fs";
 import matter from "gray-matter";
-import { join } from "path";
+import { dirname, join, sep } from "path";
 import { promisify } from "util";
 
 import config from "../../garden.config";
@@ -31,6 +31,14 @@ const splitLines = (s: string) => s.split(/\n/);
 export async function findImplicitBackLinks(name: string): Promise<string[]> {
   return (await findFilesInNamedDirectory(gardensDirectory, name)).map(
     (backlink: string) => /([^/]*).md$/.exec(backlink)[1]
+  );
+}
+
+export async function findImplicitForwardLinks(item: Item): Promise<string[]> {
+  return Promise.resolve(
+    dirname(item.filename)
+      .split(sep)
+      .filter((s) => s)
   );
 }
 
