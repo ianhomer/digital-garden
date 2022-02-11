@@ -9,6 +9,8 @@ import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
 
 const gardensDirectory = config.directory;
 
+const hasMultipleGardens = !fs.existsSync(`${config.directory}/README.md`);
+
 export class Item {
   name: string;
   filename: string;
@@ -16,6 +18,7 @@ export class Item {
 
   constructor(filename: string, load = false) {
     this.filename = filename;
+    console.log(filename);
     this.name = /([^/]*).md$/.exec(filename)[1];
     if (load) {
       const path = join(gardensDirectory, `${filename}`);
@@ -40,7 +43,7 @@ export async function findImplicitForwardLinks(item: Item): Promise<string[]> {
   return Promise.resolve(
     dirname(item.filename)
       .split(sep)
-      .filter((s) => s)
+      .slice(hasMultipleGardens ? 1 : 0)
   );
 }
 

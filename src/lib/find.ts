@@ -64,7 +64,7 @@ export async function findFile(
     throw "Cannot find " + filename + " in " + directory;
   }
 
-  return found.substring(directory.length);
+  return found.substring(directory.length + 1);
 }
 
 export async function findFiles(directory: string): Promise<string[]> {
