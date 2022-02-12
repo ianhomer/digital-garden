@@ -45,7 +45,7 @@ export async function findImplicitForwardLinks(item: Item): Promise<string[]> {
 }
 
 export async function findBackLinks(name: string): Promise<string[]> {
-  const cmd = `rg -L -l '\\[${name}' ${gardensDirectory}`;
+  const cmd = `rg -L -l '\\[\\[${name}\\]\\]' ${gardensDirectory}`;
   return promisify(exec)(cmd)
     .then((ok) => {
       return splitLines(ok.stdout)
