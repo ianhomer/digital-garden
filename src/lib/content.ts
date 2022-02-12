@@ -18,7 +18,6 @@ export class Item {
 
   constructor(filename: string, load = false) {
     this.filename = filename;
-    console.log(filename);
     this.name = /([^/]*).md$/.exec(filename)[1];
     if (load) {
       const path = join(gardensDirectory, `${filename}`);
@@ -33,9 +32,7 @@ const splitLines = (s: string) => s.split(/\n/);
 
 export async function findImplicitBackLinks(name: string): Promise<string[]> {
   return (await findFilesInNamedDirectory(gardensDirectory, name))
-    .filter((s) => {
-      s.endsWith(".md");
-    })
+    .filter((s) => s.endsWith(".md"))
     .map((backlink: string) => /([^/]*).md$/.exec(backlink)[1]);
 }
 

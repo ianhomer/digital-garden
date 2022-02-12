@@ -16,20 +16,22 @@ async function* findFilesDeep(directory: string) {
 }
 
 // Find all files within a given named directory
-async function* findFilesInNameDirectoryDeep(directory: string, name: string) {
+async function* findFilesInNamedDirectoryDeep(directory: string, name: string) {
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
     const resolved = resolve(directory, child.name);
     if (child.isDirectory()) {
-      if (child.name == name) {
-        const children = await readdir(resolved, { withFileTypes: true });
-        for (const candidate of children) {
-          if (candidate.isFile()) {
-            yield candidate.name;
+      if (!child.name.startsWith(".")) {
+        if (child.name == name) {
+          const children = await readdir(resolved, { withFileTypes: true });
+          for (const candidate of children) {
+            if (candidate.isFile()) {
+              yield candidate.name;
+            }
           }
         }
+        yield* findFilesInNamedDirectoryDeep(resolved, name);
       }
-      yield* findFilesInNameDirectoryDeep(resolved, name);
     }
   }
 }
@@ -80,7 +82,7 @@ export async function findFilesInNamedDirectory(
   name: string
 ): Promise<string[]> {
   const files: string[] = [];
-  for await (const file of findFilesInNameDirectoryDeep(directory, name)) {
+  for await (const file of findFilesInNamedDirectoryDeep(directory, name)) {
     files.push(file);
   }
   return files;
