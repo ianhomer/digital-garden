@@ -29,8 +29,26 @@
   ol {
     @apply list-decimal;
   }
-  ul {
+  li {
     @apply list-disc;
+  }
+  ul.links {
+    @apply m-0;
+  }
+  .links li {
+    @apply list-none text-sm;
+  }
+  .links li.implicitBack {
+    @apply text-slate-500;
+  }
+  .links li.implicitForward {
+    @apply text-slate-300;
+  }
+  .links li a {
+    @apply block;
+  }
+  .links li a:hover {
+    @apply bg-slate-100;
   }
   code {
     @apply font-mono bg-slate-200 px-0.5 text-sm;

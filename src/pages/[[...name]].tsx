@@ -8,14 +8,19 @@ import {
 } from "../lib/content";
 import markdownToHtml from "../lib/markdownToHtml";
 
+type Link = {
+  link: string;
+  type: string;
+};
+
 function ItemPage({ item }) {
   return (
     <div>
       <div dangerouslySetInnerHTML={{ __html: item.content }} />
-      <ul>
-        {item.links.map((link: string) => (
-          <li key={link}>
-            <a href={link}>{link}</a>
+      <ul className="links">
+        {item.links.map((link: Link) => (
+          <li key={link.link} className={link.type}>
+            <a href={link.link}>{link.link}</a>
           </li>
         ))}
       </ul>
@@ -36,7 +41,20 @@ export async function getStaticProps({ params }) {
     ]).values()
   )
     .filter((name) => name !== "README" && name !== item.name)
-    .sort();
+    .sort()
+    .map((link) => {
+      return {
+        link: link,
+        type: ((link) => {
+          if (explicitBackLinks.includes(link)) {
+            return "back";
+          } else if (implicitBackLinks.includes(link)) {
+            return "implicitBack";
+          }
+          return "implicitForward";
+        })(link),
+      };
+    });
   const content = await markdownToHtml(item.content || "no content");
 
   return {
