@@ -14,10 +14,10 @@ export function parse(thing: Thing) {
     .parse(thing.content());
 }
 
-function allChildren(node) {
+function flatten(node) {
   const children = node.children;
   return children
-    ? [...children, ...children.map((child) => allChildren(child)).flat()]
+    ? [...children, ...children.map((child) => flatten(child)).flat()]
     : [];
 }
 
@@ -25,7 +25,7 @@ export function process(thing: Thing): Meta {
   const document = parse(thing);
   return {
     name: thing.name,
-    links: allChildren(document)
+    links: flatten(document)
       .filter((node) => node.type === "wikiLink")
       .map((link) => {
         return { to: link.value };
