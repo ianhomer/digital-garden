@@ -1,5 +1,5 @@
 import { Garden } from "./garden";
-import { createThing, getMeta } from "./thing";
+import { createThing } from "./thing";
 
 const garden: Garden = {
   config: {
