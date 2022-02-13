@@ -8,10 +8,14 @@ import { process } from "./markdown";
 import { Meta } from "./meta";
 import { FileThing } from "./thing";
 
+const gardenMetaFile = ".garden-meta.json";
+
 export interface Garden {
   config: GardenConfig;
   thing: (filename: string) => FileThing;
   meta: () => Promise<{ [key: string]: Meta }>;
+  load: () => Promise<{ [key: string]: Meta }>;
+  refresh: () => Promise<void>;
 }
 export interface GardenConfig {
   directory: string;
@@ -27,7 +31,7 @@ const loadThing = (config: GardenConfig, filename: string): FileThing => {
   };
 };
 
-const loadMeta = async (
+const generateMeta = async (
   config: GardenConfig
 ): Promise<{ [key: string]: Meta }> => {
   const gardenDirectory = resolve(config.directory);
@@ -47,10 +51,25 @@ const loadMeta = async (
   return meta;
 };
 
+const refresh = async (config: GardenConfig) => {
+  const meta = await generateMeta(config);
+  fs.writeFileSync(
+    join(config.directory, gardenMetaFile),
+    JSON.stringify(meta)
+  );
+};
+
+const loadMeta = async (config: GardenConfig) => {
+  const content = fs.readFileSync(join(config.directory, gardenMetaFile));
+  return JSON.parse(content.toString("utf8"));
+};
+
 export const createGarden = (config: GardenConfig): Garden => {
   return {
     config,
-    meta: async () => await loadMeta(config),
+    meta: async () => await generateMeta(config),
+    refresh: async () => await refresh(config),
+    load: async () => await loadMeta(config),
     thing: (filename: string) => {
       return loadThing(config, filename);
     },

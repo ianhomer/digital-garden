@@ -6,3 +6,4 @@ results/
 .env
 .pnpm-debug.log
 .DS_Store
+.garden-meta.json
