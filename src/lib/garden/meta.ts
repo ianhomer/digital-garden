@@ -3,6 +3,6 @@ export interface Link {
 }
 
 export interface Meta {
-  name: string;
+  title: string;
   links: Array<Link>;
 }

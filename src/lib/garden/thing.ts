@@ -2,11 +2,13 @@ import fs from "fs";
 import { join } from "path";
 
 import { Garden } from "./garden";
+import { process } from "./markdown";
 import { Meta } from "./meta";
 
 export interface Thing {
   name: string;
   content: () => string;
+  meta: () => Meta;
 }
 
 export interface FileThing extends Thing {

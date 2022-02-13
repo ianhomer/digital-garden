@@ -21,10 +21,14 @@ function flatten(node) {
     : [];
 }
 
+function extractTitle(node) {
+  return node.children[0].children[0].value;
+}
+
 export function process(thing: Thing): Meta {
   const document = parse(thing);
   return {
-    name: thing.name,
+    title: extractTitle(document),
     links: flatten(document)
       .filter((node) => node.type === "wikiLink")
       .map((link) => {
