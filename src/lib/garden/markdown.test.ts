@@ -6,5 +6,7 @@ it("should parse OK", () => {
     name: "my-name",
     content: () => "# My Name",
   });
+
   expect(tree.type).toBe("root");
+  expect(tree.children[0].type).toBe("heading");
 });
