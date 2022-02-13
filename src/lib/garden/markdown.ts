@@ -3,15 +3,14 @@ import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
 
 import { Meta } from "./meta";
-import { Thing } from "./thing";
 
-export function parse(thing: Thing) {
+export function parse(content: () => string) {
   return unified()
     .use(remarkWikiLink, {
       hrefTemplate: (permalink: string) => `${permalink}`,
     })
     .use(remarkParse)
-    .parse(thing.content());
+    .parse(content());
 }
 
 function flatten(node) {
@@ -25,8 +24,8 @@ function extractTitle(node) {
   return node.children[0].children[0].value;
 }
 
-export function process(thing: Thing): Meta {
-  const document = parse(thing);
+export function process(content: () => string): Meta {
+  const document = parse(content);
   return {
     title: extractTitle(document),
     links: flatten(document)

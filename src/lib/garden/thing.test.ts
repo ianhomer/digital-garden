@@ -1,13 +1,10 @@
-import { Garden } from "./garden";
-import { createThing } from "./thing";
+import { createGarden } from "./garden";
 
-const garden: Garden = {
-  config: {
-    directory: "./src/test/content/",
-  },
-};
+const garden = createGarden({
+  directory: "./src/test/content/",
+});
 
 it("gets base meta", () => {
-  const thing = createThing(garden, "garden/my-name.md");
+  const thing = garden.thing("garden/my-name.md");
   expect(thing.name).toBe("my-name");
 });
