@@ -15,18 +15,12 @@ const transformIgnores = [
   ".*bail",
   ".*is-plain-obj",
   ".*trough",
-  ".*vfile"
+  ".*vfile",
 ].join("|");
 const customJestConfig = {
   moduleDirectories: ["node_modules", "<rootDir>/"],
   testPathIgnorePatterns: ["./test/e2e"],
   testEnvironment: "jest-environment-jsdom",
-  // transform: {
-  //   "node_modules/.*/remark-parse/.+\\.(j|t)sx?$": [
-  //     "babel-jest",
-  //     { presets: ["next/babel"] },
-  //   ],
-  // },
   transformIgnorePatterns: [`/node_modules/(?!${transformIgnores})`],
 };
 
