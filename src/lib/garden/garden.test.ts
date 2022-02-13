@@ -8,7 +8,7 @@ it("should create garden", () => {
   expect(garden.config.directory).toBe("./src/test/content");
 });
 
-it("should create meta", () => {
-  const meta = garden.meta();
+it("should create meta", async () => {
+  const meta = await garden.meta();
   expect(Object.keys(meta).length).toBe(2);
 });
