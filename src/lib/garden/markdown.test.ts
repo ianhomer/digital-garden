@@ -1,4 +1,4 @@
-import { createGarden, Garden } from "./garden";
+import { createGarden } from "./garden";
 import { parse, process } from "./markdown";
 
 const garden = createGarden({
