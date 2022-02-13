@@ -1,5 +1,6 @@
 import fs from "fs";
 import { join } from "path";
+import { resolve } from "path";
 
 import config from "../../../garden.config";
 import { findFilesDeep } from "./file";
@@ -26,16 +27,24 @@ const loadThing = (config: GardenConfig, filename: string): FileThing => {
   };
 };
 
-const loadMeta = async (config: GardenConfig) => {
-  // const meta = {}
-  // for await (const file of findFilesDeep(config.directory)) {
-  //   console.log(file)
-  // }
+const loadMeta = async (
+  config: GardenConfig
+): Promise<{ [key: string]: Meta }> => {
+  const gardenDirectory = resolve(config.directory);
 
-  return {
-    "word-1": process(loadThing(config, "garden1/word/word-1.md").content),
-    "word-2": process(loadThing(config, "garden1/word/word-2.md").content),
-  };
+  const meta = {};
+  for await (const filename of findFilesDeep(config.directory)) {
+    if (filename.startsWith(gardenDirectory)) {
+      const thing = loadThing(
+        config,
+        filename.substring(gardenDirectory.length)
+      );
+      meta[thing.name] = process(thing.content);
+    } else {
+      console.error(`File ${filename} is not in garden ${config.directory}`);
+    }
+  }
+  return meta;
 };
 
 export const createGarden = (config: GardenConfig): Garden => {

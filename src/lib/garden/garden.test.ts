@@ -10,5 +10,8 @@ it("should create garden", () => {
 
 it("should create meta", async () => {
   const meta = await garden.meta();
-  expect(Object.keys(meta).length).toBe(2);
+  expect(Object.keys(meta).length).toBe(5);
+  const wordThing = meta["word"];
+  expect(wordThing.title).toBe("Word");
+  expect(wordThing.links[0].to).toBe("vocabulary");
 });
