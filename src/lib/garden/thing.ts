@@ -1,3 +1,5 @@
+import { Garden } from "./garden";
+
 export interface Thing {
   name: string;
 }
@@ -10,7 +12,7 @@ export interface Meta {
   name: string;
 }
 
-export function getMeta(thing: FileThing): Meta {
+export function getMeta(garden: Garden, thing: FileThing): Meta {
   return {
     name: thing.name,
   };

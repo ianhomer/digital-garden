@@ -29,6 +29,7 @@
     "report:html": "npx playwright show-report",
     "start": "next start",
     "test": "jest",
+    "test:watch": "jest --watch",
     "test:build": "GARDENS_DIRECTORY=src/test/content next build",
     "test:e2e": "playwright test",
     "test:e2e:cucumber:dev": "server-test dev:test 3000 cucumber-js"
