@@ -53,10 +53,9 @@ const generateMeta = async (
 
 const refresh = async (config: GardenConfig) => {
   const meta = await generateMeta(config);
-  fs.writeFileSync(
-    join(config.directory, gardenMetaFile),
-    JSON.stringify(meta)
-  );
+  const fullGardenMetaFile = join(config.directory, gardenMetaFile);
+  console.log(`Refreshing ${fullGardenMetaFile}`);
+  fs.writeFileSync(fullGardenMetaFile, JSON.stringify(meta));
 };
 
 const loadMeta = async (config: GardenConfig) => {

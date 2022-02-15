@@ -1,5 +1,6 @@
+import fs from "fs";
 import { resolve } from "path";
-const { readdir } = require("fs").promises;
+const { readdir } = fs.promises;
 
 export async function* findFilesDeep(directory: string) {
   const directories = await readdir(directory, { withFileTypes: true });
