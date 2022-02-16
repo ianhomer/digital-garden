@@ -1,3 +1,3 @@
 import { garden } from "./garden";
 
-garden.refresh();
+export { garden };
