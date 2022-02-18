@@ -13,12 +13,9 @@
   "homepage": "https://github.com/ianhomer/digital-garden#readme",
   "author": "",
   "main": ".eslintrc.js",
-  "exports": {
-    "./lib/garden/index": "./src/lib/garden/index.ts"
-  },
   "scripts": {
     "prebuild": "node src/scripts/pre-build.js",
-    "prebuild2": "ts-node src/lib/garden/prepare.js",
+    "prebuild2": "ts-node src/lib/garden/prepare.ts",
     "build": "next build",
     "dev": "next dev",
     "dev:test": "GARDENS_DIRECTORY=src/test/content next dev",

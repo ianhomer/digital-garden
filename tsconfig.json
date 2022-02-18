@@ -20,6 +20,8 @@
   "ts-node": {
     "files": true,
     "compilerOptions": {
+      "isolatedModules": false,
+      "module": "CommonJS"
     }
   }
 }
