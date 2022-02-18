@@ -20,8 +20,10 @@
   "ts-node": {
     "files": true,
     "compilerOptions": {
-      "isolatedModules": false,
-      "module": "nodenext"
+      "target": "ES2015",
+      "allowJs": true,
+      "resolveJsonModule": false,
+      "isolatedModules": false
     }
   }
 }

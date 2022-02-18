@@ -11,11 +11,10 @@
     "url": "https://github.com/ianhomer/digital-garden/issues"
   },
   "homepage": "https://github.com/ianhomer/digital-garden#readme",
-  "author": "",
-  "main": ".eslintrc.js",
+  "type": "module",
   "scripts": {
     "prebuild": "node src/scripts/pre-build.js",
-    "prebuild2": "ts-node src/lib/garden/prepare.ts",
+    "prebuild2": "node --experimental-specifier-resolution=node --loader ts-node/esm src/lib/garden/prepare.ts",
     "build": "next build",
     "dev": "next dev",
     "dev:test": "GARDENS_DIRECTORY=src/test/content next dev",
