@@ -16,14 +16,5 @@
     "jsx": "preserve"
   },
   "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules"],
-  "ts-node": {
-    "files": true,
-    "compilerOptions": {
-      "target": "ES2015",
-      "allowJs": true,
-      "resolveJsonModule": false,
-      "isolatedModules": false
-    }
-  }
+  "exclude": ["node_modules"]
 }
