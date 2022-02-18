@@ -1,6 +1,5 @@
-import dotenv from "dotenv";
-import { join } from "path";
-dotenv.config();
+const { join } = require("path");
+require("dotenv").config();
 
 function resolveDirectory() {
   if (process.env.GARDENS_DIRECTORY) {
@@ -9,7 +8,7 @@ function resolveDirectory() {
   return join(process.cwd(), "gardens");
 }
 
-export default {
+module.exports = {
   gardens: {
     boxofjam: "https://github.com/purplepip/boxofjam.git",
   },
