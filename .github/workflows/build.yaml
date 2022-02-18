@@ -37,4 +37,5 @@ jobs:
       - name: build
         run: |
           pnpm prebuild
+          pnpm prebuild2
           pnpm build

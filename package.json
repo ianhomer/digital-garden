@@ -11,10 +11,8 @@
     "url": "https://github.com/ianhomer/digital-garden/issues"
   },
   "homepage": "https://github.com/ianhomer/digital-garden#readme",
-  "type": "module",
   "scripts": {
     "prebuild": "node src/scripts/pre-build.js",
-    "prebuild2": "node --experimental-specifier-resolution=node --loader ts-node/esm src/lib/garden/prepare.ts",
     "build": "next build",
     "dev": "next dev",
     "dev:test": "GARDENS_DIRECTORY=src/test/content next dev",
@@ -23,17 +21,19 @@
     "lint": "yarn prettier && yarn eslint",
     "lint:fix": "yarn package:fix && yarn prettier:fix && yarn eslint:fix",
     "package:fix": "format-package -w",
+    "prebuild2": "node --experimental-specifier-resolution=node --loader ts-node/esm src/lib/garden/prepare.ts",
     "prepare": "husky install",
     "prettier": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
     "report:html": "npx playwright show-report",
     "start": "next start",
     "test": "jest",
-    "test:watch": "jest --watch",
     "test:build": "GARDENS_DIRECTORY=src/test/content next build",
     "test:e2e": "playwright test",
-    "test:e2e:cucumber:dev": "server-test dev:test 3000 cucumber-js"
+    "test:e2e:cucumber:dev": "server-test dev:test 3000 cucumber-js",
+    "test:watch": "jest --watch"
   },
+  "type": "module",
   "dependencies": {
     "dotenv": "^10.0.0",
     "gray-matter": "^4.0.3",
