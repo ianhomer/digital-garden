@@ -11,6 +11,7 @@
     "url": "https://github.com/ianhomer/digital-garden/issues"
   },
   "homepage": "https://github.com/ianhomer/digital-garden#readme",
+  "type": "module",
   "scripts": {
     "prebuild": "node src/scripts/pre-build.js",
     "build": "next build",
