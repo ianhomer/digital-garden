@@ -2,15 +2,15 @@
   "name": "@digital-garden/end-to-end",
   "version": "1.0.0",
   "description": "",
+  "license": "ISC",
+  "author": "",
   "main": "index.js",
   "scripts": {
     "report:html": "npx playwright show-report",
+    "start": "cd ../.. && pnpm start",
     "test:e2e": "playwright test -g '.*.spec.mjs'",
-    "test:e2e:cucumber": "cucumber-js",
-    "start": "cd ../.. && pnpm start"
+    "test:e2e:cucumber": "cucumber-js"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "allure-playwright": "^2.0.0-beta.15",
     "playwright": "^1.19.1"

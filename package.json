@@ -13,7 +13,6 @@
   "homepage": "https://github.com/ianhomer/digital-garden#readme",
   "scripts": {
     "prebuild": "node src/scripts/pre-build.js",
-    "test:e2e:cucumber": "pnpm --filter @digital-garden/end-to-end test:e2e:cucumber", 
     "build": "next build",
     "dev": "next dev",
     "dev:test": "GARDENS_DIRECTORY=src/test/content next dev",
@@ -28,8 +27,9 @@
     "prettier:fix": "npx prettier --write .",
     "start": "next start",
     "test": "jest",
-    "test:e2e": "pnpm --filter @digital-garden/end-to-end test:e2e",
     "test:build": "GARDENS_DIRECTORY=src/test/content next build",
+    "test:e2e": "pnpm --filter @digital-garden/end-to-end test:e2e",
+    "test:e2e:cucumber": "pnpm --filter @digital-garden/end-to-end test:e2e:cucumber",
     "test:e2e:cucumber:dev": "server-test dev:test 3000 test:e2e:cucumber",
     "test:watch": "jest --watch"
   },
