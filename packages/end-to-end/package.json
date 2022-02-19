@@ -8,7 +8,7 @@
   "scripts": {
     "report:html": "npx playwright show-report",
     "start": "cd ../.. && pnpm start",
-    "test:e2e": "playwright test -g '.*.spec.mjs'",
+    "test:e2e": "playwright test -g '.*.spec.js'",
     "test:e2e:cucumber": "cucumber-js"
   },
   "devDependencies": {
