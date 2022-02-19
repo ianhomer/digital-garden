@@ -29,7 +29,7 @@
     "start": "next start",
     "test": "jest",
     "test:build": "GARDENS_DIRECTORY=src/test/content next build",
-    "test:e2e": "playwright test -g '.*.spec.js'",
+    "test:e2e": "playwright test -g '.*.spec.mjs'",
     "test:e2e:cucumber:dev": "server-test dev:test 3000 cucumber-js",
     "test:watch": "jest --watch"
   },
