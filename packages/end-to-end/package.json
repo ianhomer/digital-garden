@@ -6,6 +6,7 @@
   "scripts": {
     "report:html": "npx playwright show-report",
     "test:e2e": "playwright test -g '.*.spec.mjs'",
+    "test:e2e:cucumber": "cucumber-js",
     "start": "cd ../.. && pnpm start"
   },
   "author": "",
