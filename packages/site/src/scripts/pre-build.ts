@@ -8,7 +8,9 @@ const cmdCallback = (error, stdout, stderr) => {
   error && console.error(`exec error: ${error}`);
   console.log(stdout);
   console.error(stderr);
-  garden.refresh();
+  garden
+    .refresh()
+    .then((meta) => console.log(`refreshed ${Object.keys(meta).length}`));
 };
 
 const gardens = config.gardens;
@@ -23,4 +25,6 @@ Object.keys(gardens).forEach((garden) => {
   }
 });
 
-garden.refresh();
+garden
+  .refresh()
+  .then((meta) => console.log(`refreshed ${Object.keys(meta).length}`));
