@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Digital Garden site",
   "license": "ISC",
+  "type": "module",
   "scripts": {
     "build:prepare": "node src/scripts/pre-build.js",
     "build": "next build",
