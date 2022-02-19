@@ -33,7 +33,6 @@
     "test:e2e:cucumber:dev": "server-test dev:test 3000 cucumber-js",
     "test:watch": "jest --watch"
   },
-  "type": "module",
   "dependencies": {
     "dotenv": "^10.0.0",
     "gray-matter": "^4.0.3",
