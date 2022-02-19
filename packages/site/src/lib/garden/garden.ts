@@ -51,16 +51,24 @@ const generateMeta = async (
   return meta;
 };
 
+const getMetaFilename = (config: GardenConfig) =>
+  join(config.directory, gardenMetaFile);
+
 const refresh = async (config: GardenConfig) => {
   const meta = await generateMeta(config);
-  const fullGardenMetaFile = join(config.directory, gardenMetaFile);
+  const fullGardenMetaFile = getMetaFilename(config);
   console.log(`Refreshing ${fullGardenMetaFile}`);
   fs.writeFileSync(fullGardenMetaFile, JSON.stringify(meta));
 };
 
 const loadMeta = async (config: GardenConfig) => {
-  const content = fs.readFileSync(join(config.directory, gardenMetaFile));
-  return JSON.parse(content.toString("utf8"));
+  const metaFilename = getMetaFilename(config);
+  if (fs.existsSync(metaFilename)) {
+    const content = fs.readFileSync(join(config.directory, gardenMetaFile));
+    return JSON.parse(content.toString("utf8"));
+  } else {
+    console.error(`Meta file ${metaFilename} does not exist`);
+  }
 };
 
 export const createGarden = (config: GardenConfig): Garden => {
