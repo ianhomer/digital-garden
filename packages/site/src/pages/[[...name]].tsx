@@ -6,6 +6,7 @@ import {
   getAllItems,
   Item,
 } from "../lib/content";
+import { garden } from "../lib/garden/garden";
 import markdownToHtml from "../lib/markdownToHtml";
 
 type Link = {
@@ -24,6 +25,10 @@ function ItemPage({ item }) {
           </li>
         ))}
       </ul>
+      <footer>
+        {item.garden[item.name].links.length} links ;{" "}
+        {Object.keys(item.garden).length} things
+      </footer>
     </div>
   );
 }
@@ -63,6 +68,7 @@ export async function getStaticProps({ params }) {
         ...item,
         links,
         content,
+        garden: await garden.load(),
       },
     },
   };

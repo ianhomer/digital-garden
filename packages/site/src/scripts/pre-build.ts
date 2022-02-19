@@ -2,6 +2,7 @@ import { exec } from "child_process";
 import fs from "fs";
 
 import config from "../../garden.config.js";
+import { garden } from "../lib/garden/garden";
 
 const cmdCallback = (error, stdout, stderr) => {
   error && console.error(`exec error: ${error}`);
@@ -20,3 +21,5 @@ Object.keys(gardens).forEach((garden) => {
     exec(`git clone ${url} ${gardenDirectory}`, cmdCallback);
   }
 });
+
+garden.refresh();
