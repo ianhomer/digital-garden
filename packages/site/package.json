@@ -1,5 +1,5 @@
 {
-  "name": "@digital-garden/site",
+  "name": "@garden/site",
   "version": "1.0.0",
   "description": "Digital Garden site",
   "license": "ISC",
@@ -8,6 +8,8 @@
     "build": "next build",
     "dev": "next dev",
     "dev:test": "GARDENS_DIRECTORY=src/test/content next dev",
+    "eslint": "eslint src --ext .js --ext .tsx --ext .ts",
+    "eslint:fix": "eslint src --ext .js --ext .tsx --ext .ts --fix",
     "prebuild2": "node --experimental-specifier-resolution=node --loader ts-node/esm src/lib/garden/prepare.ts",
     "start": "next start",
     "test": "jest",
