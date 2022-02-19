@@ -1,6 +1,7 @@
-const config = require("../../garden.config.js");
-const { exec } = require("child_process");
-const fs = require("fs");
+import { exec } from "child_process";
+import fs from "fs";
+
+import config from "../../garden.config.js";
 
 const cmdCallback = (error, stdout, stderr) => {
   error && console.error(`exec error: ${error}`);
