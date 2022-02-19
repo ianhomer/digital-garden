@@ -15,7 +15,7 @@ export interface Garden {
   thing: (filename: string) => FileThing;
   meta: () => Promise<{ [key: string]: Meta }>;
   load: () => Promise<{ [key: string]: Meta }>;
-  refresh: () => Promise<void>;
+  refresh: () => Promise<{ [key: string]: Meta }>;
 }
 export interface GardenConfig {
   directory: string;
@@ -51,16 +51,28 @@ const generateMeta = async (
   return meta;
 };
 
+const getMetaFilename = (config: GardenConfig) =>
+  join(config.directory, gardenMetaFile);
+
 const refresh = async (config: GardenConfig) => {
   const meta = await generateMeta(config);
-  const fullGardenMetaFile = join(config.directory, gardenMetaFile);
-  console.log(`Refreshing ${fullGardenMetaFile}`);
+  const fullGardenMetaFile = getMetaFilename(config);
+  console.log(
+    `Refreshing ${fullGardenMetaFile} : ${Object.keys(meta).length} things`
+  );
   fs.writeFileSync(fullGardenMetaFile, JSON.stringify(meta));
+  return meta;
 };
 
 const loadMeta = async (config: GardenConfig) => {
-  const content = fs.readFileSync(join(config.directory, gardenMetaFile));
-  return JSON.parse(content.toString("utf8"));
+  const metaFilename = getMetaFilename(config);
+  if (fs.existsSync(metaFilename)) {
+    const content = fs.readFileSync(join(config.directory, gardenMetaFile));
+    return JSON.parse(content.toString("utf8"));
+  } else {
+    console.log(`Meta file ${metaFilename} does not exist`);
+    return {};
+  }
 };
 
 export const createGarden = (config: GardenConfig): Garden => {

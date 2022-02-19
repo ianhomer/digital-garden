@@ -63,4 +63,7 @@
   th {
     @apply border-x py-2 px-4;
   }
+  footer {
+    @apply text-slate-300 text-sm text-right;
+  }
 }

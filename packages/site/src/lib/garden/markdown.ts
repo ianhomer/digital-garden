@@ -21,7 +21,14 @@ function flatten(node) {
 }
 
 function extractTitle(node) {
-  return node.children[0].children[0].value;
+  const firstNode = node.children[0];
+  if (!firstNode) {
+    return "no title";
+  }
+  if (!firstNode.children) {
+    return firstNode.value;
+  }
+  return firstNode.children[0].value;
 }
 
 export function process(content: () => string): Meta {

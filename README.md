@@ -4,8 +4,8 @@ Rendering of Digital Garden markdown into a web site.
 
 ## tl;dr
 
-    pnpm i
-    pnpm prebuild
+    pnpm install
+    pnpm build:prepare
     pnpm dev
 
 ## Linking Garden
