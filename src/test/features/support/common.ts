@@ -3,7 +3,7 @@ import { Browser, chromium, LaunchOptions } from "playwright";
 
 let browser: Browser;
 const browserOptions: LaunchOptions = {
-  headless: false,
+  headless: true,
 };
 
 BeforeAll(async function () {
