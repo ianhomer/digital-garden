@@ -1,11 +1,9 @@
 import { After, AfterAll, Before, BeforeAll } from "@cucumber/cucumber";
 import { Browser, chromium, LaunchOptions } from "playwright";
 
-import config from "../../../../playwright.config";
-
 let browser: Browser;
 const browserOptions: LaunchOptions = {
-  headless: config.use.headless,
+  headless: true,
 };
 
 BeforeAll(async function () {
@@ -14,7 +12,7 @@ BeforeAll(async function () {
 
 Before(async function () {
   this.context = await browser.newContext({
-    baseURL: `http://localhost:${config.webServer.port}`,
+    baseURL: `http://localhost:3000`,
   });
   this.page = await this.context.newPage();
 });
