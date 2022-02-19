@@ -8,16 +8,17 @@ const cmdCallback = (error, stdout, stderr) => {
   error && console.error(`exec error: ${error}`);
   console.log(stdout);
   console.error(stderr);
+  garden.refresh();
 };
 
 const gardens = config.gardens;
 Object.keys(gardens).forEach((garden) => {
-  const gardenDirectory = `gardens/${garden}`;
+  const gardenDirectory = `${config.directory}/${garden}`;
   if (fs.existsSync(gardenDirectory)) {
     console.log(`Garden ${gardenDirectory} already exists`);
   } else {
     const url = gardens[garden];
-    console.log(`Cloning ${garden}`);
+    console.log(`Cloning ${garden} to ${gardenDirectory}`);
     exec(`git clone ${url} ${gardenDirectory}`, cmdCallback);
   }
 });
