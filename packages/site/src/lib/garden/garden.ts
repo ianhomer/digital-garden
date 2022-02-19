@@ -68,6 +68,7 @@ const loadMeta = async (config: GardenConfig) => {
     return JSON.parse(content.toString("utf8"));
   } else {
     console.error(`Meta file ${metaFilename} does not exist`);
+    return {};
   }
 };
 

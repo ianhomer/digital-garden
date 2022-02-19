@@ -25,10 +25,7 @@ function ItemPage({ item }) {
           </li>
         ))}
       </ul>
-      <footer>
-        {item.garden[item.name].links.length} links ;{" "}
-        {Object.keys(item.garden).length} things
-      </footer>
+      <footer>{Object.keys(item.garden).length} things</footer>
     </div>
   );
 }
