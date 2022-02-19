@@ -1,88 +1,93 @@
 lockfileVersion: 5.3
 
-specifiers:
-  '@cucumber/cucumber': ^8.0.0-rc.2
-  '@playwright/test': ^1.19.1
-  '@testing-library/jest-dom': ^5.16.2
-  '@testing-library/react': ^12.1.3
-  '@types/node': ^17.0.18
-  '@types/react': ^17.0.39
-  '@typescript-eslint/eslint-plugin': ^5.12.0
-  '@typescript-eslint/parser': ^5.12.0
-  allure-playwright: ^2.0.0-beta.15
-  autoprefixer: ^10.4.2
-  dotenv: ^10.0.0
-  eslint: ^8.9.0
-  eslint-config-prettier: ^8.3.0
-  eslint-plugin-simple-import-sort: ^7.0.0
-  format-package: ^6.1.0
-  gray-matter: ^4.0.3
-  highlight.js: ^11.4.0
-  husky: ^7.0.4
-  jest: ^27.5.1
-  lint-staged: ^12.3.4
-  next: ^12.1.0
-  playwright: ^1.19.1
-  postcss: ^8.4.6
-  prettier: ^2.5.1
-  react: ^17.0.2
-  react-dom: ^17.0.2
-  rehype-highlight: ^5.0.2
-  rehype-stringify: ^9.0.3
-  remark: ^14.0.2
-  remark-gfm: ^3.0.1
-  remark-parse: ^10.0.1
-  remark-rehype: ^10.1.0
-  remark-wiki-link: ^1.0.4
-  start-server-and-test: ^1.14.0
-  tailwindcss: ^3.0.23
-  ts-node: ^10.5.0
-  typescript: ^4.5.5
-  unified: ^10.1.1
-  unist-util-visit: ^4.1.0
+importers:
 
-dependencies:
-  dotenv: 10.0.0
-  gray-matter: 4.0.3
-  highlight.js: 11.4.0
-  next: 12.1.0_react-dom@17.0.2+react@17.0.2
-  react: 17.0.2
-  react-dom: 17.0.2_react@17.0.2
-  rehype-highlight: 5.0.2
-  rehype-stringify: 9.0.3
-  remark-gfm: 3.0.1
-  remark-wiki-link: 1.0.4
-  unist-util-visit: 4.1.0
+  .:
+    specifiers:
+      '@cucumber/cucumber': ^8.0.0-rc.2
+      '@playwright/test': ^1.19.1
+      '@testing-library/jest-dom': ^5.16.2
+      '@testing-library/react': ^12.1.3
+      '@types/node': ^17.0.18
+      '@types/react': ^17.0.39
+      '@typescript-eslint/eslint-plugin': ^5.12.0
+      '@typescript-eslint/parser': ^5.12.0
+      autoprefixer: ^10.4.2
+      dotenv: ^10.0.0
+      eslint: ^8.9.0
+      eslint-config-prettier: ^8.3.0
+      eslint-plugin-simple-import-sort: ^7.0.0
+      format-package: ^6.1.0
+      gray-matter: ^4.0.3
+      highlight.js: ^11.4.0
+      husky: ^7.0.4
+      jest: ^27.5.1
+      lint-staged: ^12.3.4
+      next: ^12.1.0
+      postcss: ^8.4.6
+      prettier: ^2.5.1
+      react: ^17.0.2
+      react-dom: ^17.0.2
+      rehype-highlight: ^5.0.2
+      rehype-stringify: ^9.0.3
+      remark: ^14.0.2
+      remark-gfm: ^3.0.1
+      remark-parse: ^10.0.1
+      remark-rehype: ^10.1.0
+      remark-wiki-link: ^1.0.4
+      start-server-and-test: ^1.14.0
+      tailwindcss: ^3.0.23
+      ts-node: ^10.5.0
+      typescript: ^4.5.5
+      unified: ^10.1.1
+      unist-util-visit: ^4.1.0
+    dependencies:
+      dotenv: 10.0.0
+      gray-matter: 4.0.3
+      highlight.js: 11.4.0
+      next: 12.1.0_react-dom@17.0.2+react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      rehype-highlight: 5.0.2
+      rehype-stringify: 9.0.3
+      remark-gfm: 3.0.1
+      remark-wiki-link: 1.0.4
+      unist-util-visit: 4.1.0
+    devDependencies:
+      '@cucumber/cucumber': 8.0.0-rc.2
+      '@playwright/test': 1.19.1
+      '@testing-library/jest-dom': 5.16.2
+      '@testing-library/react': 12.1.3_react-dom@17.0.2+react@17.0.2
+      '@types/node': 17.0.18
+      '@types/react': 17.0.39
+      '@typescript-eslint/eslint-plugin': 5.12.0_c467cf9bb49b295941e83ce479a578b7
+      '@typescript-eslint/parser': 5.12.0_eslint@8.9.0+typescript@4.5.5
+      autoprefixer: 10.4.2_postcss@8.4.6
+      eslint: 8.9.0
+      eslint-config-prettier: 8.3.0_eslint@8.9.0
+      eslint-plugin-simple-import-sort: 7.0.0_eslint@8.9.0
+      format-package: 6.1.0_prettier@2.5.1
+      husky: 7.0.4
+      jest: 27.5.1_ts-node@10.5.0
+      lint-staged: 12.3.4
+      postcss: 8.4.6
+      prettier: 2.5.1
+      remark: 14.0.2
+      remark-parse: 10.0.1
+      remark-rehype: 10.1.0
+      start-server-and-test: 1.14.0
+      tailwindcss: 3.0.23_c940fbabf228b85b1c73d314b43e31f1
+      ts-node: 10.5.0_f3bd4037939c2ed2942ba074291f8ef2
+      typescript: 4.5.5
+      unified: 10.1.1
 
-devDependencies:
-  '@cucumber/cucumber': 8.0.0-rc.2
-  '@playwright/test': 1.19.1
-  '@testing-library/jest-dom': 5.16.2
-  '@testing-library/react': 12.1.3_react-dom@17.0.2+react@17.0.2
-  '@types/node': 17.0.18
-  '@types/react': 17.0.39
-  '@typescript-eslint/eslint-plugin': 5.12.0_c467cf9bb49b295941e83ce479a578b7
-  '@typescript-eslint/parser': 5.12.0_eslint@8.9.0+typescript@4.5.5
-  allure-playwright: 2.0.0-beta.15
-  autoprefixer: 10.4.2_postcss@8.4.6
-  eslint: 8.9.0
-  eslint-config-prettier: 8.3.0_eslint@8.9.0
-  eslint-plugin-simple-import-sort: 7.0.0_eslint@8.9.0
-  format-package: 6.1.0_prettier@2.5.1
-  husky: 7.0.4
-  jest: 27.5.1_ts-node@10.5.0
-  lint-staged: 12.3.4
-  playwright: 1.19.1
-  postcss: 8.4.6
-  prettier: 2.5.1
-  remark: 14.0.2
-  remark-parse: 10.0.1
-  remark-rehype: 10.1.0
-  start-server-and-test: 1.14.0
-  tailwindcss: 3.0.23_c940fbabf228b85b1c73d314b43e31f1
-  ts-node: 10.5.0_f3bd4037939c2ed2942ba074291f8ef2
-  typescript: 4.5.5
-  unified: 10.1.1
+  packages/end-to-end:
+    specifiers:
+      allure-playwright: ^2.0.0-beta.15
+      playwright: ^1.19.1
+    devDependencies:
+      allure-playwright: 2.0.0-beta.15
+      playwright: 1.19.1
 
 packages:
 
@@ -176,7 +181,7 @@ packages:
       '@babel/compat-data': 7.17.0
       '@babel/core': 7.16.12
       '@babel/helper-validator-option': 7.16.7
-      browserslist: 4.19.1
+      browserslist: 4.19.3
       semver: 6.3.0
     dev: true
 
@@ -189,7 +194,7 @@ packages:
       '@babel/compat-data': 7.17.0
       '@babel/core': 7.17.5
       '@babel/helper-validator-option': 7.16.7
-      browserslist: 4.19.1
+      browserslist: 4.19.3
       semver: 6.3.0
     dev: true
 
@@ -1966,7 +1971,7 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
     dependencies:
-      browserslist: 4.19.1
+      browserslist: 4.19.3
       caniuse-lite: 1.0.30001312
       fraction.js: 4.1.3
       normalize-range: 0.1.2
@@ -1978,7 +1983,7 @@ packages:
   /axios/0.21.4_debug@4.3.2:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.14.8_debug@4.3.2
+      follow-redirects: 1.14.9_debug@4.3.2
     transitivePeerDependencies:
       - debug
     dev: true
@@ -2107,8 +2112,8 @@ packages:
     resolution: {integrity: sha512-9o5UecI3GhkpM6DrXr69PblIuWxPKk9Y0jHBRhdocZ2y7YECBFCsHm79Pr3OyR2AvjhDkabFJaDJMYRazHgsow==}
     dev: true
 
-  /browserslist/4.19.1:
-    resolution: {integrity: sha512-u2tbbG5PdKRTUoctO3NBD8FQ5HdPh1ZXPHzp1rwaa5jTc+RV9/+RlWiAIKmjRPQF+xbGM9Kklj5bZQFa2s/38A==}
+  /browserslist/4.19.3:
+    resolution: {integrity: sha512-XK3X4xtKJ+Txj8G5c30B4gsm71s69lqXlkYui4s6EkKxuv49qjYlY6oVd+IFJ73d4YymtM3+djvvt/R/iJwwDg==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
@@ -3101,8 +3106,8 @@ packages:
     resolution: {integrity: sha512-WIWGi2L3DyTUvUrwRKgGi9TwxQMUEqPOPQBVi71R96jZXJdFskXEmf54BoZaS1kknGODoIGASGEzBUYdyMCBJg==}
     dev: true
 
-  /follow-redirects/1.14.8_debug@4.3.2:
-    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
+  /follow-redirects/1.14.9_debug@4.3.2:
+    resolution: {integrity: sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
