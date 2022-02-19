@@ -22,11 +22,11 @@ Change the build command to
 
     yum install yum-utils && yum-config-manager
       --add-repo=https://copr.fedorainfracloud.org/coprs/carlwgeorge/ripgrep/repo/epel-7/carlwgeorge-ripgrep-epel-7.repo
-      && yum -y install ripgrep && pnpm prebuild && pnpm build
+      && yum -y install ripgrep && pnpm build:prepare && pnpm build
 
 And change install command to
 
-    pnpm i
+    pnpm install
 
 ## Other gardens
 

@@ -4,12 +4,11 @@
   "description": "Digital Garden site",
   "license": "ISC",
   "scripts": {
-    "prebuild": "node src/scripts/pre-build.js",
+    "build:prepare": "node src/scripts/pre-build.js",
     "build": "next build",
     "dev": "next dev",
     "dev:test": "GARDENS_DIRECTORY=src/test/content next dev",
     "prebuild2": "node --experimental-specifier-resolution=node --loader ts-node/esm src/lib/garden/prepare.ts",
-    "prepare": "husky install",
     "start": "next start",
     "test": "jest",
     "test:build": "GARDENS_DIRECTORY=src/test/content next build",
