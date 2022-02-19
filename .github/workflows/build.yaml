@@ -36,5 +36,5 @@ jobs:
           pnpm test:e2e:cucumber:dev
       - name: build
         run: |
-          pnpm prebuild
+          pnpm build:prepare
           pnpm build
