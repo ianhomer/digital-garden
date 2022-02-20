@@ -1,4 +1,5 @@
 import langGherkin from "highlight.js/lib/languages/gherkin";
+import langGroovy from "highlight.js/lib/languages/groovy";
 import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
@@ -11,6 +12,7 @@ import { visit } from "unist-util-visit";
 
 const languages = {
   gherkin: langGherkin,
+  groovy: langGroovy,
 };
 
 function shortenLocalLinks() {
