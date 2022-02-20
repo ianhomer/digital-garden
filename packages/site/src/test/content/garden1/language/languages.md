@@ -18,8 +18,15 @@
 SELECT * FROM people
 ```
 
-### Groovy
+## Groovy
 
 ```groovy
 def foo = "value"
+```
+
+## Properties
+
+```properties
+foo=value
+bar=another-value
 ```
