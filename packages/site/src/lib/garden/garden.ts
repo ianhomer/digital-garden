@@ -3,7 +3,6 @@ import { join } from "path";
 import { resolve } from "path";
 
 import config from "../../../garden.config";
-import { findBackLinks } from "../content";
 import { findFilesDeep } from "./file";
 import { process } from "./markdown";
 import { Link, Meta, Things } from "./meta";
@@ -77,7 +76,7 @@ const loadMeta = async (config: GardenConfig) => {
   }
 };
 
-const findBackLinks = (things, name) => {
+const findBackLinks = (things: Things, name: string) => {
   return Object.keys(things)
     .filter((fromName) => {
       return things[fromName].links.map((link) => link.to).includes(name);
