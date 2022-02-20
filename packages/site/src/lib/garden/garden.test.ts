@@ -19,6 +19,6 @@ it("should create meta", async () => {
 it.skip("should refresh meta", async () => {
   await garden.refresh().then(async () => {
     const meta = await garden.load();
-    expect(Object.keys(meta).length).toBe(5);
+    expect(Object.keys(meta).length).toBe(6);
   });
 });
