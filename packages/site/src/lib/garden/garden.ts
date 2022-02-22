@@ -5,7 +5,7 @@ import { resolve } from "path";
 import config from "../../../garden.config";
 import { findFilesDeep } from "./file";
 import { process } from "./markdown";
-import { Meta } from "./meta";
+import { Link, Meta, Things } from "./meta";
 import { FileThing } from "./thing";
 
 const gardenMetaFile = ".garden-meta.json";
@@ -13,9 +13,10 @@ const gardenMetaFile = ".garden-meta.json";
 export interface Garden {
   config: GardenConfig;
   thing: (filename: string) => FileThing;
-  meta: () => Promise<{ [key: string]: Meta }>;
-  load: () => Promise<{ [key: string]: Meta }>;
-  refresh: () => Promise<{ [key: string]: Meta }>;
+  findBackLinks: (things: Things, name: string) => Array<Link>;
+  meta: () => Promise<Things>;
+  load: () => Promise<Things>;
+  refresh: () => Promise<Things>;
 }
 export interface GardenConfig {
   directory: string;
@@ -75,12 +76,25 @@ const loadMeta = async (config: GardenConfig) => {
   }
 };
 
+const findBackLinks = (things: Things, name: string) => {
+  return Object.keys(things)
+    .filter((fromName) => {
+      return things[fromName].links.map((link) => link.to).includes(name);
+    })
+    .map((fromName) => {
+      return { to: fromName };
+    });
+};
+
 export const createGarden = (config: GardenConfig): Garden => {
   return {
     config,
     meta: async () => await generateMeta(config),
     refresh: async () => await refresh(config),
     load: async () => await loadMeta(config),
+    findBackLinks: (things: Things, name: string) => {
+      return findBackLinks(things, name);
+    },
     thing: (filename: string) => {
       return loadThing(config, filename);
     },

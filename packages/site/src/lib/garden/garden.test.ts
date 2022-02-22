@@ -16,6 +16,12 @@ it("should create meta", async () => {
   expect(wordThing.links[0].to).toBe("vocabulary");
 });
 
+it("should get backlinks", async () => {
+  const things = await garden.meta();
+  const backLinks = garden.findBackLinks(things, "word-2");
+  expect(backLinks[0].to).toBe("word-1");
+});
+
 it.skip("should refresh meta", async () => {
   await garden.refresh().then(async () => {
     const meta = await garden.load();
