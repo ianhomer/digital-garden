@@ -32,7 +32,9 @@ function ItemPage({ item }) {
 
 export async function getStaticProps({ params }) {
   const item = await findItem(params.name);
-  const explicitBackLinks = await findBackLinks(params.name);
+  const explicitBackLinks = params.name
+    ? await findBackLinks(params.name[0])
+    : [];
   const implicitBackLinks = await findImplicitBackLinks(params.name);
   const implicitForwardLinks = await findImplicitForwardLinks(item);
   const links = Array.from(

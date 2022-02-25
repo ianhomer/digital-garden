@@ -1,4 +1,5 @@
 import { resolve } from "path";
+
 const { readdir } = require("fs").promises;
 
 async function* findFilesDeep(directory: string) {
