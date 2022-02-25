@@ -24,7 +24,7 @@ Change the build command to
 
 And change install command to
 
-    pnpm install
+    pnpm install --filter @garden/site
 
 ## Other gardens
 
