@@ -1,8 +1,6 @@
-import { exec } from "child_process";
 import fs from "fs";
 import matter from "gray-matter";
 import { dirname, join, sep } from "path";
-import { promisify } from "util";
 
 import config from "../../garden.config";
 import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
@@ -45,7 +43,7 @@ export async function findImplicitForwardLinks(item: Item): Promise<string[]> {
 }
 
 export async function findBackLinks(name: string): Promise<string[]> {
-  const things = await garden.meta();
+  const things = await garden.load();
   return garden.findBackLinks(things, name).map((link) => link.to);
 }
 
