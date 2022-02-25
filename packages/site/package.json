@@ -14,6 +14,7 @@
     "prebuild2": "node --experimental-specifier-resolution=node src/lib/garden/prepare.ts",
     "start": "next start",
     "test": "jest",
+    "test:debug": "NODE_OPTIONS=--inspect-brk jest",
     "test:build": "GARDENS_DIRECTORY=src/test/content next build",
     "test:e2e": "pnpm --filter @digital-garden/end-to-end test:e2e",
     "test:e2e:cucumber": "pnpm --filter @digital-garden/end-to-end test:e2e:cucumber",
