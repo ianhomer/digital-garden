@@ -8,6 +8,7 @@
     "build:prepare": "node --experimental-specifier-resolution=node --loader ts-node/esm src/scripts/pre-build.ts",
     "build": "next build",
     "dev": "next dev",
+    "dev:debug": "NODE_OPTIONS=--inspect-brk next dev",
     "dev:test": "GARDENS_DIRECTORY=src/test/content next dev",
     "eslint": "eslint src --ext .js --ext .tsx --ext .ts",
     "eslint:fix": "eslint src --ext .js --ext .tsx --ext .ts --fix",

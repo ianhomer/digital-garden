@@ -6,7 +6,9 @@ import { promisify } from "util";
 
 import config from "../../garden.config";
 import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
+import { createGarden } from "./garden/garden";
 
+const garden = createGarden(config);
 const gardensDirectory = config.directory;
 
 const hasMultipleGardens = !fs.existsSync(`${config.directory}/README.md`);
@@ -28,8 +30,6 @@ export class Item {
   }
 }
 
-const splitLines = (s: string) => s.split(/\n/);
-
 export async function findImplicitBackLinks(name: string): Promise<string[]> {
   return (await findFilesInNamedDirectory(gardensDirectory, name))
     .filter((s) => s.endsWith(".md"))
@@ -45,18 +45,8 @@ export async function findImplicitForwardLinks(item: Item): Promise<string[]> {
 }
 
 export async function findBackLinks(name: string): Promise<string[]> {
-  const cmd = `rg -L -l '\\[\\[${name}\\]\\]' ${gardensDirectory}`;
-  return promisify(exec)(cmd)
-    .then((ok) => {
-      return splitLines(ok.stdout)
-        .filter((line) => line.length > 0)
-        .map((backlink) => /([^/]*).md$/.exec(backlink)[1])
-        .sort();
-    })
-    .catch((error) => {
-      console.log(`Error : ${error}`);
-      return [];
-    });
+  const things = await garden.meta();
+  return garden.findBackLinks(things, name).map((link) => link.to);
 }
 
 export async function findItem(name: string | false) {
