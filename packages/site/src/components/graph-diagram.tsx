@@ -50,16 +50,18 @@ export default function GraphDiagram(props: GraphDiagramProps) {
 
     group
       .append("circle")
-      .attr("r", (d: Node) => d?.size ?? 10)
+      .attr("r", (d: Node) => d?.size ?? 5)
       .attr("data-type", (d: Node) => d?.type ?? "change")
       .classed("node", true)
       .classed("fixed", (d: Node) => d.fx !== undefined);
 
-    group
+    const anchor = group.append("a").attr("href", () => "/thing");
+
+    anchor
       .append("text")
       .text((d: Node) => d?.label ?? null)
-      .attr("x", (d: Node) => 10 + (d?.size ?? 10))
-      .attr("y", 10)
+      .attr("x", (d: Node) => 5 + (d?.size ?? 5))
+      .attr("y", 5)
       .classed("label", true);
 
     function tick() {
@@ -91,7 +93,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
     const simulation = d3
       .forceSimulation()
       .nodes(props.graph.nodes)
-      .force("charge", d3.forceManyBody().strength(-300))
+      .force("charge", d3.forceManyBody().strength(-100))
       .force("center", d3.forceCenter(0, 0).strength(0.01))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.1))
       // .alpha(0.1)

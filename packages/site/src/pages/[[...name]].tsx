@@ -57,9 +57,7 @@ function ItemPage({ item }) {
         </ul>
         <footer>{Object.keys(item.garden).length} things</footer>
       </div>
-      <div className="graph">
-        <GraphDiagram graph={item.graph} />
-      </div>
+      <GraphDiagram graph={item.graph} />
     </>
   );
 }
