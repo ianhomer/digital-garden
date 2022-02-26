@@ -12,8 +12,8 @@ interface GraphDiagramProps {
 
 GraphDiagram.defaultProps = {
   className: "fullscreen",
-  width: 1000,
-  height: 1000,
+  width: 2000,
+  height: 2000,
 };
 
 export default function GraphDiagram(props: GraphDiagramProps) {
@@ -36,29 +36,34 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .data(props.graph.links)
       .join("line")
       .classed("link", true)
-      .attr("stroke-width", (d: NodeLink) => d.size ?? 2);
+      .attr("stroke-width", (d: NodeLink) =>
+        d.depth == 1 ? 8 : d.depth == 2 ? 2 : 1
+      );
 
     const group = svg
       .selectAll<SVGElement, Node>(".group")
       .data(props.graph.nodes)
       .join("g")
+      .attr("fx", (d: Node) => (d.depth === 1 ? 0 : undefined))
+      .attr("fy", (d: Node) => (d.depth === 1 ? 0 : undefined))
       .classed("group", true)
+      .classed("fixed", (d: Node) => d.depth === 1)
       .raise();
 
     group
       .append("circle")
-      .attr("r", (d: Node) => d?.size ?? 10)
-      .attr("data-type", (d: Node) => d?.type ?? "change")
-      .classed("node", true)
-      .classed("fixed", (d: Node) => d.fx !== undefined);
+      .attr("r", (d: Node) => (d.depth == 1 ? 20 : d.depth == 2 ? 15 : 10))
+      .attr("data-type", (d: Node) => d.type)
+      .classed("node", true);
 
     const anchor = group.append("a").attr("href", (d: Node) => `/${d.id}`);
 
     anchor
       .append("text")
       .text((d: Node) => d.id)
-      .attr("x", (d: Node) => 10 + (d?.size ?? 10))
-      .attr("y", 10)
+      .attr("x", -50)
+      .attr("y", -20)
+      .attr("class", (d: Node) => `depth-${d.depth}`)
       .classed("label", true);
 
     function tick() {
@@ -91,8 +96,11 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .forceSimulation()
       .nodes(props.graph.nodes)
       .force("charge", d3.forceManyBody().strength(-700))
-      .force("center", d3.forceCenter(0, 0).strength(0.01))
-      .force("link", forceLink.id((d: Node) => d.id).strength(0.1))
+      .force("collide", d3.forceCollide(20))
+      .force("center", d3.forceCenter(0, 0).strength(0.1))
+      .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
+      .alphaMin(0.1)
+      .alphaDecay(0.2)
       .on("tick", tick);
 
     function dragstart(this: SVGElement) {

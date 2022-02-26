@@ -8,14 +8,13 @@ export enum NodeType {
 
 export interface Node extends SimulationNodeDatum {
   id: string;
-  size?: number;
-  type?: NodeType;
+  type: NodeType;
+  depth: number;
 }
 
 export interface NodeLink extends SimulationLinkDatum<Node> {
-  id?: string;
-  type?: LinkType;
-  size?: number;
+  type: LinkType;
+  depth: number;
 }
 
 export interface Graph {
