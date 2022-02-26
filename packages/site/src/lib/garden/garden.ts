@@ -6,7 +6,7 @@ import config from "../../../garden.config";
 import { findFilesDeep } from "./file";
 import { process } from "./markdown";
 import { FileThing } from "./thing";
-import { Link, Meta, Things } from "./types";
+import { ItemLink, Link, LinkType, Meta, Things } from "./types";
 
 const gardenMetaFile = ".garden-meta.json";
 
@@ -14,6 +14,11 @@ export interface Garden {
   config: GardenConfig;
   thing: (filename: string) => FileThing;
   findBackLinks: (things: Things, name: string) => Array<Link>;
+  findDeepLinks: (
+    things: Things,
+    name: string,
+    depth: number
+  ) => Array<ItemLink>;
   meta: () => Promise<Things>;
   load: () => Promise<Things>;
   refresh: () => Promise<Things>;
@@ -65,7 +70,7 @@ const refresh = async (config: GardenConfig) => {
   return meta;
 };
 
-const loadMeta = async (config: GardenConfig) => {
+async function loadMeta(config: GardenConfig) {
   const metaFilename = getMetaFilename(config);
   if (fs.existsSync(metaFilename)) {
     const content = fs.readFileSync(join(config.directory, gardenMetaFile));
@@ -74,16 +79,53 @@ const loadMeta = async (config: GardenConfig) => {
     console.log(`Meta file ${metaFilename} does not exist`);
     return {};
   }
-};
+}
 
 const findBackLinks = (things: Things, name: string) => {
   return Object.keys(things)
     .filter((fromName) => {
       return things[fromName].links.map((link) => link.name).includes(name);
     })
-    .map((fromName) => {
-      return { name: fromName };
-    });
+    .map((fromName) => ({ name: fromName }));
+};
+
+const findDeepLinks = (things: Things, name: string, depth: number) => {
+  if (!(name in things)) {
+    return [];
+  }
+  const directLinks = [
+    ...things[name].links.map((link) => ({
+      source: name,
+      target: link.name,
+      type: LinkType.To,
+    })),
+    ...Object.keys(things)
+      .filter((fromName) => {
+        return things[fromName].links.map((link) => link.name).includes(name);
+      })
+      .map((fromName) => ({
+        source: name,
+        target: fromName,
+        type: LinkType.From,
+      })),
+  ];
+  return [
+    ...directLinks,
+    ...(depth < 2
+      ? []
+      : directLinks
+          .map((link) => findDeepLinks(things, link.target, depth - 1))
+          .flat()),
+  ].filter(
+    (value, index, self) =>
+      index ===
+      self.findIndex(
+        (compareTo) =>
+          (value.source == compareTo.source &&
+            value.target == compareTo.target) ||
+          (value.source == compareTo.target && value.target == compareTo.source)
+      )
+  );
 };
 
 export const createGarden = (config: GardenConfig): Garden => {
@@ -95,6 +137,7 @@ export const createGarden = (config: GardenConfig): Garden => {
     findBackLinks: (things: Things, name: string) => {
       return findBackLinks(things, name);
     },
+    findDeepLinks,
     thing: (filename: string) => {
       return loadThing(config, filename);
     },

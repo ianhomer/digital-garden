@@ -60,6 +60,7 @@ export async function getStaticProps({ params }) {
       })
     );
   const content = await markdownToHtml(item.content || "no content");
+  const things = await garden.load();
 
   return {
     props: {
@@ -67,8 +68,8 @@ export async function getStaticProps({ params }) {
         ...item,
         links,
         content,
-        garden: await garden.load(),
-        graph: createGraph(item, links),
+        garden: things,
+        graph: createGraph(garden.findDeepLinks(things, item.name, 2)),
       },
     },
   };
