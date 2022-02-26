@@ -13,49 +13,54 @@ import { garden } from "../lib/garden/garden";
 import markdownToHtml from "../lib/markdownToHtml";
 import { Graph, NodeType } from "../types/graph";
 
-const createGraph = (): Graph => {
+const createGraph = (item, links): Graph => {
   return {
     nodes: [
       {
-        id: "thing-1",
+        id: item.name,
         type: NodeType.Thing,
-        label: "thing",
+        label: item.name,
       },
-      {
-        id: "thing-2",
-        type: NodeType.Thing,
-        label: "thing",
-      },
+      ...links.map((link) => {
+        return {
+          id: link.link,
+          type: NodeType.Thing,
+          label: link.link,
+        };
+      }),
     ],
-    links: [{ target: "thing-2", source: "thing-1" }],
+    links: links.map((link) => {
+      return {
+        target: item.name,
+        source: link.link,
+      };
+    }),
   };
 };
 
-type Link = {
+type Relation = {
   link: string;
   type: string;
 };
 
 function ItemPage({ item }) {
-  const [graph, setGraph] = useState(createGraph());
-
-  useEffect(() => {
-    setGraph(createGraph());
-  }, []);
-
   return (
-    <div>
-      <div dangerouslySetInnerHTML={{ __html: item.content }} />
-      <ul className="links">
-        {item.links.map((link: Link) => (
-          <li key={link.link} className={link.type}>
-            <a href={link.link}>{link.link}</a>
-          </li>
-        ))}
-      </ul>
-      <GraphDiagram graph={graph} />
-      <footer>{Object.keys(item.garden).length} things</footer>
-    </div>
+    <>
+      <div className="container max-w-4xl px-4">
+        <div dangerouslySetInnerHTML={{ __html: item.content }} />
+        <ul className="links">
+          {item.links.map((link: Relation) => (
+            <li key={link.link} className={link.type}>
+              <a href={link.link}>{link.link}</a>
+            </li>
+          ))}
+        </ul>
+        <footer>{Object.keys(item.garden).length} things</footer>
+      </div>
+      <div className="graph">
+        <GraphDiagram graph={item.graph} />
+      </div>
+    </>
   );
 }
 
@@ -97,6 +102,7 @@ export async function getStaticProps({ params }) {
         links,
         content,
         garden: await garden.load(),
+        graph: createGraph(item, links),
       },
     },
   };
