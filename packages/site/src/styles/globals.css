@@ -73,9 +73,9 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 400px;
   }
   text.label {
-    font-size: 8px;
+    @apply text-sm;
   }
 }

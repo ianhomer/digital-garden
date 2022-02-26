@@ -12,8 +12,8 @@ interface GraphDiagramProps {
 
 GraphDiagram.defaultProps = {
   className: "fullscreen",
-  width: 500,
-  height: 500,
+  width: 1000,
+  height: 1000,
 };
 
 export default function GraphDiagram(props: GraphDiagramProps) {
@@ -31,7 +31,6 @@ export default function GraphDiagram(props: GraphDiagramProps) {
 
   // props update
   useEffect(() => {
-    console.log("useEffect 2");
     const svg = d3.select(ref.current);
 
     const link = svg
@@ -39,7 +38,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .data(props.graph.links)
       .join("line")
       .classed("link", true)
-      .attr("stroke-width", (d: NodeLink) => d.size ?? 1);
+      .attr("stroke-width", (d: NodeLink) => d.size ?? 5);
 
     const group = svg
       .selectAll<SVGElement, Node>(".group")
@@ -50,7 +49,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
 
     group
       .append("circle")
-      .attr("r", (d: Node) => d?.size ?? 5)
+      .attr("r", (d: Node) => d?.size ?? 10)
       .attr("data-type", (d: Node) => d?.type ?? "change")
       .classed("node", true)
       .classed("fixed", (d: Node) => d.fx !== undefined);
@@ -60,8 +59,8 @@ export default function GraphDiagram(props: GraphDiagramProps) {
     anchor
       .append("text")
       .text((d: Node) => d.id)
-      .attr("x", (d: Node) => 5 + (d?.size ?? 5))
-      .attr("y", 5)
+      .attr("x", (d: Node) => 10 + (d?.size ?? 10))
+      .attr("y", 10)
       .classed("label", true);
 
     function tick() {
@@ -93,7 +92,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
     const simulation = d3
       .forceSimulation()
       .nodes(props.graph.nodes)
-      .force("charge", d3.forceManyBody().strength(-100))
+      .force("charge", d3.forceManyBody().strength(-400))
       .force("center", d3.forceCenter(0, 0).strength(0.01))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.1))
       // .alpha(0.1)
