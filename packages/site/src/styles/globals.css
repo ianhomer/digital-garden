@@ -66,4 +66,16 @@
   footer {
     @apply text-slate-300 text-sm text-right;
   }
+  line.link {
+    @apply stroke-black;
+  }
+  svg {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  text.label {
+    font-size: 8px;
+  }
 }
