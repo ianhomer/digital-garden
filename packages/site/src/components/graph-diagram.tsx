@@ -44,15 +44,17 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .selectAll<SVGElement, Node>(".group")
       .data(props.graph.nodes)
       .join("g")
+      .attr("fx", (d: Node) => (d.depth === 1 ? 0 : undefined))
+      .attr("fy", (d: Node) => (d.depth === 1 ? 0 : undefined))
       .classed("group", true)
+      .classed("fixed", (d: Node) => d.depth === 1)
       .raise();
 
     group
       .append("circle")
-      .attr("r", 2)
+      .attr("r", (d: Node) => (d.depth == 1 ? 20 : d.depth == 2 ? 15 : 10))
       .attr("data-type", (d: Node) => d.type)
-      .classed("node", true)
-      .classed("fixed", (d: Node) => d.fx !== undefined);
+      .classed("node", true);
 
     const anchor = group.append("a").attr("href", (d: Node) => `/${d.id}`);
 
@@ -60,7 +62,8 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .append("text")
       .text((d: Node) => d.id)
       .attr("x", -50)
-      .attr("y", -10)
+      .attr("y", -20)
+      .attr("class", (d: Node) => `depth-${d.depth}`)
       .classed("label", true);
 
     function tick() {
@@ -93,8 +96,11 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .forceSimulation()
       .nodes(props.graph.nodes)
       .force("charge", d3.forceManyBody().strength(-700))
+      .force("collide", d3.forceCollide(20))
       .force("center", d3.forceCenter(0, 0).strength(0.1))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
+      .alphaMin(0.1)
+      .alphaDecay(0.2)
       .on("tick", tick);
 
     function dragstart(this: SVGElement) {

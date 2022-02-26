@@ -7,10 +7,12 @@ export const createDirectGraph = (item: Item, links: Array<Link>): Graph => {
       {
         id: item.name,
         type: NodeType.Thing,
+        depth: 1,
       },
       ...links.map((link) => ({
         id: link.name,
         type: NodeType.Thing,
+        depth: 1,
       })),
     ],
     links: links.map((link) => ({
@@ -33,6 +35,11 @@ export const createGraph = (links: Array<ItemLink>): Graph => {
       ...names.map((name: string) => ({
         id: name || "na",
         type: NodeType.Thing,
+        depth: Math.min(
+          ...links
+            .filter((link) => link.source === name)
+            .map((link) => link.depth)
+        ),
       })),
     ],
     links: links,
