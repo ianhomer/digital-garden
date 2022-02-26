@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+
+import GraphDiagram from "../components/graph-diagram";
 import {
   findBackLinks,
   findImplicitBackLinks,
@@ -8,6 +11,25 @@ import {
 } from "../lib/content";
 import { garden } from "../lib/garden/garden";
 import markdownToHtml from "../lib/markdownToHtml";
+import { Graph, NodeType } from "../types/graph";
+
+const createGraph = (): Graph => {
+  return {
+    nodes: [
+      {
+        id: "thing-1",
+        type: NodeType.Thing,
+        label: "thing",
+      },
+      {
+        id: "thing-2",
+        type: NodeType.Thing,
+        label: "thing",
+      },
+    ],
+    links: [{ target: "thing-2", source: "thing-1" }],
+  };
+};
 
 type Link = {
   link: string;
@@ -15,6 +37,12 @@ type Link = {
 };
 
 function ItemPage({ item }) {
+  const [graph, setGraph] = useState(createGraph());
+
+  useEffect(() => {
+    setGraph(createGraph());
+  }, []);
+
   return (
     <div>
       <div dangerouslySetInnerHTML={{ __html: item.content }} />
@@ -25,6 +53,7 @@ function ItemPage({ item }) {
           </li>
         ))}
       </ul>
+      <GraphDiagram graph={graph} />
       <footer>{Object.keys(item.garden).length} things</footer>
     </div>
   );
