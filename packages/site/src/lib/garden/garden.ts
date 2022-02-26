@@ -5,8 +5,8 @@ import { resolve } from "path";
 import config from "../../../garden.config";
 import { findFilesDeep } from "./file";
 import { process } from "./markdown";
-import { Link, Meta, Things } from "./meta";
 import { FileThing } from "./thing";
+import { Link, Meta, Things } from "./types";
 
 const gardenMetaFile = ".garden-meta.json";
 
@@ -79,10 +79,10 @@ const loadMeta = async (config: GardenConfig) => {
 const findBackLinks = (things: Things, name: string) => {
   return Object.keys(things)
     .filter((fromName) => {
-      return things[fromName].links.map((link) => link.to).includes(name);
+      return things[fromName].links.map((link) => link.name).includes(name);
     })
     .map((fromName) => {
-      return { to: fromName };
+      return { name: fromName };
     });
 };
 

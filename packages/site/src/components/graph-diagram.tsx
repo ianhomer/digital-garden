@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 
-import { Graph, Link, Node } from "../types/graph";
+import { Graph, Node, NodeLink } from "../lib/graph/types";
 
 interface GraphDiagramProps {
   graph: Graph;
@@ -12,8 +12,8 @@ interface GraphDiagramProps {
 
 GraphDiagram.defaultProps = {
   className: "fullscreen",
-  width: 500,
-  height: 500,
+  width: 1000,
+  height: 1000,
 };
 
 export default function GraphDiagram(props: GraphDiagramProps) {
@@ -23,15 +23,12 @@ export default function GraphDiagram(props: GraphDiagramProps) {
   const xOffset = width / 2;
   const yOffset = height / 2;
 
-  // Initial Load
   useEffect(() => {
     const svg = d3.select(ref.current);
     svg.attr("viewBox", `0 0 ${width} ${height}`);
   }, []);
 
-  // props update
   useEffect(() => {
-    console.log("useEffect 2");
     const svg = d3.select(ref.current);
 
     const link = svg
@@ -39,7 +36,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .data(props.graph.links)
       .join("line")
       .classed("link", true)
-      .attr("stroke-width", (d: Link) => d.size ?? 1);
+      .attr("stroke-width", (d: NodeLink) => d.size ?? 2);
 
     const group = svg
       .selectAll<SVGElement, Node>(".group")
@@ -50,18 +47,18 @@ export default function GraphDiagram(props: GraphDiagramProps) {
 
     group
       .append("circle")
-      .attr("r", (d: Node) => d?.size ?? 5)
+      .attr("r", (d: Node) => d?.size ?? 10)
       .attr("data-type", (d: Node) => d?.type ?? "change")
       .classed("node", true)
       .classed("fixed", (d: Node) => d.fx !== undefined);
 
-    const anchor = group.append("a").attr("href", (d: Node) => `/${d.label}`);
+    const anchor = group.append("a").attr("href", (d: Node) => `/${d.id}`);
 
     anchor
       .append("text")
-      .text((d: Node) => d?.label ?? null)
-      .attr("x", (d: Node) => 5 + (d?.size ?? 5))
-      .attr("y", 5)
+      .text((d: Node) => d.id)
+      .attr("x", (d: Node) => 10 + (d?.size ?? 10))
+      .attr("y", 10)
       .classed("label", true);
 
     function tick() {
@@ -88,16 +85,14 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       simulation.alpha(0).restart();
     }
 
-    const forceLink = d3.forceLink<Node, Link>(props.graph.links);
+    const forceLink = d3.forceLink<Node, NodeLink>(props.graph.links);
 
     const simulation = d3
       .forceSimulation()
       .nodes(props.graph.nodes)
-      .force("charge", d3.forceManyBody().strength(-100))
+      .force("charge", d3.forceManyBody().strength(-700))
       .force("center", d3.forceCenter(0, 0).strength(0.01))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.1))
-      // .alpha(0.1)
-      // .alphaDecay(0)
       .on("tick", tick);
 
     function dragstart(this: SVGElement) {
