@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import GraphDiagram from "../components/graph-diagram";
 import {
   findBackLinks,
@@ -7,41 +5,11 @@ import {
   findImplicitForwardLinks,
   findItem,
   getAllItems,
-  Item,
 } from "../lib/content";
 import { garden } from "../lib/garden/garden";
+import { Item, Link, LinkType } from "../lib/garden/types";
+import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
-import { Graph, NodeType } from "../types/graph";
-
-const createGraph = (item, links): Graph => {
-  return {
-    nodes: [
-      {
-        id: item.name,
-        type: NodeType.Thing,
-        label: item.name,
-      },
-      ...links.map((link) => {
-        return {
-          id: link.link,
-          type: NodeType.Thing,
-          label: link.link,
-        };
-      }),
-    ],
-    links: links.map((link) => {
-      return {
-        target: item.name,
-        source: link.link,
-      };
-    }),
-  };
-};
-
-type Relation = {
-  link: string;
-  type: string;
-};
 
 function ItemPage({ item }) {
   return (
@@ -49,9 +17,9 @@ function ItemPage({ item }) {
       <div className="container max-w-4xl px-4">
         <div dangerouslySetInnerHTML={{ __html: item.content }} />
         <ul className="links">
-          {item.links.map((link: Relation) => (
-            <li key={link.link} className={link.type}>
-              <a href={link.link}>{link.link}</a>
+          {item.links.map((link: Link) => (
+            <li key={link.name} className={link.type}>
+              <a href={link.name}>{link.name}</a>
             </li>
           ))}
         </ul>
@@ -78,19 +46,19 @@ export async function getStaticProps({ params }) {
   )
     .filter((name) => name !== "README" && name !== item.name)
     .sort()
-    .map((link) => {
-      return {
-        link: link,
+    .map(
+      (link): Link => ({
+        name: link,
         type: ((link) => {
           if (explicitBackLinks.includes(link)) {
-            return "back";
+            return LinkType.From;
           } else if (implicitBackLinks.includes(link)) {
-            return "implicitBack";
+            return LinkType.Has;
           }
-          return "implicitForward";
+          return LinkType.In;
         })(link),
-      };
-    });
+      })
+    );
   const content = await markdownToHtml(item.content || "no content");
 
   return {
@@ -110,13 +78,11 @@ export async function getStaticPaths() {
   const items = await getAllItems();
 
   return {
-    paths: items.map((item: Item) => {
-      return {
-        params: {
-          name: item.name == "README" ? [] : [item.name],
-        },
-      };
-    }),
+    paths: items.map((item: Item) => ({
+      params: {
+        name: item.name == "README" ? [] : [item.name],
+      },
+    })),
     fallback: false,
   };
 }

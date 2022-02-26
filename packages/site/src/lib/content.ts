@@ -5,13 +5,14 @@ import { dirname, join, sep } from "path";
 import config from "../../garden.config";
 import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
 import { createGarden } from "./garden/garden";
+import { Item } from "./garden/types";
 
 const garden = createGarden(config);
 const gardensDirectory = config.directory;
 
 const hasMultipleGardens = !fs.existsSync(`${config.directory}/README.md`);
 
-export class Item {
+export class FileItem implements Item {
   name: string;
   filename: string;
   content: string;
@@ -44,11 +45,11 @@ export async function findImplicitForwardLinks(item: Item): Promise<string[]> {
 
 export async function findBackLinks(name: string): Promise<string[]> {
   const things = await garden.load();
-  return garden.findBackLinks(things, name).map((link) => link.to);
+  return garden.findBackLinks(things, name).map((link) => link.name);
 }
 
 export async function findItem(name: string | false) {
-  return new Item(
+  return new FileItem(
     await findFile(gardensDirectory, (name ? name : "README") + ".md"),
     true
   );
@@ -57,6 +58,6 @@ export async function findItem(name: string | false) {
 export async function getAllItems(): Promise<Item[]> {
   const files = await findFiles(gardensDirectory);
   return files.map((filename) => {
-    return new Item(filename);
+    return new FileItem(filename);
   });
 }

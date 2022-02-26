@@ -13,13 +13,13 @@ it("should create meta", async () => {
   expect(Object.keys(meta).length).toBe(6);
   const wordThing = meta["word"];
   expect(wordThing.title).toBe("Word");
-  expect(wordThing.links[0].to).toBe("vocabulary");
+  expect(wordThing.links[0].name).toBe("vocabulary");
 });
 
 it("should get backlinks", async () => {
   const things = await garden.meta();
   const backLinks = garden.findBackLinks(things, "word-2");
-  expect(backLinks[0].to).toBe("word-1");
+  expect(backLinks[0].name).toBe("word-1");
 });
 
 it.skip("should refresh meta", async () => {
