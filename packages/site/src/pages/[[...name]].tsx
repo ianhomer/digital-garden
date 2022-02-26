@@ -6,7 +6,7 @@ import {
   findItem,
   getAllItems,
 } from "../lib/content";
-import { garden } from "../lib/garden/garden";
+import { findWantedThings, garden } from "../lib/garden/garden";
 import { Item, Link, LinkType } from "../lib/garden/types";
 import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
@@ -30,13 +30,27 @@ function ItemPage({ item }) {
   );
 }
 
+async function findItemOrWanted(name: string): Promise<Item> {
+  try {
+    return await findItem(name);
+  } catch (error) {
+    console.log(`Wanted page : ${name}`);
+    return {
+      name,
+      content: `# ${name}\n\nWanted`,
+    };
+  }
+}
+
 export async function getStaticProps({ params }) {
-  const item = await findItem(params.name);
+  const item = await findItemOrWanted(params.name);
   const explicitBackLinks = params.name
     ? await findBackLinks(params.name[0])
     : [];
   const implicitBackLinks = await findImplicitBackLinks(params.name);
-  const implicitForwardLinks = await findImplicitForwardLinks(item);
+  const implicitForwardLinks = item.filename
+    ? await findImplicitForwardLinks(item)
+    : [];
   const links = Array.from(
     new Set([
       ...implicitForwardLinks,
@@ -76,7 +90,13 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  const items = await getAllItems();
+  const things = await garden.load();
+  const items = [
+    ...(await getAllItems()),
+    ...findWantedThings(things).map((name) => ({
+      name,
+    })),
+  ];
 
   return {
     paths: items.map((item: Item) => ({

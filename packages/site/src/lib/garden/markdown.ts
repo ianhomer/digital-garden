@@ -37,6 +37,6 @@ export function process(content: () => string): Meta {
     title: extractTitle(document),
     links: flatten(document)
       .filter((node) => node.type === "wikiLink")
-      .map((link) => ({ name: link.value })),
+      .map((link) => ({ name: link.value.toLowerCase() })),
   };
 }
