@@ -5,31 +5,11 @@ import {
   findImplicitForwardLinks,
   findItem,
   getAllItems,
-  Item,
 } from "../lib/content";
 import { garden } from "../lib/garden/garden";
-import { Link } from "../lib/garden/meta";
+import { Item, Link, LinkType } from "../lib/garden/types";
+import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
-import { Graph, NodeType } from "../types/graph";
-
-const createGraph = (item, links): Graph => {
-  return {
-    nodes: [
-      {
-        id: item.name,
-        type: NodeType.Thing,
-      },
-      ...links.map((link) => ({
-        id: link.name,
-        type: NodeType.Thing,
-      })),
-    ],
-    links: links.map((link) => ({
-      target: item.name,
-      source: link.name,
-    })),
-  };
-};
 
 function ItemPage({ item }) {
   return (
@@ -71,11 +51,11 @@ export async function getStaticProps({ params }) {
         name: link,
         type: ((link) => {
           if (explicitBackLinks.includes(link)) {
-            return "from";
+            return LinkType.From;
           } else if (implicitBackLinks.includes(link)) {
-            return "has";
+            return LinkType.Has;
           }
-          return "in";
+          return LinkType.In;
         })(link),
       })
     );

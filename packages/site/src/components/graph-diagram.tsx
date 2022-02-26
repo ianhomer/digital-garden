@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 
-import { Graph, Link, Node } from "../types/graph";
+import { Graph, Node, NodeLink } from "../lib/graph/types";
 
 interface GraphDiagramProps {
   graph: Graph;
@@ -39,7 +39,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .data(props.graph.links)
       .join("line")
       .classed("link", true)
-      .attr("stroke-width", (d: Link) => d.size ?? 1);
+      .attr("stroke-width", (d: NodeLink) => d.size ?? 1);
 
     const group = svg
       .selectAll<SVGElement, Node>(".group")
@@ -88,7 +88,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       simulation.alpha(0).restart();
     }
 
-    const forceLink = d3.forceLink<Node, Link>(props.graph.links);
+    const forceLink = d3.forceLink<Node, NodeLink>(props.graph.links);
 
     const simulation = d3
       .forceSimulation()

@@ -1,3 +1,9 @@
+export interface Item {
+  name: string;
+  filename: string;
+  content: string;
+}
+
 export interface Link {
   name: string;
   type?: LinkType;

@@ -2,7 +2,7 @@ import remarkParse from "remark-parse";
 import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
 
-import { Meta } from "./meta";
+import { Meta } from "./types";
 
 export function parse(content: () => string) {
   return unified()
@@ -37,8 +37,6 @@ export function process(content: () => string): Meta {
     title: extractTitle(document),
     links: flatten(document)
       .filter((node) => node.type === "wikiLink")
-      .map((link) => {
-        return { to: link.value };
-      }),
+      .map((link) => ({ name: link.value })),
   };
 }
