@@ -12,6 +12,7 @@ export interface Link {
 export interface ItemLink {
   source: string;
   target: string;
+  depth: number;
   type: LinkType;
 }
 
