@@ -89,7 +89,12 @@ const findBackLinks = (things: Things, name: string) => {
     .map((fromName) => ({ name: fromName }));
 };
 
-const findDeepLinks = (things: Things, name: string, depth: number) => {
+const findDeepLinks = (
+  things: Things,
+  name: string,
+  maxDepth: number,
+  depth = 1
+) => {
   if (!(name in things)) {
     return [];
   }
@@ -97,6 +102,7 @@ const findDeepLinks = (things: Things, name: string, depth: number) => {
     ...things[name].links.map((link) => ({
       source: name,
       target: link.name,
+      depth,
       type: LinkType.To,
     })),
     ...Object.keys(things)
@@ -106,15 +112,18 @@ const findDeepLinks = (things: Things, name: string, depth: number) => {
       .map((fromName) => ({
         source: name,
         target: fromName,
+        depth,
         type: LinkType.From,
       })),
   ];
   return [
     ...directLinks,
-    ...(depth < 2
+    ...(maxDepth < depth + 1
       ? []
       : directLinks
-          .map((link) => findDeepLinks(things, link.target, depth - 1))
+          .map((link) =>
+            findDeepLinks(things, link.target, maxDepth, depth + 1)
+          )
           .flat()),
   ].filter(
     (value, index, self) =>

@@ -1,4 +1,4 @@
-import { Item, ItemLink, Link } from "../garden/types";
+import { Item, ItemLink, Link, LinkType } from "../garden/types";
 import { Graph, NodeType } from "./types";
 
 export const createDirectGraph = (item: Item, links: Array<Link>): Graph => {
@@ -14,8 +14,10 @@ export const createDirectGraph = (item: Item, links: Array<Link>): Graph => {
       })),
     ],
     links: links.map((link) => ({
+      type: LinkType.To,
       target: item.name,
       source: link.name,
+      depth: 1,
     })),
   };
 };

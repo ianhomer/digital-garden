@@ -12,8 +12,8 @@ interface GraphDiagramProps {
 
 GraphDiagram.defaultProps = {
   className: "fullscreen",
-  width: 1000,
-  height: 1000,
+  width: 2000,
+  height: 2000,
 };
 
 export default function GraphDiagram(props: GraphDiagramProps) {
@@ -36,7 +36,9 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .data(props.graph.links)
       .join("line")
       .classed("link", true)
-      .attr("stroke-width", (d: NodeLink) => d.size ?? 2);
+      .attr("stroke-width", (d: NodeLink) =>
+        d.depth == 1 ? 8 : d.depth == 2 ? 2 : 1
+      );
 
     const group = svg
       .selectAll<SVGElement, Node>(".group")
@@ -47,8 +49,8 @@ export default function GraphDiagram(props: GraphDiagramProps) {
 
     group
       .append("circle")
-      .attr("r", (d: Node) => d?.size ?? 10)
-      .attr("data-type", (d: Node) => d?.type ?? "change")
+      .attr("r", 2)
+      .attr("data-type", (d: Node) => d.type)
       .classed("node", true)
       .classed("fixed", (d: Node) => d.fx !== undefined);
 
@@ -57,8 +59,8 @@ export default function GraphDiagram(props: GraphDiagramProps) {
     anchor
       .append("text")
       .text((d: Node) => d.id)
-      .attr("x", (d: Node) => 10 + (d?.size ?? 10))
-      .attr("y", 10)
+      .attr("x", -50)
+      .attr("y", -10)
       .classed("label", true);
 
     function tick() {
@@ -91,8 +93,8 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .forceSimulation()
       .nodes(props.graph.nodes)
       .force("charge", d3.forceManyBody().strength(-700))
-      .force("center", d3.forceCenter(0, 0).strength(0.01))
-      .force("link", forceLink.id((d: Node) => d.id).strength(0.1))
+      .force("center", d3.forceCenter(0, 0).strength(0.1))
+      .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
       .on("tick", tick);
 
     function dragstart(this: SVGElement) {
