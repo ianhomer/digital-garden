@@ -23,13 +23,11 @@ export default function GraphDiagram(props: GraphDiagramProps) {
   const xOffset = width / 2;
   const yOffset = height / 2;
 
-  // Initial Load
   useEffect(() => {
     const svg = d3.select(ref.current);
     svg.attr("viewBox", `0 0 ${width} ${height}`);
   }, []);
 
-  // props update
   useEffect(() => {
     const svg = d3.select(ref.current);
 
@@ -38,7 +36,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .data(props.graph.links)
       .join("line")
       .classed("link", true)
-      .attr("stroke-width", (d: NodeLink) => d.size ?? 5);
+      .attr("stroke-width", (d: NodeLink) => d.size ?? 2);
 
     const group = svg
       .selectAll<SVGElement, Node>(".group")
@@ -92,11 +90,9 @@ export default function GraphDiagram(props: GraphDiagramProps) {
     const simulation = d3
       .forceSimulation()
       .nodes(props.graph.nodes)
-      .force("charge", d3.forceManyBody().strength(-400))
+      .force("charge", d3.forceManyBody().strength(-700))
       .force("center", d3.forceCenter(0, 0).strength(0.01))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.1))
-      // .alpha(0.1)
-      // .alphaDecay(0)
       .on("tick", tick);
 
     function dragstart(this: SVGElement) {
