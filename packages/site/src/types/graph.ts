@@ -1,27 +1,24 @@
 import { SimulationLinkDatum, SimulationNodeDatum } from "d3-force";
 
+import { LinkType } from "../lib/garden/meta";
+
 export enum NodeType {
   Thing = "thing",
 }
 
-export enum LinkType {
-  To = "to",
-  From = "from",
-}
-
-export interface Node extends SimulationNodeDatum {
+export interface GraphNode extends SimulationNodeDatum {
   id: string;
   size?: number;
   type?: NodeType;
 }
 
-export interface Link extends SimulationLinkDatum<Node> {
+export interface GraphLink extends SimulationLinkDatum<GraphNode> {
   id?: string;
   type?: LinkType;
   size?: number;
 }
 
 export interface Graph {
-  nodes: Node[];
-  links: Link[];
+  nodes: GraphNode[];
+  links: GraphLink[];
 }

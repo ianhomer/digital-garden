@@ -1,10 +1,18 @@
 export interface Link {
-  to: string;
+  name: string;
+  type?: LinkType;
 }
 
 export interface Meta {
   title: string;
   links: Array<Link>;
+}
+
+export enum LinkType {
+  To = "to",
+  From = "from",
+  Has = "has",
+  In = "in",
 }
 
 export type Things = { [key: string]: Meta };

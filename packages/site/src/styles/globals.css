@@ -38,10 +38,10 @@
   .links li {
     @apply list-none text-sm;
   }
-  .links li.implicitBack {
+  .links li.in {
     @apply text-slate-500;
   }
-  .links li.implicitForward {
+  .links li.has {
     @apply text-slate-300;
   }
   .links li a {
