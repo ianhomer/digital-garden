@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+
+import GraphDiagram from "../components/graph-diagram";
 import {
   findBackLinks,
   findImplicitBackLinks,
@@ -8,25 +11,54 @@ import {
 } from "../lib/content";
 import { garden } from "../lib/garden/garden";
 import markdownToHtml from "../lib/markdownToHtml";
+import { Graph, NodeType } from "../types/graph";
 
-type Link = {
+const createGraph = (item, links): Graph => {
+  return {
+    nodes: [
+      {
+        id: item.name,
+        type: NodeType.Thing,
+        label: item.name,
+      },
+      ...links.map((link) => {
+        return {
+          id: link.link,
+          type: NodeType.Thing,
+          label: link.link,
+        };
+      }),
+    ],
+    links: links.map((link) => {
+      return {
+        target: item.name,
+        source: link.link,
+      };
+    }),
+  };
+};
+
+type Relation = {
   link: string;
   type: string;
 };
 
 function ItemPage({ item }) {
   return (
-    <div>
-      <div dangerouslySetInnerHTML={{ __html: item.content }} />
-      <ul className="links">
-        {item.links.map((link: Link) => (
-          <li key={link.link} className={link.type}>
-            <a href={link.link}>{link.link}</a>
-          </li>
-        ))}
-      </ul>
-      <footer>{Object.keys(item.garden).length} things</footer>
-    </div>
+    <>
+      <div className="container max-w-4xl px-4">
+        <div dangerouslySetInnerHTML={{ __html: item.content }} />
+        <ul className="links">
+          {item.links.map((link: Relation) => (
+            <li key={link.link} className={link.type}>
+              <a href={link.link}>{link.link}</a>
+            </li>
+          ))}
+        </ul>
+        <footer>{Object.keys(item.garden).length} things</footer>
+      </div>
+      <GraphDiagram graph={item.graph} />
+    </>
   );
 }
 
@@ -68,6 +100,7 @@ export async function getStaticProps({ params }) {
         links,
         content,
         garden: await garden.load(),
+        graph: createGraph(item, links),
       },
     },
   };
