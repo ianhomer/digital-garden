@@ -9,6 +9,12 @@ export interface Link {
   type?: LinkType;
 }
 
+export interface ItemLink {
+  source: string;
+  target: string;
+  type: LinkType;
+}
+
 export interface Meta {
   title: string;
   links: Array<Link>;
