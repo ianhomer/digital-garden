@@ -55,11 +55,11 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .classed("node", true)
       .classed("fixed", (d: Node) => d.fx !== undefined);
 
-    const anchor = group.append("a").attr("href", (d: Node) => `/${d.label}`);
+    const anchor = group.append("a").attr("href", (d: Node) => `/${d.id}`);
 
     anchor
       .append("text")
-      .text((d: Node) => d?.label ?? null)
+      .text((d: Node) => d.id)
       .attr("x", (d: Node) => 5 + (d?.size ?? 5))
       .attr("y", 5)
       .classed("label", true);

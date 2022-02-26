@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import GraphDiagram from "../components/graph-diagram";
 import {
   findBackLinks,
@@ -19,22 +17,16 @@ const createGraph = (item, links): Graph => {
       {
         id: item.name,
         type: NodeType.Thing,
-        label: item.name,
       },
-      ...links.map((link) => {
-        return {
-          id: link.link,
-          type: NodeType.Thing,
-          label: link.link,
-        };
-      }),
+      ...links.map((link) => ({
+        id: link.link,
+        type: NodeType.Thing,
+      })),
     ],
-    links: links.map((link) => {
-      return {
-        target: item.name,
-        source: link.link,
-      };
-    }),
+    links: links.map((link) => ({
+      target: item.name,
+      source: link.link,
+    })),
   };
 };
 
