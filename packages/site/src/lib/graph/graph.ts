@@ -1,7 +1,7 @@
-import { Item, Link } from "../garden/types";
+import { Item, ItemLink, Link } from "../garden/types";
 import { Graph, NodeType } from "./types";
 
-export const createGraph = (item: Item, links: Array<Link>): Graph => {
+export const createDirectGraph = (item: Item, links: Array<Link>): Graph => {
   return {
     nodes: [
       {
@@ -17,5 +17,22 @@ export const createGraph = (item: Item, links: Array<Link>): Graph => {
       target: item.name,
       source: link.name,
     })),
+  };
+};
+
+export const createGraph = (links: Array<ItemLink>): Graph => {
+  const names = links
+    .map((link) => [link.source, link.target])
+    .flat()
+    .filter((value, index, self) => self.indexOf(value) === index);
+
+  return {
+    nodes: [
+      ...names.map((name: string) => ({
+        id: name || "na",
+        type: NodeType.Thing,
+      })),
+    ],
+    links: links,
   };
 };
