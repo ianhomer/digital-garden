@@ -1,6 +1,6 @@
 export interface Item {
   name: string;
-  filename: string;
+  filename?: string;
   content: string;
 }
 
