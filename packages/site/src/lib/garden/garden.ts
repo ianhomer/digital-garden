@@ -89,6 +89,23 @@ const findBackLinks = (things: Things, name: string) => {
     .map((fromName) => ({ name: fromName }));
 };
 
+export const findKnownThings = (things: Things) => {
+  return Object.keys(things);
+};
+
+export const findLinkedThings = (things: Things) => {
+  return Object.values(things)
+    .map((thing) => thing.links.map((link: Link) => link.name))
+    .flat();
+};
+
+export const findWantedThings = (things: Things) => {
+  const knownThings = findKnownThings(things);
+  return findLinkedThings(things).filter(
+    (name: string) => !knownThings.includes(name)
+  );
+};
+
 const findDeepLinks = (
   things: Things,
   name: string,
