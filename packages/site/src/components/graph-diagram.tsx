@@ -44,10 +44,8 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .selectAll<SVGElement, Node>(".group")
       .data(props.graph.nodes)
       .join("g")
-      .attr("fx", (d: Node) => (d.depth === 1 ? 0 : undefined))
-      .attr("fy", (d: Node) => (d.depth === 1 ? 0 : undefined))
       .classed("group", true)
-      .classed("fixed", (d: Node) => d.depth === 1)
+      .classed("fixed", (d: Node) => d.fx !== undefined)
       .raise();
 
     group
