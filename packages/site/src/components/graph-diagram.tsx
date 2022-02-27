@@ -44,10 +44,8 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .selectAll<SVGElement, Node>(".group")
       .data(props.graph.nodes)
       .join("g")
-      .attr("fx", (d: Node) => (d.depth === 1 ? 0 : undefined))
-      .attr("fy", (d: Node) => (d.depth === 1 ? 0 : undefined))
       .classed("group", true)
-      .classed("fixed", (d: Node) => d.depth === 1)
+      .classed("fixed", (d: Node) => d.fx !== undefined)
       .raise();
 
     group
@@ -99,8 +97,9 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .force("collide", d3.forceCollide(20))
       .force("center", d3.forceCenter(0, 0).strength(0.1))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
+      .tick(80)
       .alphaMin(0.1)
-      .alphaDecay(0.2)
+      .alphaDecay(0.02)
       .on("tick", tick);
 
     function dragstart(this: SVGElement) {

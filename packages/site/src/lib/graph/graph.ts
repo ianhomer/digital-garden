@@ -32,15 +32,26 @@ export const createGraph = (links: Array<ItemLink>): Graph => {
 
   return {
     nodes: [
-      ...names.map((name: string) => ({
-        id: name || "na",
-        type: NodeType.Thing,
-        depth: Math.min(
+      ...names.map((name: string) => {
+        const depth = Math.min(
           ...links
             .filter((link) => link.source === name)
             .map((link) => link.depth)
-        ),
-      })),
+        );
+        const fixedCoordinates =
+          depth == 1
+            ? {
+                fx: 0,
+                fy: 0,
+              }
+            : {};
+        return {
+          id: name || "na",
+          type: NodeType.Thing,
+          depth,
+          ...fixedCoordinates,
+        };
+      }),
     ],
     links: links,
   };
