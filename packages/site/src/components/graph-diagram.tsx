@@ -98,7 +98,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .force("center", d3.forceCenter(0, 0).strength(0.1))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
       .alphaMin(0.1)
-      .alphaDecay(0.2)
+      .alphaDecay(0.05)
       .on("tick", tick);
 
     function dragstart(this: SVGElement) {
