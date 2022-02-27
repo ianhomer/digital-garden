@@ -21,7 +21,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
   const width = props.width ?? 600;
   const height = props.height ?? 400;
   const xOffset = width / 2;
-  const yOffset = height / 2;
+  const yOffset = height / 8;
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -50,7 +50,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
 
     group
       .append("circle")
-      .attr("r", (d: Node) => (d.depth == 1 ? 20 : d.depth == 2 ? 15 : 10))
+      .attr("r", (d: Node) => (d.depth == 1 ? 30 : d.depth == 2 ? 15 : 10))
       .attr("data-type", (d: Node) => d.type)
       .classed("node", true);
 
@@ -95,7 +95,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .nodes(props.graph.nodes)
       .force("charge", d3.forceManyBody().strength(-700))
       .force("collide", d3.forceCollide(20))
-      .force("center", d3.forceCenter(0, 0).strength(0.1))
+      .force("center", d3.forceCenter(0, height / 3).strength(0.6))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
       .tick(80)
       .alphaMin(0.1)
@@ -112,7 +112,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
 
     function dragged(this: SVGElement, event: any) {
       event.subject.fx = clamp(event.x, -xOffset, xOffset);
-      event.subject.fy = clamp(event.y, -yOffset, yOffset);
+      event.subject.fy = clamp(event.y, -yOffset, height - yOffset);
       simulation.alpha(1).restart();
     }
 
