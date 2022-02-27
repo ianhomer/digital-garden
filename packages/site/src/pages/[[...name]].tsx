@@ -43,7 +43,7 @@ async function findItemOrWanted(name: string): Promise<Item> {
 }
 
 export async function getStaticProps({ params }) {
-  const item = await findItemOrWanted(params.name);
+  const item = await findItemOrWanted(params.name && params.name[0]);
   const explicitBackLinks = params.name
     ? await findBackLinks(params.name[0])
     : [];
