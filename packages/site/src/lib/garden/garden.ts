@@ -112,16 +112,15 @@ const findDeepLinks = (
   maxDepth: number,
   depth = 1
 ) => {
-  if (!(name in things)) {
-    return [];
-  }
   const directLinks = [
-    ...things[name].links.map((link) => ({
-      source: name,
-      target: link.name,
-      depth,
-      type: LinkType.To,
-    })),
+    ...(name in things
+      ? things[name].links.map((link) => ({
+          source: name,
+          target: link.name,
+          depth,
+          type: LinkType.To,
+        }))
+      : []),
     ...Object.keys(things)
       .filter((fromName) => {
         return things[fromName].links.map((link) => link.name).includes(name);
