@@ -16,6 +16,8 @@ GraphDiagram.defaultProps = {
   height: 2000,
 };
 
+const getRadius = (d: Node) => (d.depth == 1 ? 30 : d.depth == 2 ? 15 : 10);
+
 export default function GraphDiagram(props: GraphDiagramProps) {
   const ref = useRef(null);
   const width = props.width ?? 600;
@@ -45,14 +47,11 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .data(props.graph.nodes)
       .join("g")
       .classed("group", true)
+      .classed("wanted", (d: Node) => d.wanted)
       .classed("fixed", (d: Node) => d.fx !== undefined)
       .raise();
 
-    group
-      .append("circle")
-      .attr("r", (d: Node) => (d.depth == 1 ? 30 : d.depth == 2 ? 15 : 10))
-      .attr("data-type", (d: Node) => d.type)
-      .classed("node", true);
+    group.append("circle").attr("r", getRadius).classed("node", true);
 
     const anchor = group.append("a").attr("href", (d: Node) => `/${d.id}`);
 
@@ -94,7 +93,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .forceSimulation()
       .nodes(props.graph.nodes)
       .force("charge", d3.forceManyBody().strength(-700))
-      .force("collide", d3.forceCollide(20))
+      .force("collide", d3.forceCollide().radius(getRadius))
       .force("center", d3.forceCenter(0, height / 3).strength(0.6))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
       .tick(80)
