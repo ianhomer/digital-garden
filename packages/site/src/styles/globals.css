@@ -88,6 +88,10 @@ text.depth-2 {
 text.depth-1 {
   font-size: 3em;
 }
+.wanted .node {
+  stroke: #000;
+  fill: #fff;
+}
 .fixed .node {
   stroke: #000;
   fill: #ff0080;
