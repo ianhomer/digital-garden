@@ -10,6 +10,7 @@ export interface Node extends SimulationNodeDatum {
   id: string;
   type: NodeType;
   depth: number;
+  wanted: boolean;
 }
 
 export interface NodeLink extends SimulationLinkDatum<Node> {

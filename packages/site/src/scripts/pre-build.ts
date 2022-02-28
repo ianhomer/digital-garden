@@ -18,17 +18,19 @@ if (!fs.existsSync(config.directory)) {
   fs.mkdirSync(config.directory);
 }
 
-const gardens = config.gardens;
-Object.keys(gardens).forEach((garden) => {
-  const gardenDirectory = `${config.directory}/${garden}`;
-  if (fs.existsSync(gardenDirectory)) {
-    console.log(`Garden ${gardenDirectory} already exists`);
-  } else {
-    const url = gardens[garden];
-    console.log(`Cloning ${garden} to ${gardenDirectory}`);
-    exec(`git clone ${url} ${gardenDirectory}`, cmdCallback);
-  }
-});
+if (!fs.existsSync(`${config.directory}/README.md`)) {
+  const gardens = config.gardens;
+  Object.keys(gardens).forEach((garden) => {
+    const gardenDirectory = `${config.directory}/${garden}`;
+    if (fs.existsSync(gardenDirectory)) {
+      console.log(`Garden ${gardenDirectory} already exists`);
+    } else {
+      const url = gardens[garden];
+      console.log(`Cloning ${garden} to ${gardenDirectory}`);
+      exec(`git clone ${url} ${gardenDirectory}`, cmdCallback);
+    }
+  });
+}
 
 garden
   .refresh()

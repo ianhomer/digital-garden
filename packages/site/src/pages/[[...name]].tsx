@@ -83,7 +83,7 @@ export async function getStaticProps({ params }) {
         links,
         content,
         garden: things,
-        graph: createGraph(garden.findDeepLinks(things, item.name, 2)),
+        graph: createGraph(things, garden.findDeepLinks(things, item.name, 2)),
       },
     },
   };
