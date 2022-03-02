@@ -1,38 +1,41 @@
 # Digital Garden
 
 Rendering of a Zettelkasten collection of markdown content into a web site with
-visualisations to help navigation and discovery of related content.
+visualisations to help navigation and discovery of related content. See
+<https://boxofjam.com> for an example.
 
-## tl;dr
+## tl;dr - local
+
+To try out locally
 
     pnpm install
     pnpm build:prepare
     pnpm dev
 
-## Linking Gardens
+## tl;dr - deploy with Vercel
 
-Configure environment with variables defined in either via a `.env` or as
-shell environment variables.
+Fork this repository, sign up to an account with <https://vercel.com/>, create
+new project, import the repository you forked. Go to settings and change the build command to
+
+    pnpm build:prepare && pnpm build
+
+Change install command to
+
+    pnpm install --filter @garden/site
+
+And add URL to your markdown content repository by adding a `GARDEN_`
+environment variable , e.g.
+
+    GARDEN_MY=https://github.com/purplepip/boxofjam.git
+
+Then deploy and visit generated site.
+
+## Environment Configuration
+
+Configure environment with variables defined in either via a `.env` in the
+project root directory or as shell environment variables.
 
 Define one or more gardens, by providing an environment variable starting with
 `GARDEN_` defining a git URL to the markdown content.
 
     GARDEN_MY=https://github.com/purplepip/boxofjam.git
-
-## Vercel Deployment
-
-Change the build command to
-
-    pnpm build:prepare && pnpm build
-
-And change install command to
-
-    pnpm install --filter @garden/site
-
-And set your garden locations in the environment variables.
-
-## Testing
-
-### e2e
-
-    pnpm test:e2e

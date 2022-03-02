@@ -3,9 +3,11 @@ import fs from "fs";
 import { join } from "path";
 dotenv.config({ path: "../../.env" });
 
+const gardenDirectoryFromEnv = process.env.GARDENS_DIRECTORY;
+
 function resolveDirectory() {
-  if (process.env.GARDENS_DIRECTORY) {
-    return join(process.cwd(), process.env.GARDENS_DIRECTORY);
+  if (gardenDirectoryFromEnv) {
+    return join(process.cwd(), gardenDirectoryFromEnv);
   }
   return join(process.cwd(), ".gardens");
 }
@@ -20,9 +22,16 @@ function gardensFromEnv() {
 }
 
 function generateDefault() {
-  const directory = resolveDirectory();
+  const gardens = gardensFromEnv();
+  const directory = (() => {
+    if (gardenDirectoryFromEnv || Object.keys(gardens).length) {
+      return resolveDirectory();
+    }
+    // this is the zero config, clone and run config
+    return join(process.cwd(), "src/test/content");
+  })();
   return {
-    gardens: gardensFromEnv(),
+    gardens,
     hasMultiple: !fs.existsSync(`${directory}/README.md`),
     directory,
   };
