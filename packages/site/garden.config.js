@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import fs from "fs";
 import { join } from "path";
-dotenv.config();
+dotenv.config({ path: "../../.env" });
 
 function resolveDirectory() {
   if (process.env.GARDENS_DIRECTORY) {
