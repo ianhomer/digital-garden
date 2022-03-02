@@ -1,6 +1,7 @@
 # Digital Garden
 
-Rendering of Digital Garden markdown into a web site.
+Rendering of a Zettelkasten collection of markdown content into a web site with
+visualisations to help navigation and discovery of related content.
 
 ## tl;dr
 
@@ -8,13 +9,15 @@ Rendering of Digital Garden markdown into a web site.
     pnpm build:prepare
     pnpm dev
 
-## Linking Garden
+## Linking Gardens
 
-You can change the git checkout to a symbolic link
+Configure environment with variables defined in either via a `.env` or as
+shell environment variables.
 
-    rm gardens/boxofjam
-    cd gardens
-    ln -s boxofjam ../../../things/boxofjam
+Define one or more gardens, by providing an environment variable starting with
+`GARDEN_` defining a git URL to the markdown content.
+
+    GARDEN_MY=https://github.com/purplepip/boxofjam.git
 
 ## Vercel Deployment
 
@@ -26,10 +29,7 @@ And change install command to
 
     pnpm install --filter @garden/site
 
-## Other gardens
-
-The gardens are configured in garden.config.js. Multiple gardens can be
-configured. Only public GitHub URLs are supported for now.
+And set your garden locations in the environment variables.
 
 ## Testing
 
