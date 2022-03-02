@@ -18,7 +18,7 @@ if (!fs.existsSync(config.directory)) {
   fs.mkdirSync(config.directory);
 }
 
-if (!fs.existsSync(`${config.directory}/README.md`)) {
+if (config.hasMultiple) {
   const gardens = config.gardens;
   Object.keys(gardens).forEach((garden) => {
     const gardenDirectory = `${config.directory}/${garden}`;

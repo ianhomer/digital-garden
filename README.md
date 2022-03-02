@@ -1,38 +1,49 @@
 # Digital Garden
 
-Rendering of Digital Garden markdown into a web site.
+Rendering of a Zettelkasten collection of markdown content into a web site with
+visualisations to help navigation and discovery of related content. See
+<https://boxofjam.com> for an example.
 
-## tl;dr
+![demo](docs/images/demo.png)
 
-    pnpm install
+## Running Locally
+
+To try out locally `pnpm install` and then start up with
+
     pnpm build:prepare
     pnpm dev
 
-## Linking Garden
+To point to a local directory of markdown files by setting the
+`GARDENS_DIRECTORY` environment variable in a `.env` file in the root of this
+project and restarting the service. For example:
 
-You can change the git checkout to a symbolic link
+    GARDENS_DIRECTORY=../../../../things/boxofjam
 
-    rm gardens/boxofjam
-    cd gardens
-    ln -s boxofjam ../../../things/boxofjam
+## Deploying with Vercel
 
-## Vercel Deployment
-
-Change the build command to
+Fork this repository, sign up to an account with <https://vercel.com/>, create a
+new project and import the repository you forked. Go to settings and change the
+build command to:
 
     pnpm build:prepare && pnpm build
 
-And change install command to
+Change install command to
 
     pnpm install --filter @garden/site
 
-## Other gardens
+And add URL to your markdown content repository by adding a `GARDEN_`
+environment variable , e.g.
 
-The gardens are configured in garden.config.js. Multiple gardens can be
-configured. Only public GitHub URLs are supported for now.
+    GARDEN_BOXOFJAM=https://github.com/purplepip/boxofjam.git
 
-## Testing
+Then deploy and visit generated site.
 
-### e2e
+## Environment Configuration
 
-    pnpm test:e2e
+Configure environment with variables defined in either via a `.env` in the
+project root directory or as shell environment variables.
+
+Define one or more gardens, by providing an environment variable starting with
+`GARDEN_` defining a git URL to the markdown content.
+
+    GARDEN_MY=https://github.com/purplepip/boxofjam.git
