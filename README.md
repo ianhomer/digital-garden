@@ -31,7 +31,7 @@ Change install command to
 And add URL to your markdown content repository by adding a `GARDEN_`
 environment variable , e.g.
 
-    GARDEN_MY=https://github.com/purplepip/boxofjam.git
+    GARDEN_BOXOFJAM=https://github.com/purplepip/boxofjam.git
 
 Then deploy and visit generated site.
 
