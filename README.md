@@ -4,7 +4,9 @@ Rendering of a Zettelkasten collection of markdown content into a web site with
 visualisations to help navigation and discovery of related content. See
 <https://boxofjam.com> for an example.
 
-## tl;dr - local
+![demo](docs/images/demo.png)
+
+## Running Locally
 
 To try out locally `pnpm install` and then start up with
 
@@ -17,10 +19,11 @@ project and restarting the service. For example:
 
     GARDENS_DIRECTORY=../../../../things/boxofjam
 
-## tl;dr - deploy with Vercel
+## Deploying with Vercel
 
-Fork this repository, sign up to an account with <https://vercel.com/>, create
-new project, import the repository you forked. Go to settings and change the build command to
+Fork this repository, sign up to an account with <https://vercel.com/>, create a
+new project and import the repository you forked. Go to settings and change the
+build command to:
 
     pnpm build:prepare && pnpm build
 
