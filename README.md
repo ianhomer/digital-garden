@@ -6,11 +6,16 @@ visualisations to help navigation and discovery of related content. See
 
 ## tl;dr - local
 
-To try out locally
+To try out locally `pnpm install` and then start up with
 
-    pnpm install
     pnpm build:prepare
     pnpm dev
+
+To point to a local directory of markdown files by setting the
+`GARDENS_DIRECTORY` environment variable in a `.env` file in the root of this
+project and restarting the service. For example:
+
+    GARDENS_DIRECTORY=../../../../things/boxofjam
 
 ## tl;dr - deploy with Vercel
 
