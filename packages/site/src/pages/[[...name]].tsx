@@ -93,6 +93,7 @@ export async function getStaticPaths() {
   const things = await garden.load();
   const items = [
     ...(await getAllItems()),
+    ...[{ name: "" }],
     ...findWantedThings(things).map((name) => ({
       name,
     })),
@@ -101,7 +102,7 @@ export async function getStaticPaths() {
   return {
     paths: items.map((item: Item) => ({
       params: {
-        name: item.name == "README" ? [] : [item.name],
+        name: [item.name],
       },
     })),
     fallback: false,
