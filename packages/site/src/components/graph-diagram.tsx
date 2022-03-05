@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 
 import { Graph, Node, NodeLink } from "../lib/graph/types";
+import collideRectangle from "./collideRectangle";
 
 interface GraphDiagramProps {
   graph: Graph;
@@ -94,6 +95,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .nodes(props.graph.nodes)
       .force("charge", d3.forceManyBody().strength(-700))
       .force("collide", d3.forceCollide().radius(getRadius))
+      .force("collideRectangle", collideRectangle())
       .force("center", d3.forceCenter(0, height / 3).strength(0.6))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
       .tick(80)
