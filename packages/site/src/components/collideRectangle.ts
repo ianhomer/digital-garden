@@ -17,10 +17,16 @@ function apply(d: SimulationNodeDatum) {
       const absX = Math.abs(x);
       const absY = Math.abs(y);
 
-      if (absX < 10 && absY < 60) {
-        console.log("collide");
+      // Adjust nodes after collision
+      if (absX < 100 && absY < 30) {
+        d.x -= x;
+        d.y -= y;
+        quad.data.x += x;
+        quad.data.y += y;
+        return true;
       }
     }
+    return false;
   };
 }
 
