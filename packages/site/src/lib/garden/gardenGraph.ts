@@ -36,13 +36,17 @@ export const findDeepLinks = (
           )
           .flat()),
   ].filter(
+    // de-dupe
     (value, index, self) =>
       index ===
       self.findIndex(
         (compareTo) =>
-          (value.source == compareTo.source &&
+          ((value.source == compareTo.source &&
             value.target == compareTo.target) ||
-          (value.source == compareTo.target && value.target == compareTo.source)
+            (value.source == compareTo.target &&
+              value.target == compareTo.source)) &&
+          // choose one with lowest depth
+          value.depth >= compareTo.depth
       )
   );
 };
