@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 
 import { Graph, Node, NodeLink } from "../lib/graph/types";
+import collideRectangle from "./collideRectangle";
 
 interface GraphDiagramProps {
   graph: Graph;
@@ -24,6 +25,10 @@ export default function GraphDiagram(props: GraphDiagramProps) {
   const height = props.height ?? 400;
   const xOffset = width / 2;
   const yOffset = height / 8;
+  const xOffsetText = -50;
+  const yOffsetText = -20;
+  const heightText = 20;
+  const widthText = 200;
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -51,6 +56,13 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .classed("fixed", (d: Node) => d.fx !== undefined)
       .raise();
 
+    // group
+    //   .append("rect")
+    //   .attr("x", xOffsetText)
+    //   .attr("y", yOffsetText - heightText)
+    //   .attr("width", widthText)
+    //   .attr("height", heightText);
+
     group.append("circle").attr("r", getRadius).classed("node", true);
 
     const anchor = group.append("a").attr("href", (d: Node) => `/${d.id}`);
@@ -58,8 +70,8 @@ export default function GraphDiagram(props: GraphDiagramProps) {
     anchor
       .append("text")
       .text((d: Node) => d.id)
-      .attr("x", -50)
-      .attr("y", -20)
+      .attr("x", xOffsetText)
+      .attr("y", yOffsetText)
       .attr("class", (d: Node) => `depth-${d.depth}`)
       .classed("label", true);
 
@@ -93,7 +105,11 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .forceSimulation()
       .nodes(props.graph.nodes)
       .force("charge", d3.forceManyBody().strength(-700))
-      .force("collide", d3.forceCollide().radius(getRadius))
+      // .force("collide", d3.forceCollide().radius(getRadius))
+      .force(
+        "collideRectangle",
+        collideRectangle([xOffsetText, yOffsetText, widthText, heightText])
+      )
       .force("center", d3.forceCenter(0, height / 3).strength(0.6))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
       .tick(80)
