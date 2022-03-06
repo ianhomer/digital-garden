@@ -17,7 +17,8 @@ GraphDiagram.defaultProps = {
   height: 2000,
 };
 
-const getRadius = (d: Node) => (d.depth == 0 ? 30 : d.depth == 1 ? 15 : 10);
+const getRadius = (d: Node) =>
+  d.depth == 0 ? 30 : d.depth == 1 ? 15 : d.depth == 2 ? 10 : 2;
 
 export default function GraphDiagram(props: GraphDiagramProps) {
   const ref = useRef(null);
