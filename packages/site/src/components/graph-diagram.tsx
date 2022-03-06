@@ -18,7 +18,7 @@ GraphDiagram.defaultProps = {
 };
 
 const getRadius = (d: Node) =>
-  d.depth == 0 ? 30 : d.depth == 1 ? 15 : d.depth == 2 ? 10 : 2;
+  d.depth == 0 ? 30 : d.depth == 1 ? 15 : d.depth == 2 ? 10 : 4;
 
 const getCharge = (d: Node) =>
   d.depth == 0 ? -700 : d.depth == 1 ? -600 : d.depth == 2 ? -500 : -50;
@@ -68,7 +68,12 @@ export default function GraphDiagram(props: GraphDiagramProps) {
     //   .attr("width", widthText)
     //   .attr("height", heightText);
 
-    group.append("circle").attr("r", getRadius).classed("node", true);
+    group
+      .append("circle")
+      .attr("r", getRadius)
+      .classed("node", true)
+      .append("title")
+      .text((d: Node) => d.id);
 
     const anchor = group.append("a").attr("href", (d: Node) => `/${d.id}`);
 
