@@ -1,3 +1,8 @@
+import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
+import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
+
 import GraphDiagram from "../components/graph-diagram";
 import {
   findBackLinks,
@@ -13,6 +18,26 @@ import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
 
 function ItemPage({ item }) {
+  const [depth, setDepth] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedDepth = JSON.parse(localStorage.getItem("graph-depth"));
+      if (savedDepth) {
+        return savedDepth;
+      }
+    }
+    return 2;
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("graph-depth", JSON.stringify(depth));
+    }
+  }, [depth]);
+
+  const handleDepthChange = (event: any, newValue: number | number[]) => {
+    setDepth(Array.isArray(newValue) ? newValue[0] : newValue);
+  };
+
   return (
     <>
       <div className="container max-w-4xl px-4">
@@ -30,9 +55,24 @@ function ItemPage({ item }) {
         graph={createGraph(
           item.name,
           item.garden,
-          findDeepLinks(item.garden, item.name, 3)
+          findDeepLinks(item.garden, item.name, depth)
         )}
       />
+      <Box sx={{ padding: "1em", width: 200, border: "1px dashed grey" }}>
+        <Typography id="depth" gutterBottom>
+          Graph Depth {depth}
+        </Typography>
+        <Slider
+          defaultValue={depth}
+          onChange={handleDepthChange}
+          aria-labelledby="depth-slider"
+          min={1}
+          max={4}
+          step={1}
+          marks
+          valueLabelDisplay="auto"
+        />
+      </Box>
     </>
   );
 }

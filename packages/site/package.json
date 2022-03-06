@@ -23,6 +23,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.4.4",
     "@types/d3": "^7.1.0",
     "d3": "^7.3.0",
     "dotenv": "^10.0.0",
