@@ -45,10 +45,12 @@ function apply(d: SimulationNodeDatum, box: number[]) {
       const distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
 
       if (Math.abs(overlapY) < Math.abs(overlapX)) {
+        // Move nodes vertically
         const delta = (strength * yDistance * overlapY) / distance;
         d.vy -= delta;
         quad.data.vy += delta;
       } else {
+        // Move nodes horizontally
         const delta = (strength * xDistance * overlapX) / distance;
         d.vx -= delta;
         quad.data.vx += delta;
