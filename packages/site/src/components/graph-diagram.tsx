@@ -20,14 +20,20 @@ GraphDiagram.defaultProps = {
 const getRadius = (d: Node) =>
   d.depth == 0 ? 30 : d.depth == 1 ? 15 : d.depth == 2 ? 10 : 2;
 
+const getCharge = (d: Node) =>
+  d.depth == 0 ? -700 : d.depth == 1 ? -600 : d.depth == 2 ? -500 : -50;
+
+const getLinkStrokeWidth = (d: NodeLink) =>
+  d.depth == 0 ? 8 : d.depth == 1 ? 2 : 1;
+
 export default function GraphDiagram(props: GraphDiagramProps) {
   const ref = useRef(null);
   const width = props.width ?? 600;
   const height = props.height ?? 400;
   const xOffset = width / 2;
   const yOffset = height / 8;
-  const xOffsetText = -50;
-  const yOffsetText = -20;
+  const xOffsetText = -30;
+  const yOffsetText = -15;
   const heightText = 20;
   const widthText = 200;
 
@@ -44,9 +50,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .data(props.graph.links)
       .join("line")
       .classed("link", true)
-      .attr("stroke-width", (d: NodeLink) =>
-        d.depth == 0 ? 8 : d.depth == 1 ? 2 : 1
-      );
+      .attr("stroke-width", getLinkStrokeWidth);
 
     const group = svg
       .selectAll<SVGElement, Node>(".group")
@@ -69,6 +73,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
     const anchor = group.append("a").attr("href", (d: Node) => `/${d.id}`);
 
     anchor
+      .filter((d: Node) => d.depth < 3)
       .append("text")
       .text((d: Node) => d.id)
       .attr("x", xOffsetText)
@@ -105,8 +110,8 @@ export default function GraphDiagram(props: GraphDiagramProps) {
     const simulation = d3
       .forceSimulation()
       .nodes(props.graph.nodes)
-      .force("charge", d3.forceManyBody().strength(-700))
-      // .force("collide", d3.forceCollide().radius(getRadius))
+      .force("charge", d3.forceManyBody().strength(getCharge))
+      .force("collide", d3.forceCollide().radius(getRadius))
       .force(
         "collideRectangle",
         collideRectangle([xOffsetText, yOffsetText, widthText, heightText])
@@ -114,8 +119,8 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .force("center", d3.forceCenter(0, height / 3).strength(0.6))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
       .tick(80)
-      .alphaMin(0.1)
-      .alphaDecay(0.02)
+      .alphaMin(0.05)
+      .alphaDecay(0.01)
       .on("tick", tick);
 
     function dragstart(this: SVGElement) {
