@@ -56,12 +56,12 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .classed("fixed", (d: Node) => d.fx !== undefined)
       .raise();
 
-    group
-      .append("rect")
-      .attr("x", xOffsetText)
-      .attr("y", yOffsetText - heightText)
-      .attr("width", widthText)
-      .attr("height", heightText);
+    // group
+    //   .append("rect")
+    //   .attr("x", xOffsetText)
+    //   .attr("y", yOffsetText - heightText)
+    //   .attr("width", widthText)
+    //   .attr("height", heightText);
 
     group.append("circle").attr("r", getRadius).classed("node", true);
 

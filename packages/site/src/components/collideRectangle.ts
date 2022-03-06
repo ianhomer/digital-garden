@@ -19,7 +19,7 @@ function yCenterOfBox(d: SimulationNodeDatum, box: number[]) {
 
 // box is [x,y,width,height]
 function apply(d: SimulationNodeDatum, box: number[]) {
-  const strength = 0.1;
+  const strength = 0.5;
   return (quad: { data: SimulationNodeDatum }) => {
     if (!quad.data) {
       return;
@@ -43,10 +43,16 @@ function apply(d: SimulationNodeDatum, box: number[]) {
     // Adjust nodes after collision
     if (overlapX < 0 && overlapY < 0) {
       const distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
-      const delta = (strength * xDistance * overlapX) / distance;
 
-      d.vy -= delta;
-      quad.data.vy += delta;
+      if (Math.abs(overlapY) < Math.abs(overlapX)) {
+        const delta = (strength * yDistance * overlapY) / distance;
+        d.vy -= delta;
+        quad.data.vy += delta;
+      } else {
+        const delta = (strength * xDistance * overlapX) / distance;
+        d.vx -= delta;
+        quad.data.vx += delta;
+      }
       return true;
     }
   };
