@@ -28,7 +28,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
   const xOffsetText = -50;
   const yOffsetText = -20;
   const heightText = 20;
-  const widthText = 80;
+  const widthText = 200;
 
   useEffect(() => {
     const svg = d3.select(ref.current);
