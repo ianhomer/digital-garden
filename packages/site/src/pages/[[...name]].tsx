@@ -7,6 +7,7 @@ import {
   getAllItems,
 } from "../lib/content";
 import { findWantedThings, garden } from "../lib/garden/garden";
+import { findDeepLinks } from "../lib/garden/gardenGraph";
 import { Item, Link, LinkType } from "../lib/garden/types";
 import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
@@ -25,7 +26,12 @@ function ItemPage({ item }) {
         </ul>
         <footer>{Object.keys(item.garden).length} things</footer>
       </div>
-      <GraphDiagram graph={item.graph} />
+      <GraphDiagram
+        graph={createGraph(
+          item.garden,
+          findDeepLinks(item.garden, item.name, 2)
+        )}
+      />
     </>
   );
 }
@@ -83,7 +89,6 @@ export async function getStaticProps({ params }) {
         links,
         content,
         garden: things,
-        graph: createGraph(things, garden.findDeepLinks(things, item.name, 2)),
       },
     },
   };
