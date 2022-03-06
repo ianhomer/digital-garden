@@ -82,10 +82,24 @@ text.label {
   font-size: 1.5em;
   color: #999;
 }
+text.depth-3 {
+  font-size: 0.5em;
+  fill: #aaa;
+}
 text.depth-2 {
-  font-size: 2em;
+  font-size: 1em;
 }
 text.depth-1 {
+  font-size: 2em;
+}
+text.depth-null {
+  fill: #f00;
+}
+text.depth-Infinity {
+  fill: #f00;
+}
+
+text.depth-0 {
   font-size: 3em;
 }
 rect {
