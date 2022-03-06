@@ -17,7 +17,7 @@ GraphDiagram.defaultProps = {
   height: 2000,
 };
 
-const getRadius = (d: Node) => (d.depth == 1 ? 30 : d.depth == 2 ? 15 : 10);
+const getRadius = (d: Node) => (d.depth == 0 ? 30 : d.depth == 1 ? 15 : 10);
 
 export default function GraphDiagram(props: GraphDiagramProps) {
   const ref = useRef(null);
@@ -44,7 +44,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .join("line")
       .classed("link", true)
       .attr("stroke-width", (d: NodeLink) =>
-        d.depth == 1 ? 8 : d.depth == 2 ? 2 : 1
+        d.depth == 0 ? 8 : d.depth == 1 ? 2 : 1
       );
 
     const group = svg

@@ -28,6 +28,7 @@ function ItemPage({ item }) {
       </div>
       <GraphDiagram
         graph={createGraph(
+          item.name,
           item.garden,
           findDeepLinks(item.garden, item.name, 2)
         )}
