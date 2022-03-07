@@ -3,7 +3,7 @@ import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 
-import DepthSlider from "../components/depthSlider";
+import DepthSlider, { defaultDepth } from "../components/depthSlider";
 import GraphDiagram from "../components/graph-diagram";
 import useWindowDimensions from "../components/useWindowDimensions";
 import {
@@ -21,15 +21,7 @@ import markdownToHtml from "../lib/markdownToHtml";
 
 function ItemPage({ item }) {
   const { height, width } = useWindowDimensions();
-  const [depth, setDepth] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedDepth = JSON.parse(localStorage.getItem("graph-depth"));
-      if (savedDepth) {
-        return savedDepth;
-      }
-    }
-    return 2;
-  });
+  const [depth, setDepth] = useState(defaultDepth);
   const [scale, setScale] = useState(() => {
     if (typeof window !== "undefined") {
       const savedScale = JSON.parse(localStorage.getItem("graph-scale"));
@@ -39,10 +31,6 @@ function ItemPage({ item }) {
     }
     return 2;
   });
-
-  useEffect(() => {
-    localStorage.setItem("graph-depth", JSON.stringify(depth));
-  }, [depth]);
 
   useEffect(() => {
     localStorage.setItem("graph-scale", JSON.stringify(scale));
@@ -63,7 +51,6 @@ function ItemPage({ item }) {
             </li>
           ))}
         </ul>
-        <footer>{Object.keys(item.garden).length} things</footer>
       </div>
       <GraphDiagram
         width={width}
@@ -75,22 +62,23 @@ function ItemPage({ item }) {
           findDeepLinks(item.garden, item.name, depth)
         )}
       />
-      <DepthSlider value={depth} setValue={setDepth} />
-      <Box sx={{ padding: "1em", width: 200, border: "1px dashed grey" }}>
-        <Typography id="scale" gutterBottom>
-          Graph Scale {scale}
-        </Typography>
-        <Slider
-          defaultValue={scale}
-          onChange={handleScaleChange}
-          aria-labelledby="scale-slider"
-          min={1}
-          max={5}
-          step={1}
-          marks
-          valueLabelDisplay="auto"
-        />
-      </Box>
+      <div className="graph-controls">
+        <DepthSlider value={depth} setValue={setDepth} />
+        <Box sx={{ padding: "0.4em", width: 100, border: "1px dashed grey" }}>
+          <Typography id="scale">Scale</Typography>
+          <Slider
+            defaultValue={scale}
+            onChange={handleScaleChange}
+            aria-labelledby="scale-slider"
+            min={1}
+            max={5}
+            step={1}
+            size="small"
+            marks
+            valueLabelDisplay="auto"
+          />
+        </Box>
+      </div>
     </>
   );
 }

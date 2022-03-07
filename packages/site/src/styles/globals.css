@@ -71,12 +71,18 @@
   }
 }
 
-svg.fullscreen {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transform: scale(1);
+/* svg.fullscreen { */
+/*   transform: scale(1); */
+/* } */
+.MuiBox-root {
+  float: right;
+}
+.graph-controls {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 99;
+  background-color: #fff;
 }
 text.label {
   font-size: 1.5em;

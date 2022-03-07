@@ -39,10 +39,6 @@ export default function GraphDiagram(props: GraphDiagramProps) {
   useEffect(() => {
     const svg = d3.select(ref.current);
     svg.attr("viewBox", `0 0 ${width} ${height}`);
-  }, []);
-
-  useEffect(() => {
-    const svg = d3.select(ref.current);
 
     const link = svg
       .selectAll(".link")
