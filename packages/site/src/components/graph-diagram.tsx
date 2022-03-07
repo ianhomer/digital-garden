@@ -7,14 +7,13 @@ import collideRectangle from "./collideRectangle";
 interface GraphDiagramProps {
   graph: Graph;
   className?: string;
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
+  scale: number;
 }
 
 GraphDiagram.defaultProps = {
   className: "fullscreen",
-  width: 2000,
-  height: 2000,
 };
 
 const getRadius = (d: Node) =>
@@ -28,8 +27,8 @@ const getLinkStrokeWidth = (d: NodeLink) =>
 
 export default function GraphDiagram(props: GraphDiagramProps) {
   const ref = useRef(null);
-  const width = props.width ?? 600;
-  const height = props.height ?? 400;
+  const width = props.width * props.scale;
+  const height = props.height * props.scale;
   const xOffset = width / 2;
   const yOffset = height / 8;
   const xOffsetText = -30;
@@ -152,7 +151,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
 
   return (
     <>
-      <svg ref={ref} className={props.className ?? "fullscreen"} />
+      <svg ref={ref} className={props.className} />
     </>
   );
 }

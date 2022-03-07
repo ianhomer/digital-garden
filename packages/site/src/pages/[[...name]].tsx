@@ -3,7 +3,9 @@ import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 
+import DepthSlider from "../components/depthSlider";
 import GraphDiagram from "../components/graph-diagram";
+import useWindowDimensions from "../components/useWindowDimensions";
 import {
   findBackLinks,
   findImplicitBackLinks,
@@ -18,6 +20,7 @@ import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
 
 function ItemPage({ item }) {
+  const { height, width } = useWindowDimensions();
   const [depth, setDepth] = useState(() => {
     if (typeof window !== "undefined") {
       const savedDepth = JSON.parse(localStorage.getItem("graph-depth"));
@@ -27,15 +30,26 @@ function ItemPage({ item }) {
     }
     return 2;
   });
+  const [scale, setScale] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedScale = JSON.parse(localStorage.getItem("graph-scale"));
+      if (savedScale) {
+        return savedScale;
+      }
+    }
+    return 2;
+  });
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("graph-depth", JSON.stringify(depth));
-    }
+    localStorage.setItem("graph-depth", JSON.stringify(depth));
   }, [depth]);
 
-  const handleDepthChange = (event: any, newValue: number | number[]) => {
-    setDepth(Array.isArray(newValue) ? newValue[0] : newValue);
+  useEffect(() => {
+    localStorage.setItem("graph-scale", JSON.stringify(scale));
+  }, [scale]);
+
+  const handleScaleChange = (event: any, newValue: number | number[]) => {
+    setScale(Array.isArray(newValue) ? newValue[0] : newValue);
   };
 
   return (
@@ -52,22 +66,26 @@ function ItemPage({ item }) {
         <footer>{Object.keys(item.garden).length} things</footer>
       </div>
       <GraphDiagram
+        width={width}
+        height={height}
+        scale={scale}
         graph={createGraph(
           item.name,
           item.garden,
           findDeepLinks(item.garden, item.name, depth)
         )}
       />
+      <DepthSlider value={depth} setValue={setDepth} />
       <Box sx={{ padding: "1em", width: 200, border: "1px dashed grey" }}>
-        <Typography id="depth" gutterBottom>
-          Graph Depth {depth}
+        <Typography id="scale" gutterBottom>
+          Graph Scale {scale}
         </Typography>
         <Slider
-          defaultValue={depth}
-          onChange={handleDepthChange}
-          aria-labelledby="depth-slider"
+          defaultValue={scale}
+          onChange={handleScaleChange}
+          aria-labelledby="scale-slider"
           min={1}
-          max={4}
+          max={5}
           step={1}
           marks
           valueLabelDisplay="auto"
