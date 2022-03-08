@@ -1,9 +1,5 @@
-import Box from "@mui/material/Box";
-import Slider from "@mui/material/Slider";
-import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
-
 import GraphDiagram from "../components/graph-diagram";
+import useWindowDimensions from "../components/useWindowDimensions";
 import {
   findBackLinks,
   findImplicitBackLinks,
@@ -18,25 +14,7 @@ import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
 
 function ItemPage({ item }) {
-  const [depth, setDepth] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedDepth = JSON.parse(localStorage.getItem("graph-depth"));
-      if (savedDepth) {
-        return savedDepth;
-      }
-    }
-    return 2;
-  });
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("graph-depth", JSON.stringify(depth));
-    }
-  }, [depth]);
-
-  const handleDepthChange = (event: any, newValue: number | number[]) => {
-    setDepth(Array.isArray(newValue) ? newValue[0] : newValue);
-  };
+  const { height, width } = useWindowDimensions();
 
   return (
     <>
@@ -49,30 +27,17 @@ function ItemPage({ item }) {
             </li>
           ))}
         </ul>
-        <footer>{Object.keys(item.garden).length} things</footer>
       </div>
       <GraphDiagram
+        width={width}
+        height={height}
+        scale={1.3}
         graph={createGraph(
           item.name,
           item.garden,
-          findDeepLinks(item.garden, item.name, depth)
+          findDeepLinks(item.garden, item.name, 3)
         )}
       />
-      <Box sx={{ padding: "1em", width: 200, border: "1px dashed grey" }}>
-        <Typography id="depth" gutterBottom>
-          Graph Depth {depth}
-        </Typography>
-        <Slider
-          defaultValue={depth}
-          onChange={handleDepthChange}
-          aria-labelledby="depth-slider"
-          min={1}
-          max={4}
-          step={1}
-          marks
-          valueLabelDisplay="auto"
-        />
-      </Box>
     </>
   );
 }
