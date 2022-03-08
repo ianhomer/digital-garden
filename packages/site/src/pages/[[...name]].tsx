@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import GraphDiagram from "../components/graph-diagram";
 import useWindowDimensions from "../components/useWindowDimensions";
 import {
