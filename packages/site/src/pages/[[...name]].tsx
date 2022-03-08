@@ -1,9 +1,5 @@
-import Box from "@mui/material/Box";
-import Slider from "@mui/material/Slider";
-import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import DepthSlider, { defaultDepth } from "../components/depthSlider";
 import GraphDiagram from "../components/graph-diagram";
 import useWindowDimensions from "../components/useWindowDimensions";
 import {
@@ -21,24 +17,6 @@ import markdownToHtml from "../lib/markdownToHtml";
 
 function ItemPage({ item }) {
   const { height, width } = useWindowDimensions();
-  const [depth, setDepth] = useState(defaultDepth);
-  const [scale, setScale] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedScale = JSON.parse(localStorage.getItem("graph-scale"));
-      if (savedScale) {
-        return savedScale;
-      }
-    }
-    return 2;
-  });
-
-  useEffect(() => {
-    localStorage.setItem("graph-scale", JSON.stringify(scale));
-  }, [scale]);
-
-  const handleScaleChange = (event: any, newValue: number | number[]) => {
-    setScale(Array.isArray(newValue) ? newValue[0] : newValue);
-  };
 
   return (
     <>
@@ -55,30 +33,13 @@ function ItemPage({ item }) {
       <GraphDiagram
         width={width}
         height={height}
-        scale={scale}
+        scale={1.3}
         graph={createGraph(
           item.name,
           item.garden,
-          findDeepLinks(item.garden, item.name, depth)
+          findDeepLinks(item.garden, item.name, 3)
         )}
       />
-      <div className="graph-controls">
-        <DepthSlider value={depth} setValue={setDepth} />
-        <Box sx={{ padding: "0.4em", width: 100, border: "1px dashed grey" }}>
-          <Typography id="scale">Scale</Typography>
-          <Slider
-            defaultValue={scale}
-            onChange={handleScaleChange}
-            aria-labelledby="scale-slider"
-            min={1}
-            max={5}
-            step={1}
-            size="small"
-            marks
-            valueLabelDisplay="auto"
-          />
-        </Box>
-      </div>
     </>
   );
 }
