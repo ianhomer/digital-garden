@@ -7,14 +7,13 @@ import collideRectangle from "./collideRectangle";
 interface GraphDiagramProps {
   graph: Graph;
   className?: string;
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
+  scale: number;
 }
 
 GraphDiagram.defaultProps = {
   className: "fullscreen",
-  width: 2000,
-  height: 2000,
 };
 
 const getRadius = (d: Node) =>
@@ -28,8 +27,8 @@ const getLinkStrokeWidth = (d: NodeLink) =>
 
 export default function GraphDiagram(props: GraphDiagramProps) {
   const ref = useRef(null);
-  const width = props.width ?? 600;
-  const height = props.height ?? 400;
+  const width = props.width * props.scale;
+  const height = props.height * props.scale;
   const xOffset = width / 2;
   const yOffset = height / 8;
   const xOffsetText = -30;
@@ -40,10 +39,6 @@ export default function GraphDiagram(props: GraphDiagramProps) {
   useEffect(() => {
     const svg = d3.select(ref.current);
     svg.attr("viewBox", `0 0 ${width} ${height}`);
-  }, []);
-
-  useEffect(() => {
-    const svg = d3.select(ref.current);
 
     const link = svg
       .selectAll(".link")
@@ -60,13 +55,6 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .classed("wanted", (d: Node) => d.wanted)
       .classed("fixed", (d: Node) => d.fx !== undefined)
       .raise();
-
-    // group
-    //   .append("rect")
-    //   .attr("x", xOffsetText)
-    //   .attr("y", yOffsetText - heightText)
-    //   .attr("width", widthText)
-    //   .attr("height", heightText);
 
     group
       .append("circle")
@@ -123,7 +111,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       )
       .force("center", d3.forceCenter(0, height / 3).strength(0.6))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
-      .tick(80)
+      .tick(200)
       .alphaMin(0.05)
       .alphaDecay(0.01)
       .on("tick", tick);
@@ -152,7 +140,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
 
   return (
     <>
-      <svg ref={ref} className={props.className ?? "fullscreen"} />
+      <svg ref={ref} className={props.className} />
     </>
   );
 }
