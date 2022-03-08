@@ -113,7 +113,7 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
       .tick(80)
       .alphaMin(0.05)
-      .alphaDecay(0.01)
+      .alphaDecay(0.02)
       .on("tick", tick);
 
     function dragstart(this: SVGElement) {
