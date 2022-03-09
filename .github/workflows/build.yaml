@@ -18,8 +18,6 @@ jobs:
         uses: pnpm/action-setup@v2.0.1
         with:
           version: 6.32.1
-      - name: Install ripgrep
-        run: sudo apt-get install -y ripgrep
       - name: install and lint
         run: |
           pnpm install
