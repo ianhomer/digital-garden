@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 import GraphDiagram from "../components/graph-diagram";
+import { useKey } from "../components/useKey";
 import useWindowDimensions from "../components/useWindowDimensions";
 import {
   findBackLinks,
@@ -15,6 +18,9 @@ import markdownToHtml from "../lib/markdownToHtml";
 
 function ItemPage({ item }) {
   const { height, width } = useWindowDimensions();
+  const [depth, setDepth] = useState(3);
+
+  useKey((key) => setDepth(key), ["1", "2", "3", "4"]);
 
   return (
     <>
@@ -35,7 +41,7 @@ function ItemPage({ item }) {
         graph={createGraph(
           item.name,
           item.garden,
-          findDeepLinks(item.garden, item.name, 3)
+          findDeepLinks(item.garden, item.name, depth)
         )}
       />
     </>
