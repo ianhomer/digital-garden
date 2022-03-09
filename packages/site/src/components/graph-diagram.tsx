@@ -6,7 +6,6 @@ import collideRectangle from "./collideRectangle";
 
 interface GraphDiagramProps {
   graph: Graph;
-  className?: string;
   width: number;
   height: number;
   scale: number;
@@ -25,12 +24,17 @@ const getCharge = (d: Node) =>
 const getLinkStrokeWidth = (d: NodeLink) =>
   d.depth == 0 ? 8 : d.depth == 1 ? 2 : 1;
 
-export default function GraphDiagram(props: GraphDiagramProps) {
+export default function GraphDiagram({
+  graph,
+  width,
+  height,
+  scale,
+}: GraphDiagramProps) {
   const ref = useRef(null);
-  const width = props.width * props.scale;
-  const height = props.height * props.scale;
-  const xOffset = width / 2;
-  const yOffset = height / 8;
+  const viewWidth = width * scale;
+  const viewHeight = height * scale;
+  const xOffset = viewWidth / 2;
+  const yOffset = viewHeight / 8;
   const xOffsetText = -30;
   const yOffsetText = -15;
   const heightText = 20;
@@ -38,18 +42,22 @@ export default function GraphDiagram(props: GraphDiagramProps) {
 
   useEffect(() => {
     const svg = d3.select(ref.current);
-    svg.attr("viewBox", `0 0 ${width} ${height}`);
+    svg.attr("viewBox", `0 0 ${viewWidth} ${viewHeight}`);
+  }, [width, height, scale]);
+
+  useEffect(() => {
+    const svg = d3.select(ref.current);
 
     const link = svg
       .selectAll(".link")
-      .data(props.graph.links)
+      .data(graph.links)
       .join("line")
       .classed("link", true)
       .attr("stroke-width", getLinkStrokeWidth);
 
     const group = svg
       .selectAll<SVGElement, Node>(".group")
-      .data(props.graph.nodes)
+      .data(graph.nodes)
       .join("g")
       .classed("group", true)
       .classed("wanted", (d: Node) => d.wanted)
@@ -98,11 +106,11 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       simulation.alpha(0).restart();
     }
 
-    const forceLink = d3.forceLink<Node, NodeLink>(props.graph.links);
+    const forceLink = d3.forceLink<Node, NodeLink>(graph.links);
 
     const simulation = d3
       .forceSimulation()
-      .nodes(props.graph.nodes)
+      .nodes(graph.nodes)
       .force("charge", d3.forceManyBody().strength(getCharge))
       .force("collide", d3.forceCollide().radius(getRadius))
       .force(
@@ -136,11 +144,11 @@ export default function GraphDiagram(props: GraphDiagramProps) {
       .on("drag", dragged);
 
     group.call(drag).on("click", click);
-  }, [props]);
+  }, [graph]);
 
   return (
     <>
-      <svg ref={ref} className={props.className} />
+      <svg ref={ref} />
     </>
   );
 }
