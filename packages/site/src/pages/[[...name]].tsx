@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import GraphDiagram from "../components/graph-diagram";
 import { useKey } from "../components/useKey";
@@ -18,9 +18,16 @@ import markdownToHtml from "../lib/markdownToHtml";
 
 function ItemPage({ item }) {
   const { height, width } = useWindowDimensions();
-  const [depth, setDepth] = useState(3);
+  const [depth, setDepth] = useState(2);
+  const [scale, setScale] = useState(1.3);
 
-  useKey((key) => setDepth(key), ["1", "2", "3", "4"]);
+  useKey((key) => setDepth(parseInt(key)), ["1", "2", "3", "4", "5"]);
+
+  useKey(() => setScale(scale / 1.5), ["b"]);
+  useKey(() => setScale(scale / 1.3), ["v"]);
+  useKey(() => setScale(scale), ["c"]);
+  useKey(() => setScale(scale * 1.3), ["x"]);
+  useKey(() => setScale(scale * 1.5), ["z"]);
 
   return (
     <>
@@ -34,10 +41,11 @@ function ItemPage({ item }) {
           ))}
         </ul>
       </div>
+
       <GraphDiagram
         width={width}
         height={height}
-        scale={1.3}
+        scale={scale}
         graph={createGraph(
           item.name,
           item.garden,

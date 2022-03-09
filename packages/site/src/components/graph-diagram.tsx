@@ -35,10 +35,10 @@ export default function GraphDiagram({
   const viewHeight = height * scale;
   const xOffset = viewWidth / 2;
   const yOffset = viewHeight / 8;
-  const xOffsetText = -30;
-  const yOffsetText = -15;
-  const heightText = 20;
-  const widthText = 200;
+  const xOffsetText = -35;
+  const yOffsetText = -10;
+  const heightText = 30;
+  const widthText = 250;
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -118,7 +118,7 @@ export default function GraphDiagram({
         collideRectangle([xOffsetText, yOffsetText, widthText, heightText])
       )
       .force("center", d3.forceCenter(0, height / 3).strength(0.6))
-      .force("link", forceLink.id((d: Node) => d.id).strength(0.2))
+      .force("link", forceLink.id((d: Node) => d.id).strength(0.3))
       .tick(150)
       .alphaMin(0.01)
       .alphaDecay(0.03)
