@@ -29,7 +29,7 @@ build command to:
 
 Change install command to
 
-    pnpm install --filter @garden/site
+    pnpm install --filter !@garden/end-to-end
 
 And add URL to your markdown content repository by adding a `GARDEN_`
 environment variable , e.g.

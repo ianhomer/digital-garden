@@ -1,0 +1,11 @@
+{
+  "name": "@garden/types",
+  "version": "1.0.0",
+  "description": "Digital Garden Types",
+  "license": "ISC",
+  "type": "module",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "typescript": "^4.5.5"
+  }
+}

@@ -1,4 +1,5 @@
-import { ItemLink, Things } from "../garden/types";
+import { ItemLink, Things } from "@garden/types";
+
 import { Graph, NodeType } from "./types";
 
 export const createGraph = (
