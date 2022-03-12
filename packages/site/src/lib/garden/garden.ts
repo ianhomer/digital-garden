@@ -1,6 +1,8 @@
 import fs from "fs";
+import lodash from "lodash";
 import { join } from "path";
 import { resolve } from "path";
+const { transform } = lodash;
 
 import config from "../../../garden.config";
 import { findFilesDeep } from "./file";
@@ -64,7 +66,37 @@ const generateMeta = async (
       console.error(`File ${filename} is not in garden ${config.directory}`);
     }
   }
-  return meta;
+
+  return transform(
+    meta,
+    (result, thing, name) => {
+      result[name] = transform(
+        thing,
+        (_thing, value, key) => {
+          if (key === "links") {
+            _thing[key] = value.map((link) =>
+              transform(
+                link,
+                (_link, linkValue, linkKey) => {
+                  _link[linkKey] = linkValue;
+                  if (thing?.value == 0 || meta[linkValue]?.value == 0) {
+                    _link["value"] = 0;
+                  }
+                  return true;
+                },
+                {}
+              )
+            );
+          } else {
+            _thing[key] = value;
+          }
+          return true;
+        },
+        {}
+      );
+    },
+    {}
+  );
 };
 
 const getMetaFilename = (config: GardenConfig) =>
