@@ -53,7 +53,7 @@ const generateMeta = async (
         filename.substring(gardenDirectory.length)
       );
       const extra = {};
-      ["archive", "not"].forEach((ignore) => {
+      ["archive", "not", "stop"].forEach((ignore) => {
         if (filename.includes(`/${ignore}/`)) {
           extra["value"] = 0;
         }

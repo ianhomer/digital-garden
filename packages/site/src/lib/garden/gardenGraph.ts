@@ -1,5 +1,7 @@
 import { LinkType, Things } from "./types";
 
+const valuable = (link) => link.value !== 0;
+
 export const findDeepLinks = (
   things: Things,
   name: string,
@@ -8,7 +10,7 @@ export const findDeepLinks = (
 ) => {
   const directLinks = [
     ...(name in things
-      ? things[name].links.map((link) => ({
+      ? things[name].links.filter(valuable).map((link) => ({
           source: name,
           target: link.name,
           depth,
@@ -17,7 +19,10 @@ export const findDeepLinks = (
       : []),
     ...Object.keys(things)
       .filter((fromName) => {
-        return things[fromName].links.map((link) => link.name).includes(name);
+        return things[fromName].links
+          .filter(valuable)
+          .map((link) => link.name)
+          .includes(name);
       })
       .map((fromName) => ({
         source: name,
