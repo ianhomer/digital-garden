@@ -28,7 +28,7 @@ function generateDefault() {
       return resolveDirectory();
     }
     // this is the zero config, clone and run config
-    return join(process.cwd(), "src/test/content");
+    return join(process.cwd(), "../test-gardens/content");
   })();
   return {
     gardens,

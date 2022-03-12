@@ -1,8 +1,7 @@
+import { Meta } from "@garden/types";
 import remarkParse from "remark-parse";
 import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
-
-import { Meta } from "./types";
 
 export function parse(content: () => string) {
   return unified()

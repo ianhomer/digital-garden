@@ -1,8 +1,10 @@
+import { createGarden } from "@garden/garden";
 import { exec } from "child_process";
 import fs from "fs";
 
 import config from "../../garden.config.js";
-import { garden } from "../lib/garden/garden";
+
+const garden = createGarden(config);
 
 const cmdCallback = (error, stdout, stderr) => {
   error && console.error(`exec error: ${error}`);

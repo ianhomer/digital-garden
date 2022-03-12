@@ -7,6 +7,7 @@ export interface Item {
 export interface Link {
   name: string;
   type?: LinkType;
+  value?: number;
 }
 
 export interface ItemLink {
