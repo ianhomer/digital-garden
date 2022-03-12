@@ -2,7 +2,7 @@ import { createGarden } from "./garden";
 import { parse, process } from "./markdown";
 
 const garden = createGarden({
-  directory: "./src/test/content/",
+  directory: "../test-gardens/content",
 });
 
 it("should parse OK", () => {

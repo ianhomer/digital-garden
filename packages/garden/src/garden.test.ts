@@ -6,16 +6,16 @@ import {
 } from "./garden";
 
 const garden = createGarden({
-  directory: "./src/test/content",
+  directory: "../test-gardens/content",
 });
 
 it("should create garden", () => {
-  expect(garden.config.directory).toBe("./src/test/content");
+  expect(garden.config.directory).toBe("../test-gardens/content");
 });
 
 it("should create meta", async () => {
   const meta = await garden.meta();
-  expect(Object.keys(meta).length).toBe(10);
+  expect(Object.keys(meta).length).toBe(11);
   const wordThing = meta["word"];
   expect(wordThing.title).toBe("Word");
   expect(wordThing.links[0].name).toBe("vocabulary");
@@ -30,13 +30,15 @@ it("should get backlinks", async () => {
 it("should get know things", async () => {
   const things = await garden.meta();
   const knownThings = findKnownThings(things);
-  expect(knownThings.length).toBe(10);
+  expect(knownThings.length).toBe(11);
 });
 
 it("should get linked things", async () => {
   const things = await garden.meta();
   const linkedThings = findLinkedThings(things);
-  expect(linkedThings.length).toBe(7);
+  expect(linkedThings).toContain("word-2");
+  expect(linkedThings).toContain("word-3");
+  expect(linkedThings.length).toBe(6);
 });
 
 it("should have zero value", async () => {

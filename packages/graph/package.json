@@ -1,0 +1,14 @@
+{
+  "name": "@garden/graph",
+  "version": "1.0.0",
+  "description": "Digital Garden Graph",
+  "license": "ISC",
+  "type": "module",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@garden/types": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.5"
+  }
+}

@@ -4,13 +4,11 @@ import { join } from "path";
 import { resolve } from "path";
 const { transform } = lodash;
 
-import { findFilesDeep } from "@garden/garden";
+import { Link, Meta, Things } from "@garden/types";
 
-import config from "../../../garden.config";
-import { findDeepLinks } from "./gardenGraph";
+import { findFilesDeep } from "./file";
 import { process } from "./markdown";
 import { FileThing } from "./thing";
-import { ItemLink, Link, Meta, Things } from "./types";
 
 const gardenMetaFile = ".garden-meta.json";
 
@@ -18,11 +16,6 @@ export interface Garden {
   config: GardenConfig;
   thing: (filename: string) => FileThing;
   findBackLinks: (things: Things, name: string) => Array<Link>;
-  findDeepLinks: (
-    things: Things,
-    name: string,
-    depth: number
-  ) => Array<ItemLink>;
   meta: () => Promise<Things>;
   load: () => Promise<Things>;
   refresh: () => Promise<Things>;
@@ -158,10 +151,8 @@ export const createGarden = (config: GardenConfig): Garden => {
     findBackLinks: (things: Things, name: string) => {
       return findBackLinks(things, name);
     },
-    findDeepLinks,
     thing: (filename: string) => {
       return loadThing(config, filename);
     },
   };
 };
-export const garden = createGarden(config);

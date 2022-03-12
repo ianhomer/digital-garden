@@ -1,11 +1,11 @@
+import { createGarden } from "@garden/garden";
+import { Item } from "@garden/garden";
 import fs from "fs";
 import matter from "gray-matter";
 import { dirname, join, sep } from "path";
 
 import config from "../../garden.config";
 import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
-import { createGarden } from "./garden/garden";
-import { Item } from "./garden/types";
 
 const garden = createGarden(config);
 const gardensDirectory = config.directory;

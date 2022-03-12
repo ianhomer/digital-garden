@@ -12,6 +12,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "rootDir": "./src",
     "isolatedModules": true,
     "jsx": "preserve"
   },
