@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 // Reference: https://playwright.dev/docs/test-configuration
 const config = {
-  timeout: (process.env.CI ? 20 : 10) * 1000,
+  timeout: (process.env.CI ? 60 : 10) * 1000,
   testDir: path.join(__dirname, "src/test/e2e"),
   retries: 0,
   reporter: [
@@ -20,7 +20,7 @@ const config = {
   webServer: {
     command: "pnpm start",
     port: 3000,
-    timeout: (process.env.ci ? 30 : 10) * 1000,
+    timeout: (process.env.CI ? 30 : 10) * 1000,
   },
 
   use: {
