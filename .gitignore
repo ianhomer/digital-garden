@@ -3,6 +3,7 @@
 node_modules/
 results/
 
+*.tsbuildinfo
 .env
 .pnpm-debug.log
 .DS_Store

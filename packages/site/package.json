@@ -23,6 +23,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@garden/garden": "workspace:*",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "@types/d3": "^7.1.0",
