@@ -27,8 +27,8 @@
     "start": "pnpm --filter @garden/site start",
     "test": "pnpm --filter !@garden/end-to-end test",
     "test:build": "pnpm --filter @garden/site test:build",
-    "test:e2e": "pnpm --filter @digital-garden/end-to-end test:e2e",
-    "test:e2e:cucumber": "pnpm --filter @digital-garden/end-to-end test:e2e:cucumber",
+    "test:e2e": "pnpm --filter @garden/end-to-end test:e2e",
+    "test:e2e:cucumber": "pnpm --filter @garden/end-to-end test:e2e:cucumber",
     "test:e2e:cucumber:dev": "server-test dev:test 3000 test:e2e:cucumber"
   },
   "devDependencies": {
