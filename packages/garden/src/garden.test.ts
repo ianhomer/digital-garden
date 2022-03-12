@@ -58,12 +58,6 @@ it("should get wanted things", async () => {
   expect(wantedThings[0]).toBe("wanted");
 });
 
-it("should get deep links", async () => {
-  const things = await garden.meta();
-  const deepLinks = garden.findDeepLinks(things, "word-2", 3);
-  expect(deepLinks.length).toBe(4);
-});
-
 it.skip("should refresh meta", async () => {
   await garden.refresh().then(async () => {
     const meta = await garden.load();

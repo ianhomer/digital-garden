@@ -5,7 +5,13 @@
   "license": "ISC",
   "type": "module",
   "main": "src/index.ts",
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "jest": "^27.5.1",
     "@garden/types": "workspace:*"
   },
   "devDependencies": {

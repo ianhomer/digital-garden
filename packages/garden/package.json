@@ -7,7 +7,7 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "test:debug": "NODE_OPTIONS=--inspect-brk jest"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.11",
