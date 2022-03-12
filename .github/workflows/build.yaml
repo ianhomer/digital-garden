@@ -25,14 +25,29 @@ jobs:
       - name: unit test
         run: |
           pnpm test
-      - name: e2e test
-        run: |
-          pnpm test:build
-          pnpm test:e2e
-      - name: cucumber
-        run: |
-          pnpm test:e2e:cucumber:dev
       - name: build
         run: |
           pnpm build:prepare
           pnpm build
+  end-to-end:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.32.1
+      - name: install
+        run: |
+          pnpm install
+      - name: e2e test
+        run: |
+          pnpm test:build
+          # pnpm test:e2e
+      # - name: cucumber
+      #   run: |
+      #     pnpm test:e2e:cucumber:dev
