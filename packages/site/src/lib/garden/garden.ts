@@ -50,7 +50,16 @@ const generateMeta = async (
         config,
         filename.substring(gardenDirectory.length)
       );
-      meta[thing.name] = process(thing.content);
+      const extra = {};
+      ["archive", "not"].forEach((ignore) => {
+        if (filename.includes(`/${ignore}/`)) {
+          extra["value"] = 0;
+        }
+      });
+      meta[thing.name] = {
+        ...extra,
+        ...process(thing.content),
+      };
     } else {
       console.error(`File ${filename} is not in garden ${config.directory}`);
     }

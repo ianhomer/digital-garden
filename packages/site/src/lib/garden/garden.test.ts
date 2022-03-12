@@ -15,7 +15,7 @@ it("should create garden", () => {
 
 it("should create meta", async () => {
   const meta = await garden.meta();
-  expect(Object.keys(meta).length).toBe(8);
+  expect(Object.keys(meta).length).toBe(9);
   const wordThing = meta["word"];
   expect(wordThing.title).toBe("Word");
   expect(wordThing.links[0].name).toBe("vocabulary");
@@ -30,13 +30,18 @@ it("should get backlinks", async () => {
 it("should get know things", async () => {
   const things = await garden.meta();
   const knownThings = findKnownThings(things);
-  expect(knownThings.length).toBe(8);
+  expect(knownThings.length).toBe(9);
 });
 
 it("should get linked things", async () => {
   const things = await garden.meta();
   const linkedThings = findLinkedThings(things);
   expect(linkedThings.length).toBe(6);
+});
+
+it("should have zero value", async () => {
+  const things = await garden.meta();
+  expect(things["archived-thing"].value).toBe(0);
 });
 
 it("should get wanted things", async () => {
