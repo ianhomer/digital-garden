@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import GraphDiagram from "../components/graph-diagram";
 import { useKey } from "../components/useKey";

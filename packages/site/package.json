@@ -25,6 +25,7 @@
   "dependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
+    "@garden/garden": "workspace:*",
     "@types/d3": "^7.1.0",
     "d3": "^7.3.0",
     "dotenv": "^10.0.0",
@@ -48,6 +49,7 @@
     "@types/react": "^17.0.39",
     "autoprefixer": "^10.4.2",
     "jest": "^27.5.1",
+    "next-transpile-modules": "^9.0.0",
     "postcss": "^8.4.6",
     "remark": "^14.0.2",
     "remark-parse": "^10.0.1",

@@ -4,8 +4,9 @@ import { join } from "path";
 import { resolve } from "path";
 const { transform } = lodash;
 
+import { findFilesDeep } from "@garden/garden";
+
 import config from "../../../garden.config";
-import { findFilesDeep } from "./file";
 import { findDeepLinks } from "./gardenGraph";
 import { process } from "./markdown";
 import { FileThing } from "./thing";
