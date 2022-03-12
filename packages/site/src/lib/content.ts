@@ -1,5 +1,5 @@
 import { createGarden } from "@garden/garden";
-import { Item } from "@garden/garden";
+import { Item } from "@garden/types";
 import fs from "fs";
 import matter from "gray-matter";
 import { dirname, join, sep } from "path";
