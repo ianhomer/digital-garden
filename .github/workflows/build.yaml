@@ -46,8 +46,9 @@ jobs:
           pnpm install
       - name: e2e test
         run: |
+          pnpm build:prepare
           pnpm test:build
-          # pnpm test:e2e
-      # - name: cucumber
-      #   run: |
-      #     pnpm test:e2e:cucumber:dev
+          pnpm test:e2e
+      - name: cucumber
+        run: |
+          pnpm test:e2e:cucumber:dev

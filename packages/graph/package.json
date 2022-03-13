@@ -11,10 +11,11 @@
   "dependencies": {
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
-    "jest": "^27.5.1",
-    "@garden/types": "workspace:*"
+    "@garden/types": "workspace:*",
+    "jest": "^27.5.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.5",
     "typescript": "^4.5.5"
   }
 }
