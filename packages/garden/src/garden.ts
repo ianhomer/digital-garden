@@ -68,7 +68,6 @@ const generateMeta = async (
       value: thing.value,
       links: thing.links.map((link) => {
         const transformedLink: Link = { name: link.name };
-        transformedLink.value = 0;
         if (thing?.value == 0 || meta[link.name]?.value == 0) {
           transformedLink.value = 0;
         }
