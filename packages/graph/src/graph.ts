@@ -1,6 +1,6 @@
-import { LinkType, Things } from "@garden/types";
+import { Link, LinkType, Things } from "@garden/types";
 
-const valuable = (link) => link.value !== 0;
+const valuable = (link: Link) => link.value !== 0;
 
 export const findDeepLinks = (
   things: Things,

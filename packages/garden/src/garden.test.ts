@@ -38,17 +38,21 @@ it("should get linked things", async () => {
   const linkedThings = findLinkedThings(things);
   expect(linkedThings).toContain("word-2");
   expect(linkedThings).toContain("word-3");
-  expect(linkedThings.length).toBe(6);
+  expect(linkedThings.length).toBe(7);
 });
 
 it("should have zero value", async () => {
   const things = await garden.meta();
+  expect(things["README"].value).toBeUndefined();
   expect(things["archived-thing"].value).toBe(0);
   expect(
     things["archive-linked"].links.find(
       (link) => (link.name = "archived-thing")
     ).value
   ).toBe(0);
+  expect(
+    things["README"].links.find((link) => (link.name = "vocabulary")).value
+  ).toBeUndefined();
 });
 
 it("should get wanted things", async () => {
