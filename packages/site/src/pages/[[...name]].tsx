@@ -44,7 +44,6 @@ function ItemPage({ item }) {
           ))}
         </ul>
       </div>
-
       <GraphDiagram
         width={width}
         height={height}

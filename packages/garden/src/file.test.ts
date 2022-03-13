@@ -12,6 +12,6 @@ it("should find deep files", async () => {
   for await (const filename of findFilesDeep(gardenDirectory)) {
     filenames.push(filename);
   }
-  expect(filenames.length).toBe(2);
+  expect(filenames.length).toBe(1);
   expect(filenames.map(toRelativeName)).toContain("word/garden2-word.md");
 });
