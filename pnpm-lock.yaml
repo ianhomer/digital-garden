@@ -30,10 +30,12 @@ importers:
 
   packages/end-to-end:
     specifiers:
+      '@cucumber/cucumber': ^8.0.0-rc.2
       '@playwright/test': ^1.19.1
       allure-playwright: ^2.0.0-beta.15
       playwright: ^1.19.1
     devDependencies:
+      '@cucumber/cucumber': 8.0.0-rc.2
       '@playwright/test': 1.19.1
       allure-playwright: 2.0.0-beta.15
       playwright: 1.19.1
