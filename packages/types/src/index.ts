@@ -20,6 +20,7 @@ export interface ItemLink {
 export interface Meta {
   title: string;
   links: Array<Link>;
+  value?: number;
 }
 
 export enum LinkType {
