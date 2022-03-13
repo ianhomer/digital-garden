@@ -2,7 +2,7 @@ import fs from "fs";
 import { resolve } from "path";
 const { readdir } = fs.promises;
 
-export async function* findFilesDeep(directory: string) {
+export async function* findFilesDeep(directory: string): AsyncIterable<string> {
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
     const resolved = resolve(directory, child.name);
