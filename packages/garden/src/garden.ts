@@ -1,11 +1,7 @@
+import { Link, Meta, Things } from "@garden/types";
 import fs from "fs";
-import lodash from "lodash";
 import { join } from "path";
 import { resolve } from "path";
-const { transform } = lodash;
-
-import { transformSync } from "@babel/core";
-import { Link, Meta, Things } from "@garden/types";
 
 import { findFilesDeep } from "./file";
 import { process } from "./markdown";
@@ -27,9 +23,10 @@ export interface GardenConfig {
 }
 
 const loadThing = (config: GardenConfig, filename: string): FileThing => {
+  const match = /([^/]*).md$/.exec(filename);
   return {
     filename,
-    name: /([^/]*).md$/.exec(filename)[1],
+    name: match ? match[1] : "filename",
     content: () =>
       fs.readFileSync(join(config.directory, `${filename}`), "utf8"),
   };
