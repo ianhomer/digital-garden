@@ -4,6 +4,7 @@ import { join } from "path";
 import { resolve } from "path";
 const { transform } = lodash;
 
+import { transformSync } from "@babel/core";
 import { Link, Meta, Things } from "@garden/types";
 
 import { findFilesDeep } from "./file";
@@ -39,58 +40,47 @@ const generateMeta = async (
 ): Promise<{ [key: string]: Meta }> => {
   const gardenDirectory = resolve(config.directory);
 
-  const meta = {};
+  const meta: { [key: string]: Meta } = {};
   for await (const filename of findFilesDeep(config.directory)) {
     if (filename.startsWith(gardenDirectory)) {
       const thing = loadThing(
         config,
         filename.substring(gardenDirectory.length)
       );
-      const extra = {};
+      const extra: { value?: number } = {};
       ["archive", "not", "stop"].forEach((ignore) => {
         if (filename.includes(`/${ignore}/`)) {
-          extra["value"] = 0;
+          extra.value = 0;
         }
       });
       meta[thing.name] = {
-        ...extra,
         ...process(thing.content),
+        ...extra,
       };
     } else {
       console.error(`File ${filename} is not in garden ${config.directory}`);
     }
   }
 
-  return transform(
-    meta,
-    (result, thing, name) => {
-      result[name] = transform(
-        thing,
-        (_thing, value, key) => {
-          if (key === "links") {
-            _thing[key] = value.map((link) =>
-              transform(
-                link,
-                (_link, linkValue, linkKey) => {
-                  _link[linkKey] = linkValue;
-                  if (thing?.value == 0 || meta[linkValue]?.value == 0) {
-                    _link["value"] = 0;
-                  }
-                  return true;
-                },
-                {}
-              )
-            );
-          } else {
-            _thing[key] = value;
-          }
-          return true;
-        },
-        {}
-      );
-    },
-    {}
-  );
+  const transformedMeta: { [key: string]: Meta } = {};
+
+  Object.keys(meta).map((key) => {
+    const thing = meta[key];
+    transformedMeta[key] = {
+      title: thing.title,
+      value: thing.value,
+      links: thing.links.map((link) => {
+        const transformedLink: Link = { name: link.name };
+        transformedLink.value = 0;
+        if (thing?.value == 0 || meta[link.name]?.value == 0) {
+          transformedLink.value = 0;
+        }
+        return transformedLink;
+      }),
+    };
+  });
+
+  return transformedMeta;
 };
 
 const getMetaFilename = (config: GardenConfig) =>
