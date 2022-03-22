@@ -21,7 +21,7 @@
     "test:watch": "jest --watch"
   },
   "bin": {
-    "garden": "bin/garden.js"
+    "garden": "bin/garden.cjs"
   },
   "dependencies": {
     "@emotion/react": "^11.8.1",
