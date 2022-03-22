@@ -3,7 +3,7 @@ import { getAllItems } from "../../lib/content";
 function All({ items }) {
   return (
     <ul className="links">
-      {items.sort().map((link) => (
+      {[...new Set(items)].sort().map((link: string) => (
         <li key={link}>
           <a href={"../" + link}>{link}</a>
         </li>
