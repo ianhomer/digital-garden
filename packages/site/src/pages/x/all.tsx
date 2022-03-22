@@ -1,13 +1,18 @@
 import { getAllItems } from "../../lib/content";
 
-function All({ items }) {
+type AllData = {
+  items: string[];
+};
+function All({ items }: AllData) {
   return (
     <ul className="links">
-      {[...new Set(items)].sort().map((link: string) => (
-        <li key={link}>
-          <a href={"../" + link}>{link}</a>
-        </li>
-      ))}
+      {Array.from(new Set(items))
+        .sort()
+        .map((link) => (
+          <li key={link}>
+            <a href={"../" + link}>{link}</a>
+          </li>
+        ))}
     </ul>
   );
 }
