@@ -31,6 +31,9 @@
     "test:e2e:cucumber": "pnpm --filter @garden/end-to-end test:e2e:cucumber",
     "test:e2e:cucumber:dev": "server-test dev:test 3000 test:e2e:cucumber"
   },
+  "bin": {
+    "garden": "bin/garden.js"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.0",

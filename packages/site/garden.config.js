@@ -1,13 +1,15 @@
 import dotenv from "dotenv";
 import fs from "fs";
-import { join } from "path";
+import { isAbsolute, join } from "path";
 dotenv.config({ path: "../../.env" });
 
 const gardenDirectoryFromEnv = process.env.GARDENS_DIRECTORY;
 
 function resolveDirectory() {
   if (gardenDirectoryFromEnv) {
-    return join(process.cwd(), gardenDirectoryFromEnv);
+    return isAbsolute(gardenDirectoryFromEnv)
+      ? gardenDirectoryFromEnv
+      : join(process.cwd(), gardenDirectoryFromEnv);
   }
   return join(process.cwd(), ".gardens");
 }
