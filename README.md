@@ -47,3 +47,12 @@ Define one or more gardens, by providing an environment variable starting with
 `GARDEN_` defining a git URL to the markdown content.
 
     GARDEN_MY=https://github.com/purplepip/boxofjam.git
+
+## Local Garden (Experimental)
+
+Install the `garden` global command to render the garden from a given folder.
+
+    cd packages/site
+    pnpm link --global
+
+And then in any directory with markdown files in run `garden`.
