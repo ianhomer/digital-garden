@@ -42,19 +42,25 @@ export async function findAbsoluteFile(
   filename: string
 ): Promise<string> {
   const directories = await readdir(directory, { withFileTypes: true });
+  // Files first
   for (const child of directories) {
-    const resolved = resolve(directory, child.name);
+    if (!child.isDirectory()) {
+      if (child.name == filename) {
+        return resolve(directory, child.name);
+      }
+    }
+  }
+  // ... then directories
+  for (const child of directories) {
     if (child.isDirectory()) {
+      const resolved = resolve(directory, child.name);
       const candidate = await findAbsoluteFile(resolved, filename);
       if (candidate) {
         return candidate;
       }
-    } else {
-      if (child.name == filename) {
-        return resolved;
-      }
     }
   }
+
   return null;
 }
 
