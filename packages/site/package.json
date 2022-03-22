@@ -20,6 +20,9 @@
     "test:e2e:cucumber:dev": "server-test dev:test 3000 test:e2e:cucumber",
     "test:watch": "jest --watch"
   },
+  "bin": {
+    "garden": "bin/garden.js"
+  },
   "dependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
