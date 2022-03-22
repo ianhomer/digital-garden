@@ -22,7 +22,8 @@ function shortenLocalLinks() {
     visit(tree, (node: { type: string; url: string }) => {
       if (node.type === "link") {
         if (node.url.startsWith("./")) {
-          node.url = "./" + /([^/]*).md$/.exec(node.url)[1];
+          const match = /([^/]*).md$/.exec(node.url);
+          node.url = match ? "./" + match[1] : node.url;
         }
       }
     });
