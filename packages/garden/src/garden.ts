@@ -40,7 +40,10 @@ const generateMeta = async (
   const gardenDirectory = resolve(config.directory);
 
   const meta: { [key: string]: Meta } = {};
-  for await (const filename of findFilesDeep(config.directory)) {
+  for await (const filename of findFilesDeep(
+    config.excludedDirectories,
+    config.directory
+  )) {
     if (filename.startsWith(gardenDirectory)) {
       const thing = loadThing(
         config,
@@ -81,8 +84,15 @@ const generateMeta = async (
   return transformedMeta;
 };
 
-const getMetaFilename = (config: GardenConfig) =>
-  join(config.directory, gardenMetaFile);
+const globalMetaDirectory = "~/.local/garden/meta";
+
+const getMetaFilename = (config: GardenConfig) => {
+  if (fs.existsSync(globalMetaDirectory)) {
+    return join(globalMetaDirectory, gardenMetaFile);
+  } else {
+    return join(config.directory, gardenMetaFile);
+  }
+};
 
 const refresh = async (config: GardenConfig) => {
   const meta = await generateMeta(config);
