@@ -9,7 +9,7 @@ const toRelativeName = (filename: string) =>
 
 it("should find deep files", async () => {
   const filenames = [];
-  for await (const filename of findFilesDeep(gardenDirectory)) {
+  for await (const filename of findFilesDeep([], gardenDirectory)) {
     filenames.push(filename);
   }
   expect(filenames.length).toBe(1);
