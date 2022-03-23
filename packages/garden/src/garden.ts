@@ -1,5 +1,6 @@
 import { Link, Meta, Things } from "@garden/types";
 import fs from "fs";
+import os from "os";
 import { join } from "path";
 import { resolve } from "path";
 
@@ -19,6 +20,8 @@ export interface Garden {
 }
 export interface GardenConfig {
   directory: string;
+  excludedDirectories: string[];
+  hasMultiple: boolean;
   gardens?: { [key: string]: string };
 }
 
@@ -38,7 +41,10 @@ const generateMeta = async (
   const gardenDirectory = resolve(config.directory);
 
   const meta: { [key: string]: Meta } = {};
-  for await (const filename of findFilesDeep(config.directory)) {
+  for await (const filename of findFilesDeep(
+    config.excludedDirectories,
+    config.directory
+  )) {
     if (filename.startsWith(gardenDirectory)) {
       const thing = loadThing(
         config,
@@ -79,8 +85,18 @@ const generateMeta = async (
   return transformedMeta;
 };
 
-const getMetaFilename = (config: GardenConfig) =>
-  join(config.directory, gardenMetaFile);
+const globalMetaDirectory = join(os.homedir(), ".local/garden/meta");
+
+const getMetaFilename = (config: GardenConfig) => {
+  if (fs.existsSync(globalMetaDirectory)) {
+    return join(
+      globalMetaDirectory,
+      config.directory.replace(/[\\/\\.]/g, "-") + "-meta.json"
+    );
+  } else {
+    return join(config.directory, gardenMetaFile);
+  }
+};
 
 const refresh = async (config: GardenConfig) => {
   const meta = await generateMeta(config);
@@ -95,7 +111,7 @@ const refresh = async (config: GardenConfig) => {
 async function loadMeta(config: GardenConfig) {
   const metaFilename = getMetaFilename(config);
   if (fs.existsSync(metaFilename)) {
-    const content = fs.readFileSync(join(config.directory, gardenMetaFile));
+    const content = fs.readFileSync(join(getMetaFilename(config)));
     return JSON.parse(content.toString("utf8"));
   } else {
     console.log(`Meta file ${metaFilename} does not exist`);

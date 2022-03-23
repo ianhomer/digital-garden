@@ -2,13 +2,26 @@ import fs from "fs";
 import { resolve } from "path";
 const { readdir } = fs.promises;
 
-export async function* findFilesDeep(directory: string): AsyncIterable<string> {
+const shouldIncludeDirectory = (excludedDirectories: string[], name: string) =>
+  !excludedDirectories.includes(name) && !name.startsWith(".");
+
+export async function* findFilesDeep(
+  excludedDirectories: string[],
+  directory: string
+): AsyncIterable<string> {
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
     const resolved = resolve(directory, child.name);
     if (child.isDirectory()) {
-      yield* findFilesDeep(resolved);
-    } else {
+      if (shouldIncludeDirectory(excludedDirectories, child.name)) {
+        yield* findFilesDeep(excludedDirectories, resolved);
+      }
+    }
+  }
+
+  for (const child of directories) {
+    const resolved = resolve(directory, child.name);
+    if (!child.isDirectory()) {
       if (child.name.endsWith(".md")) {
         yield resolved;
       }
