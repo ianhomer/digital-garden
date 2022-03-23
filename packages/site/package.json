@@ -53,7 +53,6 @@
     "@types/react": "^17.0.39",
     "autoprefixer": "^10.4.2",
     "jest": "^27.5.1",
-    "next-remote-refresh": "^0.9.2",
     "next-remote-watch": "^1.0.0",
     "next-transpile-modules": "^9.0.0",
     "postcss": "^8.4.6",
