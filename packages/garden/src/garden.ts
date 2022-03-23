@@ -19,6 +19,8 @@ export interface Garden {
 }
 export interface GardenConfig {
   directory: string;
+  excludedDirectories: string[];
+  hasMultiple: boolean;
   gardens?: { [key: string]: string };
 }
 
