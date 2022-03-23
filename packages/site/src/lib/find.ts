@@ -1,13 +1,17 @@
+import { GardenConfig } from "@garden/garden/src/garden";
 import { resolve } from "path";
 
 const { readdir } = require("fs").promises;
 
-async function* findFilesDeep(directory: string) {
+const shouldIncludeDirectory = (config: GardenConfig, name: string) =>
+  !config.excludedDirectories.includes(name) && !name.startsWith(".");
+
+async function* findFilesDeep(config: GardenConfig, directory: string) {
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
     const resolved = resolve(directory, child.name);
-    if (child.isDirectory() && !["node_modules"].includes(child.name)) {
-      yield* findFilesDeep(resolved);
+    if (child.isDirectory() && shouldIncludeDirectory(config, child.name)) {
+      yield* findFilesDeep(config, resolved);
     } else {
       if (child.name.endsWith(".md")) {
         yield resolved;
@@ -17,27 +21,30 @@ async function* findFilesDeep(directory: string) {
 }
 
 // Find all files within a given named directory
-async function* findFilesInNamedDirectoryDeep(directory: string, name: string) {
+async function* findFilesInNamedDirectoryDeep(
+  config: GardenConfig,
+  directory: string,
+  name: string
+) {
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
     const resolved = resolve(directory, child.name);
-    if (child.isDirectory()) {
-      if (!child.name.startsWith(".")) {
-        if (child.name == name) {
-          const children = await readdir(resolved, { withFileTypes: true });
-          for (const candidate of children) {
-            if (candidate.isFile()) {
-              yield candidate.name;
-            }
+    if (child.isDirectory() && shouldIncludeDirectory(config, child.name)) {
+      if (child.name == name) {
+        const children = await readdir(resolved, { withFileTypes: true });
+        for (const candidate of children) {
+          if (candidate.isFile()) {
+            yield candidate.name;
           }
         }
-        yield* findFilesInNamedDirectoryDeep(resolved, name);
       }
+      yield* findFilesInNamedDirectoryDeep(config, resolved, name);
     }
   }
 }
 
 export async function findAbsoluteFile(
+  config: GardenConfig,
   directory: string,
   filename: string
 ): Promise<string> {
@@ -52,9 +59,9 @@ export async function findAbsoluteFile(
   }
   // ... then directories
   for (const child of directories) {
-    if (child.isDirectory()) {
+    if (child.isDirectory() && shouldIncludeDirectory(config, child.name)) {
       const resolved = resolve(directory, child.name);
-      const candidate = await findAbsoluteFile(resolved, filename);
+      const candidate = await findAbsoluteFile(config, resolved, filename);
       if (candidate) {
         return candidate;
       }
@@ -65,10 +72,11 @@ export async function findAbsoluteFile(
 }
 
 export async function findFile(
+  config: GardenConfig,
   directory: string,
   filename: string
 ): Promise<string> {
-  const found = await findAbsoluteFile(directory, filename);
+  const found = await findAbsoluteFile(config, directory, filename);
   if (!found) {
     throw "Cannot find " + filename + " in " + directory;
   }
@@ -76,20 +84,28 @@ export async function findFile(
   return found.substring(directory.length + 1);
 }
 
-export async function findFiles(directory: string): Promise<string[]> {
+export async function findFiles(
+  config: GardenConfig,
+  directory: string
+): Promise<string[]> {
   const files: string[] = [];
-  for await (const file of findFilesDeep(directory)) {
+  for await (const file of findFilesDeep(config, directory)) {
     files.push(file);
   }
   return files;
 }
 
 export async function findFilesInNamedDirectory(
+  config: GardenConfig,
   directory: string,
   name: string
 ): Promise<string[]> {
   const files: string[] = [];
-  for await (const file of findFilesInNamedDirectoryDeep(directory, name)) {
+  for await (const file of findFilesInNamedDirectoryDeep(
+    config,
+    directory,
+    name
+  )) {
     files.push(file);
   }
   return files;

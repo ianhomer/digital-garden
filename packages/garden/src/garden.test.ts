@@ -6,6 +6,8 @@ import {
 } from "./garden";
 
 const garden = createGarden({
+  excludedDirectories: [],
+  hasMultiple: false,
   directory: "../test-gardens/content",
 });
 

@@ -30,12 +30,26 @@ function extractTitle(node) {
   return firstNode.children[0].value;
 }
 
+function extractName(url: string) {
+  const match = /([^/]*).md$/.exec(url);
+  return match ? match[1] : url;
+}
+
 export function process(content: () => string): Meta {
   const document = parse(content);
   return {
     title: extractTitle(document),
     links: flatten(document)
-      .filter((node) => node.type === "wikiLink")
-      .map((link) => ({ name: link.value.toLowerCase() })),
+      .filter(
+        (node) =>
+          node.type === "wikiLink" ||
+          (node.type === "link" && node.url.startsWith("./"))
+      )
+      .map((link) => ({
+        name:
+          link.type === "wikiLink"
+            ? link.value.toLowerCase()
+            : extractName(link.url),
+      })),
   };
 }

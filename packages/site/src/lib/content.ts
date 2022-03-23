@@ -30,7 +30,7 @@ export class FileItem implements Item {
 }
 
 export async function findImplicitBackLinks(name: string): Promise<string[]> {
-  return (await findFilesInNamedDirectory(gardensDirectory, name))
+  return (await findFilesInNamedDirectory(config, gardensDirectory, name))
     .filter((s) => s.endsWith(".md"))
     .map((backlink: string) => /([^/]*).md$/.exec(backlink)[1]);
 }
@@ -50,13 +50,13 @@ export async function findBackLinks(name: string): Promise<string[]> {
 
 export async function findItem(name: string | false) {
   return new FileItem(
-    await findFile(gardensDirectory, (name ? name : "README") + ".md"),
+    await findFile(config, gardensDirectory, (name ? name : "README") + ".md"),
     true
   );
 }
 
 export async function getAllItems(): Promise<Item[]> {
-  const files = await findFiles(gardensDirectory);
+  const files = await findFiles(config, gardensDirectory);
   return files.map((filename) => {
     return new FileItem(filename);
   });

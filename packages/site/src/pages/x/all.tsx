@@ -20,7 +20,6 @@ function All({ items }: AllData) {
 export async function getStaticProps() {
   const items = (await getAllItems()).map((item) => item.name);
 
-  console.log(JSON.stringify(items));
   return { props: { items } };
 }
 
