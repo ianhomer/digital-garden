@@ -56,3 +56,6 @@ Install the `garden` global command to render the garden from a given folder.
     pnpm link --global
 
 And then in any directory with markdown files in run `garden`.
+
+Create the directory `~/.local/garden/meta` if you wish the garden meta JSON
+files to be stored in a central local location.

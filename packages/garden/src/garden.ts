@@ -1,5 +1,6 @@
 import { Link, Meta, Things } from "@garden/types";
 import fs from "fs";
+import os from "os";
 import { join } from "path";
 import { resolve } from "path";
 
@@ -84,11 +85,14 @@ const generateMeta = async (
   return transformedMeta;
 };
 
-const globalMetaDirectory = "~/.local/garden/meta";
+const globalMetaDirectory = join(os.homedir(), ".local/garden/meta");
 
 const getMetaFilename = (config: GardenConfig) => {
   if (fs.existsSync(globalMetaDirectory)) {
-    return join(globalMetaDirectory, gardenMetaFile);
+    return join(
+      globalMetaDirectory,
+      config.directory.replace(/[\\/\\.]/g, "-") + "-meta.json"
+    );
   } else {
     return join(config.directory, gardenMetaFile);
   }
@@ -107,7 +111,7 @@ const refresh = async (config: GardenConfig) => {
 async function loadMeta(config: GardenConfig) {
   const metaFilename = getMetaFilename(config);
   if (fs.existsSync(metaFilename)) {
-    const content = fs.readFileSync(join(config.directory, gardenMetaFile));
+    const content = fs.readFileSync(join(getMetaFilename(config)));
     return JSON.parse(content.toString("utf8"));
   } else {
     console.log(`Meta file ${metaFilename} does not exist`);
