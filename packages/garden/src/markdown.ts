@@ -1,4 +1,5 @@
 import { Meta } from "@garden/types";
+import { Link } from "mdast";
 import remarkParse from "remark-parse";
 import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
@@ -26,9 +27,9 @@ function extractTitle(node: Parent) {
     return "no title";
   }
   if (!(firstNode as Parent).children) {
-    return (firstNode as Literal).value;
+    return (firstNode as Literal).value as string;
   }
-  return ((firstNode as Parent).children[0] as Literal).value;
+  return ((firstNode as Parent).children[0] as Literal).value as string;
 }
 
 function extractName(url: string) {
@@ -44,13 +45,13 @@ export function process(content: () => string): Meta {
       .filter(
         (node) =>
           node.type === "wikiLink" ||
-          (node.type === "link" && node.url.startsWith("./"))
+          (node.type === "link" && (node as Link).url.startsWith("./"))
       )
       .map((link) => ({
         name:
           link.type === "wikiLink"
-            ? link.value.toLowerCase()
-            : extractName(link.url),
+            ? ((link as Literal).value as string).toLowerCase()
+            : extractName((link as Link).url),
       })),
   };
 }
