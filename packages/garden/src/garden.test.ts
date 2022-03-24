@@ -48,10 +48,10 @@ it("should have zero value", async () => {
   expect(
     things["archive-linked"].links.find(
       (link) => (link.name = "archived-thing")
-    ).value
+    )?.value
   ).toBe(0);
   expect(
-    things["README"].links.find((link) => (link.name = "vocabulary")).value
+    things["README"].links.find((link) => (link.name = "vocabulary"))?.value
   ).toBeUndefined();
 });
 
