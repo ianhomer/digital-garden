@@ -159,11 +159,13 @@ export const findWantedThings = (things: Things) => {
   );
 };
 
+export const toConfig = (options: GardenOptions): GardenConfig => ({
+  ...defaultConfig,
+  ...options,
+});
+
 export const createGarden = (options: GardenOptions): Garden => {
-  const config = {
-    ...defaultConfig,
-    ...options,
-  };
+  const config = toConfig(options);
 
   return {
     config,

@@ -1,3 +1,3 @@
-import { createGarden, findWantedThings } from "./garden";
+import { createGarden, findWantedThings, toConfig } from "./garden";
 
-export { createGarden, findWantedThings };
+export { createGarden, findWantedThings, toConfig };

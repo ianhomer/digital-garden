@@ -1,13 +1,14 @@
-import { createGarden } from "@garden/garden";
+import { createGarden, toConfig } from "@garden/garden";
 import { Item } from "@garden/types";
 import fs from "fs";
 import matter from "gray-matter";
 import { dirname, join, sep } from "path";
 
-import config from "../../garden.config";
+import options from "../../garden.config";
 import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
 
-const garden = createGarden(config);
+const config = toConfig(options);
+const garden = createGarden(options);
 const gardensDirectory = config.directory;
 
 const hasMultipleGardens = !fs.existsSync(`${config.directory}/README.md`);
