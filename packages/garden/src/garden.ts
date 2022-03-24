@@ -18,12 +18,27 @@ export interface Garden {
   load: () => Promise<Things>;
   refresh: () => Promise<Things>;
 }
+
+export interface GardenOptions {
+  directory?: string;
+  excludedDirectories?: string[];
+  hasMultiple?: boolean;
+  gardens?: { [key: string]: string };
+}
+
 export interface GardenConfig {
   directory: string;
   excludedDirectories: string[];
   hasMultiple: boolean;
-  gardens?: { [key: string]: string };
+  gardens: { [key: string]: string };
 }
+
+const defaultConfig = {
+  directory: ".gardens",
+  excludedDirectories: ["node_modules"],
+  hasMultiple: false,
+  gardens: {},
+};
 
 const loadThing = (config: GardenConfig, filename: string): FileThing => {
   const match = /([^/]*).md$/.exec(filename);
@@ -144,7 +159,12 @@ export const findWantedThings = (things: Things) => {
   );
 };
 
-export const createGarden = (config: GardenConfig): Garden => {
+export const createGarden = (options: GardenOptions): Garden => {
+  const config = {
+    ...defaultConfig,
+    ...options,
+  };
+
   return {
     config,
     meta: async () => await generateMeta(config),
