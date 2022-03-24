@@ -49,7 +49,7 @@ export default function GraphDiagram({
     const svg = d3.select(ref.current);
 
     const link = svg
-      .selectAll(".link")
+      .selectAll<SVGLineElement, NodeLink>(".link")
       .data(graph.links)
       .join("line")
       .classed("link", true)
@@ -84,10 +84,10 @@ export default function GraphDiagram({
 
     function tick() {
       link
-        .attr("x1", (d: any) => d.source.x + xOffset)
-        .attr("y1", (d: any) => d.source.y + yOffset)
-        .attr("x2", (d: any) => d.target.x + xOffset)
-        .attr("y2", (d: any) => d.target.y + yOffset);
+        .attr("x1", (d) => (d.source as Node).x + xOffset)
+        .attr("y1", (d) => (d.source as Node).y + yOffset)
+        .attr("x2", (d) => (d.target as Node).x + xOffset)
+        .attr("y2", (d) => (d.target as Node).y + yOffset);
       group.attr(
         "transform",
         (d: Node) =>
@@ -99,7 +99,11 @@ export default function GraphDiagram({
       );
     }
 
-    function click(this: SVGElement, event: any, d: Node) {
+    function click(
+      this: SVGElement,
+      event: { currentTarget: never },
+      d: Node
+    ): void {
       delete d.fx;
       delete d.fy;
       d3.select(event.currentTarget).classed("fixed", false);
@@ -132,14 +136,17 @@ export default function GraphDiagram({
       return x < low ? low : x > high ? high : x;
     }
 
-    function dragged(this: SVGElement, event: any) {
+    function dragged(
+      this: SVGElement,
+      event: { subject: { fx: number; fy: number }; x: number; y: number }
+    ) {
       event.subject.fx = clamp(event.x, -xOffset, xOffset);
       event.subject.fy = clamp(event.y, -yOffset, height - yOffset);
       simulation.alpha(1).restart();
     }
 
     const drag = d3
-      .drag<SVGElement, Node, any>()
+      .drag<SVGElement, Node, never>()
       .on("start", dragstart)
       .on("drag", dragged);
 
