@@ -1,9 +1,9 @@
 import { Meta } from "@garden/types";
-import { Link } from "mdast";
+import { Link, Literal } from "mdast";
 import remarkParse from "remark-parse";
 import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
-import { Literal, Node, Parent } from "unist";
+import { Node, Parent } from "unist";
 
 export function parse(content: () => string) {
   return unified()
@@ -27,9 +27,9 @@ function extractTitle(node: Parent) {
     return "no title";
   }
   if (!(firstNode as Parent).children) {
-    return (firstNode as Literal).value as string;
+    return (firstNode as Literal).value;
   }
-  return ((firstNode as Parent).children[0] as Literal).value as string;
+  return ((firstNode as Parent).children[0] as Literal).value;
 }
 
 function extractName(url: string) {
@@ -50,7 +50,7 @@ export function process(content: () => string): Meta {
       .map((link) => ({
         name:
           link.type === "wikiLink"
-            ? ((link as Literal).value as string).toLowerCase()
+            ? (link as Literal).value.toLowerCase()
             : extractName((link as Link).url),
       })),
   };
