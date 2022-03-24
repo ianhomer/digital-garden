@@ -14,7 +14,7 @@ const env = {
   GARDENS_DIRECTORY: gardensDirectory,
 };
 
-const updateMeta = require("child_process").spawn("pnpm", ["build:prepare"], {
+require("child_process").spawn("pnpm", ["build:prepare"], {
   cwd: siteRoot,
   env,
   detached: false,

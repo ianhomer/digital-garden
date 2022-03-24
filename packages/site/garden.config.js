@@ -34,7 +34,6 @@ function generateDefault() {
   })();
   return {
     gardens,
-    excludedDirectories: ["node_modules"],
     hasMultiple: !fs.existsSync(`${directory}/README.md`),
     directory,
   };
