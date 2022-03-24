@@ -2,8 +2,6 @@ import { createGarden } from "./garden";
 import { parse, process } from "./markdown";
 
 const garden = createGarden({
-  excludedDirectories: [],
-  hasMultiple: false,
   directory: "../test-gardens/content",
 });
 
@@ -14,11 +12,12 @@ it("should parse OK", () => {
   expect(tree.children[0].type).toBe("heading");
 });
 
-it("should process OK", () => {
-  const meta = process(() => "# My Name\n\n[[my-link]]");
+it("content should process OK", () => {
+  const meta = process(() => "# My Name\n\n[[wiki-link]] [link](./my-link.md)");
 
   expect(meta.title).toBe("My Name");
-  expect(meta.links[0].name).toBe("my-link");
+  expect(meta.links[0].name).toBe("wiki-link");
+  expect(meta.links[1].name).toBe("my-link");
 });
 
 it("file thing should process OK", () => {
