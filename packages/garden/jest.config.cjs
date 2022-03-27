@@ -12,6 +12,8 @@ const transformIgnores = [
   ".*vfile",
 ].join("|");
 const config = {
+  collectCoverage: true,
+  coverageDirectory: "output",
   moduleDirectories: ["node_modules", "<rootDir>/"],
   reporters: ["default", ["jest-html-reporters", { publicPath: "output" }]],
   testPathIgnorePatterns: ["./test/e2e"],

@@ -26,7 +26,7 @@ describe("markdown", () => {
   });
 
   describe("file", () => {
-    it("should process have title and links", () => {
+    it("should have title and links", () => {
       const meta = process(garden.thing("garden1/word/word-1.md").content);
 
       expect(meta.title).toBe("Word 1");
