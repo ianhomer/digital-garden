@@ -4,8 +4,8 @@ const garden = createGarden({
   directory: "./src/test/content/",
 });
 
-describe("garden thing", () => {
-  it("gets base meta", () => {
+describe("thing", () => {
+  it("should have name", () => {
     const thing = garden.thing("garden/my-name.md");
     expect(thing.name).toBe("my-name");
   });

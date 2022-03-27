@@ -9,12 +9,12 @@ const garden = createGarden({
   directory: "../test-gardens/content",
 });
 
-describe("garden core", () => {
-  it("should create garden", () => {
+describe("garden", () => {
+  it("should be created", () => {
     expect(garden.config.directory).toBe("../test-gardens/content");
   });
 
-  it("should create meta", async () => {
+  it("should have meta", async () => {
     const meta = await garden.meta();
     expect(Object.keys(meta).length).toBe(11);
     const wordThing = meta["word"];
@@ -22,19 +22,19 @@ describe("garden core", () => {
     expect(wordThing.links[0].name).toBe("vocabulary");
   });
 
-  it("should get backlinks", async () => {
+  it("should have backlinks", async () => {
     const things = await garden.meta();
     const backLinks = garden.findBackLinks(things, "word-2");
     expect(backLinks[0].name).toBe("word-1");
   });
 
-  it("should get know things", async () => {
+  it("should have known things", async () => {
     const things = await garden.meta();
     const knownThings = findKnownThings(things);
     expect(knownThings.length).toBe(11);
   });
 
-  it("should get linked things", async () => {
+  it("should have linked things", async () => {
     const things = await garden.meta();
     const linkedThings = findLinkedThings(things);
     expect(linkedThings).toContain("word-2");
@@ -42,7 +42,7 @@ describe("garden core", () => {
     expect(linkedThings.length).toBe(7);
   });
 
-  it("should have zero value", async () => {
+  it("should have achived links with zero value", async () => {
     const things = await garden.meta();
     expect(things["README"].value).toBeUndefined();
     expect(things["archived-thing"].value).toBe(0);
@@ -56,7 +56,7 @@ describe("garden core", () => {
     ).toBeUndefined();
   });
 
-  it("should get wanted things", async () => {
+  it("should have wanted things", async () => {
     const things = await garden.meta();
     const wantedThings = findWantedThings(things);
     expect(wantedThings.length).toBe(1);
