@@ -72,6 +72,23 @@ export async function findItem(config: GardenConfig, name: string | false) {
   );
 }
 
+export async function findItemOrWanted(
+  config: GardenConfig,
+  name: string
+): Promise<Item> {
+  try {
+    return await findItem(config, name);
+  } catch (error) {
+    if (config.verbose) {
+      console.log(`Wanted page : ${name} : ${error}`);
+    }
+    return {
+      name,
+      content: `# ${name}\n\nWanted`,
+    };
+  }
+}
+
 export async function getAllItems(config: GardenConfig): Promise<Item[]> {
   const files = await findFiles(config, config.directory);
   return files.map((filename) => {
