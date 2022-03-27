@@ -11,3 +11,9 @@ export const garden1Config = {
   directory: "../test-gardens/content/garden1",
   verbose: false,
 };
+
+export const gardenConfig = {
+  allowGlobalMeta: false,
+  directory: "../test-gardens/content",
+  verbose: false,
+};

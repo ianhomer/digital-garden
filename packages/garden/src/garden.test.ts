@@ -4,9 +4,9 @@ import {
   findLinkedThings,
   findWantedThings,
 } from "./garden";
-import { garden1Config } from "./test-helpers";
+import { gardenConfig } from "./test-helpers";
 
-const garden = createGarden(garden1Config);
+const garden = createGarden(gardenConfig);
 
 describe("garden", () => {
   it("should be created", () => {

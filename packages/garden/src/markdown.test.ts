@@ -1,8 +1,8 @@
 import { createGarden } from "./garden";
 import { parse, process } from "./markdown";
-import { garden1Config } from "./test-helpers";
+import { gardenConfig } from "./test-helpers";
 
-const garden = createGarden(garden1Config);
+const garden = createGarden(gardenConfig);
 
 describe("markdown", () => {
   describe("basic content", () => {
