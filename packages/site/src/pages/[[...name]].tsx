@@ -73,7 +73,7 @@ async function findItemOrWanted(name: string): Promise<Item> {
 
 export async function getStaticProps({ params }) {
   const item = await findItemOrWanted(params.name && params.name[0]);
-  const links = await findLinks(garden, config, item, params.name);
+  const links = await findLinks(garden, item);
   const content = await markdownToHtml(item.content || "no content");
   const things = await garden.load();
 
