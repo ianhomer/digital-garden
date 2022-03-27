@@ -5,18 +5,16 @@ import {
   findImplicitBackLinks,
   findImplicitForwardLinks,
 } from "./content";
-import { Garden, GardenConfig } from "./garden";
+import { Garden } from "./garden";
 
-export const findLinks = async (
-  garden: Garden,
-  config: GardenConfig,
-  item: Item,
-  name: string
-) => {
-  const explicitBackLinks = name ? await findBackLinks(garden, name[0]) : [];
-  const implicitBackLinks = await findImplicitBackLinks(config, name);
+export const findLinks = async (garden: Garden, item: Item) => {
+  const explicitBackLinks = await findBackLinks(garden, item.name);
+  const implicitBackLinks = await findImplicitBackLinks(
+    garden.config,
+    item.name
+  );
   const implicitForwardLinks = item.filename
-    ? await findImplicitForwardLinks(config, item)
+    ? await findImplicitForwardLinks(garden.config, item)
     : [];
   return Array.from(
     new Set([
