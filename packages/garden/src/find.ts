@@ -1,12 +1,16 @@
-import { GardenConfig } from "@garden/garden/src/garden";
+import { default as fsWithCallbacks } from "fs";
 import { resolve } from "path";
 
-const { readdir } = require("fs").promises;
+import { GardenConfig } from "./garden";
+import readdir = fsWithCallbacks.promises.readdir;
 
 const shouldIncludeDirectory = (config: GardenConfig, name: string) =>
   !config.excludedDirectories.includes(name) && !name.startsWith(".");
 
-async function* findFilesDeep(config: GardenConfig, directory: string) {
+async function* findFilesDeep(
+  config: GardenConfig,
+  directory: string
+): AsyncIterable<string> {
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
     const resolved = resolve(directory, child.name);
@@ -25,7 +29,7 @@ async function* findFilesInNamedDirectoryDeep(
   config: GardenConfig,
   directory: string,
   name: string
-) {
+): AsyncIterable<string> {
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
     const resolved = resolve(directory, child.name);
@@ -47,7 +51,7 @@ export async function findAbsoluteFile(
   config: GardenConfig,
   directory: string,
   filename: string
-): Promise<string> {
+): Promise<string | null> {
   const directories = await readdir(directory, { withFileTypes: true });
   // Files first
   for (const child of directories) {
