@@ -38,7 +38,7 @@ describe("garden", () => {
     const linkedThings = findLinkedThings(things);
     expect(linkedThings).toContain("word-2");
     expect(linkedThings).toContain("word-3");
-    expect(linkedThings.length).toBe(7);
+    expect(linkedThings.length).toBe(9);
   });
 
   it("should have achived links with zero value", async () => {

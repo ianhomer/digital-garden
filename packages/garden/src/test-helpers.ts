@@ -12,6 +12,13 @@ export const garden1Config = {
   verbose: false,
 };
 
+export const garden1WithLiveMetaConfig = {
+  allowGlobalMeta: false,
+  directory: "../test-gardens/content/garden1",
+  verbose: false,
+  liveMeta: true,
+};
+
 export const gardenConfig = {
   allowGlobalMeta: false,
   directory: "../test-gardens/content",

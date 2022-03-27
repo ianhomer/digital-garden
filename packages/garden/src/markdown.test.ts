@@ -43,7 +43,7 @@ describe("markdown", () => {
       const meta = process(garden.thing("garden1/word/word-1.md").content);
 
       expect(meta.title).toBe("Word 1");
-      expect(meta.links[0].name).toBe("word-2");
+      expect(meta.links).toContainEqual({ name: "word-2" });
     });
   });
 });

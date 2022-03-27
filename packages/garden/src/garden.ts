@@ -25,6 +25,7 @@ export interface GardenOptions {
   excludedDirectories?: string[];
   hasMultiple?: boolean;
   gardens?: { [key: string]: string };
+  liveMeta?: boolean;
   verbose?: boolean;
 }
 
@@ -33,6 +34,7 @@ export interface GardenConfig {
   directory: string;
   excludedDirectories: string[];
   hasMultiple: boolean;
+  liveMeta: boolean;
   gardens: { [key: string]: string };
   verbose: boolean;
 }
@@ -43,6 +45,7 @@ const defaultConfig = {
   excludedDirectories: ["node_modules"],
   hasMultiple: false,
   gardens: {},
+  liveMeta: false,
   verbose: true,
 };
 
@@ -131,6 +134,9 @@ const refresh = async (config: GardenConfig) => {
 };
 
 async function loadMeta(config: GardenConfig) {
+  if (config.liveMeta) {
+    return await generateMeta(config);
+  }
   const metaFilename = getMetaFilename(config);
   if (fs.existsSync(metaFilename)) {
     const content = fs.readFileSync(join(getMetaFilename(config)));

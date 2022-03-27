@@ -1,9 +1,9 @@
 import { findItem } from "./content";
 import { createGarden } from "./garden";
 import { findLinks } from "./links";
-import { garden1Config } from "./test-helpers";
+import { garden1WithLiveMetaConfig } from "./test-helpers";
 
-const garden = createGarden(garden1Config);
+const garden = createGarden(garden1WithLiveMetaConfig);
 
 describe("links", () => {
   it("should have links", async () => {
@@ -13,7 +13,8 @@ describe("links", () => {
     [
       { name: "meta", type: "in" },
       { name: "vocabulary", type: "in" },
-      { name: "word-1", type: "has" },
+      { name: "word-2", type: "from" },
+      { name: "word-3", type: "has" },
     ].forEach((expected) => expect(links).toContainEqual(expected));
   });
 });
