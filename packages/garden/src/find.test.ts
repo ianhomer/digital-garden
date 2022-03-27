@@ -1,3 +1,4 @@
+import { findItemOrWanted } from ".";
 import { findFile } from "./find";
 import { createGarden } from "./garden";
 import { garden1Config } from "./test-helpers";
