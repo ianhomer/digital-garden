@@ -26,9 +26,11 @@ function extractTitle(node: Parent) {
   if (!firstNode) {
     return "no title";
   }
-  if (!(firstNode as Parent).children) {
-    return (firstNode as Literal).value;
-  }
+  // This is explicitly commented out since it has no test case. When it trips
+  // up real content we can add test case and re-introduce
+  // if (!(firstNode as Parent).children) {
+  //   return (firstNode as Literal).value;
+  // }
   return ((firstNode as Parent).children[0] as Literal).value;
 }
 

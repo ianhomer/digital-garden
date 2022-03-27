@@ -25,6 +25,20 @@ describe("markdown", () => {
     });
   });
 
+  describe("content without heading", () => {
+    it("should take title from first line", () => {
+      const meta = process(() => "My Name");
+      expect(meta.title).toBe("My Name");
+    });
+  });
+
+  describe("empty content", () => {
+    it("should have explicit no title", () => {
+      const meta = process(() => "");
+      expect(meta.title).toBe("no title");
+    });
+  });
+
   describe("file", () => {
     it("should have title and links", () => {
       const meta = process(garden.thing("garden1/word/word-1.md").content);
