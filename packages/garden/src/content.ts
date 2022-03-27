@@ -16,14 +16,17 @@ export class FileItem implements Item {
   filename: string;
   content: string;
 
-  constructor(filename: string, load = false) {
+  constructor(gardensDirectory: string, filename: string, load = false) {
     this.filename = filename;
-    this.name = /([^/]*).md$/.exec(filename)[1];
+    const match = /([^/]*).md$/.exec(filename);
+    this.name = match ? match[1] : this.filename;
     if (load) {
       const path = join(gardensDirectory, `${filename}`);
       const fileContents = fs.readFileSync(path, "utf8");
       const itemMatter = matter(fileContents);
       this.content = itemMatter.content;
+    } else {
+      this.content = "";
     }
   }
 }
@@ -34,7 +37,10 @@ export async function findImplicitBackLinks(
 ): Promise<string[]> {
   return (await findFilesInNamedDirectory(config, config.directory, name))
     .filter((s) => s.endsWith(".md"))
-    .map((backlink: string) => /([^/]*).md$/.exec(backlink)[1]);
+    .map((backlink: string) => {
+      const match = /([^/]*).md$/.exec(backlink);
+      return match ? match[1] : backlink;
+    });
 }
 
 export async function findImplicitForwardLinks(
@@ -42,9 +48,11 @@ export async function findImplicitForwardLinks(
   item: Item
 ): Promise<string[]> {
   return Promise.resolve(
-    dirname(item.filename)
-      .split(sep)
-      .slice(config.hasMultiple ? 1 : 0)
+    item.filename
+      ? dirname(item.filename)
+          .split(sep)
+          .slice(config.hasMultiple ? 1 : 0)
+      : []
   );
 }
 
@@ -58,6 +66,7 @@ export async function findBackLinks(
 
 export async function findItem(config: GardenConfig, name: string | false) {
   return new FileItem(
+    config.directory,
     await findFile(config, config.directory, (name ? name : "README") + ".md"),
     true
   );
@@ -66,6 +75,6 @@ export async function findItem(config: GardenConfig, name: string | false) {
 export async function getAllItems(config: GardenConfig): Promise<Item[]> {
   const files = await findFiles(config, config.directory);
   return files.map((filename) => {
-    return new FileItem(filename);
+    return new FileItem(config.directory, filename);
   });
 }

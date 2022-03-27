@@ -72,7 +72,7 @@ export async function findAbsoluteFile(
     }
   }
 
-  return null;
+  throw `Cannot find ${filename}`;
 }
 
 export async function findFile(
