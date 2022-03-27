@@ -1,8 +1,7 @@
-import { default as fsWithCallbacks } from "fs";
+import { readdir } from "fs/promises";
 import { resolve } from "path";
 
 import { GardenConfig } from "./garden";
-import readdir = fsWithCallbacks.promises.readdir;
 
 const shouldIncludeDirectory = (config: GardenConfig, name: string) =>
   !config.excludedDirectories.includes(name) && !name.startsWith(".");
@@ -85,7 +84,7 @@ export async function findFile(
     throw "Cannot find " + filename + " in " + directory;
   }
 
-  return found.substring(directory.length + 1);
+  return found.substring(resolve(directory).length + 1);
 }
 
 export async function findFiles(
