@@ -1,4 +1,8 @@
-import { getAllItems } from "../../lib/content";
+import { getAllItems } from "@garden/garden";
+import { toConfig } from "@garden/garden";
+
+import options from "../../../garden.config.js";
+const config = toConfig(options);
 
 type AllData = {
   items: string[];
@@ -18,7 +22,7 @@ function All({ items }: AllData) {
 }
 
 export async function getStaticProps() {
-  const items = (await getAllItems()).map((item) => item.name);
+  const items = (await getAllItems(config)).map((item) => item.name);
 
   return { props: { items } };
 }

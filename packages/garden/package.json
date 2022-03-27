@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@garden/types": "workspace:*",
+    "gray-matter": "^4.0.3",
     "lodash": "^4.17.21",
     "remark-rehype": "^10.1.0",
     "remark-wiki-link": "^1.0.4",
