@@ -1,12 +1,16 @@
-import { GardenConfig } from "@garden/garden/src/garden";
 import { resolve } from "path";
+
+import { GardenConfig } from "./garden";
 
 const { readdir } = require("fs").promises;
 
 const shouldIncludeDirectory = (config: GardenConfig, name: string) =>
   !config.excludedDirectories.includes(name) && !name.startsWith(".");
 
-async function* findFilesDeep(config: GardenConfig, directory: string) {
+async function* findFilesDeep(
+  config: GardenConfig,
+  directory: string
+): AsyncIterable<string> {
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
     const resolved = resolve(directory, child.name);
@@ -25,7 +29,7 @@ async function* findFilesInNamedDirectoryDeep(
   config: GardenConfig,
   directory: string,
   name: string
-) {
+): AsyncIterable<string> {
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
     const resolved = resolve(directory, child.name);

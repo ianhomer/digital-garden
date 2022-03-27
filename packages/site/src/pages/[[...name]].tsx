@@ -1,16 +1,23 @@
-import { createGarden, findLinks, findWantedThings } from "@garden/garden";
+import {
+  createGarden,
+  findItem,
+  findLinks,
+  findWantedThings,
+  getAllItems,
+  toConfig,
+} from "@garden/garden";
 import { findDeepLinks } from "@garden/graph";
 import { Item, Link } from "@garden/types";
 import { useState } from "react";
 
-import config from "../../garden.config.js";
+import options from "../../garden.config.js";
 import GraphDiagram from "../components/graph-diagram";
 import { useKey } from "../components/useKey";
 import useWindowDimensions from "../components/useWindowDimensions";
-import { findItem, getAllItems } from "../lib/content";
 import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
 
+const config = toConfig(options);
 const garden = createGarden(config);
 
 function ItemPage({ item }) {
@@ -54,7 +61,7 @@ function ItemPage({ item }) {
 
 async function findItemOrWanted(name: string): Promise<Item> {
   try {
-    return await findItem(name);
+    return await findItem(config, name);
   } catch (error) {
     console.log(`Wanted page : ${name}`);
     return {
@@ -66,7 +73,7 @@ async function findItemOrWanted(name: string): Promise<Item> {
 
 export async function getStaticProps({ params }) {
   const item = await findItemOrWanted(params.name && params.name[0]);
-  const links = await findLinks(item, params.name);
+  const links = await findLinks(garden, config, item, params.name);
   const content = await markdownToHtml(item.content || "no content");
   const things = await garden.load();
 
@@ -85,7 +92,7 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
   const things = await garden.load();
   const items = [
-    ...(await getAllItems()),
+    ...(await getAllItems(config)),
     ...[{ name: "" }],
     ...findWantedThings(things).map((name) => ({
       name,

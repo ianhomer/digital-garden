@@ -47,6 +47,7 @@ importers:
       '@babel/preset-typescript': ^7.16.7
       '@garden/types': workspace:*
       '@types/lodash': ^4.14.179
+      gray-matter: ^4.0.3
       jest: ^27.5.1
       jest-html-reporters: ^3.0.6
       lodash: ^4.17.21
@@ -57,6 +58,7 @@ importers:
       unified: ^10.1.1
     dependencies:
       '@garden/types': link:../types
+      gray-matter: 4.0.3
       lodash: 4.17.21
       remark-rehype: 10.1.0
       remark-wiki-link: 1.0.4
