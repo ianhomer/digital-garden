@@ -5,6 +5,7 @@ import { join } from "path";
 import { resolve } from "path";
 
 import { findFilesDeep } from "./file";
+import { logger } from "./logger";
 import { process } from "./markdown";
 import { FileThing } from "./thing";
 
@@ -125,10 +126,9 @@ const getMetaFilename = (config: GardenConfig) => {
 const refresh = async (config: GardenConfig) => {
   const meta = await generateMeta(config);
   const fullGardenMetaFile = getMetaFilename(config);
-  config.verbose &&
-    console.log(
-      `Refreshing ${fullGardenMetaFile} : ${Object.keys(meta).length} things`
-    );
+  logger.info(
+    `Refreshing ${fullGardenMetaFile} : ${Object.keys(meta).length} things`
+  );
   fs.writeFileSync(fullGardenMetaFile, JSON.stringify(meta));
   return meta;
 };
@@ -142,9 +142,7 @@ async function loadMeta(config: GardenConfig) {
     const content = fs.readFileSync(join(getMetaFilename(config)));
     return JSON.parse(content.toString("utf8"));
   } else {
-    if (config.verbose) {
-      console.log(`Meta file ${metaFilename} does not exist`);
-    }
+    logger.info(`Meta file ${metaFilename} does not exist`);
     return {};
   }
 }
