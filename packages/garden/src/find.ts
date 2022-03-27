@@ -1,8 +1,8 @@
+import { default as fsWithCallbacks } from "fs";
 import { resolve } from "path";
 
 import { GardenConfig } from "./garden";
-
-const { readdir } = require("fs").promises;
+import readdir = fsWithCallbacks.promises.readdir;
 
 const shouldIncludeDirectory = (config: GardenConfig, name: string) =>
   !config.excludedDirectories.includes(name) && !name.startsWith(".");
