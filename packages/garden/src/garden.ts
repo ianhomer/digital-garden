@@ -136,7 +136,9 @@ async function loadMeta(config: GardenConfig) {
     const content = fs.readFileSync(join(getMetaFilename(config)));
     return JSON.parse(content.toString("utf8"));
   } else {
-    console.log(`Meta file ${metaFilename} does not exist`);
+    if (config.verbose) {
+      console.log(`Meta file ${metaFilename} does not exist`);
+    }
     return {};
   }
 }
