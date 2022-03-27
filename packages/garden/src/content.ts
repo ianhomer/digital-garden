@@ -5,6 +5,7 @@ import { dirname, join, sep } from "path";
 
 import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
 import { Garden, GardenConfig } from "./garden";
+import { logger } from "./logger";
 
 // const config = toConfig(options);
 // const garden = createGarden(options);
@@ -79,9 +80,7 @@ export async function findItemOrWanted(
   try {
     return await findItem(config, name);
   } catch (error) {
-    if (config.verbose) {
-      console.log(`Wanted page : ${name} : ${error}`);
-    }
+    logger.info(`Wanted page : ${name} : ${error}`);
     return {
       name,
       content: `# ${name}\n\nWanted`,

@@ -6,7 +6,7 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "test": "jest --no-watchman",
+    "test": "LOG_LEVEL=warn jest --no-watchman",
     "test:debug": "NODE_OPTIONS=--inspect-brk jest"
   },
   "devDependencies": {
@@ -23,6 +23,7 @@
     "@garden/types": "workspace:*",
     "gray-matter": "^4.0.3",
     "lodash": "^4.17.21",
+    "pino": "^7.9.2",
     "remark-rehype": "^10.1.0",
     "remark-wiki-link": "^1.0.4",
     "unified": "^10.1.1"
