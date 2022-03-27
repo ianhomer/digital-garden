@@ -26,7 +26,7 @@ export class FileItem implements Item {
       const itemMatter = matter(fileContents);
       this.content = itemMatter.content;
     } else {
-      this.content = "";
+      this.content = `${this.name} not loaded`;
     }
   }
 }

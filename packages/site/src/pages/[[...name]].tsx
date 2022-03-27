@@ -63,7 +63,7 @@ async function findItemOrWanted(name: string): Promise<Item> {
   try {
     return await findItem(config, name);
   } catch (error) {
-    console.log(`Wanted page : ${name}`);
+    console.log(`Wanted page : ${name} : ${error}`);
     return {
       name,
       content: `# ${name}\n\nWanted`,

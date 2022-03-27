@@ -51,7 +51,7 @@ export async function findAbsoluteFile(
   config: GardenConfig,
   directory: string,
   filename: string
-): Promise<string> {
+): Promise<string | null> {
   const directories = await readdir(directory, { withFileTypes: true });
   // Files first
   for (const child of directories) {
@@ -72,7 +72,7 @@ export async function findAbsoluteFile(
     }
   }
 
-  throw `Cannot find ${filename}`;
+  return null;
 }
 
 export async function findFile(
