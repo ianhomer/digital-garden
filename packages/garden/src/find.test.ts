@@ -1,11 +1,8 @@
 import { findFile } from "./find";
 import { createGarden } from "./garden";
+import { garden1Config } from "./test-helpers";
 
-const garden = createGarden({
-  allowGlobalMeta: false,
-  directory: "../test-gardens/content/garden1",
-  verbose: false,
-});
+const garden = createGarden(garden1Config);
 
 describe("content", () => {
   it("should find item", async () => {

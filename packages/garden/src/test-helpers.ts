@@ -5,3 +5,9 @@ export const iterableToArray = async (iterator: AsyncIterable<string>) => {
   }
   return objects;
 };
+
+export const garden1Config = {
+  allowGlobalMeta: false,
+  directory: "../test-gardens/content/garden1",
+  verbose: false,
+};

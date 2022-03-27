@@ -1,12 +1,9 @@
 import { findItem } from "./content";
 import { createGarden } from "./garden";
 import { findLinks } from "./links";
+import { garden1Config } from "./test-helpers";
 
-const garden = createGarden({
-  allowGlobalMeta: false,
-  directory: "../test-gardens/content/garden1",
-  verbose: false,
-});
+const garden = createGarden(garden1Config);
 
 describe("links", () => {
   it("should have links", async () => {

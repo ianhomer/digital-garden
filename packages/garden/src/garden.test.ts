@@ -4,12 +4,9 @@ import {
   findLinkedThings,
   findWantedThings,
 } from "./garden";
+import { garden1Config } from "./test-helpers";
 
-const garden = createGarden({
-  allowGlobalMeta: false,
-  directory: "../test-gardens/content",
-  verbose: false,
-});
+const garden = createGarden(garden1Config);
 
 describe("garden", () => {
   it("should be created", () => {
