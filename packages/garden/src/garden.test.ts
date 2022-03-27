@@ -6,7 +6,9 @@ import {
 } from "./garden";
 
 const garden = createGarden({
+  allowGlobalMeta: false,
   directory: "../test-gardens/content",
+  verbose: false,
 });
 
 describe("garden", () => {
@@ -63,10 +65,10 @@ describe("garden", () => {
     expect(wantedThings[0]).toBe("wanted");
   });
 
-  it.skip("should refresh meta", async () => {
+  it("should refresh meta", async () => {
     await garden.refresh().then(async () => {
       const meta = await garden.load();
-      expect(Object.keys(meta).length).toBe(6);
+      expect(Object.keys(meta).length).toBe(11);
     });
   });
 });

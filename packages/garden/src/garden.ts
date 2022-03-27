@@ -20,24 +20,30 @@ export interface Garden {
 }
 
 export interface GardenOptions {
+  allowGlobalMeta?: boolean;
   directory?: string;
   excludedDirectories?: string[];
   hasMultiple?: boolean;
   gardens?: { [key: string]: string };
+  verbose?: boolean;
 }
 
 export interface GardenConfig {
+  allowGlobalMeta: boolean;
   directory: string;
   excludedDirectories: string[];
   hasMultiple: boolean;
   gardens: { [key: string]: string };
+  verbose: boolean;
 }
 
 const defaultConfig = {
+  allowGlobalMeta: true,
   directory: ".gardens",
   excludedDirectories: ["node_modules"],
   hasMultiple: false,
   gardens: {},
+  verbose: true,
 };
 
 const loadThing = (config: GardenConfig, filename: string): FileThing => {
@@ -103,7 +109,7 @@ const generateMeta = async (
 const globalMetaDirectory = join(os.homedir(), ".local/garden/meta");
 
 const getMetaFilename = (config: GardenConfig) => {
-  if (fs.existsSync(globalMetaDirectory)) {
+  if (config.allowGlobalMeta && fs.existsSync(globalMetaDirectory)) {
     return join(
       globalMetaDirectory,
       config.directory.replace(/[\\/\\.]/g, "-") + "-meta.json"
@@ -116,9 +122,10 @@ const getMetaFilename = (config: GardenConfig) => {
 const refresh = async (config: GardenConfig) => {
   const meta = await generateMeta(config);
   const fullGardenMetaFile = getMetaFilename(config);
-  console.log(
-    `Refreshing ${fullGardenMetaFile} : ${Object.keys(meta).length} things`
-  );
+  config.verbose &&
+    console.log(
+      `Refreshing ${fullGardenMetaFile} : ${Object.keys(meta).length} things`
+    );
   fs.writeFileSync(fullGardenMetaFile, JSON.stringify(meta));
   return meta;
 };
