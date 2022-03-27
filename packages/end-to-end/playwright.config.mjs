@@ -12,8 +12,8 @@ const config = {
   retries: 0,
   reporter: [
     [process.env.CI ? "dot" : "list"],
-    ["json", { outputFile: "results/test-results.json" }],
-    ["html", { open: "never", outputFolder: "results/playwright-report" }],
+    ["json", { outputFile: "output/test-results.json" }],
+    ["html", { open: "never", outputFolder: "output/playwright-report" }],
   ],
   outputDir: "results/",
 

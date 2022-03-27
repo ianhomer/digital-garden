@@ -48,6 +48,7 @@ importers:
       '@garden/types': workspace:*
       '@types/lodash': ^4.14.179
       jest: ^27.5.1
+      jest-html-reporters: ^3.0.6
       lodash: ^4.17.21
       remark-parse: ^10.0.1
       remark-rehype: ^10.1.0
@@ -66,6 +67,7 @@ importers:
       '@babel/preset-typescript': 7.16.7_@babel+core@7.17.5
       '@types/lodash': 4.14.179
       jest: 27.5.1
+      jest-html-reporters: 3.0.6
       remark-parse: 10.0.1
       typescript: 4.5.5
 
@@ -5419,6 +5421,13 @@ packages:
       walker: 1.0.8
     optionalDependencies:
       fsevents: 2.3.2
+
+  /jest-html-reporters/3.0.6:
+    resolution: {integrity: sha512-snTlUuZ0FyFmXEkYrNiCH1Zym/u3owI45yG24morKmVJSlTmcjZsaEtbbmL58buxj2Bo6NWukJFaFX7w2aGkXA==}
+    dependencies:
+      fs-extra: 9.1.0
+      open: 8.4.0
+    dev: true
 
   /jest-jasmine2/27.5.1:
     resolution: {integrity: sha512-jtq7VVyG8SqAorDpApwiJJImd0V2wv1xzdheGHRGyuT7gZm6gG47QEskOlzsN1PG/6WNaCo5pmwMHDf3AkG2pQ==}
