@@ -1,6 +1,6 @@
 import {
   createGarden,
-  findItem,
+  findItemOrWanted,
   findLinks,
   findWantedThings,
   getAllItems,
@@ -59,20 +59,11 @@ function ItemPage({ item }) {
   );
 }
 
-async function findItemOrWanted(name: string): Promise<Item> {
-  try {
-    return await findItem(config, name);
-  } catch (error) {
-    console.log(`Wanted page : ${name} : ${error}`);
-    return {
-      name,
-      content: `# ${name}\n\nWanted`,
-    };
-  }
-}
-
 export async function getStaticProps({ params }) {
-  const item = await findItemOrWanted(params.name && params.name[0]);
+  const item = await findItemOrWanted(
+    garden.config,
+    params.name && params.name[0]
+  );
   const links = await findLinks(garden, item);
   const content = await markdownToHtml(item.content || "no content");
   const things = await garden.load();

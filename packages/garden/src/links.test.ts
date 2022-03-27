@@ -1,5 +1,3 @@
-import { Link } from "@garden/types";
-
 import { findItem } from "./content";
 import { createGarden } from "./garden";
 import { findLinks } from "./links";
@@ -10,16 +8,15 @@ const garden = createGarden({
   verbose: false,
 });
 
-const byName = (name: string) => (link: Link) => link.name == name;
-
 describe("links", () => {
   it("should have links", async () => {
-    const name = "word";
-
-    const item = await findItem(garden.config, name);
+    const item = await findItem(garden.config, "word");
     const links = await findLinks(garden, item);
-    expect(links.find(byName("meta"))?.type).toBe("in");
-    expect(links.find(byName("vocabulary"))?.type).toBe("in");
-    expect(links.find(byName("word-1"))?.type).toBe("has");
+    expect(links.length).toBe(7);
+    [
+      { name: "meta", type: "in" },
+      { name: "vocabulary", type: "in" },
+      { name: "word-1", type: "has" },
+    ].forEach((expected) => expect(links).toContainEqual(expected));
   });
 });
