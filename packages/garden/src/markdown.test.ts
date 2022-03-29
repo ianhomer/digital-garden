@@ -46,4 +46,22 @@ describe("markdown", () => {
       expect(meta.links).toContainEqual({ name: "word-2" });
     });
   });
+
+  describe("file with frontmatter", () => {
+    it("should have title", () => {
+      const meta = process(garden.thing("garden1/frontmatter.md").content);
+
+      expect(meta.title).toBe("Frontmatter");
+    });
+  });
+
+  describe("file with frontmatter with no content", () => {
+    it("should have no title", () => {
+      const meta = process(
+        garden.thing("garden1/frontmatter-with-no-content.md").content
+      );
+
+      expect(meta.title).toBe("no title");
+    });
+  });
 });
