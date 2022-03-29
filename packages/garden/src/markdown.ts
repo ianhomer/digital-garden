@@ -1,5 +1,5 @@
 import { Meta } from "@garden/types";
-import { Link, Literal } from "mdast";
+import { Heading, Link, Literal } from "mdast";
 import remarkParse from "remark-parse";
 import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
@@ -21,18 +21,25 @@ function flatten(node: Parent): Node[] {
     : [];
 }
 
+function getFirstValue(node: Node): string {
+  return ((node as Parent).children[0] as Literal).value;
+}
+
 function extractTitle(node: Parent) {
-  const firstNode = node.children[0];
-  if (!firstNode) {
+  const firstHeading = node.children.find(
+    (node) => node.type == "heading" && (node as Heading).depth == 1
+  );
+  if (!firstHeading) {
+    const firstParagraph = node.children.find(
+      (node) => node.type == "paragraph"
+    );
+    if (firstParagraph) {
+      return getFirstValue(firstParagraph);
+    }
     return "no title";
   }
-  // This is explicitly commented out since it has no test case. It it trips
-  // up real content we can add test case and re-introduce. If it doesn't trip
-  // anything up, we can remove.
-  // if (!(firstNode as Parent).children) {
-  //   return (firstNode as Literal).value;
-  // }
-  return ((firstNode as Parent).children[0] as Literal).value;
+
+  return getFirstValue(firstHeading);
 }
 
 function extractName(url: string) {
