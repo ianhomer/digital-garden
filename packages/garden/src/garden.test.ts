@@ -7,6 +7,7 @@ import {
 import { gardenConfig } from "./test-helpers";
 
 const garden = createGarden(gardenConfig);
+const gardenItemCount = 13;
 
 describe("garden", () => {
   it("should be created", () => {
@@ -15,7 +16,7 @@ describe("garden", () => {
 
   it("should have meta", async () => {
     const meta = await garden.meta();
-    expect(Object.keys(meta).length).toBe(11);
+    expect(Object.keys(meta).length).toBe(gardenItemCount);
     const wordThing = meta["word"];
     expect(wordThing.title).toBe("Word");
     expect(wordThing.links[0].name).toBe("vocabulary");
@@ -30,7 +31,7 @@ describe("garden", () => {
   it("should have known things", async () => {
     const things = await garden.meta();
     const knownThings = findKnownThings(things);
-    expect(knownThings.length).toBe(11);
+    expect(knownThings.length).toBe(gardenItemCount);
   });
 
   it("should have linked things", async () => {
@@ -65,7 +66,7 @@ describe("garden", () => {
   it("should refresh meta", async () => {
     await garden.refresh().then(async () => {
       const meta = await garden.load();
-      expect(Object.keys(meta).length).toBe(11);
+      expect(Object.keys(meta).length).toBe(gardenItemCount);
     });
   });
 });
