@@ -9,6 +9,7 @@ importers:
       eslint: ^8.9.0
       eslint-config-prettier: ^8.3.0
       eslint-plugin-simple-import-sort: ^7.0.0
+      eslint-plugin-sonarjs: ^0.13.0
       format-package: ^6.1.0
       husky: ^7.0.4
       lint-staged: ^12.3.4
@@ -21,6 +22,7 @@ importers:
       eslint: 8.9.0
       eslint-config-prettier: 8.3.0_eslint@8.9.0
       eslint-plugin-simple-import-sort: 7.0.0_eslint@8.9.0
+      eslint-plugin-sonarjs: 0.13.0_eslint@8.9.0
       format-package: 6.1.0_prettier@2.5.1
       husky: 7.0.4
       lint-staged: 12.3.4
@@ -4320,6 +4322,15 @@ packages:
     resolution: {integrity: sha512-U3vEDB5zhYPNfxT5TYR7u01dboFZp+HNpnGhkDB2g/2E4wZ/g1Q9Ton8UwCLfRV9yAKyYqDh62oHOamvkFxsvw==}
     peerDependencies:
       eslint: '>=5.0.0'
+    dependencies:
+      eslint: 8.9.0
+    dev: true
+
+  /eslint-plugin-sonarjs/0.13.0_eslint@8.9.0:
+    resolution: {integrity: sha512-t3m7ta0EspzDxSOZh3cEOJIJVZgN/TlJYaBGnQlK6W/PZNbWep8q4RQskkJkA7/zwNpX0BaoEOSUUrqaADVoqA==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      eslint: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
       eslint: 8.9.0
     dev: true

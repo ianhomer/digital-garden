@@ -20,11 +20,9 @@ const languages = {
 function shortenLocalLinks() {
   return (tree: Node<Data>) => {
     visit(tree, (node: { type: string; url: string }) => {
-      if (node.type === "link") {
-        if (node.url.startsWith("./")) {
-          const match = /([^/]*).md$/.exec(node.url);
-          node.url = match ? "./" + match[1] : node.url;
-        }
+      if (node.type === "link" && node.url.startsWith("./")) {
+        const match = /([^/]*).md$/.exec(node.url);
+        node.url = match ? "./" + match[1] : node.url;
       }
     });
   };
