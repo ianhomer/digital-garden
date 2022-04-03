@@ -71,6 +71,12 @@
   }
 }
 
+div.container-directive {
+  border: 1px solid #000;
+  border-left: 4px solid #000;
+  padding-left: 1em;
+}
+
 text.label {
   font-size: 1.5em;
   fill: #000;
