@@ -10,7 +10,7 @@ export function remarkGardenDirectives() {
         const tagName = "div";
         data.hName = tagName;
         data.hProperties = h(tagName, {
-          class: "container-directive container-directive-info",
+          class: "container-directive",
         }).properties;
       }
     });
