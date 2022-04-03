@@ -54,10 +54,8 @@ export async function findAbsoluteFile(
   const directories = await readdir(directory, { withFileTypes: true });
   // Files first
   for (const child of directories) {
-    if (!child.isDirectory()) {
-      if (child.name == filename) {
-        return resolve(directory, child.name);
-      }
+    if (!child.isDirectory() && child.name == filename) {
+      return resolve(directory, child.name);
     }
   }
   // ... then directories
