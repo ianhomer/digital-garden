@@ -3,6 +3,8 @@ import langGroovy from "highlight.js/lib/languages/groovy";
 import langProperties from "highlight.js/lib/languages/properties";
 import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
+import remarkDirective from "remark-directive";
+import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
@@ -10,6 +12,8 @@ import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
 import { Data, Node } from "unist";
 import { visit } from "unist-util-visit";
+
+import { remarkGardenDirectives } from "./remark-garden-directives";
 
 const languages = {
   gherkin: langGherkin,
@@ -34,7 +38,10 @@ export default async function markdownToHtml(markdown: string) {
       hrefTemplate: (permalink: string) => `${permalink}`,
     })
     .use(remarkParse)
+    .use(remarkDirective)
+    .use(remarkGardenDirectives)
     .use(remarkGfm)
+    .use(remarkEmoji)
     .use(shortenLocalLinks)
     .use(remarkRehype)
     .use(rehypeStringify)
