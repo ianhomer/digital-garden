@@ -75,6 +75,7 @@ div.container-directive {
   border: 1px solid #000;
   border-left: 4px solid #000;
   padding-left: 1em;
+  margin-bottom: 1em;
 }
 
 text.label {
