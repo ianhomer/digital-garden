@@ -16,6 +16,9 @@
   h2 {
     @apply text-2xl py-2;
   }
+  h3 {
+    @apply text-xl py-2;
+  }
   blockquote {
     @apply m-2 p-2 border-l-4;
   }
@@ -25,12 +28,10 @@
   ol,
   ul {
     @apply ml-8 m-4;
+    @apply list-disc;
   }
   ol {
     @apply list-decimal;
-  }
-  li {
-    @apply list-disc;
   }
   ul.links {
     @apply m-0;
