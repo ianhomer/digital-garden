@@ -28,12 +28,10 @@
   ol,
   ul {
     @apply ml-8 m-4;
+    @apply list-disc;
   }
   ol {
     @apply list-decimal;
-  }
-  li {
-    @apply list-disc;
   }
   ul.links {
     @apply m-0;
