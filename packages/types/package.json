@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Digital Garden Types",
   "license": "ISC",
-  "type": "module",
   "main": "src/index.ts",
+  "type": "module",
   "devDependencies": {
     "typescript": "^4.5.5"
   }

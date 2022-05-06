@@ -3,11 +3,20 @@
   "version": "1.0.0",
   "description": "Digital Garden Library",
   "license": "ISC",
-  "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "test": "LOG_LEVEL=warn jest --no-watchman",
     "test:debug": "NODE_OPTIONS=--inspect-brk jest"
+  },
+  "type": "module",
+  "dependencies": {
+    "@garden/types": "workspace:*",
+    "gray-matter": "^4.0.3",
+    "lodash": "^4.17.21",
+    "pino": "^7.11.0",
+    "remark-rehype": "^10.1.0",
+    "remark-wiki-link": "^1.0.4",
+    "unified": "^10.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",
@@ -20,14 +29,5 @@
     "jest-html-reporters": "^3.0.6",
     "remark-parse": "^10.0.1",
     "typescript": "^4.6.4"
-  },
-  "dependencies": {
-    "@garden/types": "workspace:*",
-    "gray-matter": "^4.0.3",
-    "lodash": "^4.17.21",
-    "pino": "^7.11.0",
-    "remark-rehype": "^10.1.0",
-    "remark-wiki-link": "^1.0.4",
-    "unified": "^10.1.2"
   }
 }

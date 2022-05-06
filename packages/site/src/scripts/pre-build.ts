@@ -1,18 +1,25 @@
 import { createGarden } from "@garden/garden";
 import { exec } from "child_process";
 import fs from "fs";
+import { join } from "path";
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
 
 import config from "../../garden.config.js";
 
+const argv = yargs(hideBin(process.argv)).argv;
 const garden = createGarden(config);
+
+const refresh = (filenameToPatch?: string) =>
+  garden
+    .refresh(filenameToPatch)
+    .then((meta) => console.log(`refreshed ${Object.keys(meta).length} items`));
 
 const cmdCallback = (error, stdout, stderr) => {
   error && console.error(`exec error: ${error}`);
   console.log(stdout);
   console.error(stderr);
-  garden
-    .refresh()
-    .then((meta) => console.log(`refreshed ${Object.keys(meta).length}`));
+  refresh();
 };
 
 if (!fs.existsSync(config.directory)) {
@@ -34,6 +41,6 @@ if (config.hasMultiple) {
   });
 }
 
-garden
-  .refresh()
-  .then((meta) => console.log(`refreshed ${Object.keys(meta).length}`));
+// argv.patch ? refresh(join(config.directory, argv.patch)) : refresh();
+
+refresh();
