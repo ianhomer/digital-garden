@@ -42,6 +42,6 @@ if (config.hasMultiple) {
 }
 
 const filenameToPatch = argv.patch
-  ? join(config.directory, argv.patch)
+  ? join(config.directory, argv.patch || "unexpected-file-name")
   : undefined;
 refresh(filenameToPatch);
