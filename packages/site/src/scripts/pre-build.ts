@@ -41,7 +41,8 @@ if (config.hasMultiple) {
   });
 }
 
-const filenameToPatch = argv.patch
-  ? join(garden.config.directory, argv.patch as string)
-  : undefined;
+const filenameToPatch =
+  typeof argv.patch === "string"
+    ? join(garden.config.directory, argv.patch)
+    : undefined;
 refresh(filenameToPatch);
