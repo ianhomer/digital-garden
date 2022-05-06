@@ -27,8 +27,6 @@ if (!fs.existsSync(config.directory)) {
   fs.mkdirSync(config.directory);
 }
 
-const filenameToPatch = argv.patch && join(config.directory, argv.patch);
-
 if (config.hasMultiple) {
   const gardens = config.gardens;
   Object.keys(gardens).forEach((garden) => {
@@ -43,4 +41,4 @@ if (config.hasMultiple) {
   });
 }
 
-refresh(filenameToPatch);
+argv.patch ? refresh(join(config.directory, argv.patch)) : refresh();
