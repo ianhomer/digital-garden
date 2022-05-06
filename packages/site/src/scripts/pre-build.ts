@@ -41,4 +41,6 @@ if (config.hasMultiple) {
   });
 }
 
-argv.patch ? refresh(join(config.directory, argv.patch)) : refresh();
+// argv.patch ? refresh(join(config.directory, argv.patch)) : refresh();
+
+refresh();
