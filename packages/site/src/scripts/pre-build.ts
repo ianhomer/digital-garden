@@ -41,6 +41,7 @@ if (config.hasMultiple) {
   });
 }
 
-// argv.patch ? refresh(join(config.directory, argv.patch)) : refresh();
-
-refresh();
+const filenameToPatch = argv.patch
+  ? join(config.directory, argv.patch)
+  : undefined;
+refresh(filenameToPatch);
