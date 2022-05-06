@@ -17,7 +17,7 @@ export interface Garden {
   findBackLinks: (things: Things, name: string) => Array<Link>;
   meta: () => Promise<Things>;
   load: () => Promise<Things>;
-  refresh: () => Promise<Things>;
+  refresh: (filenameToPatch?: string) => Promise<Things>;
 }
 
 export interface GardenOptions {
@@ -60,33 +60,57 @@ const loadThing = (config: GardenConfig, filename: string): FileThing => {
   };
 };
 
+const generateThingMeta = (
+  config: GardenConfig,
+  gardenDirectory: string,
+  filename: string
+) => {
+  const thing = loadThing(config, filename.substring(gardenDirectory.length));
+  const extra: { value?: number } = {};
+  ["archive", "not", "stop"].forEach((ignore) => {
+    if (filename.includes(`/${ignore}/`)) {
+      extra.value = 0;
+    }
+  });
+  return {
+    thingName: thing.name,
+    thingMeta: {
+      ...process(thing.content),
+      ...extra,
+    },
+  };
+};
+
 const generateMeta = async (
-  config: GardenConfig
+  config: GardenConfig,
+  meta: { [key: string]: Meta } = {},
+  filenameToPatch?: string
 ): Promise<{ [key: string]: Meta }> => {
   const gardenDirectory = resolve(config.directory);
 
-  const meta: { [key: string]: Meta } = {};
-  for await (const filename of findFilesDeep(
-    config.excludedDirectories,
-    config.directory
-  )) {
-    if (filename.startsWith(gardenDirectory)) {
-      const thing = loadThing(
-        config,
-        filename.substring(gardenDirectory.length)
-      );
-      const extra: { value?: number } = {};
-      ["archive", "not", "stop"].forEach((ignore) => {
-        if (filename.includes(`/${ignore}/`)) {
-          extra.value = 0;
-        }
-      });
-      meta[thing.name] = {
-        ...process(thing.content),
-        ...extra,
-      };
-    } else {
-      console.error(`File ${filename} is not in garden ${config.directory}`);
+  if (filenameToPatch) {
+    console.log(`Patching meta with : ${filenameToPatch}`);
+    const { thingName, thingMeta } = generateThingMeta(
+      config,
+      gardenDirectory,
+      filenameToPatch
+    );
+    meta[thingName] = thingMeta;
+  } else {
+    for await (const filename of findFilesDeep(
+      config.excludedDirectories,
+      config.directory
+    )) {
+      if (filename.startsWith(gardenDirectory)) {
+        const { thingName, thingMeta } = generateThingMeta(
+          config,
+          gardenDirectory,
+          filename
+        );
+        meta[thingName] = thingMeta;
+      } else {
+        console.error(`File ${filename} is not in garden ${config.directory}`);
+      }
     }
   }
 
@@ -123,8 +147,10 @@ const getMetaFilename = (config: GardenConfig) => {
   }
 };
 
-const refresh = async (config: GardenConfig) => {
-  const meta = await generateMeta(config);
+const refresh = async (config: GardenConfig, filenameToPatch?: string) => {
+  const meta = filenameToPatch
+    ? await generateMeta(config, await loadMeta(config), filenameToPatch)
+    : await generateMeta(config);
   const fullGardenMetaFile = getMetaFilename(config);
   logger.info(
     `Refreshing ${fullGardenMetaFile} : ${Object.keys(meta).length} things`
@@ -183,7 +209,8 @@ export const createGarden = (options: GardenOptions): Garden => {
   return {
     config,
     meta: async () => await generateMeta(config),
-    refresh: async () => await refresh(config),
+    refresh: async (filenameToPatch?: string) =>
+      await refresh(config, filenameToPatch),
     load: async () => await loadMeta(config),
     findBackLinks: (things: Things, name: string) => {
       return findBackLinks(things, name);

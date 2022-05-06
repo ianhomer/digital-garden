@@ -12,8 +12,8 @@
   },
   "homepage": "https://github.com/ianhomer/digital-garden#readme",
   "scripts": {
-    "build:prepare": "pnpm --filter @garden/site build:prepare",
     "build": "pnpm --filter @garden/site build",
+    "build:prepare": "pnpm --filter @garden/site build:prepare",
     "dev": "pnpm --filter @garden/site dev",
     "dev:test": "pnpm --filter @garden/site dev:test",
     "eslint": "pnpm --filter {packages} eslint",

@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Digital Garden Graph",
   "license": "ISC",
-  "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "test": "jest"
   },
+  "type": "module",
   "dependencies": {
     "@babel/preset-env": "^7.17.10",
     "@babel/preset-typescript": "^7.16.7",

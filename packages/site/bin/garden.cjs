@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+const { watch } = require("node:fs");
 // Spin up local garden
 
 console.log("Local Garden");
@@ -14,12 +14,21 @@ const env = {
   GARDENS_DIRECTORY: gardensDirectory,
 };
 
-require("child_process").spawn("pnpm", ["build:prepare"], {
-  cwd: siteRoot,
-  env,
-  detached: false,
-  stdio: "inherit",
-});
+const prepare = (filename) => {
+  const start = new Date().getTime();
+  const args = ["pnpm", "build:prepare"];
+  if (filename) {
+    args.push(`--patch=${filename}`);
+  }
+  require("child_process").spawn("time", args, {
+    cwd: siteRoot,
+    env,
+    detached: false,
+    stdio: "inherit",
+  });
+  console.log(`Prepared in ${new Date().getTime() - start}s`);
+};
+prepare();
 
 const subprocess = require("child_process").spawn(
   "pnpm",
@@ -34,4 +43,23 @@ const subprocess = require("child_process").spawn(
 
 subprocess.on("error", (err) => {
   console.error(`Cannot start garden : ${err}`);
+});
+
+const debounce = (_prepare, timeout = 1000) => {
+  let timer;
+  return (filename) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      _prepare(filename);
+    }, timeout);
+  };
+};
+
+const debouncedPrepare = debounce(prepare);
+
+watch(gardensDirectory, { recursive: true }, (eventType, filename) => {
+  if (!filename.includes("git")) {
+    console.log(`${eventType} : ${filename}`);
+    debouncedPrepare(filename);
+  }
 });
