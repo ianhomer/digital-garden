@@ -41,7 +41,8 @@ if (config.hasMultiple) {
   });
 }
 
-const filenameToPatch = argv.patch
-  ? join(config.directory, argv.patch || "unexpected-file-name")
-  : undefined;
+const filenameToPatch =
+  argv.patch && config.directory
+    ? join(config.directory, argv.patch || "unexpected-file-name")
+    : undefined;
 refresh(filenameToPatch);
