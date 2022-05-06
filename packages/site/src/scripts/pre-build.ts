@@ -1,14 +1,19 @@
 import { createGarden } from "@garden/garden";
 import { exec } from "child_process";
 import fs from "fs";
+// import { yargs } from "yargs";
+// import { hideBin } from "yargs/helpers";
 
 import config from "../../garden.config.js";
 
+// const argv = yargs(hideBin(process.argv)).argv;
+// console.log(argv.patch);
+
 const garden = createGarden(config);
 
-const refresh = () =>
+const refresh = (filenameToPatch?: string) =>
   garden
-    .refresh()
+    .refresh(filenameToPatch)
     .then((meta) => console.log(`refreshed ${Object.keys(meta).length} items`));
 
 const cmdCallback = (error, stdout, stderr) => {
