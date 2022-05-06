@@ -89,6 +89,7 @@ const generateMeta = async (
   const gardenDirectory = resolve(config.directory);
 
   if (filenameToPatch) {
+    console.log(`Patching meta with : ${filenameToPatch}`);
     const { thingName, thingMeta } = generateThingMeta(
       config,
       gardenDirectory,

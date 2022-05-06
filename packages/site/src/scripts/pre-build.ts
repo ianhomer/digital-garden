@@ -1,14 +1,13 @@
 import { createGarden } from "@garden/garden";
 import { exec } from "child_process";
 import fs from "fs";
-// import { yargs } from "yargs";
-// import { hideBin } from "yargs/helpers";
+import { join } from "path";
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
 
 import config from "../../garden.config.js";
 
-// const argv = yargs(hideBin(process.argv)).argv;
-// console.log(argv.patch);
-
+const argv = yargs(hideBin(process.argv)).argv;
 const garden = createGarden(config);
 
 const refresh = (filenameToPatch?: string) =>
@@ -28,6 +27,8 @@ if (!fs.existsSync(config.directory)) {
   fs.mkdirSync(config.directory);
 }
 
+const filenameToPatch = argv.patch && join(config.directory, argv.patch);
+
 if (config.hasMultiple) {
   const gardens = config.gardens;
   Object.keys(gardens).forEach((garden) => {
@@ -42,4 +43,4 @@ if (config.hasMultiple) {
   });
 }
 
-refresh();
+refresh(filenameToPatch);

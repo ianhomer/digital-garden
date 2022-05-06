@@ -14,9 +14,13 @@ const env = {
   GARDENS_DIRECTORY: gardensDirectory,
 };
 
-const prepare = () => {
+const prepare = (filename) => {
   const start = new Date().getTime();
-  require("child_process").spawn("time", ["pnpm", "build:prepare"], {
+  const args = ["pnpm", "build:prepare"];
+  if (filename) {
+    args.push(`--patch=${filename}`);
+  }
+  require("child_process").spawn("time", args, {
     cwd: siteRoot,
     env,
     detached: false,
@@ -41,12 +45,12 @@ subprocess.on("error", (err) => {
   console.error(`Cannot start garden : ${err}`);
 });
 
-const debounce = (foo, timeout = 5000) => {
+const debounce = (_prepare, timeout = 1000) => {
   let timer;
-  return () => {
+  return (filename) => {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      foo();
+      _prepare(filename);
     }, timeout);
   };
 };
@@ -54,6 +58,8 @@ const debounce = (foo, timeout = 5000) => {
 const debouncedPrepare = debounce(prepare);
 
 watch(gardensDirectory, { recursive: true }, (eventType, filename) => {
-  console.log(`event type is : ${eventType} : ${filename}`);
-  debouncedPrepare();
+  if (!filename.includes("git")) {
+    console.log(`${eventType} : ${filename}`);
+    debouncedPrepare(filename);
+  }
 });
