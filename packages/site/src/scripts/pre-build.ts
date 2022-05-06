@@ -6,13 +6,16 @@ import config from "../../garden.config.js";
 
 const garden = createGarden(config);
 
+const refresh = () =>
+  garden
+    .refresh()
+    .then((meta) => console.log(`refreshed ${Object.keys(meta).length} items`));
+
 const cmdCallback = (error, stdout, stderr) => {
   error && console.error(`exec error: ${error}`);
   console.log(stdout);
   console.error(stderr);
-  garden
-    .refresh()
-    .then((meta) => console.log(`refreshed ${Object.keys(meta).length}`));
+  refresh();
 };
 
 if (!fs.existsSync(config.directory)) {
@@ -34,6 +37,4 @@ if (config.hasMultiple) {
   });
 }
 
-garden
-  .refresh()
-  .then((meta) => console.log(`refreshed ${Object.keys(meta).length}`));
+refresh();

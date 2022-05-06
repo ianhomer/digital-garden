@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+const { watch } = require("node:fs");
 // Spin up local garden
 
 console.log("Local Garden");
@@ -14,12 +14,17 @@ const env = {
   GARDENS_DIRECTORY: gardensDirectory,
 };
 
-require("child_process").spawn("pnpm", ["build:prepare"], {
-  cwd: siteRoot,
-  env,
-  detached: false,
-  stdio: "inherit",
-});
+const prepare = () => {
+  const start = new Date().getTime();
+  require("child_process").spawn("time", ["pnpm", "build:prepare"], {
+    cwd: siteRoot,
+    env,
+    detached: false,
+    stdio: "inherit",
+  });
+  console.log(`Prepared in ${new Date().getTime() - start}s`);
+};
+prepare();
 
 const subprocess = require("child_process").spawn(
   "pnpm",
@@ -34,4 +39,21 @@ const subprocess = require("child_process").spawn(
 
 subprocess.on("error", (err) => {
   console.error(`Cannot start garden : ${err}`);
+});
+
+const debounce = (foo, timeout = 5000) => {
+  let timer;
+  return () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      foo();
+    }, timeout);
+  };
+};
+
+const debouncedPrepare = debounce(prepare);
+
+watch(gardensDirectory, { recursive: true }, (eventType, filename) => {
+  console.log(`event type is : ${eventType} : ${filename}`);
+  debouncedPrepare();
 });
