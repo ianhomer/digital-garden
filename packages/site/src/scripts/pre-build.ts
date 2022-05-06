@@ -42,6 +42,6 @@ if (config.hasMultiple) {
 }
 
 const filenameToPatch = argv.patch
-  ? join(garden.config.directory, argv.patch || "unexpected-file-name")
+  ? join(garden.config.directory, argv.patch as string)
   : undefined;
 refresh(filenameToPatch);
