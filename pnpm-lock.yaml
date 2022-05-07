@@ -189,9 +189,9 @@ importers:
 
   packages/types:
     specifiers:
-      typescript: ^4.5.5
+      typescript: ^4.6.4
     devDependencies:
-      typescript: 4.5.5
+      typescript: 4.6.4
 
 packages:
 
@@ -1584,7 +1584,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.16.7
       '@babel/parser': 7.17.10
       '@babel/types': 7.17.10
-      debug: 4.3.3
+      debug: 4.3.4
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -3345,7 +3345,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001338
-      electron-to-chromium: 1.4.136
+      electron-to-chromium: 1.4.137
       escalade: 3.1.1
       node-releases: 2.0.4
       picocolors: 1.0.0
@@ -4236,8 +4236,8 @@ packages:
     resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
     dev: true
 
-  /electron-to-chromium/1.4.136:
-    resolution: {integrity: sha512-GnITX8rHnUrIVnTxU9UlsTnSemHUA2iF+6QrRqxFbp/mf0vfuSc/goEyyQhUX3TUUCE3mv/4BNuXOtaJ4ur0eA==}
+  /electron-to-chromium/1.4.137:
+    resolution: {integrity: sha512-0Rcpald12O11BUogJagX3HsCN3FE83DSqWjgXoHo5a72KUKMSfI39XBgJpgNNxS9fuGzytaFjE06kZkiVFy2qA==}
 
   /emittery/0.8.1:
     resolution: {integrity: sha512-uDfvUjVrfGJJhymx/kz6prltenw1u7WrCg1oa94zYY8xxVpLLUu045LAT0dhDZdXG58/EpPL/5kA180fQ/qudg==}
@@ -8240,12 +8240,6 @@ packages:
     resolution: {integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==}
     dependencies:
       is-typedarray: 1.0.0
-
-  /typescript/4.5.5:
-    resolution: {integrity: sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==}
-    engines: {node: '>=4.2.0'}
-    hasBin: true
-    dev: true
 
   /typescript/4.6.4:
     resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
