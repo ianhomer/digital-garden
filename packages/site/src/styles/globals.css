@@ -36,6 +36,14 @@
   ul.links {
     @apply m-0;
   }
+  @media screen and (min-width: 1000px) {
+    ul.links {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 2em 4em 0em 0em;
+    }
+  }
   .links li {
     @apply list-none text-sm;
   }
