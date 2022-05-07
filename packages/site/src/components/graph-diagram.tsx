@@ -19,7 +19,7 @@ const getRadius = (d: Node) =>
   d.depth == 0 ? 30 : d.depth == 1 ? 15 : d.depth == 2 ? 10 : 4;
 
 const getCharge = (d: Node) =>
-  d.depth == 0 ? -700 : d.depth == 1 ? -600 : d.depth == 2 ? -500 : -50;
+  d.depth == 0 ? -10000 : d.depth == 1 ? -2000 : d.depth == 2 ? -500 : -50;
 
 const getLinkStrokeWidth = (d: NodeLink) =>
   d.depth == 0 ? 8 : d.depth == 1 ? 2 : 1;
@@ -37,8 +37,8 @@ export default function GraphDiagram({
   const yOffset = viewHeight / 8;
   const xOffsetText = -35;
   const yOffsetText = -10;
-  const heightText = 30;
-  const widthText = 250;
+  const heightText = 50;
+  const widthText = 800;
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -121,7 +121,8 @@ export default function GraphDiagram({
         "collideRectangle",
         collideRectangle([xOffsetText, yOffsetText, widthText, heightText])
       )
-      .force("center", d3.forceCenter(0, height / 3).strength(0.6))
+      .force("forceX", d3.forceX(0).strength(0.1))
+      .force("forceY", d3.forceY(height / 3).strength(0.1))
       .force("link", forceLink.id((d: Node) => d.id).strength(0.3))
       .tick(150)
       .alphaMin(0.01)
