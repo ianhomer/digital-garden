@@ -113,9 +113,10 @@ rect {
 }
 .node {
   fill: #000;
-  fill-opacity: 0.8;
+  fill-opacity: 0.6;
 }
 .fixed .node {
   stroke: #000;
   fill: #ff0080;
+  fill-opacity: 1;
 }

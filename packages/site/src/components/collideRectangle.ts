@@ -1,26 +1,27 @@
-import { SimulationNodeDatum } from "d3-force";
 import { quadtree } from "d3-quadtree";
 
-function x(d: SimulationNodeDatum) {
+import { Node } from "../lib/graph/types";
+
+function x(d: Node) {
   return d.x + d.vx;
 }
 
-function y(d: SimulationNodeDatum) {
+function y(d: Node) {
   return d.y + d.vy;
 }
 
-function xCenterOfBox(d: SimulationNodeDatum, box: number[]) {
+function xCenterOfBox(d: Node, box: number[]) {
   return d.x + box[0] + box[2] / 2;
 }
 
-function yCenterOfBox(d: SimulationNodeDatum, box: number[]) {
-  return d.y + box[1] + box[2] / 2;
+function yCenterOfBox(d: Node, box: number[]) {
+  return d.y + box[1] + box[3] / 2;
 }
 
 // box is [x,y,width,height]
-function apply(d: SimulationNodeDatum, box: number[]) {
-  const strength = 0.5;
-  return (quad: { data: SimulationNodeDatum }) => {
+function apply(d: Node, box: number[]) {
+  const strength = 0.6;
+  return (quad: { data: Node }) => {
     if (!quad.data) {
       return;
     }
@@ -37,8 +38,8 @@ function apply(d: SimulationNodeDatum, box: number[]) {
     const yDistance = dYCenter - quadDataYCenter;
     const absX = Math.abs(xDistance);
     const absY = Math.abs(yDistance);
-    const overlapX = absX - box[2];
-    const overlapY = absY - box[3];
+    const overlapX = absX - box[2] + d.depth * 15;
+    const overlapY = absY - box[3] + d.depth * 15;
 
     // Adjust nodes after collision
     if (overlapX < 0 && overlapY < 0) {
@@ -61,7 +62,7 @@ function apply(d: SimulationNodeDatum, box: number[]) {
 }
 
 export default function (box: number[]) {
-  let nodes: SimulationNodeDatum[];
+  let nodes: Node[];
   let iterations = 1;
   function force() {
     const tree = quadtree(nodes, x, y);
@@ -77,6 +78,6 @@ export default function (box: number[]) {
     return arguments.length ? ((iterations = +_), force) : iterations;
   };
 
-  force.initialize = (_: SimulationNodeDatum[]) => (nodes = _);
+  force.initialize = (_: Node[]) => (nodes = _);
   return force;
 }
