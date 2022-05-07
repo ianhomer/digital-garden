@@ -15,8 +15,9 @@ GraphDiagram.defaultProps = {
   className: "fullscreen",
 };
 
+const DEPTH_1_RADIUS = 30;
 const getRadius = (d: Node) =>
-  d.depth == 0 ? 30 : d.depth == 1 ? 15 : d.depth == 2 ? 10 : 4;
+  d.depth == 0 ? DEPTH_1_RADIUS : d.depth == 1 ? 15 : d.depth == 2 ? 10 : 4;
 
 const getCharge = (d: Node) =>
   d.depth == 0 ? -10000 : d.depth == 1 ? -2000 : d.depth == 2 ? -500 : -50;
@@ -35,6 +36,10 @@ export default function GraphDiagram({
   const viewHeight = height * scale;
   const xOffset = viewWidth / 2;
   const yOffset = viewHeight / 8;
+  const leftBoundary = -viewWidth / 2 + DEPTH_1_RADIUS;
+  const rightBoundary = viewWidth / 2 - DEPTH_1_RADIUS;
+  const topBoundary = -yOffset + DEPTH_1_RADIUS;
+  const bottomBoundary = viewHeight - yOffset - DEPTH_1_RADIUS;
   const xOffsetText = -35;
   const yOffsetText = -10;
   const heightText = 50;
@@ -141,8 +146,8 @@ export default function GraphDiagram({
       this: SVGElement,
       event: { subject: { fx: number; fy: number }; x: number; y: number }
     ) {
-      event.subject.fx = clamp(event.x, -xOffset, xOffset);
-      event.subject.fy = clamp(event.y, -yOffset, height - yOffset);
+      event.subject.fx = clamp(event.x, leftBoundary, rightBoundary);
+      event.subject.fy = clamp(event.y, topBoundary, bottomBoundary);
       simulation.alpha(1).restart();
     }
 
