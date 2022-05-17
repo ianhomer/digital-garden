@@ -45,7 +45,7 @@ subprocess.on("error", (err) => {
   console.error(`Cannot start garden : ${err}`);
 });
 
-const debounce = (_prepare, timeout = 1000) => {
+const debounce = (_prepare, timeout = 5000) => {
   let timer;
   return (filename) => {
     clearTimeout(timer);
@@ -58,7 +58,7 @@ const debounce = (_prepare, timeout = 1000) => {
 const debouncedPrepare = debounce(prepare);
 
 watch(gardensDirectory, { recursive: true }, (eventType, filename) => {
-  if (!filename.includes("git")) {
+  if (!filename.startsWith(".")) {
     console.log(`${eventType} : ${filename}`);
     debouncedPrepare(filename);
   }
