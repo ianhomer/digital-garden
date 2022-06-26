@@ -40,7 +40,7 @@ function ItemPage({ item }) {
         <ul className="links">
           {item.links.map((link: Link) => (
             <li key={link.name} className={link.type}>
-              <a href={link.name}>{link.name}</a>
+              <a href={"/" + link.name}>{link.name}</a>
             </li>
           ))}
         </ul>
