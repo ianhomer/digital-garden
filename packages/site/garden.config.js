@@ -11,6 +11,9 @@ function resolveDirectory() {
       ? gardenDirectoryFromEnv
       : join(process.cwd(), gardenDirectoryFromEnv);
   }
+  if (isParentDirectoryGarden()) {
+    return join(process.cwd(), "../../..");
+  }
   return join(process.cwd(), ".gardens");
 }
 
@@ -23,10 +26,19 @@ function gardensFromEnv() {
     }, {});
 }
 
+// garden is the parent directory
+function isParentDirectoryGarden() {
+  return fs.existsSync(`../../../README.md`);
+}
+
 function generateDefault() {
   const gardens = gardensFromEnv();
   const directory = (() => {
-    if (gardenDirectoryFromEnv || Object.keys(gardens).length) {
+    if (
+      gardenDirectoryFromEnv ||
+      isParentDirectoryGarden() ||
+      Object.keys(gardens).length
+    ) {
       return resolveDirectory();
     }
     // this is the zero config, clone and run config
