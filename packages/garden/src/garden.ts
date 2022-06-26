@@ -43,7 +43,7 @@ export interface GardenConfig {
 const defaultConfig = {
   allowGlobalMeta: true,
   directory: ".gardens",
-  excludedDirectories: ["node_modules"],
+  excludedDirectories: ["node_modules", "digital-garden"],
   hasMultiple: false,
   gardens: {},
   liveMeta: false,
