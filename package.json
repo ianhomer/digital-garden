@@ -18,6 +18,7 @@
     "dev:test": "pnpm --filter @garden/site dev:test",
     "eslint": "pnpm --filter {packages} eslint",
     "eslint:fix": "pnpm --filter {packages} eslint:fix",
+    "export": "pnpm --filter @garden/site export",
     "lint": "pnpm prettier && pnpm eslint",
     "lint:fix": "pnpm package:fix && pnpm prettier:fix && pnpm eslint:fix",
     "package:fix": "format-package -w",
