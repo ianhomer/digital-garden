@@ -26,7 +26,7 @@ function shortenLocalLinks() {
     visit(tree, (node: { type: string; url: string }) => {
       if (node.type === "link" && node.url.startsWith("./")) {
         const match = /([^/]*).md$/.exec(node.url);
-        node.url = match ? "./" + match[1] : node.url;
+        node.url = match ? "/" + match[1] : node.url;
       }
     });
   };
@@ -37,7 +37,7 @@ export default async function markdownToHtml(markdown: string) {
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkWikiLink, {
-      hrefTemplate: (permalink: string) => `${permalink}`,
+      hrefTemplate: (permalink: string) => `/${permalink}`,
     })
     .use(remarkDirective)
     .use(remarkEmoji)

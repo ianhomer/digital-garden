@@ -7,4 +7,4 @@ const withTranspileModules = nextTranspileModules(
   }
 );
 
-export default withTranspileModules({});
+export default withTranspileModules({ trailingSlash: true });
