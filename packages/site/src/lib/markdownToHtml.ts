@@ -34,18 +34,18 @@ function shortenLocalLinks() {
 
 export default async function markdownToHtml(markdown: string) {
   const vfile = await unified()
+    .use(remarkParse)
+    .use(remarkGfm)
     .use(remarkWikiLink, {
       hrefTemplate: (permalink: string) => `${permalink}`,
     })
-    .use(remarkParse)
     .use(remarkDirective)
-    .use(remarkGardenDirectives)
-    .use(remarkGfm)
     .use(remarkEmoji)
     .use(shortenLocalLinks)
     .use(remarkRehype)
     .use(rehypeStringify)
     .use(rehypeHighlight, { languages: languages })
+    .use(remarkGardenDirectives)
     .process(markdown);
   return String(vfile);
 }
