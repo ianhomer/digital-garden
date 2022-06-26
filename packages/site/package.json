@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "next build",
+    "export": "next export",
     "build:prepare": "node --experimental-specifier-resolution=node --loader ts-node/esm src/scripts/pre-build.ts",
     "dev": "next dev",
     "dev:debug": "NODE_OPTIONS=--inspect-brk next dev",

@@ -1,6 +1,7 @@
 .next/
 .gardens/
 node_modules/
+out/
 output/
 
 *.tsbuildinfo
