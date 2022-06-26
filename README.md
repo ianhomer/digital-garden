@@ -21,20 +21,19 @@ project and restarting the service. For example:
 
 ## Deploying with Vercel
 
-Fork this repository, sign up to an account with <https://vercel.com/>, create a
-new project and import the repository you forked. Go to settings and change the
-build command to:
+Create a deployment from a garden repository. Set the **framework preset** to **Other**.
+Set the **build command** to:
 
-    pnpm build:prepare && pnpm build
+    cd digital-garden && pnpm build:prepare && pnpm build && pnpm export
 
-Change install command to
+Set the **output directory** to:
 
-    pnpm install --filter !@garden/end-to-end
+    digital-garden/packages/site/out
 
-And add URL to your markdown content repository by adding a `GARDEN_`
-environment variable , e.g.
+Set the **install command** to:
 
-    GARDEN_BOXOFJAM=https://github.com/purplepip/boxofjam.git
+    git clone https://github.com/ianhomer/digital-garden && \
+      cd digital-garden && pnpm install --filter !@garden/end-to-end
 
 Then deploy and visit generated site.
 
