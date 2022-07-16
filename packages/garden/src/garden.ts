@@ -122,7 +122,7 @@ const generateMeta = async (
       title: thing.title,
       value: thing.value,
       links: thing.links.map((link) => {
-        const transformedLink: Link = { name: link.name };
+        const transformedLink: Link = { name: link.name, type: link.type };
         if (thing?.value == 0 || meta[link.name]?.value == 0) {
           transformedLink.value = 0;
         }
@@ -185,15 +185,21 @@ export const findKnownThings = (things: Things) => {
   return Object.keys(things);
 };
 
-export const findLinkedThings = (things: Things) => {
+export const findLinkedThings = (
+  things: Things,
+  filter = (link: Link) => !!link
+) => {
   return Object.values(things)
-    .map((thing) => thing.links.map((link: Link) => link.name))
+    .map((thing) => thing.links.filter(filter).map((link: Link) => link.name))
     .flat();
 };
 
-export const findWantedThings = (things: Things) => {
+export const findWantedThings = (
+  things: Things,
+  filter = (link: Link) => !!link
+) => {
   const knownThings = findKnownThings(things);
-  return findLinkedThings(things).filter(
+  return findLinkedThings(things, filter).filter(
     (name: string) => !knownThings.includes(name)
   );
 };

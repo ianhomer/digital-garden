@@ -57,6 +57,7 @@ importers:
       jest: ^27.5.1
       jest-html-reporters: ^3.0.10
       lodash: ^4.17.21
+      mdast-util-to-string: ^3.1.0
       pino: ^7.11.0
       remark-parse: ^10.0.1
       remark-rehype: ^10.1.0
@@ -68,6 +69,7 @@ importers:
       compromise: 14.4.0
       gray-matter: 4.0.3
       lodash: 4.17.21
+      mdast-util-to-string: 3.1.0
       pino: 7.11.0
       remark-rehype: 10.1.0
       remark-wiki-link: 1.0.4

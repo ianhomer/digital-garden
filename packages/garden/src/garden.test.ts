@@ -1,3 +1,5 @@
+import { Link, LinkType } from "@garden/types";
+
 import {
   createGarden,
   findKnownThings,
@@ -8,6 +10,7 @@ import { gardenConfig } from "./test-helpers";
 
 const garden = createGarden(gardenConfig);
 const gardenItemCount = 13;
+const noNaturalLinks = (link: Link) => link.type != LinkType.NaturalTo;
 
 describe("garden", () => {
   it("should be created", () => {
@@ -36,10 +39,14 @@ describe("garden", () => {
 
   it("should have linked things", async () => {
     const things = await garden.meta();
-    const linkedThings = findLinkedThings(things);
+    const linkedThings = findLinkedThings(things, noNaturalLinks);
     expect(linkedThings).toContain("word-2");
     expect(linkedThings).toContain("word-3");
-    expect(linkedThings.length).toBe(9);
+    try {
+      expect(linkedThings.length).toBe(9);
+    } catch (e) {
+      throw new Error(`${e} : ${JSON.stringify(linkedThings)}`);
+    }
   });
 
   it("should have achived links with zero value", async () => {
@@ -58,8 +65,12 @@ describe("garden", () => {
 
   it("should have wanted things", async () => {
     const things = await garden.meta();
-    const wantedThings = findWantedThings(things);
-    expect(wantedThings.length).toBe(1);
+    const wantedThings = findWantedThings(things, noNaturalLinks);
+    try {
+      expect(wantedThings.length).toBe(1);
+    } catch (e) {
+      throw new Error(`${e} : ${JSON.stringify(wantedThings)}`);
+    }
     expect(wantedThings[0]).toBe("wanted");
   });
 

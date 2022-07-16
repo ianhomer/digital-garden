@@ -1,9 +1,12 @@
 import { Meta } from "@garden/types";
 import { Heading, Link, Literal } from "mdast";
+import { toString } from "mdast-util-to-string";
 import remarkParse from "remark-parse";
 import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
 import { Node, Parent } from "unist";
+
+import { naturalProcess } from "./nlp";
 
 export function parse(content: () => string) {
   return unified()
@@ -22,7 +25,15 @@ function flatten(node: Parent): Node[] {
 }
 
 function getFirstValue(node: Node): string {
-  return ((node as Parent).children[0] as Literal).value;
+  return toString(node);
+}
+
+function getFrontText(node: Parent) {
+  const firstParagraph = node.children.find((node) => node.type == "paragraph");
+  if (firstParagraph) {
+    return getFirstValue(firstParagraph);
+  }
+  return null;
 }
 
 function extractTitle(node: Parent) {
@@ -30,13 +41,7 @@ function extractTitle(node: Parent) {
     (node) => node.type == "heading" && (node as Heading).depth == 1
   );
   if (!firstHeading) {
-    const firstParagraph = node.children.find(
-      (node) => node.type == "paragraph"
-    );
-    if (firstParagraph) {
-      return getFirstValue(firstParagraph);
-    }
-    return "no title";
+    return getFrontText(node) ?? "no title";
   }
 
   return getFirstValue(firstHeading);
@@ -51,17 +56,20 @@ export function process(content: () => string): Meta {
   const document: Parent = parse(content);
   return {
     title: extractTitle(document),
-    links: flatten(document)
-      .filter(
-        (node) =>
-          node.type === "wikiLink" ||
-          (node.type === "link" && (node as Link).url.startsWith("./"))
-      )
-      .map((link) => ({
-        name:
-          link.type === "wikiLink"
-            ? (link as Literal).value.toLowerCase()
-            : extractName((link as Link).url),
-      })),
+    links: [
+      ...flatten(document)
+        .filter(
+          (node) =>
+            node.type === "wikiLink" ||
+            (node.type === "link" && (node as Link).url.startsWith("./"))
+        )
+        .map((link) => ({
+          name:
+            link.type === "wikiLink"
+              ? (link as Literal).value.toLowerCase()
+              : extractName((link as Link).url),
+        })),
+      ...naturalProcess(getFrontText(document) ?? "").links,
+    ],
   };
 }

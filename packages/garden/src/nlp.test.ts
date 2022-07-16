@@ -1,17 +1,22 @@
-import { interpret } from "./nlp";
+import { Link } from "@garden/types";
 
-const AWESOME_LIBRARY = "awesome library";
-const SMALL_LIBRARY = "small library";
+import { naturalProcess, NaturalThing } from "./nlp";
+
+const AWESOME_LIBRARY = "awesome-library";
+const SMALL_LIBRARY = "small-library";
+
+const linksOf = (thing: NaturalThing) =>
+  thing.links.map((link: Link) => link.name);
 
 describe("natural language processing", () => {
   it("should find nouns", async () => {
-    const thing = interpret("this is a library");
-    expect(thing.referencedThings).toStrictEqual(["library"]);
+    const thing = naturalProcess("this is a library");
+    expect(linksOf(thing)).toStrictEqual(["library"]);
   });
 
   it("should find noun with adjective", async () => {
-    const thing = interpret("this is an awesome library");
-    expect(thing.referencedThings).toStrictEqual([
+    const thing = naturalProcess("this is an awesome library");
+    expect(linksOf(thing)).toStrictEqual([
       "library",
       "awesome",
       AWESOME_LIBRARY,
@@ -19,8 +24,8 @@ describe("natural language processing", () => {
   });
 
   it("should find noun with adjectives", async () => {
-    const thing = interpret("this is an awesome small library");
-    expect(thing.referencedThings).toStrictEqual([
+    const thing = naturalProcess("this is an awesome small library");
+    expect(linksOf(thing)).toStrictEqual([
       "library",
       "awesome",
       "small",
@@ -30,15 +35,15 @@ describe("natural language processing", () => {
   });
 
   it("should find nouns with adjectives", async () => {
-    const thing = interpret(
+    const thing = naturalProcess(
       "lightweight fun acme tool is an awesome small library"
     );
-    expect(thing.referencedThings).toStrictEqual([
-      "acme tool",
+    expect(linksOf(thing)).toStrictEqual([
+      "acme-tool",
       "lightweight",
       "fun",
-      "lightweight acme tool",
-      "fun acme tool",
+      "lightweight-acme-tool",
+      "fun-acme-tool",
       "library",
       "awesome",
       "small",
@@ -48,15 +53,15 @@ describe("natural language processing", () => {
   });
 
   it("should find nouns with adjectives with chatter", async () => {
-    const thing = interpret(
+    const thing = naturalProcess(
       "hello, lightweight fun acme tool is, yeah,  an awesome small library, what's up?"
     );
-    expect(thing.referencedThings).toStrictEqual([
-      "acme tool",
+    expect(linksOf(thing)).toStrictEqual([
+      "acme-tool",
       "lightweight",
       "fun",
-      "lightweight acme tool",
-      "fun acme tool",
+      "lightweight-acme-tool",
+      "fun-acme-tool",
       "library",
       "awesome",
       "small",
