@@ -17,7 +17,10 @@ export interface NaturalThing {
 const strip = (text: string) =>
   text.trim().replace(/\s/g, "-").replace(/[._]/g, "");
 
-export function naturalProcess(content: string) {
+const unique = (value: string, index: number, self: string[]) =>
+  self.indexOf(value) === index;
+
+export function naturalProcess(content: string, excludes: string[] = []) {
   const document = nlp(content);
   const links: Link[] = document
     .nouns()
@@ -40,6 +43,8 @@ export function naturalProcess(content: string) {
       ];
     })
     .flat()
+    .filter((name: string) => !excludes.includes(name))
+    .filter(unique)
     .map((name: string) => ({ name, type: LinkType.NaturalTo }));
   return { links };
 }

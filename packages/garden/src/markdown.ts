@@ -54,22 +54,26 @@ function extractName(url: string) {
 
 export function process(content: () => string): Meta {
   const document: Parent = parse(content);
+  const explicitLinks = flatten(document)
+    .filter(
+      (node) =>
+        node.type === "wikiLink" ||
+        (node.type === "link" && (node as Link).url.startsWith("./"))
+    )
+    .map((link) => ({
+      name:
+        link.type === "wikiLink"
+          ? (link as Literal).value.toLowerCase()
+          : extractName((link as Link).url),
+    }));
   return {
     title: extractTitle(document),
     links: [
-      ...flatten(document)
-        .filter(
-          (node) =>
-            node.type === "wikiLink" ||
-            (node.type === "link" && (node as Link).url.startsWith("./"))
-        )
-        .map((link) => ({
-          name:
-            link.type === "wikiLink"
-              ? (link as Literal).value.toLowerCase()
-              : extractName((link as Link).url),
-        })),
-      ...naturalProcess(getFrontText(document) ?? "").links,
+      ...explicitLinks,
+      ...naturalProcess(
+        getFrontText(document) ?? "",
+        explicitLinks.map((link) => link.name)
+      ).links,
     ],
   };
 }

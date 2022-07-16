@@ -10,7 +10,8 @@ import { gardenConfig } from "./test-helpers";
 
 const garden = createGarden(gardenConfig);
 const gardenItemCount = 13;
-const noNaturalLinks = (link: Link) => link.type != LinkType.NaturalTo;
+const noNaturalLinks = (link: Link) => link.type !== LinkType.NaturalTo;
+const naturalLinks = (link: Link) => link.type === LinkType.NaturalTo;
 
 describe("garden", () => {
   it("should be created", () => {
@@ -39,11 +40,11 @@ describe("garden", () => {
 
   it("should have linked things", async () => {
     const things = await garden.meta();
-    const linkedThings = findLinkedThings(things, noNaturalLinks);
+    const linkedThings = findLinkedThings(things);
     expect(linkedThings).toContain("word-2");
     expect(linkedThings).toContain("word-3");
     try {
-      expect(linkedThings.length).toBe(9);
+      expect(linkedThings.length).toBe(29);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(linkedThings)}`);
     }
@@ -72,6 +73,12 @@ describe("garden", () => {
       throw new Error(`${e} : ${JSON.stringify(wantedThings)}`);
     }
     expect(wantedThings[0]).toBe("wanted");
+    const wantedNaturalThings = findWantedThings(things, naturalLinks);
+    try {
+      expect(wantedNaturalThings.length).toBe(16);
+    } catch (e) {
+      throw new Error(`${e} : ${JSON.stringify(wantedNaturalThings)}`);
+    }
   });
 
   it("should refresh meta", async () => {
