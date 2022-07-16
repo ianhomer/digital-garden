@@ -1,4 +1,4 @@
-# Digital Garden
+# Digital garden
 
 Rendering of a Zettelkasten collection of markdown content into a web site with
 visualisations to help navigation and discovery of related content. See
@@ -6,7 +6,7 @@ visualisations to help navigation and discovery of related content. See
 
 ![demo](docs/images/demo.png)
 
-## Running Locally
+## Running locally
 
 To try out locally `pnpm install` and then start up with
 
@@ -37,7 +37,7 @@ Set the **install command** to:
 
 Then deploy and visit generated site.
 
-## Environment Configuration
+## Environment configuration
 
 Configure environment with variables defined in either via a `.env` in the
 project root directory or as shell environment variables.
@@ -47,7 +47,7 @@ Define one or more gardens, by providing an environment variable starting with
 
     GARDEN_MY=https://github.com/purplepip/boxofjam.git
 
-## Local Garden (Experimental)
+## Local garden
 
 Install the `garden` global command to render the garden from a given folder.
 
