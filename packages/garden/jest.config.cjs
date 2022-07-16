@@ -10,6 +10,10 @@ const transformIgnores = [
   ".*is-plain-obj",
   ".*trough",
   ".*vfile",
+  ".*compromise",
+  ".*grad-school",
+  ".*efrt",
+  ".*suffix-thumb",
 ].join("|");
 const config = {
   collectCoverage: true,
