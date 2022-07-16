@@ -13,11 +13,11 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 18.
+          node-version: 18.x
       - name: Install pnpm
         uses: pnpm/action-setup@v2.0.1
         with:
-          version: 7.3.0
+          version: 7.x
       - name: install and lint
         run: |
           pnpm install --filter !@garden/end-to-end
@@ -36,11 +36,11 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 18.
+          node-version: 18.x
       - name: Install pnpm
         uses: pnpm/action-setup@v2.0.1
         with:
-          version: 7.3.0
+          version: 7.x
       - name: install
         run: |
           pnpm install
