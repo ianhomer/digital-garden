@@ -54,7 +54,7 @@ describe("natural language processing", () => {
 
   it("should find nouns with adjectives with chatter", async () => {
     const thing = naturalProcess(
-      "hello, lightweight fun acme tool is, yeah,  an awesome small library, what's up?"
+      "hello you, lightweight fun acme tool is, yeah,  an awesome small library, what's up?"
     );
     expect(linksOf(thing)).toStrictEqual([
       "acme-tool",

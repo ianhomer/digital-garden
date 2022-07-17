@@ -1,5 +1,6 @@
 import { Link, LinkType } from "@garden/types";
 import nlp from "compromise";
+import Three from "compromise/types/view/three";
 
 import { unique } from "./common";
 
@@ -21,7 +22,7 @@ const strip = (text: string) =>
 
 export function naturalProcess(content: string, excludes: string[] = []) {
   const document = nlp(content);
-  const links: Link[] = document
+  const links: Link[] = (document.not("#Pronoun") as Three)
     .nouns()
     .toLowerCase()
     .json()
