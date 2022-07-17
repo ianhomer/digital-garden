@@ -21,7 +21,7 @@ const getRadius = (d: Node) =>
   d.depth == 0 ? DEPTH_1_RADIUS : d.depth == 1 ? 15 : d.depth == 2 ? 10 : 4;
 
 const getCharge = (d: Node) =>
-  d.depth == 0 ? -10000 : d.depth == 1 ? -3000 : d.depth == 2 ? -1000 : -50;
+  d.depth == 0 ? -10000 : d.depth == 1 ? -2000 : d.depth == 2 ? -1000 : -50;
 
 const getLinkStrokeWidth = (d: NodeLink) =>
   d.depth == 0 ? 8 : d.depth == 1 ? 2 : 1;
