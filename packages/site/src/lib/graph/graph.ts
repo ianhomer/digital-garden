@@ -32,6 +32,7 @@ export const createGraph = (
             : {};
         return {
           id: name || "na",
+          title: name in things ? things[name].title : name,
           type: NodeType.Thing,
           wanted: !(name in things),
           depth,
