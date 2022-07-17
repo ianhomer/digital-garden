@@ -19,10 +19,11 @@ tagged, or wanted notes that referenced by multiple notes.
 
 | node in graph | meaning                                           |
 | ------------- | ------------------------------------------------- |
-| solid big red | current or locked note                            |
+| big           | current note                                      |
 | medium        | first level depth                                 |
 | small         | second level depth                                |
 | white         | wanted note - referenced note that does not exist |
+| red           | locked note                                       |
 
 ![demo](docs/images/demo.png)
 

@@ -70,4 +70,11 @@ describe("natural language processing", () => {
       SMALL_LIBRARY,
     ]);
   });
+
+  it("should pick out meaning from rambling", async () => {
+    const thing = naturalProcess(
+      "I get asked this a few times so here is how our team view these definitions."
+    );
+    expect(linksOf(thing)).toStrictEqual(["definitions"]);
+  });
 });
