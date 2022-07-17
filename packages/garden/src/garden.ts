@@ -221,7 +221,7 @@ const findBackLinks = (things: Things, name: string) => {
     .filter((fromName) => {
       return things[fromName].links.map((link) => link.name).includes(name);
     })
-    .map((fromName) => ({ name: fromName }));
+    .map((fromName) => ({ name: fromName, type: LinkType.From }));
 };
 
 export const findKnownThings = (things: Things) => {

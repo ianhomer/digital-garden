@@ -22,6 +22,7 @@ const strip = (text: string) =>
 
 export function naturalProcess(content: string, excludes: string[] = []) {
   const document = nlp(content);
+  const enhancedExcludes = [...excludes, ""];
   const links: Link[] = (document.not("#Pronoun") as Three)
     .nouns()
     .toLowerCase()
@@ -43,7 +44,7 @@ export function naturalProcess(content: string, excludes: string[] = []) {
       ];
     })
     .flat()
-    .filter((name: string) => !excludes.includes(name))
+    .filter((name: string) => !enhancedExcludes.includes(name))
     .filter(unique)
     .map((name: string) => ({ name, type: LinkType.NaturalTo }));
   return { links };

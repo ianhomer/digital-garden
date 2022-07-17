@@ -76,7 +76,19 @@
     @apply text-slate-300 text-sm text-right;
   }
   line.link {
-    @apply stroke-slate-200;
+    @apply stroke-slate-400;
+  }
+  line.link.natural {
+    @apply stroke-red-200;
+    stroke-dasharray: 10, 10;
+  }
+  line.link.naturalFrom {
+    @apply stroke-red-100;
+    stroke-dasharray: 20, 20;
+  }
+  line.link.from {
+    @apply stroke-blue-200;
+    stroke-dasharray: 5, 5;
   }
 }
 
@@ -120,8 +132,7 @@ rect {
   fill: #fff;
 }
 .node {
-  fill: #000;
-  fill-opacity: 0.6;
+  fill: #555;
 }
 .fixed .node {
   stroke: #000;

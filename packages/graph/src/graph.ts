@@ -2,6 +2,29 @@ import { Link, LinkType, Things } from "@garden/types";
 
 const valuable = (link: Link) => link.value !== 0;
 
+const backLinks = (
+  things: Things,
+  name: string,
+  depth: number,
+  predicate = (link: Link) => !link.type,
+  backLinkType = LinkType.From
+) => {
+  return Object.keys(things)
+    .filter((fromName) => {
+      return things[fromName].links
+        .filter(valuable)
+        .filter(predicate)
+        .map((link) => link.name)
+        .includes(name);
+    })
+    .map((fromName) => ({
+      source: name,
+      target: fromName,
+      depth,
+      type: backLinkType,
+    }));
+};
+
 export const findDeepLinks = (
   things: Things,
   name: string,
@@ -14,22 +37,17 @@ export const findDeepLinks = (
           source: name,
           target: link.name,
           depth,
-          type: LinkType.To,
+          type: link.type ?? LinkType.To,
         }))
       : []),
-    ...Object.keys(things)
-      .filter((fromName) => {
-        return things[fromName].links
-          .filter(valuable)
-          .map((link) => link.name)
-          .includes(name);
-      })
-      .map((fromName) => ({
-        source: name,
-        target: fromName,
-        depth,
-        type: LinkType.From,
-      })),
+    ...backLinks(things, name, depth),
+    ...backLinks(
+      things,
+      name,
+      depth,
+      (link: Link) => link.type == LinkType.NaturalTo,
+      LinkType.NaturalFrom
+    ),
   ];
   return [
     ...directLinks,
