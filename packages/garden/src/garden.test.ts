@@ -13,6 +13,7 @@ import { gardenConfig } from "./test-helpers";
 const garden = createGarden(gardenConfig);
 const gardenItemCount = 13;
 const NATURAL_LINK_SHARED = "natural-link-shared";
+const NATURAL_LINK_ALONE = "natural-link-alone";
 const noNaturalLinks = (link: Link) => link.type !== LinkType.NaturalTo;
 const naturalLinks = (link: Link) => link.type === LinkType.NaturalTo;
 
@@ -47,7 +48,7 @@ describe("garden", () => {
     expect(linkedThings).toContain("word-2");
     expect(linkedThings).toContain("word-3");
     try {
-      expect(linkedThings.length).toBe(25);
+      expect(linkedThings.length).toBe(17);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(linkedThings)}`);
     }
@@ -78,7 +79,7 @@ describe("garden", () => {
     expect(wantedThings[0]).toBe("wanted");
     const wantedNaturalThings = findWantedThings(things, naturalLinks);
     try {
-      expect(wantedNaturalThings.length).toBe(12);
+      expect(wantedNaturalThings.length).toBe(4);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(wantedNaturalThings)}`);
     }
@@ -98,18 +99,18 @@ describe("garden", () => {
         links: [
           { name: "explicit-link" },
           { name: NATURAL_LINK_SHARED, type: LinkType.NaturalTo },
-          { name: "natural-link-alone", type: LinkType.NaturalTo },
+          { name: NATURAL_LINK_ALONE, type: LinkType.NaturalTo },
         ],
       },
       bar: {
         title: "bar",
         links: [
-          { name: "explicit-link" },
+          { name: "explicit-link", type: LinkType.NaturalTo },
           { name: NATURAL_LINK_SHARED, type: LinkType.NaturalTo },
           { name: "bar", type: LinkType.NaturalTo },
         ],
       },
     };
-    expect(findUnwantedLinks(meta)).toStrictEqual([NATURAL_LINK_SHARED]);
+    expect(findUnwantedLinks(meta)).toStrictEqual([NATURAL_LINK_ALONE]);
   });
 });

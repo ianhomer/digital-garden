@@ -4,7 +4,7 @@ import os from "os";
 import { join } from "path";
 import { resolve } from "path";
 
-import { notUnique, unique } from "./common";
+import { unique } from "./common";
 import { findFilesDeep } from "./file";
 import { logger } from "./logger";
 import { process } from "./markdown";
@@ -145,17 +145,36 @@ const generateMeta = async (
 // Unwanted links are unique natural links to a non-existent thing
 export const findUnwantedLinks = (meta: MetaMap) => {
   const thingNames = Object.keys(meta);
-  return thingNames
+  const unreferencedExplicitLinks = thingNames
+    .map((key) => {
+      return meta[key].links
+        .filter((link) => !link.type && !thingNames.includes(link.name))
+        .map((link) => link.name);
+    })
+    .flat();
+  const unreferencedNaturalLinks = thingNames
     .map((key) => {
       return meta[key].links
         .filter(
           (link) =>
-            link.type === LinkType.NaturalTo && !thingNames.includes(link.name)
+            link.type === LinkType.NaturalTo &&
+            !thingNames.includes(link.name) &&
+            !unreferencedExplicitLinks.includes(link.name)
         )
         .map((link) => link.name);
     })
-    .flat()
-    .filter(notUnique);
+    .flat();
+  const duplicateUnreferencedNaturalLinks = unreferencedNaturalLinks.reduce(
+    (accumulator: string[], linkName, i, array: string[]) => {
+      if (array.indexOf(linkName) !== i && accumulator.indexOf(linkName) < 0)
+        accumulator.push(linkName);
+      return accumulator;
+    },
+    []
+  );
+  return unreferencedNaturalLinks.filter(
+    (name) => !duplicateUnreferencedNaturalLinks.includes(name)
+  );
 };
 
 const globalMetaDirectory = join(os.homedir(), ".local/garden/meta");
