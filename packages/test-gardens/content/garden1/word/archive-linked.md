@@ -1,3 +1,3 @@
-# Archive Linked
+# Archive linked
 
 Link to [[archived-thing]].

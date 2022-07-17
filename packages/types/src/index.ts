@@ -28,6 +28,8 @@ export enum LinkType {
   From = "from",
   Has = "has",
   In = "in",
+  NaturalTo = "natural",
+  NaturalFrom = "naturalFrom",
 }
 
 export type Things = { [key: string]: Meta };

@@ -1,3 +1,4 @@
+import { LinkType } from "@garden/types";
 import { createGarden } from "./garden";
 import { parse, process } from "./markdown";
 import { gardenConfig } from "./test-helpers";
@@ -41,9 +42,12 @@ describe("markdown", () => {
   describe("file", () => {
     it("should have title and links", () => {
       const meta = process(garden.thing("garden1/word/word-1.md").content);
-
       expect(meta.title).toBe("Word 1");
       expect(meta.links).toContainEqual({ name: "word-2" });
+      expect(meta.links).toContainEqual({
+        name: "natural-word",
+        type: LinkType.NaturalTo,
+      });
     });
   });
 

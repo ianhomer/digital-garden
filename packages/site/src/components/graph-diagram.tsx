@@ -57,7 +57,7 @@ export default function GraphDiagram({
       .selectAll<SVGLineElement, NodeLink>(".link")
       .data(graph.links)
       .join("line")
-      .classed("link", true)
+      .attr("class", (d: NodeLink) => `link ${d.type}`)
       .attr("stroke-width", getLinkStrokeWidth);
 
     const group = svg
