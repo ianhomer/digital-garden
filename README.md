@@ -1,8 +1,28 @@
 # Digital garden
 
-Rendering of a Zettelkasten collection of markdown content into a web site with
+Rendering of a Zettelkasten collection of markdown notes into a web site with
 visualisations to help navigation and discovery of related content. See
 <https://boxofjam.com> for an example.
+
+An emphasis is made display links between articles. This can either be done with
+explicit wiki style links, with `[[...]]` or via natural language processing.
+The natural language processing discovers notes by the looking the first
+paragraph in the document and finding either links that are not explicitly
+tagged, or wanted notes that referenced by multiple notes.
+
+| line in graph     | meaning           |
+| ----------------- | ----------------- |
+| solid grey        | explicit link     |
+| short dashed blue | back link         |
+| medium dashed red | natural link      |
+| long dashed red   | natural back link |
+
+| node in graph | meaning                                           |
+| ------------- | ------------------------------------------------- |
+| solid big red | current or locked note                            |
+| medium        | first level depth                                 |
+| small         | second level depth                                |
+| white         | wanted note - referenced note that does not exist |
 
 ![demo](docs/images/demo.png)
 

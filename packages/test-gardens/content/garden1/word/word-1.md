@@ -1,7 +1,7 @@
 # Word 1
 
-[[word]] 1 content.
+Related to [[word-2]]. Related also to natural word.
 
-Explicit link [[word-2]].
+[[word]] 1 content.
 
 Wanted link [[wanted]].
