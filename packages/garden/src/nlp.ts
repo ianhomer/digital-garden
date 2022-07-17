@@ -1,6 +1,8 @@
 import { Link, LinkType } from "@garden/types";
 import nlp from "compromise";
 
+import { unique } from "./common";
+
 interface Noun {
   adjectives: string[];
   root: string;
@@ -16,9 +18,6 @@ export interface NaturalThing {
 
 const strip = (text: string) =>
   text.trim().replace(/\s/g, "-").replace(/[._]/g, "");
-
-const unique = (value: string, index: number, self: string[]) =>
-  self.indexOf(value) === index;
 
 export function naturalProcess(content: string, excludes: string[] = []) {
   const document = nlp(content);

@@ -1,9 +1,10 @@
-import { Link, Meta, Things } from "@garden/types";
+import { Link, LinkType, Meta, Things } from "@garden/types";
 import fs from "fs";
 import os from "os";
 import { join } from "path";
 import { resolve } from "path";
 
+import { notUnique, unique } from "./common";
 import { findFilesDeep } from "./file";
 import { logger } from "./logger";
 import { process } from "./markdown";
@@ -38,6 +39,10 @@ export interface GardenConfig {
   liveMeta: boolean;
   gardens: { [key: string]: string };
   verbose: boolean;
+}
+
+export interface MetaMap {
+  [key: string]: Meta;
 }
 
 const defaultConfig = {
@@ -83,7 +88,7 @@ const generateThingMeta = (
 
 const generateMeta = async (
   config: GardenConfig,
-  meta: { [key: string]: Meta } = {},
+  meta: MetaMap = {},
   filenameToPatch?: string
 ): Promise<{ [key: string]: Meta }> => {
   const gardenDirectory = resolve(config.directory);
@@ -114,24 +119,43 @@ const generateMeta = async (
     }
   }
 
-  const transformedMeta: { [key: string]: Meta } = {};
+  const unwantedLinks = findUnwantedLinks(meta);
+  const transformedMeta: MetaMap = {};
 
   Object.keys(meta).map((key) => {
     const thing = meta[key];
     transformedMeta[key] = {
       title: thing.title,
       value: thing.value,
-      links: thing.links.map((link) => {
-        const transformedLink: Link = { name: link.name, type: link.type };
-        if (thing?.value == 0 || meta[link.name]?.value == 0) {
-          transformedLink.value = 0;
-        }
-        return transformedLink;
-      }),
+      links: thing.links
+        .filter((link) => !unwantedLinks.includes(link.name))
+        .map((link) => {
+          const transformedLink: Link = { name: link.name, type: link.type };
+          if (thing?.value == 0 || meta[link.name]?.value == 0) {
+            transformedLink.value = 0;
+          }
+          return transformedLink;
+        }),
     };
   });
 
   return transformedMeta;
+};
+
+// Unwanted links are unique natural links to a non-existent thing
+export const findUnwantedLinks = (meta: MetaMap) => {
+  const thingNames = Object.keys(meta);
+  return thingNames
+    .map((key) => {
+      return meta[key].links
+        .filter(
+          (link) =>
+            link.type === LinkType.NaturalTo && !thingNames.includes(link.name)
+        )
+        .map((link) => link.name);
+    })
+    .flat()
+    .filter(notUnique);
 };
 
 const globalMetaDirectory = join(os.homedir(), ".local/garden/meta");
