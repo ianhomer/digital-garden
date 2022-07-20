@@ -234,7 +234,8 @@ export const findLinkedThings = (
 ) => {
   return Object.values(things)
     .map((thing) => thing.links.filter(filter).map((link: Link) => link.name))
-    .flat();
+    .flat()
+    .filter(unique);
 };
 
 export const findWantedThings = (
