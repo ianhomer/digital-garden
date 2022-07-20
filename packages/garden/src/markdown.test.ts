@@ -23,6 +23,11 @@ describe("markdown", () => {
       expect(meta.links[0].name).toBe("wiki-link");
       expect(meta.links[1].name).toBe("my-link");
     });
+
+    it("should not extract links from explicit links", () => {
+      const meta = process(() => "# Mock\n\nMy [[one-day-maybe]]");
+      expect(meta.links).toStrictEqual([{ name: "one-day-maybe" }]);
+    });
   });
 
   describe("content without heading", () => {

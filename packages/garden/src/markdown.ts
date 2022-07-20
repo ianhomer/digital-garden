@@ -24,14 +24,14 @@ function flatten(node: Parent): Node[] {
     : [];
 }
 
-function getFirstValue(node: Node): string {
-  return toString(node);
+function getFirstValue(node: Node, filter = (node: Node) => !!node): string {
+  return toString((node as Parent).children.filter(filter));
 }
 
-function getFrontText(node: Parent) {
+function getFrontText(node: Parent, filter = (node: Node) => !!node) {
   const firstParagraph = node.children.find((node) => node.type == "paragraph");
   if (firstParagraph) {
-    return getFirstValue(firstParagraph);
+    return getFirstValue(firstParagraph, filter);
   }
   return null;
 }
@@ -71,7 +71,7 @@ export function process(content: () => string): Meta {
     links: [
       ...explicitLinks,
       ...naturalProcess(
-        getFrontText(document) ?? "",
+        getFrontText(document, (child) => child.type !== "wikiLink") ?? "",
         explicitLinks.map((link) => link.name)
       ).links,
     ],

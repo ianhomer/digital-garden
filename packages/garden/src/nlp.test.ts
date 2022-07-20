@@ -70,4 +70,9 @@ describe("natural language processing", () => {
       SMALL_LIBRARY,
     ]);
   });
+
+  it("should find double nouns", async () => {
+    const thing = naturalProcess("a book by sideshow bob on wish list");
+    expect(linksOf(thing)).toStrictEqual(["book", "sideshow-bob", "wish-list"]);
+  });
 });

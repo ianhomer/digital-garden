@@ -48,7 +48,7 @@ describe("garden", () => {
     expect(linkedThings).toContain("word-2");
     expect(linkedThings).toContain("word-3");
     try {
-      expect(linkedThings.length).toBe(17);
+      expect(linkedThings.length).toBe(11);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(linkedThings)}`);
     }
@@ -79,7 +79,7 @@ describe("garden", () => {
     expect(wantedThings[0]).toBe("wanted");
     const wantedNaturalThings = findWantedThings(things, naturalLinks);
     try {
-      expect(wantedNaturalThings.length).toBe(4);
+      expect(wantedNaturalThings.length).toBe(2);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(wantedNaturalThings)}`);
     }
@@ -92,7 +92,7 @@ describe("garden", () => {
     });
   });
 
-  it("should find unwanted links", () => {
+  it("should not find unwanted links", () => {
     const meta: MetaMap = {
       foo: {
         title: "foo",
