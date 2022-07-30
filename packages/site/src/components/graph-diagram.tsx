@@ -1,3 +1,4 @@
+import { LinkType } from "@garden/types";
 import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 
@@ -20,10 +21,28 @@ const getRadius = (d: Node) =>
   d.depth == 0 ? DEPTH_1_RADIUS : d.depth == 1 ? 15 : d.depth == 2 ? 10 : 4;
 
 const getCharge = (d: Node) =>
-  d.depth == 0 ? -10000 : d.depth == 1 ? -2000 : d.depth == 2 ? -500 : -50;
+  d.depth == 0 ? -10000 : d.depth == 1 ? -2000 : d.depth == 2 ? -1000 : -50;
 
 const getLinkStrokeWidth = (d: NodeLink) =>
   d.depth == 0 ? 8 : d.depth == 1 ? 2 : 1;
+
+const linkTypeForceWeight = (linkType: LinkType) => {
+  switch (linkType) {
+    case LinkType.To:
+      return 0.6;
+    case LinkType.From:
+      return 0.4;
+    case LinkType.NaturalTo:
+      return 0.2;
+    case LinkType.NaturalFrom:
+      return 0.1;
+  }
+};
+
+const linkDepthForceWeight = (link: NodeLink) => (link.depth < 2 ? 0.5 : 1.5);
+
+const getLinkForce = (d: NodeLink) =>
+  linkTypeForceWeight(d.type) * linkDepthForceWeight(d);
 
 export default function GraphDiagram({
   graph,
@@ -79,7 +98,7 @@ export default function GraphDiagram({
     const anchor = group.append("a").attr("href", (d: Node) => `/${d.id}`);
 
     anchor
-      .filter((d: Node) => d.depth < 3)
+      .filter((d: Node) => d.showLabel)
       .append("text")
       .text((d: Node) => d.title)
       .attr("x", xOffsetText)
@@ -128,7 +147,7 @@ export default function GraphDiagram({
       )
       .force("forceX", d3.forceX(0).strength(0.1))
       .force("forceY", d3.forceY(height / 3).strength(0.1))
-      .force("link", forceLink.id((d: Node) => d.id).strength(0.3))
+      .force("link", forceLink.id((d: Node) => d.id).strength(getLinkForce))
       .tick(150)
       .alphaMin(0.01)
       .alphaDecay(0.03)
