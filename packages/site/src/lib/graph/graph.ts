@@ -47,6 +47,7 @@ export const createGraph = (
         const siblings = countSiblings(name, links, depth);
         return {
           id: name || "na",
+          title: name in things ? things[name].title : name,
           type: NodeType.Thing,
           wanted: !(name in things),
           siblings,

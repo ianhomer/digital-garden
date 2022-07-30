@@ -100,7 +100,7 @@ export default function GraphDiagram({
     anchor
       .filter((d: Node) => d.showLabel)
       .append("text")
-      .text((d: Node) => d.id)
+      .text((d: Node) => d.title)
       .attr("x", xOffsetText)
       .attr("y", yOffsetText)
       .attr("class", (d: Node) => `depth-${d.depth}`)
