@@ -70,7 +70,9 @@ export default function (box: number[]) {
     // When iterations set then we automatically run given number of iterations
     for (let k = 0; k < iterations; ++k) {
       for (const d of nodes) {
-        tree.visit(apply(d, box));
+        if (d.showLabel) {
+          tree.visit(apply(d, box));
+        }
       }
     }
   }

@@ -10,6 +10,8 @@ export interface Node extends SimulationNodeDatum {
   title: string;
   type: NodeType;
   depth: number;
+  siblings: number;
+  showLabel: boolean;
   wanted: boolean;
 }
 
