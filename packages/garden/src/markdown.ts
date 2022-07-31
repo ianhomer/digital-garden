@@ -5,6 +5,7 @@ import remarkParse from "remark-parse";
 import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
 import { Node, Parent } from "unist";
+import { linkResolver } from "./link";
 
 import { naturalProcess } from "./nlp";
 
@@ -63,7 +64,7 @@ export function process(content: () => string): Meta {
     .map((link) => ({
       name:
         link.type === "wikiLink"
-          ? (link as Literal).value.toLowerCase()
+          ? linkResolver((link as Literal).value)
           : extractName((link as Link).url),
     }));
   return {
