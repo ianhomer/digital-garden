@@ -22,7 +22,7 @@ const strip = (text: string) =>
 
 export function naturalProcess(content: string, excludes: string[] = []) {
   const document = nlp(content);
-  const enhancedExcludes = [...excludes, ""];
+  const enhancedExcludes = [...excludes, "", ",", "s", "ing"];
   const links: Link[] = (document.not("#Pronoun") as Three)
     .nouns()
     .toLowerCase()

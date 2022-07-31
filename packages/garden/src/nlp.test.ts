@@ -75,4 +75,9 @@ describe("natural language processing", () => {
     const thing = naturalProcess("a book by sideshow bob on wish list");
     expect(linksOf(thing)).toStrictEqual(["book", "sideshow-bob", "wish-list"]);
   });
+
+  it("should not create a link to excluded words", async () => {
+    const thing = naturalProcess(`, a bag is s and ing the dog`);
+    expect(linksOf(thing)).toStrictEqual(["bag", "dog"]);
+  });
 });
