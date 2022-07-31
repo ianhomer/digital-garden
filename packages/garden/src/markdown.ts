@@ -5,8 +5,8 @@ import remarkParse from "remark-parse";
 import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
 import { Node, Parent } from "unist";
-import { linkResolver } from "./link";
 
+import { linkResolver } from "./link";
 import { naturalProcess } from "./nlp";
 
 export function parse(content: () => string) {
