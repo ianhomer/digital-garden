@@ -1,3 +1,5 @@
+import { pageResolver } from "./link";
+
 describe("link", () => {
   it("should render link in lowercase", () => {
     expect(pageResolver("Page")).toStrictEqual(["page"]);

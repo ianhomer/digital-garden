@@ -1,3 +1,4 @@
+import { pageResolver } from "@garden/garden";
 import langGherkin from "highlight.js/lib/languages/gherkin";
 import langGroovy from "highlight.js/lib/languages/groovy";
 import langProperties from "highlight.js/lib/languages/properties";
@@ -38,6 +39,7 @@ export default async function markdownToHtml(markdown: string) {
     .use(remarkGfm)
     .use(remarkWikiLink, {
       hrefTemplate: (permalink: string) => `/${permalink}`,
+      pageResolver,
     })
     .use(remarkDirective)
     .use(remarkEmoji)
