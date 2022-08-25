@@ -1,24 +1,19 @@
 import {
-  createGarden,
   findItemOrWanted,
   findLinks,
   findWantedThings,
   getAllItems,
-  toConfig,
 } from "@garden/garden";
 import { findDeepLinks } from "@garden/graph";
 import { Item, Link } from "@garden/types";
 import { useState } from "react";
 
-import options from "../../garden.config.js";
 import GraphDiagram from "../components/graph-diagram";
+import { config, garden } from "../components/siteGarden";
 import { useKey } from "../components/useKey";
 import useWindowDimensions from "../components/useWindowDimensions";
 import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
-
-const config = toConfig(options);
-const garden = createGarden(config);
 
 function ItemPage({ item }) {
   const { height, width } = useWindowDimensions();

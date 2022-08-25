@@ -21,12 +21,17 @@ export interface Garden {
   refresh: (filenameToPatch?: string) => Promise<Things>;
 }
 
+export interface GardenMethods {
+  load?: () => Promise<Things>;
+  refresh?: (filenameToPatch?: string) => Promise<Things>;
+}
+
 export interface GardenOptions {
   allowGlobalMeta?: boolean;
   directory?: string;
   excludedDirectories?: string[];
-  hasMultiple?: boolean;
   gardens?: { [key: string]: string };
+  hasMultiple?: boolean;
   liveMeta?: boolean;
   verbose?: boolean;
 }
@@ -35,9 +40,9 @@ export interface GardenConfig {
   allowGlobalMeta: boolean;
   directory: string;
   excludedDirectories: string[];
+  gardens: { [key: string]: string };
   hasMultiple: boolean;
   liveMeta: boolean;
-  gardens: { [key: string]: string };
   verbose: boolean;
 }
 
@@ -253,7 +258,10 @@ export const toConfig = (options: GardenOptions): GardenConfig => ({
   ...options,
 });
 
-export const createGarden = (options: GardenOptions): Garden => {
+export const createGarden = (
+  options: GardenOptions,
+  methods?: GardenMethods
+): Garden => {
   const config = toConfig(options);
 
   return {
@@ -268,5 +276,6 @@ export const createGarden = (options: GardenOptions): Garden => {
     thing: (filename: string) => {
       return loadThing(config, filename);
     },
+    ...methods,
   };
 };
