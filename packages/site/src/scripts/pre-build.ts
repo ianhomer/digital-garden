@@ -11,9 +11,10 @@ const argv = yargs(hideBin(process.argv)).argv;
 const garden = createGarden(config);
 
 const refresh = (filenameToPatch?: string) =>
-  garden
-    .refresh(filenameToPatch)
-    .then((meta) => console.log(`refreshed ${Object.keys(meta).length} items`));
+  garden.refresh(filenameToPatch).then((meta) => {
+    console.log(`refreshed ${Object.keys(meta).length} items`);
+    fs.copyFileSync(garden.getMetaFilename(), "public/garden.json");
+  });
 
 const cmdCallback = (error, stdout, stderr) => {
   error && console.error(`exec error: ${error}`);
@@ -50,5 +51,3 @@ const filenameToPatch =
     ? join(garden.config.directory, argv.patch)
     : undefined;
 refresh(filenameToPatch);
-
-fs.copyFileSync(garden.getMetaFilename(), "public/garden.json");
