@@ -1,4 +1,8 @@
 .next
 gardens
+out
 output
 pnpm-lock.yaml
+
+packages/site/public/garden.json
+

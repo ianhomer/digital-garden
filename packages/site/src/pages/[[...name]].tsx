@@ -1,29 +1,26 @@
 import {
-  createGarden,
   findItemOrWanted,
   findLinks,
   findWantedThings,
   getAllItems,
-  toConfig,
 } from "@garden/garden";
 import { findDeepLinks } from "@garden/graph";
-import { Item, Link } from "@garden/types";
-import { useState } from "react";
+import { Item, Link, Things } from "@garden/types";
+import { useEffect, useState } from "react";
 
-import options from "../../garden.config.js";
 import GraphDiagram from "../components/graph-diagram";
+import { config, garden } from "../components/siteGarden";
 import { useKey } from "../components/useKey";
 import useWindowDimensions from "../components/useWindowDimensions";
 import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
 
-const config = toConfig(options);
-const garden = createGarden(config);
-
 function ItemPage({ item }) {
   const { height, width } = useWindowDimensions();
   const [depth, setDepth] = useState(2);
   const [scale, setScale] = useState(1.3);
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState<Things>({});
 
   useKey((key) => setDepth(parseInt(key)), ["1", "2", "3", "4", "5"]);
 
@@ -32,6 +29,16 @@ function ItemPage({ item }) {
   useKey(() => setScale(scale), ["c"]);
   useKey(() => setScale(scale * 1.3), ["x"]);
   useKey(() => setScale(scale * 1.5), ["z"]);
+
+  useEffect(() => {
+    fetch("/garden.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setLoading(false);
+        console.log(data);
+        setData(data);
+      });
+  }, []);
 
   return (
     <>
@@ -45,16 +52,18 @@ function ItemPage({ item }) {
           ))}
         </ul>
       </div>
-      <GraphDiagram
-        width={width}
-        height={height}
-        scale={scale}
-        graph={createGraph(
-          item.name,
-          item.garden,
-          findDeepLinks(item.garden, item.name, depth)
-        )}
-      />
+      {!isLoading && data && (
+        <GraphDiagram
+          width={width}
+          height={height}
+          scale={scale}
+          graph={createGraph(
+            item.name,
+            data,
+            findDeepLinks(data, item.name, depth)
+          )}
+        />
+      )}
     </>
   );
 }
@@ -66,7 +75,6 @@ export async function getStaticProps({ params }) {
   );
   const links = await findLinks(garden, item);
   const content = await markdownToHtml(item.content || "no content");
-  const things = await garden.load();
 
   return {
     props: {
@@ -74,7 +82,6 @@ export async function getStaticProps({ params }) {
         ...item,
         links,
         content,
-        garden: things,
       },
     },
   };

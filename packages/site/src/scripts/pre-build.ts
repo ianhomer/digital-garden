@@ -11,9 +11,10 @@ const argv = yargs(hideBin(process.argv)).argv;
 const garden = createGarden(config);
 
 const refresh = (filenameToPatch?: string) =>
-  garden
-    .refresh(filenameToPatch)
-    .then((meta) => console.log(`refreshed ${Object.keys(meta).length} items`));
+  garden.refresh(filenameToPatch).then((meta) => {
+    console.log(`refreshed ${Object.keys(meta).length} items`);
+    fs.copyFileSync(garden.getMetaFilename(), "public/garden.json");
+  });
 
 const cmdCallback = (error, stdout, stderr) => {
   error && console.error(`exec error: ${error}`);
@@ -22,10 +23,14 @@ const cmdCallback = (error, stdout, stderr) => {
   refresh();
 };
 
-if (!fs.existsSync(config.directory)) {
-  console.log(`Creating ${config.directory}`);
-  fs.mkdirSync(config.directory);
-}
+const mkdir = (directory: string) => {
+  if (!fs.existsSync(directory)) {
+    console.log(`Creating ${directory}`);
+    fs.mkdirSync(directory);
+  }
+};
+
+mkdir(config.directory);
 
 if (config.hasMultiple) {
   const gardens = config.gardens;

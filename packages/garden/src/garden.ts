@@ -16,6 +16,7 @@ export interface Garden {
   config: GardenConfig;
   thing: (filename: string) => FileThing;
   findBackLinks: (things: Things, name: string) => Array<Link>;
+  getMetaFilename: () => string;
   meta: () => Promise<Things>;
   load: () => Promise<Things>;
   refresh: (filenameToPatch?: string) => Promise<Things>;
@@ -25,8 +26,8 @@ export interface GardenOptions {
   allowGlobalMeta?: boolean;
   directory?: string;
   excludedDirectories?: string[];
-  hasMultiple?: boolean;
   gardens?: { [key: string]: string };
+  hasMultiple?: boolean;
   liveMeta?: boolean;
   verbose?: boolean;
 }
@@ -35,9 +36,9 @@ export interface GardenConfig {
   allowGlobalMeta: boolean;
   directory: string;
   excludedDirectories: string[];
+  gardens: { [key: string]: string };
   hasMultiple: boolean;
   liveMeta: boolean;
-  gardens: { [key: string]: string };
   verbose: boolean;
 }
 
@@ -265,6 +266,7 @@ export const createGarden = (options: GardenOptions): Garden => {
     findBackLinks: (things: Things, name: string) => {
       return findBackLinks(things, name);
     },
+    getMetaFilename: () => getMetaFilename(config),
     thing: (filename: string) => {
       return loadThing(config, filename);
     },
