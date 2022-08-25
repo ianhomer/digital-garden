@@ -22,11 +22,6 @@ export interface Garden {
   refresh: (filenameToPatch?: string) => Promise<Things>;
 }
 
-export interface GardenMethods {
-  load?: () => Promise<Things>;
-  refresh?: (filenameToPatch?: string) => Promise<Things>;
-}
-
 export interface GardenOptions {
   allowGlobalMeta?: boolean;
   directory?: string;
@@ -259,10 +254,7 @@ export const toConfig = (options: GardenOptions): GardenConfig => ({
   ...options,
 });
 
-export const createGarden = (
-  options: GardenOptions,
-  methods?: GardenMethods
-): Garden => {
+export const createGarden = (options: GardenOptions): Garden => {
   const config = toConfig(options);
 
   return {
@@ -278,6 +270,5 @@ export const createGarden = (
     thing: (filename: string) => {
       return loadThing(config, filename);
     },
-    ...methods,
   };
 };
