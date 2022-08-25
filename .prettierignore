@@ -4,5 +4,5 @@ out
 output
 pnpm-lock.yaml
 
-packages/site/src/public/garden.json
+packages/site/public/garden.json
 
