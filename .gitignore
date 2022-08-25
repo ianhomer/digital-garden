@@ -4,6 +4,8 @@ node_modules/
 out/
 output/
 
+packages/site/src/public/garden.json
+
 *.tsbuildinfo
 .env
 .pnpm-debug.log

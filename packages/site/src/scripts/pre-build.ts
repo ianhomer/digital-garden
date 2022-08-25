@@ -22,10 +22,14 @@ const cmdCallback = (error, stdout, stderr) => {
   refresh();
 };
 
-if (!fs.existsSync(config.directory)) {
-  console.log(`Creating ${config.directory}`);
-  fs.mkdirSync(config.directory);
-}
+const mkdir = (directory: string) => {
+  if (!fs.existsSync(directory)) {
+    console.log(`Creating ${directory}`);
+    fs.mkdirSync(directory);
+  }
+};
+
+mkdir(config.directory);
 
 if (config.hasMultiple) {
   const gardens = config.gardens;
@@ -46,3 +50,5 @@ const filenameToPatch =
     ? join(garden.config.directory, argv.patch)
     : undefined;
 refresh(filenameToPatch);
+
+fs.copyFileSync(garden.getMetaFilename(), "public/garden.json");

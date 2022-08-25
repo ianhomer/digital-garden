@@ -3,3 +3,6 @@ gardens
 out
 output
 pnpm-lock.yaml
+
+packages/site/src/public/garden.json
+

@@ -16,6 +16,7 @@ export interface Garden {
   config: GardenConfig;
   thing: (filename: string) => FileThing;
   findBackLinks: (things: Things, name: string) => Array<Link>;
+  getMetaFilename: () => string;
   meta: () => Promise<Things>;
   load: () => Promise<Things>;
   refresh: (filenameToPatch?: string) => Promise<Things>;
@@ -273,6 +274,7 @@ export const createGarden = (
     findBackLinks: (things: Things, name: string) => {
       return findBackLinks(things, name);
     },
+    getMetaFilename: () => getMetaFilename(config),
     thing: (filename: string) => {
       return loadThing(config, filename);
     },
