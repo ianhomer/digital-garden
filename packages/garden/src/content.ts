@@ -80,7 +80,6 @@ export async function findItemOrWanted(
   try {
     return await findItem(config, name);
   } catch (error) {
-    logger.info(`Wanted page : ${name} : ${error}`);
     return {
       name,
       content: `# ${name}\n\nWanted`,
