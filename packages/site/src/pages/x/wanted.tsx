@@ -20,7 +20,7 @@ function Wanted({ items }: AllData) {
         )
         .map((item) => (
           <li key={item.name}>
-            {item.name} : {item.count}
+            <a href={`/${item.name}`}>{item.name}</a> : {item.count}
           </li>
         ))}
     </ul>
