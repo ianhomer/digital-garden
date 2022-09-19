@@ -22,7 +22,7 @@ const getRadius = (d: Node) =>
 
 // How much node repels
 const getCharge = (d: Node) =>
-  d.depth == 0 ? -5000 : d.depth == 1 ? -1000 : d.depth == 2 ? -800 : -50;
+  d.depth == 0 ? -8000 : d.depth == 1 ? -500 : d.depth == 2 ? -300 : -50;
 
 const getLinkStrokeWidth = (d: NodeLink) =>
   d.depth == 0 ? 8 : d.depth == 1 ? 2 : 1;
@@ -57,7 +57,7 @@ export default function GraphDiagram({
   const viewWidth = width * scale;
   const viewHeight = height * scale;
   const xOffset = viewWidth / 2;
-  const yOffset = viewHeight / 8;
+  const yOffset = viewHeight / 2;
   const leftBoundary = -viewWidth / 2 + DEPTH_1_RADIUS;
   const rightBoundary = viewWidth / 2 - DEPTH_1_RADIUS;
   const topBoundary = -yOffset + DEPTH_1_RADIUS;
@@ -149,10 +149,10 @@ export default function GraphDiagram({
         collideRectangle([xOffsetText, yOffsetText, widthText, heightText])
       )
       .force("forceX", d3.forceX(0).strength(0.1))
-      .force("forceY", d3.forceY(height / 3).strength(0.1))
+      .force("forceY", d3.forceY(0).strength(0.1))
       .force("link", forceLink.id((d: Node) => d.id).strength(getLinkForce))
-      .tick(1000)
-      .alphaMin(0.01)
+      .tick(200)
+      .alphaMin(0.02)
       .alphaDecay(0.03)
       .on("tick", tick);
 
