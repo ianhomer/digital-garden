@@ -20,8 +20,9 @@ const DEPTH_1_RADIUS = 30;
 const getRadius = (d: Node) =>
   d.depth == 0 ? DEPTH_1_RADIUS : d.depth == 1 ? 15 : d.depth == 2 ? 10 : 4;
 
+// How much node repels
 const getCharge = (d: Node) =>
-  d.depth == 0 ? -10000 : d.depth == 1 ? -2000 : d.depth == 2 ? -1000 : -50;
+  d.depth == 0 ? -5000 : d.depth == 1 ? -1000 : d.depth == 2 ? -800 : -50;
 
 const getLinkStrokeWidth = (d: NodeLink) =>
   d.depth == 0 ? 8 : d.depth == 1 ? 2 : 1;
@@ -39,8 +40,10 @@ const linkTypeForceWeight = (linkType: LinkType) => {
   }
 };
 
-const linkDepthForceWeight = (link: NodeLink) => (link.depth < 2 ? 0.5 : 1.5);
+const linkDepthForceWeight = (link: NodeLink) =>
+  link.depth == 0 ? 0.08 : link.depth == 1 ? 0.2 : 0.4;
 
+// How much each link attracts
 const getLinkForce = (d: NodeLink) =>
   linkTypeForceWeight(d.type) * linkDepthForceWeight(d);
 
@@ -148,7 +151,7 @@ export default function GraphDiagram({
       .force("forceX", d3.forceX(0).strength(0.1))
       .force("forceY", d3.forceY(height / 3).strength(0.1))
       .force("link", forceLink.id((d: Node) => d.id).strength(getLinkForce))
-      .tick(150)
+      .tick(1000)
       .alphaMin(0.01)
       .alphaDecay(0.03)
       .on("tick", tick);
