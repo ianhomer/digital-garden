@@ -32,16 +32,16 @@ const linkTypeForceWeight = (linkType: LinkType) => {
     case LinkType.To:
       return 0.6;
     case LinkType.From:
-      return 0.4;
+      return 0.5;
     case LinkType.NaturalTo:
-      return 0.2;
+      return 0.45;
     case LinkType.NaturalFrom:
-      return 0.1;
+      return 0.35;
   }
 };
 
 const linkDepthForceWeight = (link: NodeLink) =>
-  link.depth == 0 ? 0.08 : link.depth == 1 ? 0.2 : 0.4;
+  link.depth == 0 ? 0.08 : link.depth == 1 ? 0.2 : link.depth == 2 ? 0.8 : 1.2;
 
 // How much each link attracts
 const getLinkForce = (d: NodeLink) =>
@@ -58,10 +58,11 @@ export default function GraphDiagram({
   const viewHeight = height * scale;
   const xOffset = viewWidth / 2;
   const yOffset = viewHeight / 2;
-  const leftBoundary = -viewWidth / 2 + DEPTH_1_RADIUS;
-  const rightBoundary = viewWidth / 2 - DEPTH_1_RADIUS;
-  const topBoundary = -yOffset + DEPTH_1_RADIUS;
-  const bottomBoundary = viewHeight - yOffset - DEPTH_1_RADIUS;
+  const boundarySize = DEPTH_1_RADIUS * 2;
+  const leftBoundary = -viewWidth / 2 + boundarySize;
+  const rightBoundary = viewWidth / 2 - boundarySize;
+  const topBoundary = -yOffset + boundarySize;
+  const bottomBoundary = viewHeight - yOffset - boundarySize;
   const xOffsetText = -35;
   const yOffsetText = -10;
   const heightText = 50;

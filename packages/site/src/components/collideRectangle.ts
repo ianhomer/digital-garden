@@ -20,7 +20,7 @@ function yCenterOfBox(d: Node, box: number[]) {
 
 // box is [x,y,width,height]
 function apply(d: Node, box: number[]) {
-  const strength = 0.6;
+  const strength = 1;
   return (quad: { data: Node }) => {
     if (!quad.data) {
       return;
