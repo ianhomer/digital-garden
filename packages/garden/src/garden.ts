@@ -6,6 +6,7 @@ import { resolve } from "path";
 
 import { unique } from "./common";
 import { findFilesDeep } from "./file";
+import { linkResolver } from "./link";
 import { logger } from "./logger";
 import { process } from "./markdown";
 import { naturalAliases } from "./nlp";
@@ -129,7 +130,7 @@ const generateMeta = async (
         type: ThingType.Wanted,
         links: links.map(
           (name: string): Link => ({
-            name,
+            name: linkResolver(name),
             type: LinkType.NaturalAlias,
           })
         ),
