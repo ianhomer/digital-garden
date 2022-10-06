@@ -8,7 +8,9 @@ An emphasis is made display links between articles. This can either be done with
 explicit wiki style links, with `[[...]]` or via natural language processing.
 The natural language processing discovers notes by the looking the first
 paragraph in the document and finding either links that are not explicitly
-tagged, or wanted notes that referenced by multiple notes.
+tagged, or wanted notes that referenced by multiple notes. Links to plural
+knowns that don't exist are automatically linked to singular version of noun if
+article of that name does exist.
 
 | line in graph     | meaning           |
 | ----------------- | ----------------- |
