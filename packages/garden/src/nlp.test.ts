@@ -84,5 +84,6 @@ describe("natural language processing", () => {
   it("should find singulars", async () => {
     expect(naturalAliases("words")).toStrictEqual(["word"]);
     expect(naturalAliases("word")).toStrictEqual([]);
+    expect(naturalAliases("lists")).toStrictEqual(["list"]);
   });
 });

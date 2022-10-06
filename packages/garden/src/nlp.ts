@@ -22,10 +22,11 @@ const strip = (text: string) =>
 
 // Return aarray of aliases for words
 export function naturalAliases(name: string): string[] {
-  return nlp(nlp(name).nouns().isPlural().text())
-    .nouns()
-    .toSingular()
-    .out("array");
+  const one = nlp(name);
+  return [
+    ...nlp(one.nouns().isPlural().text()).nouns().toSingular().out("array"),
+    ...nlp(one.verbs().text()).verbs().toInfinitive().out("array"),
+  ];
 }
 
 export function naturalProcess(content: string, excludes: string[] = []) {
