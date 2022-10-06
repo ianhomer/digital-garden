@@ -9,7 +9,7 @@ describe("links", () => {
   it("should have links", async () => {
     const item = await findItem(garden.config, "word");
     const links = await findLinks(garden, item);
-    expect(links.length).toBe(7);
+    expect(links.length).toBe(8);
     [
       { name: "meta", type: "in" },
       { name: "vocabulary", type: "in" },
