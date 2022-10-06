@@ -20,6 +20,14 @@ export interface NaturalThing {
 const strip = (text: string) =>
   text.trim().replace(/\s/g, "-").replace(/[._]/g, "");
 
+// Return aarray of aliases for words
+export function naturalAliases(name: string): string[] {
+  return nlp(nlp(name).nouns().isPlural().text())
+    .nouns()
+    .toSingular()
+    .out("array");
+}
+
 export function naturalProcess(content: string, excludes: string[] = []) {
   const document = nlp(content);
   const enhancedExcludes = [...excludes, "", ",", "s", "ing"];

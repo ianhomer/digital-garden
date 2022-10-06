@@ -1,4 +1,4 @@
-import { Link, LinkType, Meta, Things } from "@garden/types";
+import { Link, LinkType, Meta, Things, ThingType } from "@garden/types";
 import fs from "fs";
 import os from "os";
 import { join } from "path";
@@ -8,6 +8,7 @@ import { unique } from "./common";
 import { findFilesDeep } from "./file";
 import { logger } from "./logger";
 import { process } from "./markdown";
+import { naturalAliases } from "./nlp";
 import { FileThing } from "./thing";
 
 const gardenMetaFile = ".garden-meta.json";
@@ -120,6 +121,22 @@ const generateMeta = async (
     }
   }
 
+  findWantedThings(meta).forEach((title) => {
+    const links = naturalAliases(title);
+    if (links.length > 0) {
+      meta[title] = {
+        title,
+        type: ThingType.Wanted,
+        links: links.map(
+          (name: string): Link => ({
+            name,
+            type: LinkType.NaturalAlias,
+          })
+        ),
+      };
+    }
+  });
+
   const unwantedLinks = findUnwantedLinks(meta);
   const transformedMeta: MetaMap = {};
 
@@ -127,6 +144,7 @@ const generateMeta = async (
     const thing = meta[key];
     transformedMeta[key] = {
       title: thing.title,
+      type: thing.type,
       value: thing.value,
       links: thing.links
         .filter((link) => !unwantedLinks.includes(link.name))
@@ -226,7 +244,11 @@ const findBackLinks = (things: Things, name: string) => {
 };
 
 export const findKnownThings = (things: Things) => {
-  return Object.keys(things);
+  return Object.keys(
+    Object.fromEntries(
+      Object.entries(things).filter(([, thing]) => !thing.type)
+    )
+  );
 };
 
 export const findLinkedThings = (

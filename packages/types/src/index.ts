@@ -19,8 +19,13 @@ export interface ItemLink {
 
 export interface Meta {
   title: string;
+  type?: ThingType;
   links: Array<Link>;
   value?: number;
+}
+
+export enum ThingType {
+  Wanted = "wanted",
 }
 
 export enum LinkType {
@@ -30,6 +35,7 @@ export enum LinkType {
   In = "in",
   NaturalTo = "natural",
   NaturalFrom = "naturalFrom",
+  NaturalAlias = "naturalAlias",
 }
 
 export type Things = { [key: string]: Meta };
