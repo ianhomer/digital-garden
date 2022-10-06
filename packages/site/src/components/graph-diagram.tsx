@@ -37,6 +37,8 @@ const linkTypeForceWeight = (linkType: LinkType) => {
       return 0.45;
     case LinkType.NaturalFrom:
       return 0.35;
+    case LinkType.NaturalAlias:
+      return 0.25;
   }
 };
 

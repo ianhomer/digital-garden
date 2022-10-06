@@ -7,3 +7,5 @@ Different types of links.
 [[Word-1]]
 
 [[Word 2]]
+
+[[words]]

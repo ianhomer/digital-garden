@@ -1,6 +1,6 @@
 import { Link } from "@garden/types";
 
-import { naturalProcess, NaturalThing } from "./nlp";
+import { naturalAliases, naturalProcess, NaturalThing } from "./nlp";
 
 const AWESOME_LIBRARY = "awesome-library";
 const SMALL_LIBRARY = "small-library";
@@ -79,5 +79,10 @@ describe("natural language processing", () => {
   it("should not create a link to excluded words", async () => {
     const thing = naturalProcess(`, a bag is s and ing the dog`);
     expect(linksOf(thing)).toStrictEqual(["bag", "dog"]);
+  });
+
+  it("should find singulars", async () => {
+    expect(naturalAliases("words")).toStrictEqual(["word"]);
+    expect(naturalAliases("word")).toStrictEqual([]);
   });
 });

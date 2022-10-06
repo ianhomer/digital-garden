@@ -6,7 +6,7 @@ const backLinks = (
   things: Things,
   name: string,
   depth: number,
-  predicate = (link: Link) => !link.type,
+  predicate = (link: Link) => !link.type || link.type == LinkType.NaturalAlias,
   backLinkType = LinkType.From
 ) => {
   return Object.keys(things)
