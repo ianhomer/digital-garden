@@ -23,6 +23,15 @@ describe("natural language processing", () => {
     ]);
   });
 
+  it("should extract list of things", async () => {
+    const thing = naturalProcess("principle, practice, technique, or process");
+    expect(linksOf(thing)).toStrictEqual([
+      "principle",
+      "practice",
+      "technique",
+    ]);
+  });
+
   it("should find noun with adjectives", async () => {
     const thing = naturalProcess("this is an awesome small library");
     expect(linksOf(thing)).toStrictEqual([
@@ -84,5 +93,6 @@ describe("natural language processing", () => {
   it("should find singulars", async () => {
     expect(naturalAliases("words")).toStrictEqual(["word"]);
     expect(naturalAliases("word")).toStrictEqual([]);
+    expect(naturalAliases("lists")).toStrictEqual(["list"]);
   });
 });

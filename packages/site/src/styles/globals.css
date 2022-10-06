@@ -4,7 +4,7 @@
 
 @layer base {
   a {
-    @apply underline;
+    @apply underline underline-offset-2;
   }
   a[href*="//"]
   {
