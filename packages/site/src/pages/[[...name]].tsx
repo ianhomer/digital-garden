@@ -35,7 +35,6 @@ function ItemPage({ item }) {
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
-        console.log(data);
         setData(data);
       });
   }, []);
