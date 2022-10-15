@@ -13,8 +13,8 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^8.6.0",
-    "@playwright/test": "^1.27.0",
+    "@playwright/test": "^1.27.1",
     "allure-playwright": "2.0.0-beta.19",
-    "playwright": "^1.27.0"
+    "playwright": "^1.27.1"
   }
 }
