@@ -5,7 +5,7 @@ import { join } from "path";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
-import config from "../../garden.config.js";
+import config from "../garden.config";
 
 const argv = yargs(hideBin(process.argv)).argv;
 const garden = createGarden(config);
