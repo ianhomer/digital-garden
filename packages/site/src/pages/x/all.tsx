@@ -7,6 +7,7 @@ const config = toConfig(options);
 type AllData = {
   items: string[];
 };
+
 function All({ items }: AllData) {
   return (
     <ul className="links">

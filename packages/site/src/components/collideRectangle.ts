@@ -1,31 +1,31 @@
-import { quadtree } from "d3-quadtree";
+import { quadtree, QuadtreeInternalNode, QuadtreeLeaf } from "d3-quadtree";
 
 import { Node } from "../lib/graph/types";
 
 function x(d: Node) {
-  return d.x + d.vx;
+  return (d.x ?? 0) + (d.vx ?? 0);
 }
 
 function y(d: Node) {
-  return d.y + d.vy;
+  return (d.y ?? 0) + (d.vy ?? 0);
 }
 
 function xCenterOfBox(d: Node, box: number[]) {
-  return d.x + box[0] + box[2] / 2;
+  return (d.x ?? 0) + box[0] + box[2] / 2;
 }
 
 function yCenterOfBox(d: Node, box: number[]) {
-  return d.y + box[1] + box[3] / 2;
+  return (d.y ?? 0) + box[1] + box[3] / 2;
 }
 
 // box is [x,y,width,height]
 function apply(d: Node, box: number[]) {
   const strength = 1;
-  return (quad: { data: Node }) => {
-    if (!quad.data) {
+  return (quad: QuadtreeInternalNode<Node> | QuadtreeLeaf<Node>) => {
+    if (quad.length == 4 || !d) {
       return;
     }
-    if (quad.data.index <= d.index) {
+    if ((quad.data.index ?? 0) <= (d.index ?? 0)) {
       // only apply force between 2 nodes once
       return;
     }
@@ -48,13 +48,13 @@ function apply(d: Node, box: number[]) {
       if (Math.abs(overlapY) < Math.abs(overlapX)) {
         // Move nodes vertically
         const delta = (strength * yDistance * overlapY) / distance;
-        d.vy -= delta;
-        quad.data.vy += delta;
+        d.vy = (d.vy ?? 0) - delta;
+        quad.data.vy = (quad.data.vy ?? 0) + delta;
       } else {
         // Move nodes horizontally
         const delta = (strength * xDistance * overlapX) / distance;
-        d.vx -= delta;
-        quad.data.vx += delta;
+        d.vx = (d.vx ?? 0) - delta;
+        quad.data.vx = (quad.data.vx ?? 0) + delta;
       }
       return true;
     }

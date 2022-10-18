@@ -6,6 +6,7 @@ import {
 } from "@garden/garden";
 import { findDeepLinks } from "@garden/graph";
 import { Item, Link, Things } from "@garden/types";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { useEffect, useState } from "react";
 
 import GraphDiagram from "../components/graph-diagram";
@@ -15,7 +16,15 @@ import useWindowDimensions from "../components/useWindowDimensions";
 import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
 
-function ItemPage({ item }) {
+interface Props {
+  item: {
+    name: string;
+    content: string;
+    links: Link[];
+  };
+}
+
+function ItemPage({ item }: Props) {
   const { height, width } = useWindowDimensions();
   const [depth, setDepth] = useState(2);
   const [scale, setScale] = useState(1.3);
@@ -67,7 +76,7 @@ function ItemPage({ item }) {
   );
 }
 
-export async function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const item = await findItemOrWanted(
     garden.config,
     params.name && params.name[0]
@@ -84,9 +93,9 @@ export async function getStaticProps({ params }) {
       },
     },
   };
-}
+};
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   const things = await garden.load();
   const items = [
     ...(await getAllItems(config)),
@@ -104,6 +113,6 @@ export async function getStaticPaths() {
     })),
     fallback: false,
   };
-}
+};
 
 export default ItemPage;

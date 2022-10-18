@@ -1,5 +1,6 @@
 import { LinkType } from "@garden/types";
 import * as d3 from "d3";
+import { SimulationNodeDatum } from "d3";
 import { useEffect, useRef } from "react";
 
 import { Graph, Node, NodeLink } from "../lib/graph/types";
@@ -17,12 +18,34 @@ GraphDiagram.defaultProps = {
 };
 
 const DEPTH_1_RADIUS = 30;
-const getRadius = (d: Node) =>
-  d.depth == 0 ? DEPTH_1_RADIUS : d.depth == 1 ? 15 : d.depth == 2 ? 10 : 4;
+const getRadius = (d: Node | SimulationNodeDatum) => {
+  if ("depth" in d) {
+    return d.depth == 0
+      ? DEPTH_1_RADIUS
+      : d.depth == 1
+      ? 15
+      : d.depth == 2
+      ? 10
+      : 4;
+  } else {
+    return 2;
+  }
+};
 
 // How much node repels
-const getCharge = (d: Node) =>
-  d.depth == 0 ? -8000 : d.depth == 1 ? -500 : d.depth == 2 ? -300 : -50;
+const getCharge = (d: Node | SimulationNodeDatum) => {
+  if ("depth" in d) {
+    return d.depth == 0
+      ? -8000
+      : d.depth == 1
+      ? -500
+      : d.depth == 2
+      ? -300
+      : -50;
+  } else {
+    return -20;
+  }
+};
 
 const getLinkStrokeWidth = (d: NodeLink) =>
   d.depth == 0 ? 8 : d.depth == 1 ? 2 : 1;
@@ -39,6 +62,8 @@ const linkTypeForceWeight = (linkType: LinkType) => {
       return 0.35;
     case LinkType.NaturalAlias:
       return 0.25;
+    default:
+      return 0.1;
   }
 };
 
@@ -114,10 +139,10 @@ export default function GraphDiagram({
 
     function tick() {
       link
-        .attr("x1", (d) => (d.source as Node).x + xOffset)
-        .attr("y1", (d) => (d.source as Node).y + yOffset)
-        .attr("x2", (d) => (d.target as Node).x + xOffset)
-        .attr("y2", (d) => (d.target as Node).y + yOffset);
+        .attr("x1", (d) => ((d.source as Node).x ?? 0) + xOffset)
+        .attr("y1", (d) => ((d.source as Node).y ?? 0) + yOffset)
+        .attr("x2", (d) => ((d.target as Node).x ?? 0) + xOffset)
+        .attr("y2", (d) => ((d.target as Node).y ?? 0) + yOffset);
       group.attr(
         "transform",
         (d: Node) =>
