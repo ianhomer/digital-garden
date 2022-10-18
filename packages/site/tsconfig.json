@@ -16,5 +16,6 @@
     "jsx": "preserve"
   },
   "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"],
+  "files": ["src/types/remark-wiki-link.d.ts"],
   "exclude": ["node_modules"]
 }
