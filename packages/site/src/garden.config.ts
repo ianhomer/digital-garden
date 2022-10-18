@@ -17,11 +17,11 @@ function resolveDirectory() {
   return join(process.cwd(), ".gardens");
 }
 
-function gardensFromEnv() {
+function gardensFromEnv(): Record<string, string> {
   return Object.keys(process.env)
     .filter((key) => key.startsWith("GARDEN_"))
-    .reduce((map, key) => {
-      map[key.substring(7).toLowerCase()] = process.env[key];
+    .reduce((map: Record<string, string>, key: string) => {
+      map[key.substring(7).toLowerCase()] = process.env[key] ?? "n/a";
       return map;
     }, {});
 }

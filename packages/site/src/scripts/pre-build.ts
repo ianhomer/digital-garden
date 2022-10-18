@@ -7,7 +7,7 @@ import { hideBin } from "yargs/helpers";
 
 import config from "../garden.config";
 
-const argv = yargs(hideBin(process.argv)).argv;
+const argv = yargs(hideBin(process.argv)).parseSync();
 const garden = createGarden(config);
 
 const refresh = (filenameToPatch?: string) =>
