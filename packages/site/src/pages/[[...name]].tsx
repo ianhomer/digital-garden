@@ -6,6 +6,7 @@ import {
 } from "@garden/garden";
 import { findDeepLinks } from "@garden/graph";
 import { Item, Link, Things } from "@garden/types";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { useEffect, useState } from "react";
 
 import GraphDiagram from "../components/graph-diagram";
@@ -15,7 +16,15 @@ import useWindowDimensions from "../components/useWindowDimensions";
 import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
 
-function ItemPage({ item }) {
+interface Props {
+  item: {
+    name: string;
+    content: string;
+    links: Link[];
+  };
+}
+
+function ItemPage({ item }: Props) {
   const { height, width } = useWindowDimensions();
   const [depth, setDepth] = useState(2);
   const [scale, setScale] = useState(1.3);
@@ -67,13 +76,11 @@ function ItemPage({ item }) {
   );
 }
 
-export async function getStaticProps({ params }) {
-  const item = await findItemOrWanted(
-    garden.config,
-    params.name && params.name[0]
-  );
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+  const itemName = (params?.name && params?.name[0]) ?? "default";
+  const item = await findItemOrWanted(garden.config, itemName);
   const links = await findLinks(garden, item);
-  const content = await markdownToHtml(item.content || "no content");
+  const content = await markdownToHtml(item.content);
 
   return {
     props: {
@@ -84,15 +91,16 @@ export async function getStaticProps({ params }) {
       },
     },
   };
-}
+};
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   const things = await garden.load();
-  const items = [
+  const items: Item[] = [
     ...(await getAllItems(config)),
-    ...[{ name: "" }],
+    ...[{ name: "", content: "no content" }],
     ...findWantedThings(things).map((name) => ({
       name,
+      content: "no content",
     })),
   ];
 
@@ -104,6 +112,6 @@ export async function getStaticPaths() {
     })),
     fallback: false,
   };
-}
+};
 
 export default ItemPage;

@@ -1,12 +1,13 @@
 import { getAllItems } from "@garden/garden";
 import { toConfig } from "@garden/garden";
 
-import options from "../../../garden.config.js";
+import options from "../../garden.config";
 const config = toConfig(options);
 
 type AllData = {
   items: string[];
 };
+
 function All({ items }: AllData) {
   return (
     <ul className="links">

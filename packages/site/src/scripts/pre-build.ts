@@ -5,9 +5,9 @@ import { join } from "path";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
-import config from "../../garden.config.js";
+import config from "../garden.config";
 
-const argv = yargs(hideBin(process.argv)).argv;
+const argv = yargs(hideBin(process.argv)).parseSync();
 const garden = createGarden(config);
 
 const refresh = (filenameToPatch?: string) =>
@@ -16,7 +16,7 @@ const refresh = (filenameToPatch?: string) =>
     fs.copyFileSync(garden.getMetaFilename(), "public/garden.json");
   });
 
-const cmdCallback = (error, stdout, stderr) => {
+const cmdCallback = (error: Error | null, stdout: string, stderr: string) => {
   error && console.error(`exec error: ${error}`);
   console.log(stdout);
   console.error(stderr);
@@ -34,13 +34,13 @@ mkdir(config.directory);
 
 if (config.hasMultiple) {
   const gardens = config.gardens;
-  Object.keys(gardens).forEach((garden) => {
-    const gardenDirectory = `${config.directory}/${garden}`;
+  Object.keys(gardens).forEach((gardenName: string) => {
+    const gardenDirectory = `${config.directory}/${gardenName}`;
     if (fs.existsSync(gardenDirectory)) {
       console.log(`Garden ${gardenDirectory} already exists`);
     } else {
-      const url = gardens[garden];
-      console.log(`Cloning ${garden} to ${gardenDirectory}`);
+      const url = gardens[gardenName];
+      console.log(`Cloning ${gardenName} to ${gardenDirectory}`);
       exec(`git clone ${url} ${gardenDirectory}`, cmdCallback);
     }
   });

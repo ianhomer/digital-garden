@@ -1,4 +1,4 @@
-import { Link, LinkType, Things } from "@garden/types";
+import { ItemLink, Link, LinkType, Things } from "@garden/types";
 
 const valuable = (link: Link) => link.value !== 0;
 
@@ -8,14 +8,16 @@ const backLinks = (
   depth: number,
   predicate = (link: Link) => !link.type || link.type == LinkType.NaturalAlias,
   backLinkType = LinkType.From
-) => {
+): ItemLink[] => {
   return Object.keys(things)
     .filter((fromName) => {
-      return things[fromName].links
-        .filter(valuable)
-        .filter(predicate)
-        .map((link) => link.name)
-        .includes(name);
+      return (
+        things[fromName].links
+          .filter(valuable)
+          .filter(predicate)
+          .map((link) => link.name)
+          .indexOf(name) > -1
+      );
     })
     .map((fromName) => ({
       source: name,
@@ -30,10 +32,10 @@ export const findDeepLinks = (
   name: string,
   maxDepth: number,
   depth = 1
-) => {
+): ItemLink[] => {
   const directLinks = [
     ...(name in things
-      ? things[name].links.filter(valuable).map((link) => ({
+      ? things[name].links.filter(valuable).map((link: Link) => ({
           source: name,
           target: link.name,
           depth,
