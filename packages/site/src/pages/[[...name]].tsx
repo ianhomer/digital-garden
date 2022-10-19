@@ -77,12 +77,10 @@ function ItemPage({ item }: Props) {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  const item = await findItemOrWanted(
-    garden.config,
-    params.name && params.name[0]
-  );
+  const itemName = (params?.name && params?.name[0]) ?? "default";
+  const item = await findItemOrWanted(garden.config, itemName);
   const links = await findLinks(garden, item);
-  const content = await markdownToHtml(item.content || "no content");
+  const content = await markdownToHtml(item.content);
 
   return {
     props: {
@@ -97,11 +95,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const things = await garden.load();
-  const items = [
+  const items: Item[] = [
     ...(await getAllItems(config)),
-    ...[{ name: "" }],
+    ...[{ name: "", content: "no content" }],
     ...findWantedThings(things).map((name) => ({
       name,
+      content: "no content",
     })),
   ];
 
