@@ -17,21 +17,27 @@ interface Section {
 }
 
 function toSections(root: Parent) {
-  const sections: Section[] = [];
+  const sections: Section[] = [
+    { children: [], sections: [], depth: 1, title: "title-not-set" },
+  ];
   let sectionCount = 1;
   let depth = 1;
   const sectionStack: Section[] = new Array<Section>(6);
   root.children.forEach((node) => {
-    if ("depth" in node && (node as Heading).depth > 1) {
-      sectionCount++;
-      depth = (node as Heading).depth;
+    if ("depth" in node) {
+      if ((node as Heading).depth > 1) {
+        sectionCount++;
+        depth = (node as Heading).depth;
+      } else {
+        depth = 1;
+      }
     }
     while (sections.length < sectionCount) {
       const section = {
         children: [],
         sections: [],
         depth,
-        title: "title-not-set",
+        title: "section-title-not-set",
       };
       sections.push(section);
       sectionStack[depth - 1] = section;
@@ -42,7 +48,7 @@ function toSections(root: Parent) {
         }
       }
     }
-    const section = sections[sectionCount - 1];
+    const section = depth == 1 ? sections[0] : sections[sectionCount - 1];
     section.children.push(node);
   });
 

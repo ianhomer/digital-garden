@@ -9,10 +9,10 @@ const garden = createGarden(gardenConfig);
 describe("markdown", () => {
   describe("basic content", () => {
     it("should parse OK", () => {
-      const tree = parse(() => "# My Name");
+      const sections = parse(() => "# My Name");
 
-      expect(tree.type).toBe("root");
-      expect(tree.children[0].type).toBe("heading");
+      expect(sections).toHaveLength(1);
+      expect(sections[0].title).toBe("My Name");
     });
 
     it("should have title and links", () => {
@@ -53,8 +53,9 @@ describe("markdown", () => {
 
   describe("empty content", () => {
     it("should have explicit no title", () => {
-      const meta = toMultipleThingMeta(() => "")[0];
-      expect(meta.title).toBe("no title");
+      const meta = toMultipleThingMeta(() => "");
+      expect(meta).toHaveLength(1);
+      expect(meta[0].title).toBe("no title");
     });
   });
 
@@ -76,9 +77,10 @@ describe("markdown", () => {
     it("should have title", () => {
       const meta = toMultipleThingMeta(
         garden.thing("garden1/frontmatter.md").content
-      )[0];
+      );
 
-      expect(meta.title).toBe("Frontmatter");
+      expect(meta).toHaveLength(2);
+      expect(meta[0].title).toBe("Frontmatter");
     });
   });
 
@@ -86,9 +88,10 @@ describe("markdown", () => {
     it("should have no title", () => {
       const meta = toMultipleThingMeta(
         garden.thing("garden1/frontmatter-with-no-content.md").content
-      )[0];
+      );
 
-      expect(meta.title).toBe("no title");
+      expect(meta).toHaveLength(2);
+      expect(meta[0].title).toBe("no title");
     });
   });
 });
