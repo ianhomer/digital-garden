@@ -1,27 +1,100 @@
-import { Meta } from "@garden/types";
+import { LinkType, Meta, ThingType } from "@garden/types";
 import { Heading, Link, Literal } from "mdast";
 import { toString } from "mdast-util-to-string";
 import remarkParse from "remark-parse";
 import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
-import { Node, Parent } from "unist";
+import { Data, Node, Parent } from "unist";
 
 import { linkResolver } from "./link";
 import { naturalProcess } from "./nlp";
 
+interface Section {
+  children: Node<Data>[];
+  sections: Section[];
+  depth: number;
+  title: string;
+}
+
+function toSections(root: Parent) {
+  const sections: Section[] = [
+    { children: [], sections: [], depth: 1, title: "title-not-set" },
+  ];
+  let sectionCount = 1;
+  let depth = 1;
+  let foundHeading1 = false;
+  let skip;
+  const sectionStack: Section[] = new Array<Section>(6);
+  sectionStack[0] = sections[0];
+  root.children.forEach((node) => {
+    skip = false;
+    if ("depth" in node) {
+      if ((node as Heading).depth > 1) {
+        if (foundHeading1) {
+          sectionCount++;
+          depth = (node as Heading).depth;
+        } else {
+          skip = true;
+        }
+      } else {
+        depth = 1;
+        foundHeading1 = true;
+      }
+    }
+    while (sections.length < sectionCount) {
+      const section = {
+        children: [],
+        sections: [],
+        depth,
+        title: "section-title-not-set",
+      };
+      sections.push(section);
+      sectionStack[depth - 1] = section;
+      if (depth > 1) {
+        const parentSection = sectionStack[depth - 2];
+        if (parentSection) {
+          parentSection.sections.push(section);
+        }
+      }
+    }
+    const section = depth == 1 ? sections[0] : sections[sectionCount - 1];
+    if (!skip) {
+      section.children.push(node);
+    }
+  });
+
+  sections.forEach((section) => (section.title = extractTitle(section)));
+  return sections;
+}
+
 export function parse(content: () => string) {
-  return unified()
+  const root: Parent = unified()
     .use(remarkWikiLink, {
       hrefTemplate: (permalink: string) => `${permalink}`,
     })
     .use(remarkParse)
     .parse(content());
+
+  return toSections(root);
 }
 
-function flatten(node: Parent): Node[] {
-  const children = node.children;
+function flattenParent(parent: Parent): Node[] {
+  const children = parent.children;
   return children
-    ? [...children, ...children.map((child) => flatten(child as Parent)).flat()]
+    ? [
+        ...children,
+        ...children.map((child) => flattenParent(child as Parent)).flat(),
+      ]
+    : [];
+}
+
+function flatten(section: Section): Node[] {
+  const children = section.children;
+  return children
+    ? [
+        ...children,
+        ...children.map((child) => flattenParent(child as Parent)).flat(),
+      ]
     : [];
 }
 
@@ -29,7 +102,7 @@ function getFirstValue(node: Node, filter = (node: Node) => !!node): string {
   return toString((node as Parent).children.filter(filter));
 }
 
-function getFrontText(node: Parent, filter = (node: Node) => !!node) {
+function getFrontText(node: Section, filter = (node: Node) => !!node) {
   const firstParagraph = node.children.find((node) => node.type == "paragraph");
   if (firstParagraph) {
     return getFirstValue(firstParagraph, filter);
@@ -37,10 +110,8 @@ function getFrontText(node: Parent, filter = (node: Node) => !!node) {
   return null;
 }
 
-function extractTitle(node: Parent) {
-  const firstHeading = node.children.find(
-    (node) => node.type == "heading" && (node as Heading).depth == 1
-  );
+function extractTitle(node: Section) {
+  const firstHeading = node.children.find((node) => node.type == "heading");
   if (!firstHeading) {
     return getFrontText(node) ?? "no title";
   }
@@ -53,9 +124,13 @@ function extractName(url: string) {
   return match ? match[1] : url;
 }
 
-export function process(content: () => string): Meta {
-  const document: Parent = parse(content);
-  const explicitLinks = flatten(document)
+export function toMultipleThingMeta(content: () => string): Meta[] {
+  const sections = parse(content);
+  return sections.map((section) => toSingleThingMeta(section));
+}
+
+function toSingleThingMeta(section: Section): Meta {
+  const explicitLinks = flatten(section)
     .filter(
       (node) =>
         node.type === "wikiLink" ||
@@ -68,13 +143,18 @@ export function process(content: () => string): Meta {
           : extractName((link as Link).url),
     }));
   return {
-    title: extractTitle(document),
+    title: section.title,
+    type: section.depth > 1 ? ThingType.Child : undefined,
     links: [
       ...explicitLinks,
       ...naturalProcess(
-        getFrontText(document, (child) => child.type !== "wikiLink") ?? "",
+        getFrontText(section, (child) => child.type !== "wikiLink") ?? "",
         explicitLinks.map((link) => link.name)
       ).links,
+      ...section.sections.map((childSection) => ({
+        type: LinkType.Child,
+        name: "#" + linkResolver(childSection.title),
+      })),
     ],
   };
 }

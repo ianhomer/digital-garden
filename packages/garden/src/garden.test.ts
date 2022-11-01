@@ -6,12 +6,13 @@ import {
   findLinkedThings,
   findUnwantedLinks,
   findWantedThings,
+  loadFileThingIntoMetaMap,
   MetaMap,
 } from "./garden";
 import { gardenConfig } from "./test-helpers";
 
 const garden = createGarden(gardenConfig);
-const gardenItemCount = 19;
+const gardenItemCount = 24;
 const NATURAL_LINK_SHARED = "natural-link-shared";
 const NATURAL_LINK_ALONE = "natural-link-alone";
 const noNaturalLinks = (link: Link) => link.type !== LinkType.NaturalTo;
@@ -48,7 +49,7 @@ describe("garden", () => {
     expect(linkedThings).toContain("word-2");
     expect(linkedThings).toContain("word-3");
     try {
-      expect(linkedThings.length).toBe(18);
+      expect(linkedThings.length).toBe(23);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(linkedThings)}`);
     }
@@ -115,5 +116,45 @@ describe("garden", () => {
       },
     };
     expect(findUnwantedLinks(meta)).toStrictEqual([NATURAL_LINK_ALONE]);
+  });
+
+  it("should generate single thing", () => {
+    const fileThing = {
+      filename: "my-filename",
+      name: "my-filename",
+      content: () => "# thing title\n\n" + "thing content",
+    };
+    const metaMap: MetaMap = {};
+    loadFileThingIntoMetaMap(metaMap, fileThing);
+    expect(Object.keys(metaMap)).toHaveLength(1);
+  });
+
+  it("should generate multiple things", () => {
+    const fileThing = {
+      filename: "my-filename",
+      name: "my-filename",
+      content: () =>
+        "# thing title\n\nThing content\n\n" +
+        "## section title\n\nSection content\n\n" +
+        "### sub-section title\n\nSub-section content",
+    };
+    const metaMap: MetaMap = {};
+    loadFileThingIntoMetaMap(metaMap, fileThing);
+    expect(Object.keys(metaMap)).toHaveLength(3);
+    expect(
+      metaMap["my-filename"].links
+        .filter((link) => link.type == LinkType.Child)
+        .map((link) => link.name)
+    ).toEqual(["my-filename#section-title"]);
+    expect(metaMap["my-filename"].title).toBe("thing title");
+    expect(
+      metaMap["my-filename#section-title"].links
+        .filter((link) => link.type == LinkType.Child)
+        .map((link) => link.name)
+    ).toEqual(["my-filename#sub-section-title"]);
+    expect(metaMap["my-filename#section-title"].title).toBe("section title");
+    expect(metaMap["my-filename#sub-section-title"].title).toBe(
+      "sub-section title"
+    );
   });
 });

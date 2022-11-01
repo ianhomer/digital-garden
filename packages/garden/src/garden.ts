@@ -8,7 +8,7 @@ import { unique } from "./common";
 import { findFilesDeep } from "./file";
 import { linkResolver } from "./link";
 import { logger } from "./logger";
-import { process } from "./markdown";
+import { toMultipleThingMeta } from "./markdown";
 import { naturalAliases } from "./nlp";
 import { FileThing } from "./thing";
 
@@ -68,64 +68,86 @@ const loadThing = (config: GardenConfig, filename: string): FileThing => {
   };
 };
 
-const generateThingMeta = (
-  config: GardenConfig,
-  gardenDirectory: string,
-  filename: string
-) => {
-  const thing = loadThing(config, filename.substring(gardenDirectory.length));
+const fileThingToMultipleThingMeta = (fileThing: FileThing) => {
   const extra: { value?: number } = {};
   ["archive", "not", "stop"].forEach((ignore) => {
-    if (filename.includes(`/${ignore}/`)) {
+    if (fileThing.filename.includes(`/${ignore}/`)) {
       extra.value = 0;
     }
   });
   return {
-    thingName: thing.name,
-    thingMeta: {
-      ...process(thing.content),
-      ...extra,
-    },
+    thingName: fileThing.name,
+    thingMeta: toMultipleThingMeta(fileThing.content),
+    extra,
   };
+};
+
+export const loadFileThingIntoMetaMap = (
+  metaMap: MetaMap,
+  fileThing: FileThing
+) => {
+  const { thingName, thingMeta, extra } =
+    fileThingToMultipleThingMeta(fileThing);
+
+  thingMeta.forEach((singleThingMeta) => {
+    const singleThingName =
+      singleThingMeta.type == ThingType.Child
+        ? thingName + "#" + linkResolver(singleThingMeta.title)
+        : thingName;
+    metaMap[singleThingName] = {
+      ...{
+        title: singleThingMeta.title,
+        type: singleThingMeta.type,
+        links: singleThingMeta.links.map((link) => {
+          if (link.name.startsWith("#")) {
+            return {
+              name: thingName + link.name,
+              type: link.type,
+            };
+          }
+          return link;
+        }),
+      },
+      ...extra,
+    };
+  });
 };
 
 const generateMeta = async (
   config: GardenConfig,
-  meta: MetaMap = {},
+  metaMap: MetaMap = {},
   filenameToPatch?: string
 ): Promise<{ [key: string]: Meta }> => {
   const gardenDirectory = resolve(config.directory);
 
+  const populateMetaFromFilename = (filename: string) => {
+    const fileThing = loadThing(
+      config,
+      filename.substring(gardenDirectory.length)
+    );
+    loadFileThingIntoMetaMap(metaMap, fileThing);
+  };
+
   if (filenameToPatch) {
     console.log(`Patching meta with : ${filenameToPatch}`);
-    const { thingName, thingMeta } = generateThingMeta(
-      config,
-      gardenDirectory,
-      filenameToPatch
-    );
-    meta[thingName] = thingMeta;
+    populateMetaFromFilename(filenameToPatch);
   } else {
     for await (const filename of findFilesDeep(
       config.excludedDirectories,
       config.directory
     )) {
       if (filename.startsWith(gardenDirectory)) {
-        const { thingName, thingMeta } = generateThingMeta(
-          config,
-          gardenDirectory,
-          filename
-        );
-        meta[thingName] = thingMeta;
+        populateMetaFromFilename(filename);
       } else {
         console.error(`File ${filename} is not in garden ${config.directory}`);
       }
     }
   }
 
-  findWantedThings(meta).forEach((title) => {
+  findWantedThings(metaMap).forEach((title) => {
     const links = naturalAliases(title);
     if (links.length > 0) {
-      meta[title] = {
+      metaMap[title] = {
         title,
         type: ThingType.Wanted,
         links: links.map(
@@ -138,11 +160,11 @@ const generateMeta = async (
     }
   });
 
-  const unwantedLinks = findUnwantedLinks(meta);
+  const unwantedLinks = findUnwantedLinks(metaMap);
   const transformedMeta: MetaMap = {};
 
-  Object.keys(meta).map((key) => {
-    const thing = meta[key];
+  Object.keys(metaMap).map((key) => {
+    const thing = metaMap[key];
     transformedMeta[key] = {
       title: thing.title,
       type: thing.type,
@@ -151,7 +173,7 @@ const generateMeta = async (
         .filter((link) => !unwantedLinks.includes(link.name))
         .map((link) => {
           const transformedLink: Link = { name: link.name, type: link.type };
-          if (thing?.value == 0 || meta[link.name]?.value == 0) {
+          if (thing?.value == 0 || metaMap[link.name]?.value == 0) {
             transformedLink.value = 0;
           }
           return transformedLink;
@@ -262,13 +284,18 @@ export const findLinkedThings = (
     .filter(unique);
 };
 
+const toParentName = (name: string) => {
+  const index = name.indexOf("#");
+  return index < 0 ? name : name.slice(0, index);
+};
+
 export const findWantedThings = (
   things: Things,
   filter = (link: Link) => !!link
 ) => {
   const knownThings = findKnownThings(things);
   return findLinkedThings(things, filter).filter(
-    (name: string) => !knownThings.includes(name)
+    (name: string) => !knownThings.includes(toParentName(name))
   );
 };
 
