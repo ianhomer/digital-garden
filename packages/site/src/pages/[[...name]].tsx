@@ -77,7 +77,7 @@ function ItemPage({ item }: Props) {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  const itemName = (params?.name && params?.name[0]) ?? "default";
+  const itemName = (params?.name && params?.name[0]) ?? false;
   const item = await findItemOrWanted(garden.config, itemName);
   const links = await findLinks(garden, item);
   const content = await markdownToHtml(item.content);
