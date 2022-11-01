@@ -68,7 +68,7 @@ const loadThing = (config: GardenConfig, filename: string): FileThing => {
   };
 };
 
-export const fileThingToMultipleThingMeta = (fileThing: FileThing) => {
+const fileThingToMultipleThingMeta = (fileThing: FileThing) => {
   const extra: { value?: number } = {};
   ["archive", "not", "stop"].forEach((ignore) => {
     if (fileThing.filename.includes(`/${ignore}/`)) {
@@ -80,6 +80,37 @@ export const fileThingToMultipleThingMeta = (fileThing: FileThing) => {
     thingMeta: toMultipleThingMeta(fileThing.content),
     extra,
   };
+};
+
+export const loadFileThingIntoMetaMap = (
+  metaMap: MetaMap,
+  fileThing: FileThing
+) => {
+  const { thingName, thingMeta, extra } =
+    fileThingToMultipleThingMeta(fileThing);
+
+  thingMeta.forEach((singleThingMeta) => {
+    const singleThingName =
+      singleThingMeta.type == ThingType.Child
+        ? thingName + "#" + linkResolver(singleThingMeta.title)
+        : thingName;
+    metaMap[singleThingName] = {
+      ...{
+        title: singleThingMeta.title,
+        type: singleThingMeta.type,
+        links: singleThingMeta.links.map((link) => {
+          if (link.name.startsWith("#")) {
+            return {
+              name: thingName + link.name,
+              type: link.type,
+            };
+          }
+          return link;
+        }),
+      },
+      ...extra,
+    };
+  });
 };
 
 const generateMeta = async (
@@ -94,11 +125,7 @@ const generateMeta = async (
       config,
       filename.substring(gardenDirectory.length)
     );
-    const { thingName, thingMeta, extra } =
-      fileThingToMultipleThingMeta(fileThing);
-    thingMeta.forEach((singleThingMeta) => {
-      metaMap[thingName] = { ...singleThingMeta, ...extra };
-    });
+    loadFileThingIntoMetaMap(metaMap, fileThing);
   };
 
   if (filenameToPatch) {

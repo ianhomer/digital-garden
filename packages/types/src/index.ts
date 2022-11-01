@@ -34,6 +34,7 @@ export enum LinkType {
   From = "from",
   Has = "has",
   In = "in",
+  Child = "child",
   NaturalTo = "natural",
   NaturalFrom = "naturalFrom",
   NaturalAlias = "naturalAlias",

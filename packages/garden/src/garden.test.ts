@@ -2,11 +2,11 @@ import { Link, LinkType } from "@garden/types";
 
 import {
   createGarden,
-  fileThingToMultipleThingMeta,
   findKnownThings,
   findLinkedThings,
   findUnwantedLinks,
   findWantedThings,
+  loadFileThingIntoMetaMap,
   MetaMap,
 } from "./garden";
 import { gardenConfig } from "./test-helpers";
@@ -124,19 +124,32 @@ describe("garden", () => {
       name: "my-filename",
       content: () => "# thing title\n\n" + "thing content",
     };
-
-    const multipleThingMeta = fileThingToMultipleThingMeta(fileThing);
-    expect(multipleThingMeta.thingMeta).toHaveLength(1);
+    const metaMap: MetaMap = {};
+    loadFileThingIntoMetaMap(metaMap, fileThing);
+    expect(Object.keys(metaMap)).toHaveLength(1);
   });
 
-  it.skip("should generate multiple things", () => {
+  it.only("should generate multiple things", () => {
     const fileThing = {
       filename: "my-filename",
       name: "my-filename",
-      content: () => "# thing title\n\n" + "## section title",
+      content: () =>
+        "# thing title\n\nThing content\n\n" +
+        "## section title\n\nSection content\n\n" +
+        "### sub-section title\n\nSub-section content",
     };
-
-    const multipleThingMeta = fileThingToMultipleThingMeta(fileThing);
-    expect(multipleThingMeta.thingMeta).toHaveLength(2);
+    const metaMap: MetaMap = {};
+    loadFileThingIntoMetaMap(metaMap, fileThing);
+    expect(Object.keys(metaMap)).toHaveLength(3);
+    expect(
+      metaMap["my-filename"].links
+        .filter((link) => link.type == LinkType.Child)
+        .map((link) => link.name)
+    ).toEqual(["my-filename#section-title"]);
+    expect(
+      metaMap["my-filename#section-title"].links
+        .filter((link) => link.type == LinkType.Child)
+        .map((link) => link.name)
+    ).toEqual(["my-filename#sub-section-title"]);
   });
 });
