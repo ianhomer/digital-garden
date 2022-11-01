@@ -1,7 +1,7 @@
 import { LinkType } from "@garden/types";
 
 import { createGarden } from "./garden";
-import { parse, process } from "./markdown";
+import { parse, toMultipleThingMeta } from "./markdown";
 import { gardenConfig } from "./test-helpers";
 
 const garden = createGarden(gardenConfig);
@@ -16,7 +16,7 @@ describe("markdown", () => {
     });
 
     it("should have title and links", () => {
-      const meta = process(
+      const meta = toMultipleThingMeta(
         () => "# My Name\n\n[[wiki-link]] [link](./my-link.md)"
       )[0];
 
@@ -26,7 +26,7 @@ describe("markdown", () => {
     });
 
     it.skip("should have sections", () => {
-      const meta = process(
+      const meta = toMultipleThingMeta(
         () =>
           "# My Name\n\n[[top-wiki-link]]\n\n" +
           "## My heading\n\nSection content [[child-section-link]]"
@@ -37,28 +37,32 @@ describe("markdown", () => {
     });
 
     it("should not extract links from explicit links", () => {
-      const meta = process(() => "# Mock\n\nA [[one-day-maybe]]")[0];
+      const meta = toMultipleThingMeta(
+        () => "# Mock\n\nA [[one-day-maybe]]"
+      )[0];
       expect(meta.links).toStrictEqual([{ name: "one-day-maybe" }]);
     });
   });
 
   describe("content without heading", () => {
     it("should take title from first line", () => {
-      const meta = process(() => "My Name")[0];
+      const meta = toMultipleThingMeta(() => "My Name")[0];
       expect(meta.title).toBe("My Name");
     });
   });
 
   describe("empty content", () => {
     it("should have explicit no title", () => {
-      const meta = process(() => "")[0];
+      const meta = toMultipleThingMeta(() => "")[0];
       expect(meta.title).toBe("no title");
     });
   });
 
   describe("file", () => {
     it("should have title and links", () => {
-      const meta = process(garden.thing("garden1/word/word-1.md").content)[0];
+      const meta = toMultipleThingMeta(
+        garden.thing("garden1/word/word-1.md").content
+      )[0];
       expect(meta.title).toBe("Word 1");
       expect(meta.links).toContainEqual({ name: "word-2" });
       expect(meta.links).toContainEqual({
@@ -70,7 +74,9 @@ describe("markdown", () => {
 
   describe("file with frontmatter", () => {
     it("should have title", () => {
-      const meta = process(garden.thing("garden1/frontmatter.md").content)[0];
+      const meta = toMultipleThingMeta(
+        garden.thing("garden1/frontmatter.md").content
+      )[0];
 
       expect(meta.title).toBe("Frontmatter");
     });
@@ -78,7 +84,7 @@ describe("markdown", () => {
 
   describe("file with frontmatter with no content", () => {
     it("should have no title", () => {
-      const meta = process(
+      const meta = toMultipleThingMeta(
         garden.thing("garden1/frontmatter-with-no-content.md").content
       )[0];
 

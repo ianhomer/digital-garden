@@ -8,7 +8,7 @@ import { unique } from "./common";
 import { findFilesDeep } from "./file";
 import { linkResolver } from "./link";
 import { logger } from "./logger";
-import { process } from "./markdown";
+import { toMultipleThingMeta } from "./markdown";
 import { naturalAliases } from "./nlp";
 import { FileThing } from "./thing";
 
@@ -82,7 +82,7 @@ const generateThingMeta = (
   });
   return {
     thingName: thing.name,
-    thingMeta: process(thing.content),
+    thingMeta: toMultipleThingMeta(thing.content),
     extra,
   };
 };
