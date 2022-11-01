@@ -53,7 +53,7 @@ function extractName(url: string) {
   return match ? match[1] : url;
 }
 
-export function process(content: () => string): Meta {
+export function process(content: () => string): Meta[] {
   const document: Parent = parse(content);
   const explicitLinks = flatten(document)
     .filter(
@@ -67,14 +67,16 @@ export function process(content: () => string): Meta {
           ? linkResolver((link as Literal).value)
           : extractName((link as Link).url),
     }));
-  return {
-    title: extractTitle(document),
-    links: [
-      ...explicitLinks,
-      ...naturalProcess(
-        getFrontText(document, (child) => child.type !== "wikiLink") ?? "",
-        explicitLinks.map((link) => link.name)
-      ).links,
-    ],
-  };
+  return [
+    {
+      title: extractTitle(document),
+      links: [
+        ...explicitLinks,
+        ...naturalProcess(
+          getFrontText(document, (child) => child.type !== "wikiLink") ?? "",
+          explicitLinks.map((link) => link.name)
+        ).links,
+      ],
+    },
+  ];
 }

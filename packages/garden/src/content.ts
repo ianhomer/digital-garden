@@ -5,12 +5,6 @@ import { dirname, join, sep } from "path";
 
 import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
 import { Garden, GardenConfig } from "./garden";
-import { logger } from "./logger";
-
-// const config = toConfig(options);
-// const garden = createGarden(options);
-// const gardensDirectory = config.directory;
-// const hasMultipleGardens = !fs.existsSync(`${config.directory}/README.md`);
 
 export class FileItem implements Item {
   name: string;

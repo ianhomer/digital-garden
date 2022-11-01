@@ -82,10 +82,8 @@ const generateThingMeta = (
   });
   return {
     thingName: thing.name,
-    thingMeta: {
-      ...process(thing.content),
-      ...extra,
-    },
+    thingMeta: process(thing.content),
+    extra,
   };
 };
 
@@ -98,24 +96,24 @@ const generateMeta = async (
 
   if (filenameToPatch) {
     console.log(`Patching meta with : ${filenameToPatch}`);
-    const { thingName, thingMeta } = generateThingMeta(
+    const { thingName, thingMeta, extra } = generateThingMeta(
       config,
       gardenDirectory,
       filenameToPatch
     );
-    meta[thingName] = thingMeta;
+    meta[thingName] = { ...thingMeta[0], ...extra };
   } else {
     for await (const filename of findFilesDeep(
       config.excludedDirectories,
       config.directory
     )) {
       if (filename.startsWith(gardenDirectory)) {
-        const { thingName, thingMeta } = generateThingMeta(
+        const { thingName, thingMeta, extra } = generateThingMeta(
           config,
           gardenDirectory,
           filename
         );
-        meta[thingName] = thingMeta;
+        meta[thingName] = { ...thingMeta[0], ...extra };
       } else {
         console.error(`File ${filename} is not in garden ${config.directory}`);
       }
