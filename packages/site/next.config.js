@@ -1,10 +1,6 @@
-import nextTranspileModules from "next-transpile-modules";
-
-const withTranspileModules = nextTranspileModules(
-  ["@garden/garden", "@garden/types", "@garden/graph"],
-  {
-    resolveSymlinks: true,
-  }
-);
-
-export default withTranspileModules({ trailingSlash: true });
+export default {
+  trailingSlash: true,
+  experimental: {
+    transpilePackages: ["@garden/garden", "@garden/types", "@garden/graph"],
+  },
+};
