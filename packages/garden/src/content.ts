@@ -65,23 +65,29 @@ export async function findBackLinks(
   return garden.findBackLinks(things, name).map((link) => link.name);
 }
 
+const DEFAULT_NAME = "README";
+
 export async function findItem(config: GardenConfig, name: string | false) {
   return new FileItem(
     config.directory,
-    await findFile(config, config.directory, (name ? name : "README") + ".md"),
+    await findFile(
+      config,
+      config.directory,
+      (name ? name : DEFAULT_NAME) + ".md"
+    ),
     true
   );
 }
 
 export async function findItemOrWanted(
   config: GardenConfig,
-  name: string
+  name: string | false
 ): Promise<Item> {
   try {
     return await findItem(config, name);
   } catch (error) {
     return {
-      name,
+      name: name || DEFAULT_NAME,
       content: `# ${name}\n\nWanted`,
     };
   }
