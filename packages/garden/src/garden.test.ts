@@ -2,6 +2,7 @@ import { Link, LinkType } from "@garden/types";
 
 import {
   createGarden,
+  fileThingToMultipleThingMeta,
   findKnownThings,
   findLinkedThings,
   findUnwantedLinks,
@@ -115,5 +116,27 @@ describe("garden", () => {
       },
     };
     expect(findUnwantedLinks(meta)).toStrictEqual([NATURAL_LINK_ALONE]);
+  });
+
+  it("should generate single thing", () => {
+    const fileThing = {
+      filename: "my-filename",
+      name: "my-filename",
+      content: () => "# thing title\n\n" + "thing content",
+    };
+
+    const multipleThingMeta = fileThingToMultipleThingMeta(fileThing);
+    expect(multipleThingMeta.thingMeta).toHaveLength(1);
+  });
+
+  it.skip("should generate multiple things", () => {
+    const fileThing = {
+      filename: "my-filename",
+      name: "my-filename",
+      content: () => "# thing title\n\n" + "## section title",
+    };
+
+    const multipleThingMeta = fileThingToMultipleThingMeta(fileThing);
+    expect(multipleThingMeta.thingMeta).toHaveLength(2);
   });
 });

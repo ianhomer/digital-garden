@@ -26,6 +26,7 @@ export interface Meta {
 
 export enum ThingType {
   Wanted = "wanted",
+  Child = "child",
 }
 
 export enum LinkType {

@@ -68,62 +68,59 @@ const loadThing = (config: GardenConfig, filename: string): FileThing => {
   };
 };
 
-const generateThingMeta = (
-  config: GardenConfig,
-  gardenDirectory: string,
-  filename: string
-) => {
-  const thing = loadThing(config, filename.substring(gardenDirectory.length));
+export const fileThingToMultipleThingMeta = (fileThing: FileThing) => {
   const extra: { value?: number } = {};
   ["archive", "not", "stop"].forEach((ignore) => {
-    if (filename.includes(`/${ignore}/`)) {
+    if (fileThing.filename.includes(`/${ignore}/`)) {
       extra.value = 0;
     }
   });
   return {
-    thingName: thing.name,
-    thingMeta: toMultipleThingMeta(thing.content),
+    thingName: fileThing.name,
+    thingMeta: toMultipleThingMeta(fileThing.content),
     extra,
   };
 };
 
 const generateMeta = async (
   config: GardenConfig,
-  meta: MetaMap = {},
+  metaMap: MetaMap = {},
   filenameToPatch?: string
 ): Promise<{ [key: string]: Meta }> => {
   const gardenDirectory = resolve(config.directory);
 
+  const populateMetaFromFilename = (filename: string) => {
+    const fileThing = loadThing(
+      config,
+      filename.substring(gardenDirectory.length)
+    );
+    const { thingName, thingMeta, extra } =
+      fileThingToMultipleThingMeta(fileThing);
+    thingMeta.forEach((singleThingMeta) => {
+      metaMap[thingName] = { ...singleThingMeta, ...extra };
+    });
+  };
+
   if (filenameToPatch) {
     console.log(`Patching meta with : ${filenameToPatch}`);
-    const { thingName, thingMeta, extra } = generateThingMeta(
-      config,
-      gardenDirectory,
-      filenameToPatch
-    );
-    meta[thingName] = { ...thingMeta[0], ...extra };
+    populateMetaFromFilename(filenameToPatch);
   } else {
     for await (const filename of findFilesDeep(
       config.excludedDirectories,
       config.directory
     )) {
       if (filename.startsWith(gardenDirectory)) {
-        const { thingName, thingMeta, extra } = generateThingMeta(
-          config,
-          gardenDirectory,
-          filename
-        );
-        meta[thingName] = { ...thingMeta[0], ...extra };
+        populateMetaFromFilename(filename);
       } else {
         console.error(`File ${filename} is not in garden ${config.directory}`);
       }
     }
   }
 
-  findWantedThings(meta).forEach((title) => {
+  findWantedThings(metaMap).forEach((title) => {
     const links = naturalAliases(title);
     if (links.length > 0) {
-      meta[title] = {
+      metaMap[title] = {
         title,
         type: ThingType.Wanted,
         links: links.map(
@@ -136,11 +133,11 @@ const generateMeta = async (
     }
   });
 
-  const unwantedLinks = findUnwantedLinks(meta);
+  const unwantedLinks = findUnwantedLinks(metaMap);
   const transformedMeta: MetaMap = {};
 
-  Object.keys(meta).map((key) => {
-    const thing = meta[key];
+  Object.keys(metaMap).map((key) => {
+    const thing = metaMap[key];
     transformedMeta[key] = {
       title: thing.title,
       type: thing.type,
@@ -149,7 +146,7 @@ const generateMeta = async (
         .filter((link) => !unwantedLinks.includes(link.name))
         .map((link) => {
           const transformedLink: Link = { name: link.name, type: link.type };
-          if (thing?.value == 0 || meta[link.name]?.value == 0) {
+          if (thing?.value == 0 || metaMap[link.name]?.value == 0) {
             transformedLink.value = 0;
           }
           return transformedLink;
