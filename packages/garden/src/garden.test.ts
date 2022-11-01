@@ -129,7 +129,7 @@ describe("garden", () => {
     expect(Object.keys(metaMap)).toHaveLength(1);
   });
 
-  it.only("should generate multiple things", () => {
+  it("should generate multiple things", () => {
     const fileThing = {
       filename: "my-filename",
       name: "my-filename",
@@ -146,10 +146,15 @@ describe("garden", () => {
         .filter((link) => link.type == LinkType.Child)
         .map((link) => link.name)
     ).toEqual(["my-filename#section-title"]);
+    expect(metaMap["my-filename"].title).toBe("thing title");
     expect(
       metaMap["my-filename#section-title"].links
         .filter((link) => link.type == LinkType.Child)
         .map((link) => link.name)
     ).toEqual(["my-filename#sub-section-title"]);
+    expect(metaMap["my-filename#section-title"].title).toBe("section title");
+    expect(metaMap["my-filename#sub-section-title"].title).toBe(
+      "sub-section title"
+    );
   });
 });

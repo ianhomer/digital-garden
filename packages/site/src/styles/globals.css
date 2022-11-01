@@ -86,6 +86,9 @@
   line.link {
     @apply stroke-slate-400;
   }
+  line.link.child {
+    stroke-dasharray: 2, 2;
+  }
   line.link.natural {
     @apply stroke-red-200;
     stroke-dasharray: 10, 10;

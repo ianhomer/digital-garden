@@ -1,4 +1,4 @@
-import { LinkType } from "@garden/types";
+import { LinkType, ThingType } from "@garden/types";
 import * as d3 from "d3";
 import { SimulationNodeDatum } from "d3";
 import { useEffect, useRef } from "react";
@@ -52,6 +52,8 @@ const getLinkStrokeWidth = (d: NodeLink) =>
 
 const linkTypeForceWeight = (linkType: LinkType) => {
   switch (linkType) {
+    case LinkType.Child:
+      return 0.9;
     case LinkType.To:
       return 0.6;
     case LinkType.From:
