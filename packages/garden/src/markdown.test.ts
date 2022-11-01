@@ -26,7 +26,7 @@ describe("markdown", () => {
     });
 
     it("should not extract links from explicit links", () => {
-      const meta = process(() => "# Mock\n\nMy [[one-day-maybe]]");
+      const meta = process(() => "# Mock\n\nA [[one-day-maybe]]");
       expect(meta.links).toStrictEqual([{ name: "one-day-maybe" }]);
     });
   });
