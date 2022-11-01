@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+  h1 > a,
+  h2 > a,
+  h3 > a,
+  h4 > a,
+  h5 > a,
+  h6 > a {
+    @apply no-underline;
+  }
   a {
     @apply underline underline-offset-2;
   }

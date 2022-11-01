@@ -2,7 +2,9 @@ import { pageResolver } from "@garden/garden";
 import langGherkin from "highlight.js/lib/languages/gherkin";
 import langGroovy from "highlight.js/lib/languages/groovy";
 import langProperties from "highlight.js/lib/languages/properties";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeHighlight from "rehype-highlight";
+import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import remarkDirective from "remark-directive";
 import remarkEmoji from "remark-emoji";
@@ -52,6 +54,8 @@ export default async function markdownToHtml(markdown: string) {
     .use(remarkRehype)
     .use(rehypeStringify)
     .use(rehypeHighlight, { languages: languages })
+    .use(rehypeSlug)
+    .use(rehypeAutolinkHeadings, { behavior: "wrap" })
     .use(remarkGardenDirectives)
     .process(markdown);
   return String(vfile);
