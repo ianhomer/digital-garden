@@ -284,13 +284,18 @@ export const findLinkedThings = (
     .filter(unique);
 };
 
+const toParentName = (name: string) => {
+  const index = name.indexOf("#");
+  return index < 0 ? name : name.slice(0, index);
+};
+
 export const findWantedThings = (
   things: Things,
   filter = (link: Link) => !!link
 ) => {
   const knownThings = findKnownThings(things);
   return findLinkedThings(things, filter).filter(
-    (name: string) => !knownThings.includes(name)
+    (name: string) => !knownThings.includes(toParentName(name))
   );
 };
 

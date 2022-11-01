@@ -25,7 +25,7 @@ describe("markdown", () => {
       expect(meta.links[1].name).toBe("my-link");
     });
 
-    it.skip("should have sections", () => {
+    it("should have sections", () => {
       const meta = toMultipleThingMeta(
         () =>
           "# My Name\n\n[[top-wiki-link]]\n\n" +
@@ -33,7 +33,7 @@ describe("markdown", () => {
       );
 
       expect(meta[0].title).toBe("My Name");
-      expect(meta[0].links).toHaveLength(1);
+      expect(meta[0].links).toHaveLength(2);
     });
 
     it("should not extract links from explicit links", () => {
@@ -79,7 +79,7 @@ describe("markdown", () => {
         garden.thing("garden1/frontmatter.md").content
       );
 
-      expect(meta).toHaveLength(2);
+      expect(meta).toHaveLength(1);
       expect(meta[0].title).toBe("Frontmatter");
     });
   });
@@ -90,7 +90,7 @@ describe("markdown", () => {
         garden.thing("garden1/frontmatter-with-no-content.md").content
       );
 
-      expect(meta).toHaveLength(2);
+      expect(meta).toHaveLength(1);
       expect(meta[0].title).toBe("no title");
     });
   });

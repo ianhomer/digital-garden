@@ -22,14 +22,23 @@ function toSections(root: Parent) {
   ];
   let sectionCount = 1;
   let depth = 1;
+  let foundHeading1 = false;
+  let skip;
   const sectionStack: Section[] = new Array<Section>(6);
+  sectionStack[0] = sections[0];
   root.children.forEach((node) => {
+    skip = false;
     if ("depth" in node) {
       if ((node as Heading).depth > 1) {
-        sectionCount++;
-        depth = (node as Heading).depth;
+        if (foundHeading1) {
+          sectionCount++;
+          depth = (node as Heading).depth;
+        } else {
+          skip = true;
+        }
       } else {
         depth = 1;
+        foundHeading1 = true;
       }
     }
     while (sections.length < sectionCount) {
@@ -49,7 +58,9 @@ function toSections(root: Parent) {
       }
     }
     const section = depth == 1 ? sections[0] : sections[sectionCount - 1];
-    section.children.push(node);
+    if (!skip) {
+      section.children.push(node);
+    }
   });
 
   sections.forEach((section) => (section.title = extractTitle(section)));
