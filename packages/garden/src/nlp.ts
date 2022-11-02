@@ -20,6 +20,28 @@ export interface NaturalThing {
 const strip = (text: string) =>
   text.trim().replace(/\s/g, "-").replace(/[._]/g, "");
 
+const symbols = "|\\/:*\\p{Ps}\\p{Pe}\\p{S}";
+const matchDashSymbols = /\p{Pd}/gu;
+const matchIgnoreSymbols = /["]/g;
+const matchCleanUpSymbols = /\s\u064D/g;
+const matchMultipleSpaces = /\s+/g;
+const matchSpacesBeforeComma = /\s+,/g;
+const matchLeadingSymbols = new RegExp(`^[${symbols}\\p{Zs}]+`, "gu");
+const matchTrailingSymbols = new RegExp(`[${symbols}\\p{Zs}]+$`, "gu");
+const matchSymbols = new RegExp(`[${symbols}]`, "gu");
+
+export const preStrip = (text: string) =>
+  text
+    .trim()
+    .replace(matchCleanUpSymbols, "")
+    .replace(matchIgnoreSymbols, "")
+    .replace(matchDashSymbols, " ")
+    .replace(matchLeadingSymbols, "")
+    .replace(matchTrailingSymbols, "")
+    .replace(matchSymbols, ", ")
+    .replace(matchMultipleSpaces, " ")
+    .replace(matchSpacesBeforeComma, ",");
+
 // Return aarray of aliases for words
 export function naturalAliases(name: string): string[] {
   const one = nlp(name);
@@ -30,7 +52,7 @@ export function naturalAliases(name: string): string[] {
 }
 
 export function naturalProcess(content: string, excludes: string[] = []) {
-  const document = nlp(content);
+  const document = nlp(preStrip(content));
   const enhancedExcludes = [...excludes, "", ",", "s", "ing"];
   const links: Link[] = (document.not("#Pronoun") as Three)
     .nouns()

@@ -295,7 +295,7 @@ export const findWantedThings = (
 ) => {
   const knownThings = findKnownThings(things);
   return findLinkedThings(things, filter).filter(
-    (name: string) => !knownThings.includes(toParentName(name))
+    (name: string) => name.indexOf("#") < 0 && !knownThings.includes(name)
   );
 };
 

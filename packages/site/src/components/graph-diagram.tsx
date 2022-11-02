@@ -1,4 +1,4 @@
-import { LinkType, ThingType } from "@garden/types";
+import { LinkType } from "@garden/types";
 import * as d3 from "d3";
 import { SimulationNodeDatum } from "d3";
 import { useEffect, useRef } from "react";
