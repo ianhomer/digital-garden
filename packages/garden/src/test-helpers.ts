@@ -24,3 +24,21 @@ export const gardenConfig = {
   directory: "../test-gardens/content",
   verbose: false,
 };
+
+export const toHex = (code: number, length: number) => {
+  return code.toString(16).toUpperCase().padStart(length, "0");
+};
+
+export const toRawUnicode = (text: string) => {
+  return text
+    .split("")
+    .map((character) => {
+      const code = character.charCodeAt(0);
+      if (code > 126 || code < 32) {
+        return "\\u" + toHex(code, 4);
+      } else {
+        return character;
+      }
+    })
+    .join("");
+};

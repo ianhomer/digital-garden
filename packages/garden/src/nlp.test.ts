@@ -1,6 +1,7 @@
 import { Link } from "@garden/types";
 
-import { naturalAliases, naturalProcess, NaturalThing } from "./nlp";
+import { naturalAliases, naturalProcess, NaturalThing, preStrip } from "./nlp";
+import { toRawUnicode } from "./test-helpers";
 
 const AWESOME_LIBRARY = "awesome-library";
 const SMALL_LIBRARY = "small-library";
@@ -115,7 +116,13 @@ describe("natural language processing", () => {
     });
 
     it("should strip symbols", () => {
-      expect(linksOfText("dog>cat~and-fish<")).toStrictEqual([
+      expect(
+        linksOfText("⇒giraffe$elephant→tigger+lion*dog>cat~and-fish<")
+      ).toStrictEqual([
+        "giraffe",
+        "elephant",
+        "tigger",
+        "lion",
         "dog",
         "cat",
         "fish",
@@ -128,6 +135,43 @@ describe("natural language processing", () => {
 
     it("should handle brackets", () => {
       expect(linksOfText("(dog) cat")).toStrictEqual(["dog", "cat"]);
+    });
+
+    it("should ignore quotes", () => {
+      expect(linksOfText('"dog", and cat')).toStrictEqual(["dog", "cat"]);
+    });
+
+    it("should handle arrows", () => {
+      expect(linksOfText("Single character arrows ⇒ → ← ⇐")).toStrictEqual([
+        "character-arrows",
+        "single",
+        "single-character-arrows",
+      ]);
+    });
+
+    it("should handle unicode variation selectors", () => {
+      expect(linksOfText("⇒ dog ⇐ ٍ")).toStrictEqual(["dog"]);
+    });
+
+    it("should handle unicode variation selectors", () => {
+      expect(linksOfText("⇒ dog ⇐ ٍcat")).toStrictEqual(["dog", "cat"]);
+    });
+
+    it("should strip special characters", () => {
+      const text = "⇒ dog ⇐ ٍcat";
+      const stripped = preStrip(text);
+      const rawUnicodeStripped = toRawUnicode(stripped);
+      expect(rawUnicodeStripped).toBe("dog, cat");
+      expect(stripped).toBe("dog, cat");
+    });
+
+    it("should handle multiple spaces", () => {
+      expect(linksOfText("dog  cat")).toStrictEqual(["dog-cat"]);
+      expect(linksOfText("dog   cat")).toStrictEqual(["dog-cat"]);
+    });
+
+    it("should strip symbols with space", () => {
+      expect(linksOfText("⇒ → dog ← ⇐")).toStrictEqual(["dog"]);
     });
   });
 });
