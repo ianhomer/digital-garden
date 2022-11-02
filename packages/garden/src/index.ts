@@ -1,7 +1,8 @@
 import { findItem, findItemOrWanted, getAllItems } from "./content";
 import { createGarden, findWantedThings, toConfig } from "./garden";
-import { pageResolver } from "./link";
+import { isNotValidPageName, isValidPageName, pageResolver } from "./link";
 import { findLinks } from "./links";
+import { getPageItems } from "./page";
 
 export {
   createGarden,
@@ -10,6 +11,9 @@ export {
   findLinks,
   findWantedThings,
   getAllItems,
+  getPageItems,
+  isNotValidPageName,
+  isValidPageName,
   pageResolver,
   toConfig,
 };

@@ -20,6 +20,18 @@ export interface NaturalThing {
 const strip = (text: string) =>
   text.trim().replace(/\s/g, "-").replace(/[._]/g, "");
 
+const symbols = "|~><\\/`(){}:";
+const matchLeadingSymbols = new RegExp(`^[${symbols}]+`, "g");
+const matchTrailingSymbols = new RegExp(`[${symbols}]+$`, "g");
+const matchSymbols = new RegExp(`[${symbols}]`, "g");
+
+const preStrip = (text: string) =>
+  text
+    .trim()
+    .replace(matchLeadingSymbols, "")
+    .replace(matchTrailingSymbols, "")
+    .replace(matchSymbols, ", ");
+
 // Return aarray of aliases for words
 export function naturalAliases(name: string): string[] {
   const one = nlp(name);
@@ -30,7 +42,7 @@ export function naturalAliases(name: string): string[] {
 }
 
 export function naturalProcess(content: string, excludes: string[] = []) {
-  const document = nlp(content);
+  const document = nlp(preStrip(content));
   const enhancedExcludes = [...excludes, "", ",", "s", "ing"];
   const links: Link[] = (document.not("#Pronoun") as Three)
     .nouns()

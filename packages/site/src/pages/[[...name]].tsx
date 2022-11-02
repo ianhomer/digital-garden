@@ -1,8 +1,8 @@
 import {
   findItemOrWanted,
   findLinks,
-  findWantedThings,
-  getAllItems,
+  getPageItems,
+  isNotValidPageName,
 } from "@garden/garden";
 import { findDeepLinks } from "@garden/graph";
 import { Item, Link, Things } from "@garden/types";
@@ -95,14 +95,16 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const things = await garden.load();
-  const items: Item[] = [
-    ...(await getAllItems(config)),
-    ...[{ name: "", content: "no content" }],
-    ...findWantedThings(things).map((name) => ({
-      name,
-      content: "no content",
-    })),
-  ];
+  const items = await getPageItems(config, things);
+
+  const invalidPageNames = items
+    .map((item) => item.name)
+    .filter(isNotValidPageName);
+
+  if (invalidPageNames.length > 0) {
+    console.log("Invalid page names found");
+    console.log(JSON.stringify(invalidPageNames, null, "  "));
+  }
 
   return {
     paths: items.map((item: Item) => ({

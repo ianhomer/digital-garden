@@ -8,10 +8,16 @@ const SMALL_LIBRARY = "small-library";
 const linksOf = (thing: NaturalThing) =>
   thing.links.map((link: Link) => link.name);
 
+const linksOfText = (text: string) => linksOf(naturalProcess(text));
+
 describe("natural language processing", () => {
   it("should find nouns", async () => {
-    const thing = naturalProcess("this is a library");
-    expect(linksOf(thing)).toStrictEqual(["library"]);
+    expect(linksOfText("this is a library")).toStrictEqual(["library"]);
+    expect(linksOfText("dog, cat, and fish")).toStrictEqual([
+      "dog",
+      "cat",
+      "fish",
+    ]);
   });
 
   it("should find noun with adjective", async () => {
@@ -94,5 +100,34 @@ describe("natural language processing", () => {
     expect(naturalAliases("words")).toStrictEqual(["word"]);
     expect(naturalAliases("word")).toStrictEqual([]);
     expect(naturalAliases("lists")).toStrictEqual(["list"]);
+  });
+
+  describe("safe parsing", () => {
+    it("should strip tables", () => {
+      expect(linksOfText("| table with a word |")).toStrictEqual([
+        "table",
+        "word",
+      ]);
+    });
+
+    it("should strip path elements", () => {
+      expect(linksOfText("`dog/and/cat`")).toStrictEqual(["dog", "cat"]);
+    });
+
+    it("should strip symbols", () => {
+      expect(linksOfText("dog>cat~and-fish<")).toStrictEqual([
+        "dog",
+        "cat",
+        "fish",
+      ]);
+    });
+
+    it("should handle alternative stops", () => {
+      expect(linksOfText("dog:cat")).toStrictEqual(["dog", "cat"]);
+    });
+
+    it("should handle brackets", () => {
+      expect(linksOfText("(dog) cat")).toStrictEqual(["dog", "cat"]);
+    });
   });
 });
