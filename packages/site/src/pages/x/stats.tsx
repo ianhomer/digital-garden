@@ -39,7 +39,6 @@ export async function getStaticProps() {
         )
       ).length == 1
   );
-  console.log(singleNaturalWantedThings);
 
   return {
     props: {
