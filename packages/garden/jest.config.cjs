@@ -18,6 +18,7 @@ const transformIgnores = [
 const config = {
   collectCoverage: true,
   coverageDirectory: "output",
+  setupFilesAfterEnv: ["./src/setupTests.ts"],
   moduleDirectories: ["node_modules", "<rootDir>/"],
   reporters: ["default", ["jest-html-reporters", { publicPath: "output" }]],
   testPathIgnorePatterns: ["./test/e2e"],

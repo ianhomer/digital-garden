@@ -26,6 +26,7 @@ export interface Garden {
 
 export interface GardenOptions {
   allowGlobalMeta?: boolean;
+  content?: { [key: string]: string };
   directory?: string;
   excludedDirectories?: string[];
   gardens?: { [key: string]: string };
@@ -37,6 +38,7 @@ export interface GardenOptions {
 export interface GardenConfig {
   allowGlobalMeta: boolean;
   directory: string;
+  content: { [key: string]: string };
   excludedDirectories: string[];
   gardens: { [key: string]: string };
   hasMultiple: boolean;
@@ -50,6 +52,7 @@ export interface MetaMap {
 
 const defaultConfig = {
   allowGlobalMeta: true,
+  content: {},
   directory: ".gardens",
   excludedDirectories: ["node_modules", "digital-garden"],
   hasMultiple: false,
@@ -60,11 +63,14 @@ const defaultConfig = {
 
 const loadThing = (config: GardenConfig, filename: string): FileThing => {
   const match = /([^/]*).md$/.exec(filename);
+  const name = match ? match[1] : filename;
   return {
     filename,
-    name: match ? match[1] : "filename",
+    name,
     content: () =>
-      fs.readFileSync(join(config.directory, `${filename}`), "utf8"),
+      name in config.content
+        ? config.content[name]
+        : fs.readFileSync(join(config.directory, `${filename}`), "utf8"),
   };
 };
 
@@ -118,28 +124,36 @@ const generateMeta = async (
   metaMap: MetaMap = {},
   filenameToPatch?: string
 ): Promise<{ [key: string]: Meta }> => {
-  const gardenDirectory = resolve(config.directory);
-
-  const populateMetaFromFilename = (filename: string) => {
-    const fileThing = loadThing(
-      config,
-      filename.substring(gardenDirectory.length)
-    );
-    loadFileThingIntoMetaMap(metaMap, fileThing);
-  };
-
-  if (filenameToPatch) {
-    console.log(`Patching meta with : ${filenameToPatch}`);
-    populateMetaFromFilename(filenameToPatch);
+  if (Object.keys(config.content).length > 0) {
+    Object.keys(config.content).forEach((key) => {
+      loadFileThingIntoMetaMap(metaMap, loadThing(config, `${key}.md`));
+    });
   } else {
-    for await (const filename of findFilesDeep(
-      config.excludedDirectories,
-      config.directory
-    )) {
-      if (filename.startsWith(gardenDirectory)) {
-        populateMetaFromFilename(filename);
-      } else {
-        console.error(`File ${filename} is not in garden ${config.directory}`);
+    const gardenDirectory = resolve(config.directory);
+
+    const populateMetaFromFilename = (filename: string) => {
+      const fileThing = loadThing(
+        config,
+        filename.substring(gardenDirectory.length)
+      );
+      loadFileThingIntoMetaMap(metaMap, fileThing);
+    };
+
+    if (filenameToPatch) {
+      console.log(`Patching meta with : ${filenameToPatch}`);
+      populateMetaFromFilename(filenameToPatch);
+    } else {
+      for await (const filename of findFilesDeep(
+        config.excludedDirectories,
+        config.directory
+      )) {
+        if (filename.startsWith(gardenDirectory)) {
+          populateMetaFromFilename(filename);
+        } else {
+          console.error(
+            `File ${filename} is not in garden ${config.directory}`
+          );
+        }
       }
     }
   }

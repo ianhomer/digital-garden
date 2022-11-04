@@ -7,6 +7,10 @@ import {
 } from "./content";
 import { Garden } from "./garden";
 
+export const justExplicitLinks = (link: Link) => !link.type;
+export const justNaturalLinks = (link: Link) => link.type == LinkType.NaturalTo;
+export const toLinkName = (link: Link) => link.name;
+
 export const findLinks = async (garden: Garden, item: Item) => {
   const explicitBackLinks = await findBackLinks(garden, item.name);
   const implicitBackLinks = await findImplicitBackLinks(
