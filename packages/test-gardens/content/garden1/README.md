@@ -7,3 +7,5 @@ See the [project readme](https://github.com/ianhomer/digital-garden) for more
 details.
 
 Link to [[vocabulary]].
+
+- [[Natural Links]]

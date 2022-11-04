@@ -9,3 +9,5 @@ Different types of links.
 [[Word 2]]
 
 [[words]]
+
+[[cat]]
