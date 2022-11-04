@@ -1,10 +1,13 @@
-import { LinkType } from "@garden/types";
+import { Link, LinkType } from "@garden/types";
 
 import { createGarden } from "./garden";
 import { parse, toMultipleThingMeta } from "./markdown";
 import { gardenConfig } from "./test-helpers";
 
 const garden = createGarden(gardenConfig);
+
+const toName = (link: Link) => link.name;
+const justNaturalLinks = (link: Link) => link.type == LinkType.NaturalTo;
 
 describe("markdown", () => {
   describe("basic content", () => {
@@ -41,6 +44,18 @@ describe("markdown", () => {
         () => "# Mock\n\nA [[one-day-maybe]]"
       )[0];
       expect(meta.links).toStrictEqual([{ name: "one-day-maybe" }]);
+    });
+
+    it("should not extra meaning from wiki links and URIs", () => {
+      const meta = toMultipleThingMeta(
+        () =>
+          "# Title\n\nLion and [[giraffe]] <https://cat.com> and " +
+          "[dog](https://animal.com)"
+      )[0];
+      expect(meta.links.filter(justNaturalLinks).map(toName)).toStrictEqual([
+        "lion",
+        "dog",
+      ]);
     });
   });
 

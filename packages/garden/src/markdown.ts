@@ -98,11 +98,22 @@ function flatten(section: Section): Node[] {
     : [];
 }
 
-function getFirstValue(node: Node, filter = (node: Node) => !!node): string {
+const isAngleBracketLink = (node: Node) =>
+  node.type === "link" &&
+  (node as Link).url === ((node as Parent).children[0] as Literal).value;
+
+const isWikiLink = (node: Node) => node.type === "wikiLink";
+
+const justTextNodes = (node: Node) => !!node && !isAngleBracketLink(node);
+
+const justTextNodesWithoutWikiLinks = (node: Node) =>
+  !!node && !isWikiLink(node) && !isAngleBracketLink(node);
+
+function getFirstValue(node: Node, filter: (node: Node) => boolean): string {
   return toString((node as Parent).children.filter(filter));
 }
 
-function getFrontText(node: Section, filter = (node: Node) => !!node) {
+function getFrontText(node: Section, filter: (node: Node) => boolean) {
   const firstParagraph = node.children.find((node) => node.type == "paragraph");
   if (firstParagraph) {
     return getFirstValue(firstParagraph, filter);
@@ -113,10 +124,10 @@ function getFrontText(node: Section, filter = (node: Node) => !!node) {
 function extractTitle(node: Section) {
   const firstHeading = node.children.find((node) => node.type == "heading");
   if (!firstHeading) {
-    return getFrontText(node) ?? "no title";
+    return getFrontText(node, justTextNodes) ?? "no title";
   }
 
-  return getFirstValue(firstHeading);
+  return getFirstValue(firstHeading, justTextNodes);
 }
 
 function extractName(url: string) {
@@ -148,7 +159,7 @@ function toSingleThingMeta(section: Section): Meta {
     links: [
       ...explicitLinks,
       ...naturalProcess(
-        getFrontText(section, (child) => child.type !== "wikiLink") ?? "",
+        getFrontText(section, justTextNodesWithoutWikiLinks) ?? "",
         explicitLinks.map((link) => link.name)
       ).links,
       ...section.sections.map((childSection) => ({
