@@ -103,6 +103,12 @@ describe("natural language processing", () => {
     expect(naturalAliases("lists")).toStrictEqual(["list"]);
   });
 
+  it("should find contractions", async () => {
+    expect(
+      linksOfText("wouldn't what's don't should've can't we'll we'd")
+    ).toHaveLength(0);
+  });
+
   describe("safe parsing", () => {
     it("should strip tables", () => {
       expect(linksOfText("| table with a word |")).toStrictEqual([
@@ -172,6 +178,14 @@ describe("natural language processing", () => {
 
     it("should strip symbols with space", () => {
       expect(linksOfText("⇒ → dog ← ⇐")).toStrictEqual(["dog"]);
+    });
+
+    it("should handle question in quote", () => {
+      expect(linksOfText("'Got a technical question?'")).toStrictEqual([
+        "question",
+        "technical",
+        "technical-question",
+      ]);
     });
   });
 });
