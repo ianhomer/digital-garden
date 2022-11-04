@@ -6,22 +6,30 @@ import { dirname, join, sep } from "path";
 import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
 import { Garden, GardenConfig } from "./garden";
 
-export class FileItem implements Item {
+export class BaseItem implements Item {
   name: string;
   filename: string;
   content: string;
 
-  constructor(gardensDirectory: string, filename: string, load = false) {
+  constructor(filename: string, content: string) {
     this.filename = filename;
     const match = /([^/]*).md$/.exec(filename);
     this.name = match ? match[1] : this.filename;
+
+    const itemMatter = matter(content);
+    this.content = itemMatter.content;
+  }
+}
+
+export class FileItem extends BaseItem {
+  constructor(gardensDirectory: string, filename: string, load = false) {
     if (load) {
       const path = join(gardensDirectory, `${filename}`);
       const fileContents = fs.readFileSync(path, "utf8");
       const itemMatter = matter(fileContents);
-      this.content = itemMatter.content;
+      super(filename, itemMatter.content);
     } else {
-      this.content = `${this.name} not loaded`;
+      super(filename, `${filename} not loaded`);
     }
   }
 }
