@@ -207,7 +207,19 @@ export const findUnreferencedLinks = (
 // Unwanted links are unique natural links to non-existent things
 export const findUnwantedLinks = (meta: MetaMap) => {
   const thingNames = Object.entries(meta)
-    .filter(([, value]) => value.type !== ThingType.NaturallyWanted)
+    .filter(([, value]) => {
+      if (value.type !== ThingType.NaturallyWanted) {
+        return true;
+      }
+      return value.links.find((link: Link) => {
+        const thing = meta[link.name];
+        if (!thing) {
+          return false;
+        }
+        //return true;
+        return !thing.type || thing.type === ThingType.Wanted;
+      });
+    })
     .map((entry) => entry[0]);
 
   const unreferencedExplicitLinks = thingNames
