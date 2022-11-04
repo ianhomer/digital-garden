@@ -29,12 +29,14 @@ const matchSpacesBeforeComma = /\s+,/g;
 const matchLeadingSymbols = new RegExp(`^[${symbols}\\p{Zs}]+`, "gu");
 const matchTrailingSymbols = new RegExp(`[${symbols}\\p{Zs}]+$`, "gu");
 const matchSymbols = new RegExp(`[${symbols}]`, "gu");
+const matchApostropheNotContraction = /'(?!t|s|ve)/g;
 
 export const preStrip = (text: string) =>
   text
     .trim()
     .replace(matchCleanUpSymbols, "")
     .replace(matchIgnoreSymbols, "")
+    .replace(matchApostropheNotContraction, "")
     .replace(matchDashSymbols, " ")
     .replace(matchLeadingSymbols, "")
     .replace(matchTrailingSymbols, "")
