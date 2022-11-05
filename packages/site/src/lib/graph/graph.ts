@@ -51,7 +51,7 @@ export const createGraph = (
           type: NodeType.Thing,
           wanted: !(name in things),
           siblings,
-          showLabel: depth < 3 && (depth < 2 || siblings < 30),
+          showLabel: depth < 3 && (depth < 2 || siblings < 20),
           depth,
           ...fixedCoordinates,
         };
