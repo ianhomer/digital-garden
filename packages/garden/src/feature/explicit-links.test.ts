@@ -14,7 +14,7 @@ Bar content linking to [[foo]]
 `;
 
 describe("explicit links", () => {
-  it("should have links to each other", async () => {
+  it("should have links of value to each other", async () => {
     const meta = await metaFrom({
       foo,
       bar,
@@ -28,5 +28,6 @@ describe("explicit links", () => {
     expect(
       meta.bar.links.filter(justExplicitLinks).map(toLinkName)
     ).toStrictEqual(["foo"]);
+    expect(meta.bar.links.filter(justExplicitLinks)[0].value).toBeUndefined();
   });
 });

@@ -62,14 +62,16 @@ const defaultConfig = {
 };
 
 const loadThing = (config: GardenConfig, filename: string): FileThing => {
-  const match = /([^/]*).md$/.exec(filename);
-  const name = match ? match[1] : filename;
+  const matchName = /([^/]*).md$/.exec(filename);
+  const name = matchName ? matchName[1] : filename;
+  const matchBaseName = /(.*).md$/.exec(filename);
+  const baseName = matchBaseName ? matchBaseName[1] : filename;
   return {
     filename,
     name,
     content: () =>
-      name in config.content
-        ? config.content[name]
+      baseName in config.content
+        ? config.content[baseName]
         : fs.readFileSync(join(config.directory, `${filename}`), "utf8"),
   };
 };
