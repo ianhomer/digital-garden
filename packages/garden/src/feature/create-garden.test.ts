@@ -19,12 +19,13 @@ Bar content
 `;
 
 describe("create garden", () => {
-  it("should have a simple thing", async () => {
+  it("should have a simple thing of value", async () => {
     const { meta, content } = await metaAndContentFrom({
       thing,
     });
     expect(Object.keys(meta)).toHaveLength(1);
     expect(meta.thing.title).toBe("Thing");
+    expect(meta.thing.value).toBeUndefined();
     expect(content("thing")).toBe(thing);
   });
 
