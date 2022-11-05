@@ -19,28 +19,32 @@ const gum = `
 Gum content
 `;
 
-describe("natural alias", () => {
-  it("should have linked alias when destination exists", async () => {
-    const meta = await metaFrom({
-      foo,
-      bar,
+describe("natural language", () => {
+  describe("with plural of existing thing", () => {
+    it("should have linked alias to singular thing", async () => {
+      const meta = await metaFrom({
+        foo,
+        bar,
+      });
+      expect(Object.keys(meta)).toHaveLength(3);
+      expect(meta.bars.title).toBe("bars");
+      expect(
+        meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+      ).toStrictEqual(["foo", "bars"]);
     });
-    expect(Object.keys(meta)).toHaveLength(3);
-    expect(meta.bars.title).toBe("bars");
-    expect(
-      meta.foo.links.filter(justNaturalLinks).map(toLinkName)
-    ).toStrictEqual(["foo", "bars"]);
   });
 
-  it("should not have linked alias since when destination does not exist", async () => {
-    const meta = await metaFrom({
-      foo,
-      gum,
+  describe("with plural of thing that does not exist", () => {
+    it("should not have a linked alias", async () => {
+      const meta = await metaFrom({
+        foo,
+        gum,
+      });
+      expect(Object.keys(meta)).toHaveLength(3);
+      expect(meta.bars.title).toBe("bars");
+      expect(
+        meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+      ).toStrictEqual(["foo"]);
     });
-    expect(Object.keys(meta)).toHaveLength(3);
-    expect(meta.bars.title).toBe("bars");
-    expect(
-      meta.foo.links.filter(justNaturalLinks).map(toLinkName)
-    ).toStrictEqual(["foo"]);
   });
 });

@@ -13,8 +13,14 @@ const bar = `
 To foo
 `;
 
-describe("natural link", () => {
-  it("should have natural link", async () => {
+const baz = `
+# Baz
+
+To bar
+`;
+
+describe("natural language", () => {
+  it("should have a natural link to existing thing", async () => {
     const meta = await metaFrom({
       foo,
       bar,
@@ -25,5 +31,18 @@ describe("natural link", () => {
     expect(
       meta.bar.links.filter(justNaturalLinks).map(toLinkName)
     ).toStrictEqual(["foo"]);
+  });
+
+  it("should have a natural link to a shared wanted thing", async () => {
+    const meta = await metaFrom({
+      foo,
+      baz,
+    });
+    expect(
+      meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+    ).toStrictEqual(["bar"]);
+    expect(
+      meta.baz.links.filter(justNaturalLinks).map(toLinkName)
+    ).toStrictEqual(["bar"]);
   });
 });
