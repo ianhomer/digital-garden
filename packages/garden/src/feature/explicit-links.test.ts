@@ -13,8 +13,8 @@ const bar = `
 Bar content linking to [[foo]]
 `;
 
-describe("explicit links", () => {
-  it("should have links of value to each other", async () => {
+describe("content with explicit link to existing things", () => {
+  it("should have links to existing things", async () => {
     const meta = await metaFrom({
       foo,
       bar,

@@ -4,20 +4,23 @@ Rendering of a Zettelkasten collection of markdown notes into a web site with
 visualisations to help navigation and discovery of related content. See
 <https://boxofjam.com> for an example.
 
-An emphasis is made display links between articles. This can either be done with
-explicit wiki style links, with `[[...]]` or via natural language processing.
-The natural language processing discovers notes by the looking the first
-paragraph in the document and finding either links that are not explicitly
+An emphasis is made display to links between articles. This can either be done
+with explicit wiki style links, with `[[...]]` or via natural language
+processing. The natural language processing discovers notes by the looking the
+first paragraph in the document and finding either links that are not explicitly
 tagged, or wanted notes that referenced by multiple notes. Links to plural
 knowns that don't exist are automatically linked to singular version of noun if
-article of that name does exist.
+article of that name does exist. The goal of this is to find useful and
+related content, inferred from natural language. This can help find patterns we
+did not expect and help guide decisions we may wish to make.
 
-| line in graph     | meaning           |
-| ----------------- | ----------------- |
-| solid grey        | explicit link     |
-| short dashed blue | back link         |
-| medium dashed red | natural link      |
-| long dashed red   | natural back link |
+| line in graph     | meaning                       |
+| ----------------- | ----------------------------- |
+| solid grey        | explicit link                 |
+| short dashed blue | back link                     |
+| medium dashed red | natural link                  |
+| long dashed red   | natural back link             |
+| dotted lin        | child link (markdown) section |
 
 | node in graph | meaning                                           |
 | ------------- | ------------------------------------------------- |

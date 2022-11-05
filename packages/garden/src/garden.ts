@@ -339,11 +339,6 @@ export const findLinkedThings = (
     .filter(unique);
 };
 
-const toParentName = (name: string) => {
-  const index = name.indexOf("#");
-  return index < 0 ? name : name.slice(0, index);
-};
-
 export const findWantedThings = (
   things: Things,
   filter = (link: Link) => !!link
