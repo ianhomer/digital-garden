@@ -25,8 +25,8 @@ const getRadius = (d: Node | SimulationNodeDatum) => {
       : d.depth == 1
       ? 15
       : d.depth == 2
-      ? 10
-      : 4;
+      ? 5
+      : 2;
   } else {
     return 2;
   }
@@ -36,12 +36,12 @@ const getRadius = (d: Node | SimulationNodeDatum) => {
 const getCharge = (d: Node | SimulationNodeDatum) => {
   if ("depth" in d) {
     return d.depth == 0
-      ? -8000
+      ? -5000
       : d.depth == 1
       ? -500
       : d.depth == 2
-      ? -300
-      : -50;
+      ? -50
+      : -10;
   } else {
     return -20;
   }
@@ -70,7 +70,13 @@ const linkTypeForceWeight = (linkType: LinkType) => {
 };
 
 const linkDepthForceWeight = (link: NodeLink) =>
-  link.depth == 0 ? 0.08 : link.depth == 1 ? 0.2 : link.depth == 2 ? 0.8 : 1.2;
+  link.depth == 0
+    ? 0.08
+    : link.depth == 1
+    ? 0.2
+    : link.depth == 2
+    ? 0.15
+    : 0.08;
 
 // How much each link attracts
 const getLinkForce = (d: NodeLink) =>
@@ -181,9 +187,9 @@ export default function GraphDiagram({
       .force("forceX", d3.forceX(0).strength(0.1))
       .force("forceY", d3.forceY(0).strength(0.1))
       .force("link", forceLink.id((d: Node) => d.id).strength(getLinkForce))
-      .tick(200)
+      .tick(50)
       .alphaMin(0.02)
-      .alphaDecay(0.03)
+      .alphaDecay(0.02)
       .on("tick", tick);
 
     function dragstart(this: SVGElement) {
