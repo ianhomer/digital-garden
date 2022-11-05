@@ -12,7 +12,7 @@ const foo = `
 Link to [[archived]] thing
 `;
 
-describe("archived things", () => {
+describe("archived thing", () => {
   // Given thing is archived
   // Then the thing should have zero value
   it("should have zero value", async () => {
@@ -25,7 +25,7 @@ describe("archived things", () => {
 
   // Given thing links to archived thing
   // Then the link should have zero value
-  it("link should have zero value", async () => {
+  it("should should have zero value from non-archived thing", async () => {
     const meta = await metaFrom({
       "/archive/archived": archived,
       foo,
