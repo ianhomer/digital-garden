@@ -66,9 +66,6 @@ export function naturalProcess(content: string, excludes: string[] = []) {
       if (term.noun.adjectives.length == 0) {
         return root;
       }
-      if (!root) {
-        return term.noun.adjectives.map((adjective) => strip(adjective));
-      }
       return [
         root,
         ...term.noun.adjectives.map((adjective) => strip(adjective)),

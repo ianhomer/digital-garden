@@ -109,7 +109,7 @@ describe("natural language processing", () => {
     ).toHaveLength(0);
   });
 
-  describe("safe parsing", () => {
+  describe("extraordinary content", () => {
     it("should strip tables", () => {
       expect(linksOfText("| table with a word |")).toStrictEqual([
         "table",
