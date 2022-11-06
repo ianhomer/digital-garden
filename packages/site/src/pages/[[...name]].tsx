@@ -26,7 +26,7 @@ interface Props {
 
 function ItemPage({ item }: Props) {
   const { height, width } = useWindowDimensions();
-  const [depth, setDepth] = useState(2);
+  const [depth, setDepth] = useState(3);
   const [scale, setScale] = useState(1.3);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<Things>({});

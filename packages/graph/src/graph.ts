@@ -60,18 +60,21 @@ export const findDeepLinks = (
             findDeepLinks(things, link.target, maxDepth, depth + 1)
           )
           .flat()),
-  ].filter(
-    // de-dupe
-    (value, index, self) =>
-      index ===
-      self.findIndex(
-        (compareTo) =>
-          ((value.source == compareTo.source &&
-            value.target == compareTo.target) ||
-            (value.source == compareTo.target &&
-              value.target == compareTo.source)) &&
-          // choose one with lowest depth
-          value.depth >= compareTo.depth
-      )
-  );
+  ]
+    .filter(
+      // de-dupe
+      (value, index, self) =>
+        index ===
+        self.findIndex(
+          (compareTo) =>
+            ((value.source == compareTo.source &&
+              value.target == compareTo.target) ||
+              (value.source == compareTo.target &&
+                value.target == compareTo.source)) &&
+            // choose one with lowest depth
+            value.depth >= compareTo.depth
+        )
+    )
+    .sort((a, b) => a.depth - b.depth)
+    .slice(0, 500);
 };

@@ -187,7 +187,8 @@ export default function GraphDiagram({
       .force("forceX", d3.forceX(0).strength(0.1))
       .force("forceY", d3.forceY(0).strength(0.1))
       .force("link", forceLink.id((d: Node) => d.id).strength(getLinkForce))
-      .tick(50)
+      .tick(100)
+      .alpha(1)
       .alphaMin(0.02)
       .alphaDecay(0.02)
       .on("tick", tick);

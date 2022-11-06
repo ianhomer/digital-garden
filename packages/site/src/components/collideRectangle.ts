@@ -20,7 +20,7 @@ function yCenterOfBox(d: Node, box: number[]) {
 
 // box is [x,y,width,height]
 function apply(d: Node, box: number[]) {
-  const strength = 1;
+  const strength = 1.0;
   return (quad: QuadtreeInternalNode<Node> | QuadtreeLeaf<Node>) => {
     if (quad.length == 4 || !d) {
       return;
@@ -34,7 +34,7 @@ function apply(d: Node, box: number[]) {
     const dXCenter = xCenterOfBox(d, box);
     const dYCenter = yCenterOfBox(d, box);
 
-    const xDistance = dXCenter - quadDataXCenter;
+    const xDistance = (dXCenter - quadDataXCenter) * 4;
     const yDistance = dYCenter - quadDataYCenter;
     const absX = Math.abs(xDistance);
     const absY = Math.abs(yDistance);
@@ -45,17 +45,23 @@ function apply(d: Node, box: number[]) {
     if (overlapX < 0 && overlapY < 0) {
       const distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
 
-      if (Math.abs(overlapY) < Math.abs(overlapX)) {
-        // Move nodes vertically
-        const delta = (strength * yDistance * overlapY) / distance;
-        d.vy = (d.vy ?? 0) - delta;
-        quad.data.vy = (quad.data.vy ?? 0) + delta;
-      } else {
-        // Move nodes horizontally
-        const delta = (strength * xDistance * overlapX) / distance;
-        d.vx = (d.vx ?? 0) - delta;
-        quad.data.vx = (quad.data.vx ?? 0) + delta;
-      }
+      // randomiser stops repeated feedbacks
+      const randomiser = 1 - 0.1 * Math.random();
+      const yFactor =
+        Math.abs(overlapY) / (Math.abs(overlapY) + Math.abs(overlapX));
+
+      // Move nodes vertically
+      const deltaY =
+        (yFactor * randomiser * strength * yDistance * overlapY) / distance;
+      d.vy = (d.vy ?? 0) - deltaY;
+      quad.data.vy = (quad.data.vy ?? 0) + deltaY;
+
+      // Move nodes horizontally
+      const deltaX =
+        (0.001 * (1 - yFactor) * randomiser * strength * xDistance * overlapX) /
+        distance;
+      d.vx = (d.vx ?? 0) - deltaX;
+      quad.data.vx = (quad.data.vx ?? 0) + deltaX;
       return true;
     }
   };
