@@ -4,6 +4,8 @@ Rendering of a Zettelkasten collection of markdown notes into a web site with
 visualisations to help navigation and discovery of related content. See
 <https://boxofjam.com> for an example.
 
+![demo](docs/images/demo.gif)
+
 An emphasis is made display to links between articles. This can either be done
 with explicit wiki style links, with `[[...]]` or via natural language
 processing. The natural language processing discovers notes by the looking the
@@ -29,8 +31,6 @@ did not expect and help guide decisions we may wish to make.
 | small         | second level depth                                |
 | white         | wanted note - referenced note that does not exist |
 | red           | locked note                                       |
-
-![demo](docs/images/demo.png)
 
 ## Running locally
 
