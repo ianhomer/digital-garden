@@ -1,5 +1,8 @@
 export const linkResolver = (name: string) =>
-  name.replace(/ /g, "-").toLowerCase();
+  name
+    .replace(/ /g, "-")
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, "");
 
 // A page resolver plugin compatible with the remark-wiki-link pageResolver
 export const pageResolver = (name: string) => [linkResolver(name)];
