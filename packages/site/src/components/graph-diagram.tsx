@@ -100,8 +100,8 @@ export default function GraphDiagram({
   const bottomBoundary = viewHeight - yOffset - boundarySize;
   const xOffsetText = -35;
   const yOffsetText = -10;
-  const heightText = 50;
-  const widthText = 800;
+  const heightText = 60;
+  const widthText = 1000;
 
   useEffect(() => {
     const svg = d3.select(ref.current);

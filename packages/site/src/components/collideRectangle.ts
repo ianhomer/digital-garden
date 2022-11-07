@@ -45,23 +45,11 @@ function apply(d: Node, box: number[]) {
     if (overlapX < 0 && overlapY < 0) {
       const distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
 
-      // randomiser stops repeated feedbacks
-      const randomiser = 1 - 0.1 * Math.random();
-      const yFactor =
-        Math.abs(overlapY) / (Math.abs(overlapY) + Math.abs(overlapX));
-
       // Move nodes vertically
-      const deltaY =
-        (yFactor * randomiser * strength * yDistance * overlapY) / distance;
+      const deltaY = (strength * yDistance * overlapY) / distance;
       d.vy = (d.vy ?? 0) - deltaY;
       quad.data.vy = (quad.data.vy ?? 0) + deltaY;
 
-      // Move nodes horizontally
-      const deltaX =
-        (0.001 * (1 - yFactor) * randomiser * strength * xDistance * overlapX) /
-        distance;
-      d.vx = (d.vx ?? 0) - deltaX;
-      quad.data.vx = (quad.data.vx ?? 0) + deltaX;
       return true;
     }
   };
