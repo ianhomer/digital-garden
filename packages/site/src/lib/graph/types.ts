@@ -8,6 +8,7 @@ export enum NodeType {
 export interface Node extends SimulationNodeDatum {
   id: string;
   title: string;
+  context?: string;
   type: NodeType;
   depth: number;
   siblings: number;

@@ -1,4 +1,9 @@
-import { isNotValidPageName, isValidPageName, pageResolver } from "./link";
+import {
+  isNotValidPageName,
+  isValidPageName,
+  pageResolver,
+  toParentName,
+} from "./link";
 
 describe("link", () => {
   it("should render link in lowercase", () => {
@@ -16,5 +21,12 @@ describe("link", () => {
 
   it("should validate invalid page name", () => {
     expect(isNotValidPageName("foo-bar")).toBeFalsy();
+  });
+
+  describe("child", () => {
+    it("should be able to parent from name", () => {
+      expect(toParentName("foo#bar")).toBe("foo");
+      expect(toParentName("foo")).toBeUndefined();
+    });
   });
 });
