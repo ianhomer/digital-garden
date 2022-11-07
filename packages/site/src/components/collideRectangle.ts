@@ -20,7 +20,7 @@ function yCenterOfBox(d: Node, box: number[]) {
 
 // box is [x,y,width,height]
 function apply(d: Node, box: number[]) {
-  const strength = 1.0;
+  const strength = 0.4;
   return (quad: QuadtreeInternalNode<Node> | QuadtreeLeaf<Node>) => {
     if (quad.length == 4 || !d) {
       return;
@@ -47,8 +47,8 @@ function apply(d: Node, box: number[]) {
 
       // Move nodes vertically
       const deltaY = (strength * yDistance * overlapY) / distance;
-      d.vy = (d.vy ?? 0) - deltaY;
-      quad.data.vy = (quad.data.vy ?? 0) + deltaY;
+      d.vy = (d.vy ?? 0) - deltaY / 2;
+      quad.data.vy = (quad.data.vy ?? 0) + deltaY / 2;
 
       return true;
     }
