@@ -52,13 +52,6 @@ function ItemPage({ item }: Props) {
     <>
       <div className="container max-w-4xl px-4">
         <div dangerouslySetInnerHTML={{ __html: item.content }} />
-        <ul className="links">
-          {item.links.map((link: Link) => (
-            <li key={link.name} className={link.type}>
-              <a href={"/" + link.name}>{link.name}</a>
-            </li>
-          ))}
-        </ul>
       </div>
       {!isLoading && data && (
         <GraphDiagram
