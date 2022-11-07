@@ -2,11 +2,12 @@
 
 Rendering of a Zettelkasten collection of markdown notes into a web site with
 visualisations to help navigation and discovery of related content. See
-<https://boxofjam.com> for an example.
+<https://boxofjam.com> for an example. You can run this locally by running the command `garden` in any
+folder of markdown content you may have locally.
 
 ![demo](docs/images/demo.gif)
 
-An emphasis is made display to links between articles. This can either be done
+An emphasis is made to display links between articles. This can be done
 with explicit wiki style links, with `[[...]]` or via natural language
 processing. The natural language processing discovers notes by the looking the
 first paragraph in the document and finding either links that are not explicitly
