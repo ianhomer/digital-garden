@@ -143,7 +143,22 @@ export default function GraphDiagram({
       .attr("x", xOffsetText)
       .attr("y", yOffsetText)
       .attr("class", (d: Node) => `depth-${d.depth}`)
-      .classed("label", true);
+      .classed("label", true)
+      .append("text");
+
+    anchor
+      .filter((d: Node) => d.showLabel && !!d.context)
+      .append("text")
+      .attr("x", xOffsetText)
+      .attr(
+        "y",
+        (d: Node) =>
+          yOffsetText -
+          ((depth) =>
+            depth == 0 ? 40 : depth == 1 ? 30 : depth == 2 ? 15 : 10)(d.depth)
+      )
+      .text((d: Node) => d.context || "n/a")
+      .classed("context-label", true);
 
     function tick() {
       link

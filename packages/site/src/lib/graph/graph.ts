@@ -1,3 +1,4 @@
+import { toParentName } from "@garden/garden/src/link";
 import { ItemLink, Things } from "@garden/types";
 
 import { Graph, NodeType } from "./types";
@@ -26,6 +27,14 @@ export const createGraph = (
     .flat()
     .filter((value, index, self) => self.indexOf(value) === index);
 
+  const getParentTitle = (name: string) => {
+    const parentName = toParentName(name);
+    if (parentName && parentName in things) {
+      return things[parentName].title;
+    }
+    return undefined;
+  };
+
   return {
     nodes: [
       ...names.map((name: string) => {
@@ -48,6 +57,7 @@ export const createGraph = (
         return {
           id: name || "na",
           title: name in things ? things[name].title : name,
+          context: getParentTitle(name),
           type: NodeType.Thing,
           wanted: !(name in things),
           siblings,
