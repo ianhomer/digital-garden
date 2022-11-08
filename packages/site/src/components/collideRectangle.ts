@@ -19,8 +19,7 @@ function yCenterOfBox(d: Node, box: number[]) {
 }
 
 // box is [x,y,width,height]
-function apply(d: Node, box: number[]) {
-  const strength = 0.4;
+function apply(d: Node, box: number[], strength = 0.4) {
   return (quad: QuadtreeInternalNode<Node> | QuadtreeLeaf<Node>) => {
     if (quad.length == 4 || !d) {
       return;

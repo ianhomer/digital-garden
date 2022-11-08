@@ -33,17 +33,17 @@ const getRadius = (d: Node | SimulationNodeDatum) => {
 };
 
 // How much node repels
-const getCharge = (d: Node | SimulationNodeDatum) => {
+const getCharge = (factor: number) => (d: Node | SimulationNodeDatum) => {
   if ("depth" in d) {
     return d.depth == 0
-      ? -5000
+      ? -5000 * factor
       : d.depth == 1
-      ? -500
+      ? -500 * factor
       : d.depth == 2
-      ? -50
-      : -10;
+      ? -50 * factor
+      : -10 * factor;
   } else {
-    return -20;
+    return -20 * factor;
   }
 };
 
@@ -79,8 +79,8 @@ const linkDepthForceWeight = (link: NodeLink) =>
     : 0.08;
 
 // How much each link attracts
-const getLinkForce = (d: NodeLink) =>
-  linkTypeForceWeight(d.type) * linkDepthForceWeight(d);
+const getLinkForce = (factor: number) => (d: NodeLink) =>
+  factor * linkTypeForceWeight(d.type) * linkDepthForceWeight(d);
 
 export default function GraphDiagram({
   graph,
@@ -91,6 +91,7 @@ export default function GraphDiagram({
   const ref = useRef(null);
   const viewWidth = width * scale;
   const viewHeight = height * scale;
+  const minDimension = Math.min(viewWidth, viewHeight);
   const xOffset = viewWidth / 2;
   const yOffset = viewHeight / 2;
   const boundarySize = DEPTH_1_RADIUS * 2;
@@ -102,6 +103,9 @@ export default function GraphDiagram({
   const yOffsetText = -10;
   const heightText = 60;
   const widthText = 1000;
+  const linkForceFactor = 2;
+  const chargeForceFactor = 1;
+  const centerForceFactor = Math.min(0.1 * (1100.0 / minDimension) ** 2, 0.2);
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -196,19 +200,25 @@ export default function GraphDiagram({
     const simulation = d3
       .forceSimulation()
       .nodes(graph.nodes)
-      .force("charge", d3.forceManyBody().strength(getCharge))
+      .force(
+        "charge",
+        d3.forceManyBody().strength(getCharge(chargeForceFactor))
+      )
       .force("collide", d3.forceCollide().radius(getRadius))
       .force(
         "collideRectangle",
-        collideRectangle([xOffsetText, yOffsetText, widthText, heightText])
+        collideRectangle([xOffsetText, yOffsetText, widthText, heightText], 2)
       )
-      .force("forceX", d3.forceX(0).strength(0.1))
-      .force("forceY", d3.forceY(0).strength(0.1))
-      .force("link", forceLink.id((d: Node) => d.id).strength(getLinkForce))
+      .force("forceX", d3.forceX(0).strength(centerForceFactor))
+      .force("forceY", d3.forceY(0).strength(centerForceFactor))
+      .force(
+        "link",
+        forceLink.id((d: Node) => d.id).strength(getLinkForce(linkForceFactor))
+      )
       .tick(100)
       .alpha(1)
       .alphaMin(0.02)
-      .alphaDecay(0.02)
+      .alphaDecay(0.005)
       .on("tick", tick)
       .on("end", tick);
 
