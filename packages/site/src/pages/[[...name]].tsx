@@ -4,7 +4,7 @@ import {
   getPageItems,
   isNotValidPageName,
 } from "@garden/garden";
-import { findDeepLinks } from "@garden/graph";
+import { findDeepLinks } from "@garden/garden";
 import { Item, Link, Things } from "@garden/types";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useEffect, useState } from "react";

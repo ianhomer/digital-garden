@@ -3,9 +3,11 @@ import { createGarden, findWantedThings, toConfig } from "./garden";
 import { isNotValidPageName, isValidPageName, pageResolver } from "./link";
 import { findLinks } from "./links";
 import { getPageItems } from "./page";
+import { findDeepLinks } from "./graph";
 
 export {
   createGarden,
+  findDeepLinks,
   findItem,
   findItemOrWanted,
   findLinks,

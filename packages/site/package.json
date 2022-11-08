@@ -29,7 +29,6 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@garden/garden": "workspace:1.0.0",
-    "@garden/graph": "workspace:1.0.0",
     "@garden/types": "workspace:1.0.0",
     "d3": "^7.6.1",
     "dotenv": "^16.0.3",
