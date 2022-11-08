@@ -19,7 +19,7 @@ function yCenterOfBox(d: Node, box: number[]) {
 }
 
 // box is [x,y,width,height]
-function apply(d: Node, box: number[], strength = 0.4) {
+function apply(d: Node, box: number[], strength: number) {
   return (quad: QuadtreeInternalNode<Node> | QuadtreeLeaf<Node>) => {
     if (quad.length == 4 || !d) {
       return;
@@ -57,7 +57,7 @@ function apply(d: Node, box: number[], strength = 0.4) {
   };
 }
 
-export default function (box: number[]) {
+export default function (box: number[], strength = 0.4) {
   let nodes: Node[];
   let iterations = 1;
   function force() {
@@ -67,7 +67,7 @@ export default function (box: number[]) {
     for (let k = 0; k < iterations; ++k) {
       for (const d of nodes) {
         if (d.showLabel) {
-          tree.visit(apply(d, box));
+          tree.visit(apply(d, box, strength));
         }
       }
     }

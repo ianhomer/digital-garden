@@ -41,7 +41,7 @@ const getCharge = (factor: number) => (d: Node | SimulationNodeDatum) => {
       ? -500 * factor
       : d.depth == 2
       ? -50 * factor
-      : -10 * factor;
+      : -5 * factor;
   } else {
     return -20 * factor;
   }
@@ -103,9 +103,9 @@ export default function GraphDiagram({
   const yOffsetText = -10;
   const heightText = 60;
   const widthText = 1000;
-  const linkForceFactor = 2;
-  const chargeForceFactor = 1;
-  const centerForceFactor = Math.min(0.1 * (1100.0 / minDimension) ** 2, 0.2);
+  const linkForceFactor = 1.5;
+  const chargeForceFactor = 1.5;
+  const centerForceFactor = Math.min(0.25 * (1100.0 / minDimension) ** 2, 0.3);
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -218,7 +218,7 @@ export default function GraphDiagram({
       .tick(100)
       .alpha(1)
       .alphaMin(0.02)
-      .alphaDecay(0.005)
+      .alphaDecay(0.01)
       .on("tick", tick)
       .on("end", tick);
 
