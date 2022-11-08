@@ -25,6 +25,9 @@ function apply(d: Node, box: number[]) {
     if (quad.length == 4 || !d) {
       return;
     }
+    if (!quad.data.showLabel) {
+      return;
+    }
     if ((quad.data.index ?? 0) <= (d.index ?? 0)) {
       // only apply force between 2 nodes once
       return;
