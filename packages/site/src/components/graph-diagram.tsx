@@ -161,6 +161,9 @@ export default function GraphDiagram({
       .classed("context-label", true);
 
     function tick() {
+      if (Math.random() > 0.6) {
+        return;
+      }
       link
         .attr("x1", (d) => ((d.source as Node).x ?? 0) + xOffset)
         .attr("y1", (d) => ((d.source as Node).y ?? 0) + yOffset)
@@ -206,7 +209,8 @@ export default function GraphDiagram({
       .alpha(1)
       .alphaMin(0.02)
       .alphaDecay(0.02)
-      .on("tick", tick);
+      .on("tick", tick)
+      .on("end", tick);
 
     function dragstart(this: SVGElement) {
       d3.select(this).classed("fixed", true);
