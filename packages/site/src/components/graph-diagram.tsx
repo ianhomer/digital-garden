@@ -114,12 +114,17 @@ export default function GraphDiagram({
 
   useEffect(() => {
     const svg = d3.select(ref.current);
+    svg.selectAll("svg > *").remove();
 
     const link = svg
       .selectAll<SVGLineElement, NodeLink>(".link")
       .data(graph.links)
       .join("line")
       .attr("class", (d: NodeLink) => `link ${d.type}`)
+      .attr("x1", xOffset)
+      .attr("x2", xOffset)
+      .attr("y1", yOffset)
+      .attr("y2", yOffset)
       .attr("stroke-width", getLinkStrokeWidth);
 
     const group = svg
@@ -129,6 +134,7 @@ export default function GraphDiagram({
       .classed("group", true)
       .classed("wanted", (d: Node) => d.wanted)
       .classed("fixed", (d: Node) => d.fx !== undefined)
+      .attr("transform", `translate(${xOffset},${yOffset})`)
       .raise();
 
     group
@@ -165,7 +171,7 @@ export default function GraphDiagram({
       .classed("context-label", true);
 
     function tick() {
-      if (Math.random() > 0.6) {
+      if (Math.random() > 0.4) {
         return;
       }
       link
@@ -215,7 +221,7 @@ export default function GraphDiagram({
         "link",
         forceLink.id((d: Node) => d.id).strength(getLinkForce(linkForceFactor))
       )
-      .tick(100)
+      .tick(50)
       .alpha(1)
       .alphaMin(0.02)
       .alphaDecay(0.01)
@@ -245,7 +251,7 @@ export default function GraphDiagram({
       .on("drag", dragged);
 
     group.call(drag).on("click", click);
-  }, [graph]);
+  }, [width, height, graph]);
 
   return (
     <>
