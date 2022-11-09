@@ -1,3 +1,13 @@
+export interface ItemReference {
+  name: string;
+}
+
+export interface GardenRepository {
+  load: (ItemReference: ItemReference) => Item;
+  find: (name: string) => Promise<ItemReference>;
+  findAll: () => AsyncIterable<ItemReference>;
+}
+
 export interface Item {
   name: string;
   filename?: string;

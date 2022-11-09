@@ -21,19 +21,6 @@ export class BaseItem implements Item {
   }
 }
 
-export class FileItem extends BaseItem {
-  constructor(gardensDirectory: string, filename: string, load = false) {
-    if (load) {
-      const path = join(gardensDirectory, `${filename}`);
-      const fileContents = fs.readFileSync(path, "utf8");
-      const itemMatter = matter(fileContents);
-      super(filename, itemMatter.content);
-    } else {
-      super(filename, `${filename} not loaded`);
-    }
-  }
-}
-
 export async function findImplicitBackLinks(
   config: GardenConfig,
   name: string
