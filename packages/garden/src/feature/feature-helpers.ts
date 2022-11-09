@@ -1,4 +1,4 @@
-import { BaseItem } from "../content";
+import { BaseItem } from "../base-item";
 import { createGarden, MetaMap } from "../garden";
 
 export const metaAndContentFrom = async (content: {

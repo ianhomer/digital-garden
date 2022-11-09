@@ -2,9 +2,8 @@ import { GardenRepository, ItemReference } from "@garden/types";
 import fs from "fs";
 import { resolve } from "path";
 
-import { BaseItem } from "./content";
+import { BaseItem } from "./base-item";
 const { readdir } = fs.promises;
-import { join } from "path";
 
 const shouldIncludeDirectory = (excludedDirectories: string[], name: string) =>
   !excludedDirectories.includes(name) && !name.startsWith(".");
@@ -38,9 +37,13 @@ export class FileGardenRepository implements GardenRepository {
     this.directory = directory;
   }
 
-  load(itemReference: ItemReference) {
+  async load(itemReference: ItemReference | string) {
     if (itemReference instanceof FileItemReference) {
       return new FileItem(itemReference.filename);
+    } else if (typeof itemReference === "string") {
+      return new FileItem(
+        ((await this.find(itemReference)) as FileItemReference).filename
+      );
     } else {
       throw `Cannot load ${itemReference.name} since not a FileItemReference`;
     }

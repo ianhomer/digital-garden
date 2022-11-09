@@ -1,25 +1,9 @@
 import { Item } from "@garden/types";
-import fs from "fs";
-import matter from "gray-matter";
 import { dirname, join, sep } from "path";
 
+import { FileGardenRepository } from "./file-garden-repository";
 import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
 import { Garden, GardenConfig } from "./garden";
-
-export class BaseItem implements Item {
-  name: string;
-  filename: string;
-  content: string;
-
-  constructor(filename: string, content: string) {
-    this.filename = filename;
-    const match = /([^/]*).md$/.exec(filename);
-    this.name = match ? match[1] : this.filename;
-
-    const itemMatter = matter(content);
-    this.content = itemMatter.content;
-  }
-}
 
 export async function findImplicitBackLinks(
   config: GardenConfig,
@@ -57,34 +41,30 @@ export async function findBackLinks(
 const DEFAULT_NAME = "README";
 
 export async function findItem(config: GardenConfig, name: string | false) {
-  return new FileItem(
+  return new FileGardenRepository(
     config.directory,
-    await findFile(
-      config,
-      config.directory,
-      (name ? name : DEFAULT_NAME) + ".md"
-    ),
-    true
-  );
+    config.excludedDirectories
+  ).load(name ? name : DEFAULT_NAME);
 }
 
 export async function findItemOrWanted(
   config: GardenConfig,
   name: string | false
 ): Promise<Item> {
-  try {
-    return await findItem(config, name);
-  } catch (error) {
-    return {
-      name: name || DEFAULT_NAME,
-      content: `# ${name}\n\nWanted`,
-    };
-  }
+  return findItem(config, name).catch(() => ({
+    name: name || DEFAULT_NAME,
+    content: `# ${name}\n\nWanted`,
+  }));
 }
 
 export async function getAllItems(config: GardenConfig): Promise<Item[]> {
-  const files = await findFiles(config, config.directory);
-  return files.map((filename) => {
-    return new FileItem(config.directory, filename);
-  });
+  const gardenRepository = new FileGardenRepository(
+    config.directory,
+    config.excludedDirectories
+  );
+  const array = [];
+  for await (const itemReference of gardenRepository.findAll()) {
+    array.push(await gardenRepository.load(itemReference));
+  }
+  return array;
 }

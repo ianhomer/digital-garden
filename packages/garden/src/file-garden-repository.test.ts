@@ -34,7 +34,7 @@ describe("file garden repository", () => {
   it("should load item", async () => {
     const gardenRepository = new FileGardenRepository(GARDEN1_DIRECTORY);
     const itemReference = await gardenRepository.find("word-3");
-    const item = gardenRepository.load(itemReference);
+    const item = await gardenRepository.load(itemReference);
     expect(item.content).toEqual("# Word 3\n\nExplicit link [[word-4]].\n");
   });
 });
