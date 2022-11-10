@@ -93,7 +93,7 @@ export class FileGardenRepository implements GardenRepository {
   async find(name: string) {
     const filename = await this.#findInDirectory(this.directory, `${name}.md`);
     if (!filename) {
-      throw `Cannot find ${name}`;
+      throw `Cannot find ${name} in ${this.directory}`;
     }
     return new FileItemReference(
       name,

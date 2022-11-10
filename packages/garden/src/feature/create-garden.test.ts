@@ -26,7 +26,7 @@ describe("create garden", () => {
     expect(Object.keys(meta)).toHaveLength(1);
     expect(meta.thing.title).toBe("Thing");
     expect(meta.thing.value).toBeUndefined();
-    expect(content("thing")).toBe(thing);
+    expect(await content("thing")).toBe(thing);
   });
 
   it("should have two simple things", async () => {
@@ -37,7 +37,7 @@ describe("create garden", () => {
     expect(Object.keys(meta)).toHaveLength(2);
     expect(meta.foo.title).toBe("Foo");
     expect(meta.bar.title).toBe("Bar");
-    expect(content("foo")).toBe(foo);
-    expect(content("bar")).toBe(bar);
+    expect(await content("foo")).toBe(foo);
+    expect(await content("bar")).toBe(bar);
   });
 });

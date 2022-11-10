@@ -11,16 +11,18 @@ const justNaturalLinks = (link: Link) => link.type == LinkType.NaturalTo;
 
 describe("markdown", () => {
   describe("basic content", () => {
-    it("should parse OK", () => {
-      const sections = parse(() => "# My Name");
+    it("should parse OK", async () => {
+      const sections = await parse(async () => "# My Name");
 
       expect(sections).toHaveLength(1);
       expect(sections[0].title).toBe("My Name");
     });
 
-    it("should have title and links", () => {
-      const meta = toMultipleThingMeta(
-        () => "# My Name\n\n[[wiki-link]] [link](./my-link.md)"
+    it("should have title and links", async () => {
+      const meta = (
+        await toMultipleThingMeta(
+          async () => "# My Name\n\n[[wiki-link]] [link](./my-link.md)"
+        )
       )[0];
 
       expect(meta.title).toBe("My Name");
@@ -28,9 +30,9 @@ describe("markdown", () => {
       expect(meta.links[1].name).toBe("my-link");
     });
 
-    it("should have sections", () => {
-      const meta = toMultipleThingMeta(
-        () =>
+    it("should have sections", async () => {
+      const meta = await toMultipleThingMeta(
+        async () =>
           "# My Name\n\n[[top-wiki-link]]\n\n" +
           "## My heading\n\nSection content [[child-section-link]]"
       );
@@ -39,18 +41,20 @@ describe("markdown", () => {
       expect(meta[0].links).toHaveLength(2);
     });
 
-    it("should not extract links from explicit links", () => {
-      const meta = toMultipleThingMeta(
-        () => "# Mock\n\nA [[one-day-maybe]]"
+    it("should not extract links from explicit links", async () => {
+      const meta = (
+        await toMultipleThingMeta(async () => "# Mock\n\nA [[one-day-maybe]]")
       )[0];
       expect(meta.links).toStrictEqual([{ name: "one-day-maybe" }]);
     });
 
-    it("should not extra meaning from wiki links and URIs", () => {
-      const meta = toMultipleThingMeta(
-        () =>
-          "# Title\n\nLion and [[giraffe]] <https://cat.com> and " +
-          "[dog](https://animal.com)"
+    it("should not extra meaning from wiki links and URIs", async () => {
+      const meta = (
+        await toMultipleThingMeta(
+          async () =>
+            "# Title\n\nLion and [[giraffe]] <https://cat.com> and " +
+            "[dog](https://animal.com)"
+        )
       )[0];
       expect(meta.links.filter(justNaturalLinks).map(toName)).toStrictEqual([
         "lion",
@@ -60,24 +64,26 @@ describe("markdown", () => {
   });
 
   describe("content without heading", () => {
-    it("should take title from first line", () => {
-      const meta = toMultipleThingMeta(() => "My Name")[0];
+    it("should take title from first line", async () => {
+      const meta = (await toMultipleThingMeta(async () => "My Name"))[0];
       expect(meta.title).toBe("My Name");
     });
   });
 
   describe("empty content", () => {
-    it("should have explicit no title", () => {
-      const meta = toMultipleThingMeta(() => "");
+    it("should have explicit no title", async () => {
+      const meta = await toMultipleThingMeta(async () => "");
       expect(meta).toHaveLength(1);
       expect(meta[0].title).toBe("no title");
     });
   });
 
   describe("file", () => {
-    it("should have title and links", () => {
-      const meta = toMultipleThingMeta(
-        garden.thing("garden1/word/word-1.md").content
+    it("should have title and links", async () => {
+      const meta = (
+        await toMultipleThingMeta(
+          garden.thing("garden1/word/word-1.md").content
+        )
       )[0];
       expect(meta.title).toBe("Word 1");
       expect(meta.links).toContainEqual({ name: "word-2" });
@@ -89,8 +95,8 @@ describe("markdown", () => {
   });
 
   describe("file with frontmatter", () => {
-    it("should have title", () => {
-      const meta = toMultipleThingMeta(
+    it("should have title", async () => {
+      const meta = await toMultipleThingMeta(
         garden.thing("garden1/frontmatter.md").content
       );
 
@@ -100,8 +106,8 @@ describe("markdown", () => {
   });
 
   describe("file with frontmatter with no content", () => {
-    it("should have no title", () => {
-      const meta = toMultipleThingMeta(
+    it("should have no title", async () => {
+      const meta = await toMultipleThingMeta(
         garden.thing("garden1/frontmatter-with-no-content.md").content
       );
 

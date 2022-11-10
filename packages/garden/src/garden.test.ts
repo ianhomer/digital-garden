@@ -121,28 +121,28 @@ describe("garden", () => {
     expect(findUnwantedLinks(meta)).toStrictEqual([NATURAL_LINK_ALONE]);
   });
 
-  it("should generate single thing", () => {
+  it("should generate single thing", async () => {
     const fileThing = {
       filename: "my-filename",
       name: "my-filename",
-      content: () => "# thing title\n\n" + "thing content",
+      content: async () => "# thing title\n\n" + "thing content",
     };
     const metaMap: MetaMap = {};
-    loadFileThingIntoMetaMap(metaMap, fileThing);
+    await loadFileThingIntoMetaMap(metaMap, fileThing);
     expect(Object.keys(metaMap)).toHaveLength(1);
   });
 
-  it("should generate multiple things", () => {
+  it("should generate multiple things", async () => {
     const fileThing = {
       filename: "my-filename",
       name: "my-filename",
-      content: () =>
+      content: async () =>
         "# thing title\n\nThing content\n\n" +
         "## section title\n\nSection content\n\n" +
         "### sub-section title\n\nSub-section content",
     };
     const metaMap: MetaMap = {};
-    loadFileThingIntoMetaMap(metaMap, fileThing);
+    await loadFileThingIntoMetaMap(metaMap, fileThing);
     expect(Object.keys(metaMap)).toHaveLength(3);
     expect(
       metaMap["my-filename"].links
