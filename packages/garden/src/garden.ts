@@ -5,7 +5,7 @@ import { join } from "path";
 import { resolve } from "path";
 
 import { unique } from "./common";
-import { findFilesDeep } from "./file";
+import { FileGardenRepository } from "./file-garden-repository";
 import { linkResolver } from "./link";
 import { logger } from "./logger";
 import { toMultipleThingMeta } from "./markdown";
@@ -131,13 +131,8 @@ const generateMeta = async (
       loadFileThingIntoMetaMap(metaMap, loadThing(config, `${key}.md`));
     });
   } else {
-    const gardenDirectory = resolve(config.directory);
-
     const populateMetaFromFilename = (filename: string) => {
-      const fileThing = loadThing(
-        config,
-        filename.substring(gardenDirectory.length)
-      );
+      const fileThing = loadThing(config, filename);
       loadFileThingIntoMetaMap(metaMap, fileThing);
     };
 
@@ -145,17 +140,12 @@ const generateMeta = async (
       console.log(`Patching meta with : ${filenameToPatch}`);
       populateMetaFromFilename(filenameToPatch);
     } else {
-      for await (const filename of findFilesDeep(
-        config.excludedDirectories,
-        config.directory
-      )) {
-        if (filename.startsWith(gardenDirectory)) {
-          populateMetaFromFilename(filename);
-        } else {
-          console.error(
-            `File ${filename} is not in garden ${config.directory}`
-          );
-        }
+      const gardenRepository = new FileGardenRepository(
+        config.directory,
+        config.excludedDirectories
+      );
+      for await (const itemReference of gardenRepository.findAll()) {
+        populateMetaFromFilename(gardenRepository.toUri(itemReference));
       }
     }
   }
