@@ -3,7 +3,8 @@ export interface ItemReference {
 }
 
 export interface GardenRepository {
-  load: (ItemReference: ItemReference | string) => Promise<Item>;
+  toUri: (itemReference: ItemReference) => string;
+  load: (itemReference: ItemReference | string) => Promise<Item>;
   find: (name: string) => Promise<ItemReference>;
   findAll: () => AsyncIterable<ItemReference>;
 }

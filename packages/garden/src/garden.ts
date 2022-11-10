@@ -2,10 +2,9 @@ import { Link, LinkType, Meta, Things, ThingType } from "@garden/types";
 import fs from "fs";
 import os from "os";
 import { join } from "path";
-import { resolve } from "path";
 
 import { unique } from "./common";
-import { findFilesDeep } from "./file";
+import { FileGardenRepository } from "./file-garden-repository";
 import { linkResolver } from "./link";
 import { logger } from "./logger";
 import { toMultipleThingMeta } from "./markdown";
@@ -69,14 +68,16 @@ const loadThing = (config: GardenConfig, filename: string): FileThing => {
   return {
     filename,
     name,
-    content: () =>
+    content: async (): Promise<string> =>
       baseName in config.content
         ? config.content[baseName]
-        : fs.readFileSync(join(config.directory, `${filename}`), "utf8"),
+        : await new FileGardenRepository(config.directory)
+            .load(name)
+            .then((item) => item.content),
   };
 };
 
-const fileThingToMultipleThingMeta = (fileThing: FileThing) => {
+const fileThingToMultipleThingMeta = async (fileThing: FileThing) => {
   const extra: { value?: number } = {};
   ["archive", "not", "stop"].forEach((ignore) => {
     if (fileThing.filename.includes(`/${ignore}/`)) {
@@ -85,17 +86,18 @@ const fileThingToMultipleThingMeta = (fileThing: FileThing) => {
   });
   return {
     thingName: fileThing.name,
-    thingMeta: toMultipleThingMeta(fileThing.content),
+    thingMeta: await toMultipleThingMeta(fileThing.content),
     extra,
   };
 };
 
-export const loadFileThingIntoMetaMap = (
+export const loadFileThingIntoMetaMap = async (
   metaMap: MetaMap,
   fileThing: FileThing
 ) => {
-  const { thingName, thingMeta, extra } =
-    fileThingToMultipleThingMeta(fileThing);
+  const { thingName, thingMeta, extra } = await fileThingToMultipleThingMeta(
+    fileThing
+  );
 
   thingMeta.forEach((singleThingMeta) => {
     const singleThingName =
@@ -127,35 +129,25 @@ const generateMeta = async (
   filenameToPatch?: string
 ): Promise<{ [key: string]: Meta }> => {
   if (Object.keys(config.content).length > 0) {
-    Object.keys(config.content).forEach((key) => {
-      loadFileThingIntoMetaMap(metaMap, loadThing(config, `${key}.md`));
-    });
+    for (const key in config.content) {
+      await loadFileThingIntoMetaMap(metaMap, loadThing(config, `${key}.md`));
+    }
   } else {
-    const gardenDirectory = resolve(config.directory);
-
-    const populateMetaFromFilename = (filename: string) => {
-      const fileThing = loadThing(
-        config,
-        filename.substring(gardenDirectory.length)
-      );
-      loadFileThingIntoMetaMap(metaMap, fileThing);
+    const populateMetaFromFilename = async (filename: string) => {
+      const fileThing = loadThing(config, filename);
+      await loadFileThingIntoMetaMap(metaMap, fileThing);
     };
 
     if (filenameToPatch) {
       console.log(`Patching meta with : ${filenameToPatch}`);
       populateMetaFromFilename(filenameToPatch);
     } else {
-      for await (const filename of findFilesDeep(
-        config.excludedDirectories,
-        config.directory
-      )) {
-        if (filename.startsWith(gardenDirectory)) {
-          populateMetaFromFilename(filename);
-        } else {
-          console.error(
-            `File ${filename} is not in garden ${config.directory}`
-          );
-        }
+      const gardenRepository = new FileGardenRepository(
+        config.directory,
+        config.excludedDirectories
+      );
+      for await (const itemReference of gardenRepository.findAll()) {
+        await populateMetaFromFilename(gardenRepository.toUri(itemReference));
       }
     }
   }

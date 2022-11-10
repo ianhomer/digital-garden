@@ -67,13 +67,13 @@ function toSections(root: Parent) {
   return sections;
 }
 
-export function parse(content: () => string) {
+export async function parse(content: () => Promise<string>) {
   const root: Parent = unified()
     .use(remarkWikiLink, {
       hrefTemplate: (permalink: string) => `${permalink}`,
     })
     .use(remarkParse)
-    .parse(content());
+    .parse(await content());
 
   return toSections(root);
 }
@@ -135,8 +135,10 @@ function extractName(url: string) {
   return match ? match[1] : url;
 }
 
-export function toMultipleThingMeta(content: () => string): Meta[] {
-  const sections = parse(content);
+export async function toMultipleThingMeta(
+  content: () => Promise<string>
+): Promise<Meta[]> {
+  const sections = await parse(content);
   return sections.map((section) => toSingleThingMeta(section));
 }
 

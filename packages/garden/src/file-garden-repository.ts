@@ -39,6 +39,14 @@ export class FileGardenRepository implements GardenRepository {
     this.gardenDirectoryLength = resolve(directory).length + 1;
   }
 
+  toUri(itemReference: ItemReference) {
+    if (itemReference instanceof FileItemReference) {
+      return itemReference.filename;
+    } else {
+      throw `Can't get uri from ${itemReference} since not a FileItemReference`;
+    }
+  }
+
   async load(itemReference: ItemReference | string) {
     if (itemReference instanceof FileItemReference) {
       return new FileItem(this.directory, itemReference.filename);
@@ -85,7 +93,7 @@ export class FileGardenRepository implements GardenRepository {
   async find(name: string) {
     const filename = await this.#findInDirectory(this.directory, `${name}.md`);
     if (!filename) {
-      throw `Cannot find ${name}`;
+      throw `Cannot find ${name} in ${this.directory}`;
     }
     return new FileItemReference(
       name,
