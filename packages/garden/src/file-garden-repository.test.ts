@@ -1,4 +1,4 @@
-import { ItemReference } from "@garden/types";
+import { GardenRepository, ItemReference } from "@garden/types";
 
 import { FileGardenRepository } from "./file-garden-repository";
 
@@ -13,6 +13,9 @@ const asyncFrom = async (asyncIterable: AsyncIterable<ItemReference>) => {
 };
 
 const toName = (itemReference: ItemReference) => itemReference.name;
+const toUri =
+  (gardenRepository: GardenRepository) => (itemReference: ItemReference) =>
+    gardenRepository.toUri(itemReference);
 
 describe("file garden repository", () => {
   it("should find all items", async () => {
@@ -23,6 +26,7 @@ describe("file garden repository", () => {
       "README",
       "archive-linked",
     ]);
+    expect(items.map(toUri(gardenRepository))).toContain("word/word-1.md");
   });
 
   it("should find item", async () => {
