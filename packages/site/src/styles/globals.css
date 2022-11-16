@@ -68,7 +68,7 @@
     @apply bg-slate-100;
   }
   code {
-    @apply font-mono bg-slate-200 px-0.5 text-sm;
+    @apply font-mono bg-slate-200 px-0.5 text-sm whitespace-pre-wrap;
   }
   table {
     @apply table-auto;
