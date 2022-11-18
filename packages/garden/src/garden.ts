@@ -169,42 +169,45 @@ const generateMeta = async (
   });
 
   const unwantedLinks = findUnwantedLinks(metaMap);
+  console.log(unwantedLinks);
   const transformedMeta: MetaMap = {};
 
-  Object.keys(metaMap).map((key) => {
-    const thing = metaMap[key];
-    transformedMeta[key] = {
-      title: thing.title,
-      type: thing.type,
-      value: thing.value,
-      links: thing.links
-        .filter((link) => !unwantedLinks.includes(link.name))
-        .map((link) => {
-          const transformedLink: Link = { name: link.name, type: link.type };
-          if (thing?.value == 0 || metaMap[link.name]?.value == 0) {
-            transformedLink.value = 0;
-          }
-          return transformedLink;
-        }),
-    };
-  });
+  Object.keys(metaMap)
+    .filter((key) => !unwantedLinks.includes(key))
+    .map((key) => {
+      const thing = metaMap[key];
+      transformedMeta[key] = {
+        title: thing.title,
+        type: thing.type,
+        value: thing.value,
+        links: thing.links
+          .filter((link) => !unwantedLinks.includes(link.name))
+          .map((link) => {
+            const transformedLink: Link = { name: link.name, type: link.type };
+            if (thing?.value == 0 || metaMap[link.name]?.value == 0) {
+              transformedLink.value = 0;
+            }
+            return transformedLink;
+          }),
+      };
+    });
 
   return transformedMeta;
 };
 
-export const findLinksExcludingNamed = (
+export const findLinksExcludingExplicit = (
   meta: MetaMap,
-  thingNames: string[],
+  explicitThingNames: string[],
   references: string[],
   filter: (link: Link) => boolean
 ) => {
-  return thingNames
+  return Object.keys(meta)
     .map((key) => {
       return meta[key].links
         .filter(
           (link) =>
             filter(link) &&
-            !thingNames.includes(link.name) &&
+            !explicitThingNames.includes(link.name) &&
             !references.includes(link.name)
         )
         .map((link) => link.name);
@@ -212,7 +215,7 @@ export const findLinksExcludingNamed = (
     .flat();
 };
 
-// Unwanted links are unique natural links to non-existent things
+// Unwanted are unique natural links to non-existent things
 export const findUnwantedLinks = (meta: MetaMap) => {
   console.log(JSON.stringify(meta, null, "  "));
   const explicitThingNames = Object.entries(meta)
@@ -241,19 +244,18 @@ export const findUnwantedLinks = (meta: MetaMap) => {
 
   console.log(unreferencedExplicitLinks);
 
-  const thingNames = Object.keys(meta);
-  const wantedNaturalLinks = findLinksExcludingNamed(
+  const wantedNaturalLinks = findLinksExcludingExplicit(
     meta,
-    thingNames,
+    explicitThingNames,
     unreferencedExplicitLinks,
     (link) =>
       link.type === LinkType.NaturalTo || link.type === LinkType.NaturalAlias
   );
   console.log(wantedNaturalLinks);
 
-  const wantedNaturalToLinks = findLinksExcludingNamed(
+  const wantedNaturalToLinks = findLinksExcludingExplicit(
     meta,
-    thingNames,
+    explicitThingNames,
     unreferencedExplicitLinks,
     (link) => link.type === LinkType.NaturalTo
   );

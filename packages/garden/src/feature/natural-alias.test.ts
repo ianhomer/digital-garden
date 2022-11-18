@@ -41,29 +41,46 @@ describe("natural language", () => {
   });
 
   describe("with plural of thing that does not exist", () => {
-    it.only("should not have a linked alias", async () => {
+    it("should not have a linked alias", async () => {
       const meta = await metaFrom({
         foo,
         gum,
       });
       dump(meta);
       expect(Object.keys(meta)).toHaveLength(2);
-      expect(meta.bars.title).toBe("bars");
       expect(
         meta.foo.links.filter(justNaturalLinks).map(toLinkName)
       ).toStrictEqual(["foo"]);
     });
 
-    it("should not have linked to alias of multiple wanted", async () => {
+    it("should have multiple natural wanted without single wanted alias", async () => {
       const meta = await metaFrom({
         foo,
         baz,
       });
+      dump(meta);
       expect(Object.keys(meta)).toHaveLength(3);
+      expect(meta.bars.title).toBe("bars");
+
       expect(
         meta.foo.links.filter(justNaturalLinks).map(toLinkName)
       ).toStrictEqual(["foo", "bars"]);
       expect(meta.bars.links).toHaveLength(0);
+    });
+
+    it("should have multiple natural wanted and multiple wanted alias", async () => {
+      const meta = await metaFrom({
+        foo,
+        bar,
+        baz,
+      });
+      dump(meta);
+      expect(Object.keys(meta)).toHaveLength(4);
+      expect(meta.bars.title).toBe("bars");
+      expect(
+        meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+      ).toStrictEqual(["foo", "bars", "bar"]);
+      expect(meta.bars.links).toHaveLength(1);
     });
   });
 });
