@@ -25,6 +25,12 @@ const baz = `
 Baz content linking to bars
 `;
 
+const fez = `
+# Fez
+
+Fez linking to bar
+`;
+
 describe("natural language", () => {
   describe("with plural of existing thing", () => {
     it("should have linked alias to singular thing", async () => {
@@ -46,7 +52,6 @@ describe("natural language", () => {
         foo,
         gum,
       });
-      dump(meta);
       expect(Object.keys(meta)).toHaveLength(2);
       expect(
         meta.foo.links.filter(justNaturalLinks).map(toLinkName)
@@ -58,7 +63,6 @@ describe("natural language", () => {
         foo,
         baz,
       });
-      dump(meta);
       expect(Object.keys(meta)).toHaveLength(3);
       expect(meta.bars.title).toBe("bars");
 
@@ -68,19 +72,18 @@ describe("natural language", () => {
       expect(meta.bars.links).toHaveLength(0);
     });
 
-    it("should have multiple natural wanted and multiple wanted alias", async () => {
+    it.only("should have multiple natural wanted and multiple wanted alias", async () => {
       const meta = await metaFrom({
         foo,
-        bar,
+        fez,
         baz,
       });
-      dump(meta);
       expect(Object.keys(meta)).toHaveLength(4);
       expect(meta.bars.title).toBe("bars");
       expect(
         meta.foo.links.filter(justNaturalLinks).map(toLinkName)
-      ).toStrictEqual(["foo", "bars", "bar"]);
-      expect(meta.bars.links).toHaveLength(1);
+      ).toStrictEqual(["foo", "bars"]);
+      expect(meta.bars.links.map(toLinkName)).toStrictEqual(["bar"]);
     });
   });
 });

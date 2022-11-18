@@ -169,7 +169,6 @@ const generateMeta = async (
   });
 
   const unwantedLinks = findUnwantedLinks(metaMap);
-  console.log(unwantedLinks);
   const transformedMeta: MetaMap = {};
 
   Object.keys(metaMap)
@@ -217,7 +216,6 @@ export const findLinksExcludingExplicit = (
 
 // Unwanted are unique natural links to non-existent things
 export const findUnwantedLinks = (meta: MetaMap) => {
-  console.log(JSON.stringify(meta, null, "  "));
   const explicitThingNames = Object.entries(meta)
     .filter(([, value]) => {
       if (value.type !== ThingType.NaturallyWanted) {
@@ -233,7 +231,6 @@ export const findUnwantedLinks = (meta: MetaMap) => {
     })
     .map((entry) => entry[0]);
 
-  console.log(explicitThingNames);
   const unreferencedExplicitLinks = explicitThingNames
     .map((key) => {
       return meta[key].links
@@ -242,8 +239,6 @@ export const findUnwantedLinks = (meta: MetaMap) => {
     })
     .flat();
 
-  console.log(unreferencedExplicitLinks);
-
   const wantedNaturalLinks = findLinksExcludingExplicit(
     meta,
     explicitThingNames,
@@ -251,7 +246,6 @@ export const findUnwantedLinks = (meta: MetaMap) => {
     (link) =>
       link.type === LinkType.NaturalTo || link.type === LinkType.NaturalAlias
   );
-  console.log(wantedNaturalLinks);
 
   const wantedNaturalToLinks = findLinksExcludingExplicit(
     meta,
@@ -261,7 +255,7 @@ export const findUnwantedLinks = (meta: MetaMap) => {
   );
 
   // Natural links that referenced multiple times, i.e. keepers
-  const duplicateWantedNaturalToLinks = wantedNaturalToLinks.reduce(
+  const duplicateWantedNaturalToLinks = wantedNaturalLinks.reduce(
     (accumulator: string[], linkName, i, array: string[]) => {
       if (array.indexOf(linkName) !== i && accumulator.indexOf(linkName) < 0)
         accumulator.push(linkName);
@@ -270,7 +264,6 @@ export const findUnwantedLinks = (meta: MetaMap) => {
     []
   );
 
-  console.log(duplicateWantedNaturalToLinks);
   return wantedNaturalLinks.filter(
     (name) => !duplicateWantedNaturalToLinks.includes(name)
   );
