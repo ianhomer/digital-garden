@@ -35,17 +35,22 @@ export const createGraph = (
     return undefined;
   };
 
+  const getDepth = (name: string) => {
+    if (root === name) {
+      return 0;
+    }
+    const connections = links
+      .filter((link) => link.target === name)
+      .map((link) => link.depth);
+    if (connections.length == 0) {
+      return 0;
+    } else return Math.min(...connections);
+  };
+
   return {
     nodes: [
       ...names.map((name: string) => {
-        const depth =
-          root === name
-            ? 0
-            : Math.min(
-                ...links
-                  .filter((link) => link.target === name)
-                  .map((link) => link.depth)
-              );
+        const depth = getDepth(name);
         const fixedCoordinates =
           depth == 0
             ? {
