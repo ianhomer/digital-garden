@@ -23,17 +23,6 @@ export interface Garden {
   refresh: (filenameToPatch?: string) => Promise<Things>;
 }
 
-export interface GardenOptions {
-  allowGlobalMeta?: boolean;
-  content?: { [key: string]: string };
-  directory?: string;
-  excludedDirectories?: string[];
-  gardens?: { [key: string]: string };
-  hasMultiple?: boolean;
-  liveMeta?: boolean;
-  verbose?: boolean;
-}
-
 export interface GardenConfig {
   allowGlobalMeta: boolean;
   directory: string;
@@ -44,6 +33,8 @@ export interface GardenConfig {
   liveMeta: boolean;
   verbose: boolean;
 }
+
+type GardenOptions = Partial<GardenConfig>;
 
 export interface MetaMap {
   [key: string]: Meta;
