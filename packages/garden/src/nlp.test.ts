@@ -109,6 +109,12 @@ describe("natural language processing", () => {
     ).toHaveLength(0);
   });
 
+  it("should handle semicolons", async () => {
+    expect(
+      linksOfText("current thinking; status quo; state of the nation")
+    ).toStrictEqual(["thinking", "status", "nation"]);
+  });
+
   describe("extraordinary content", () => {
     it("should strip tables", () => {
       expect(linksOfText("| table with a word |")).toStrictEqual([
