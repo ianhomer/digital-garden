@@ -31,7 +31,11 @@ const backLinks = (
 };
 
 const HARD_DEPTH = 7;
-const goDeeper = (depth: number, maxDepth: number, linkType: LinkType) => {
+const goDeeper = (
+  depth: number,
+  maxDepth: number,
+  linkType: LinkType | undefined
+) => {
   if (depth < maxDepth + 1) {
     return true;
   } else if (depth > HARD_DEPTH) {
@@ -48,7 +52,7 @@ export const findDeepLinks = (
   name: string,
   maxDepth: number,
   depth = 1,
-  linkType: LinkType | undefined
+  linkType: LinkType | undefined = undefined
 ): ItemLink[] => {
   const directLinks = [
     ...(name in things
