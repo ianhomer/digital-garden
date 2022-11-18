@@ -121,6 +121,12 @@ describe("natural language processing", () => {
     ]);
   });
 
+  it.only("should handle possesive apostrophe on trailing word", async () => {
+    // wiki links are not passed into nlp, so "the dog's
+    // [[blanket]]" is processed as "the dog's"
+    expect(linksOfText("the dog's")).toStrictEqual(["dog"]);
+  });
+
   describe("extraordinary content", () => {
     it("should strip tables", () => {
       expect(linksOfText("| table with a word |")).toStrictEqual([

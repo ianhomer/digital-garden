@@ -61,6 +61,7 @@ export function naturalProcess(content: string, excludes: string[] = []) {
     .toLowerCase()
     .json()
     .map((term: Term) => {
+      console.log(term);
       const rawRoot = strip(term.noun.root);
       const root = rawRoot.replace(/,/g, "");
       if (term.noun.adjectives.length == 0) {
