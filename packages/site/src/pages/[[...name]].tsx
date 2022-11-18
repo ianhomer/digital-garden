@@ -48,6 +48,11 @@ function ItemPage({ item }: Props) {
       });
   }, []);
 
+  const itemName = () => {
+    const childName = window.location.hash;
+    return item.name + childName;
+  };
+
   return (
     <>
       <div className="container max-w-4xl px-4">
@@ -59,9 +64,9 @@ function ItemPage({ item }: Props) {
           height={height}
           scale={scale}
           graph={createGraph(
-            item.name,
+            itemName(),
             data,
-            findDeepLinks(data, item.name, depth)
+            findDeepLinks(data, itemName(), depth)
           )}
         />
       )}

@@ -6,7 +6,10 @@ const backLinks = (
   things: Things,
   name: string,
   depth: number,
-  predicate = (link: Link) => !link.type || link.type == LinkType.NaturalAlias,
+  predicate = (link: Link) =>
+    !link.type ||
+    link.type == LinkType.NaturalAlias ||
+    link.type == LinkType.Child,
   backLinkType = LinkType.From
 ): ItemLink[] => {
   return Object.keys(things)
