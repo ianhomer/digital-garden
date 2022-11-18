@@ -1,5 +1,5 @@
 import { justNaturalLinks, toLinkName } from "../links";
-import { metaFrom } from "./feature-helpers";
+import { dump, metaFrom } from "./feature-helpers";
 
 const foo = `
 # Foo
@@ -17,6 +17,12 @@ const gum = `
 # Gum
 
 Gum content
+`;
+
+const baz = `
+# Baz
+
+Baz content linking to bars
 `;
 
 describe("natural language", () => {
@@ -40,11 +46,24 @@ describe("natural language", () => {
         foo,
         gum,
       });
-      expect(Object.keys(meta)).toHaveLength(3);
+      dump(meta);
+      expect(Object.keys(meta)).toHaveLength(2);
       expect(meta.bars.title).toBe("bars");
       expect(
         meta.foo.links.filter(justNaturalLinks).map(toLinkName)
       ).toStrictEqual(["foo"]);
+    });
+
+    it("should not have linked to alias of multiple wanted", async () => {
+      const meta = await metaFrom({
+        foo,
+        baz,
+      });
+      expect(Object.keys(meta)).toHaveLength(3);
+      expect(
+        meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+      ).toStrictEqual(["foo", "bars"]);
+      expect(meta.bars.links).toHaveLength(0);
     });
   });
 });
