@@ -30,11 +30,25 @@ const backLinks = (
     }));
 };
 
+const HARD_DEPTH = 7;
+const goDeeper = (depth: number, maxDepth: number, linkType: LinkType) => {
+  if (depth < maxDepth + 1) {
+    return true;
+  } else if (depth > HARD_DEPTH) {
+    return false;
+  } else if (linkType == LinkType.Child) {
+    // Show the link to child as long as we haven't gone past the hard depth
+    return true;
+  }
+  return false;
+};
+
 export const findDeepLinks = (
   things: Things,
   name: string,
   maxDepth: number,
-  depth = 1
+  depth = 1,
+  linkType: LinkType | undefined
 ): ItemLink[] => {
   const directLinks = [
     ...(name in things
@@ -56,13 +70,13 @@ export const findDeepLinks = (
   ];
   return [
     ...directLinks,
-    ...(maxDepth < depth + 1
-      ? []
-      : directLinks
+    ...(goDeeper(depth, maxDepth, linkType)
+      ? directLinks
           .map((link) =>
-            findDeepLinks(things, link.target, maxDepth, depth + 1)
+            findDeepLinks(things, link.target, maxDepth, depth + 1, linkType)
           )
-          .flat()),
+          .flat()
+      : []),
   ]
     .filter(
       // de-dupe
