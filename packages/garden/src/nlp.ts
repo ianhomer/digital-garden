@@ -20,7 +20,7 @@ export interface NaturalThing {
 const strip = (text: string) =>
   text.trim().replace(/\s/g, "-").replace(/[._]/g, "");
 
-const symbols = "|\\/:*\\p{Ps}\\p{Pe}\\p{S}";
+const symbols = "|;\\/:*\\p{Ps}\\p{Pe}\\p{S}";
 const matchDashSymbols = /\p{Pd}/gu;
 const matchIgnoreSymbols = /["]/g;
 const matchCleanUpSymbols = /\s\u064D/g;
