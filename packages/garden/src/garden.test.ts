@@ -12,7 +12,7 @@ import {
 import { gardenConfig } from "./test-helpers";
 
 const garden = createGarden(gardenConfig);
-const gardenItemCount = 29;
+const gardenItemCount = 25;
 const NATURAL_LINK_SHARED = "natural-link-shared";
 const NATURAL_LINK_ALONE = "natural-link-alone";
 const noNaturalLinks = (link: Link) => link.type !== LinkType.NaturalTo;
@@ -49,7 +49,7 @@ describe("garden", () => {
     expect(linkedThings).toContain("word-2");
     expect(linkedThings).toContain("word-3");
     try {
-      expect(linkedThings.length).toBe(26);
+      expect(linkedThings.length).toBe(21);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(linkedThings)}`);
     }
@@ -72,17 +72,7 @@ describe("garden", () => {
   it("should have wanted things", async () => {
     const things = await garden.meta();
     const wantedThings = findWantedThings(things, noNaturalLinks);
-    expect(wantedThings).toStrictEqual([
-      "wanted",
-      "words",
-      "cat",
-      "dog",
-      "hamster",
-      "link",
-      "want",
-      "type",
-      "different-type",
-    ]);
+    expect(wantedThings).toStrictEqual(["wanted", "words", "cat", "link"]);
     expect(wantedThings[0]).toBe("wanted");
     const wantedNaturalThings = findWantedThings(things, naturalLinks);
     try {
