@@ -112,7 +112,13 @@ describe("natural language processing", () => {
   it("should handle semicolons", async () => {
     expect(
       linksOfText("current thinking; status quo; state of the nation")
-    ).toStrictEqual(["thinking", "status", "nation"]);
+    ).toStrictEqual([
+      "thinking",
+      "current",
+      "current-thinking",
+      "status-quo",
+      "state",
+    ]);
   });
 
   describe("extraordinary content", () => {
