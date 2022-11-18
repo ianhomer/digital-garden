@@ -53,6 +53,8 @@ export function naturalAliases(name: string): string[] {
   ];
 }
 
+const postStrip = /,|'s/g;
+
 export function naturalProcess(content: string, excludes: string[] = []) {
   const document = nlp(preStrip(content));
   const enhancedExcludes = [...excludes, "", ",", "s", "ing"];
@@ -61,9 +63,8 @@ export function naturalProcess(content: string, excludes: string[] = []) {
     .toLowerCase()
     .json()
     .map((term: Term) => {
-      console.log(term);
       const rawRoot = strip(term.noun.root);
-      const root = rawRoot.replace(/,/g, "");
+      const root = rawRoot.replace(postStrip, "");
       if (term.noun.adjectives.length == 0) {
         return root;
       }

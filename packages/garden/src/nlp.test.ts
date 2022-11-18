@@ -30,12 +30,15 @@ describe("natural language processing", () => {
     ]);
   });
 
-  it("should extract list of things", async () => {
-    const thing = naturalProcess("principle, practice, technique, or process");
+  it.only("should extract list of things", async () => {
+    const thing = naturalProcess(
+      "the principle, the practice, technique, or process may be good"
+    );
     expect(linksOf(thing)).toStrictEqual([
       "principle",
       "practice",
       "technique",
+      "process",
     ]);
   });
 
@@ -121,10 +124,10 @@ describe("natural language processing", () => {
     ]);
   });
 
-  it.only("should handle possesive apostrophe on trailing word", async () => {
-    // wiki links are not passed into nlp, so "the dog's
-    // [[blanket]]" is processed as "the dog's"
-    expect(linksOfText("the dog's")).toStrictEqual(["dog"]);
+  it("should handle possesive apostrophe on trailing word", async () => {
+    // wiki links are not passed into nlp, so "dog's
+    // [[blanket]]" is processed as "dog's"
+    expect(linksOfText("dog's")).toStrictEqual(["dog"]);
   });
 
   describe("extraordinary content", () => {
