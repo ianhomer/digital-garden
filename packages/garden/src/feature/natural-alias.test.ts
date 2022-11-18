@@ -41,7 +41,7 @@ describe("natural language", () => {
   });
 
   describe("with plural of thing that does not exist", () => {
-    it("should not have a linked alias", async () => {
+    it.only("should not have a linked alias", async () => {
       const meta = await metaFrom({
         foo,
         gum,

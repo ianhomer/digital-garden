@@ -192,7 +192,7 @@ const generateMeta = async (
   return transformedMeta;
 };
 
-export const findUnreferencedLinks = (
+export const findLinksExcludingNamed = (
   meta: MetaMap,
   thingNames: string[],
   references: string[],
@@ -214,7 +214,8 @@ export const findUnreferencedLinks = (
 
 // Unwanted links are unique natural links to non-existent things
 export const findUnwantedLinks = (meta: MetaMap) => {
-  const thingNames = Object.entries(meta)
+  console.log(JSON.stringify(meta, null, "  "));
+  const explicitThingNames = Object.entries(meta)
     .filter(([, value]) => {
       if (value.type !== ThingType.NaturallyWanted) {
         return true;
@@ -224,36 +225,41 @@ export const findUnwantedLinks = (meta: MetaMap) => {
         if (!thing) {
           return false;
         }
-        //return true;
         return !thing.type || thing.type === ThingType.Wanted;
       });
     })
     .map((entry) => entry[0]);
 
-  const unreferencedExplicitLinks = thingNames
+  console.log(explicitThingNames);
+  const unreferencedExplicitLinks = explicitThingNames
     .map((key) => {
       return meta[key].links
-        .filter((link) => !link.type && !thingNames.includes(link.name))
+        .filter((link) => !link.type && !explicitThingNames.includes(link.name))
         .map((link) => link.name);
     })
     .flat();
 
-  const unreferencedNaturalLinks = findUnreferencedLinks(
+  console.log(unreferencedExplicitLinks);
+
+  const thingNames = Object.keys(meta);
+  const wantedNaturalLinks = findLinksExcludingNamed(
     meta,
     thingNames,
     unreferencedExplicitLinks,
     (link) =>
       link.type === LinkType.NaturalTo || link.type === LinkType.NaturalAlias
   );
+  console.log(wantedNaturalLinks);
 
-  const unreferencedNaturalToLinks = findUnreferencedLinks(
+  const wantedNaturalToLinks = findLinksExcludingNamed(
     meta,
     thingNames,
     unreferencedExplicitLinks,
     (link) => link.type === LinkType.NaturalTo
   );
 
-  const duplicateUnreferencedNaturalToLinks = unreferencedNaturalToLinks.reduce(
+  // Natural links that referenced multiple times, i.e. keepers
+  const duplicateWantedNaturalToLinks = wantedNaturalToLinks.reduce(
     (accumulator: string[], linkName, i, array: string[]) => {
       if (array.indexOf(linkName) !== i && accumulator.indexOf(linkName) < 0)
         accumulator.push(linkName);
@@ -261,8 +267,10 @@ export const findUnwantedLinks = (meta: MetaMap) => {
     },
     []
   );
-  return unreferencedNaturalLinks.filter(
-    (name) => !duplicateUnreferencedNaturalToLinks.includes(name)
+
+  console.log(duplicateWantedNaturalToLinks);
+  return wantedNaturalLinks.filter(
+    (name) => !duplicateWantedNaturalToLinks.includes(name)
   );
 };
 
