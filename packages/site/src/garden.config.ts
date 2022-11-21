@@ -1,3 +1,4 @@
+import { toConfig } from "@garden/garden";
 import dotenv from "dotenv";
 import fs from "fs";
 import { isAbsolute, join } from "path";
@@ -44,11 +45,11 @@ function generateDefault() {
     // this is the zero config, clone and run config
     return join(process.cwd(), "../test-gardens/content");
   })();
-  return {
+  return toConfig({
     gardens,
     hasMultiple: !fs.existsSync(`${directory}/README.md`),
     directory,
-  };
+  });
 }
 
 export default generateDefault();

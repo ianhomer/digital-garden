@@ -31,7 +31,7 @@ export async function getStaticProps() {
   const things = await garden.load();
   const items = await Promise.all(
     findWantedThings(things).map(async (name) => {
-      const item = await findItemOrWanted(garden.config, name);
+      const item = await findItemOrWanted(garden.repository, name);
       const links = await findLinks(garden, item);
 
       return {
