@@ -7,17 +7,17 @@ const garden = createGarden(garden1Config);
 describe("content module", () => {
   it("should find item", async () => {
     const name = "word-1";
-    const item = await findItem(garden.config, name);
+    const item = await findItem(garden.repository, name);
     expect(item.name).toBe("word-1");
   });
 
   it("should find wanted item", async () => {
-    const filename = await findItemOrWanted(garden.config, "wanted");
+    const filename = await findItemOrWanted(garden.repository, "wanted");
     expect(filename.content).toBe("# wanted\n\nWanted");
   });
 
   it("should find all items", async () => {
-    const allItems = await getAllItems(garden.config);
+    const allItems = await getAllItems(garden.repository);
     expect(allItems).toEqual(
       expect.arrayContaining([expect.objectContaining({ name: "word" })])
     );

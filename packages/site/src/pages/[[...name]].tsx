@@ -10,7 +10,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { useEffect, useState } from "react";
 
 import GraphDiagram from "../components/graph-diagram";
-import { config, garden } from "../components/siteGarden";
+import { garden } from "../components/siteGarden";
 import { useKey } from "../components/useKey";
 import useWindowDimensions from "../components/useWindowDimensions";
 import { createGraph } from "../lib/graph/graph";
@@ -76,7 +76,7 @@ function ItemPage({ item }: Props) {
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const itemName = (params?.name && params?.name[0]) ?? false;
-  const item = await findItemOrWanted(garden.config, itemName);
+  const item = await findItemOrWanted(garden.repository, itemName);
   const links = await findLinks(garden, item);
   const content = await markdownToHtml(item.content);
 
@@ -93,7 +93,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const things = await garden.load();
-  const items = await getPageItems(config, things);
+  const items = await getPageItems(garden.repository, things);
 
   const invalidPageNames = items
     .map((item) => item.name)
