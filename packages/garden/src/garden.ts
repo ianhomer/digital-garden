@@ -370,7 +370,7 @@ const toRepository = (config: GardenConfig): GardenRepository => {
       config.excludedDirectories
     );
   }
-  return new BaseGardenRepository();
+  return new BaseGardenRepository(config.content);
 };
 
 export const createGarden = (options: GardenOptions): Garden => {

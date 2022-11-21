@@ -1,4 +1,4 @@
-import { GardenOptions } from "@garden/garden";
+import { toConfig } from "@garden/garden";
 import dotenv from "dotenv";
 import fs from "fs";
 import { isAbsolute, join } from "path";
@@ -32,7 +32,7 @@ function isParentDirectoryGarden() {
   return fs.existsSync(`../../../README.md`);
 }
 
-function generateDefault(): GardenOptions {
+function generateDefault() {
   const gardens = gardensFromEnv();
   const directory = (() => {
     if (
@@ -45,15 +45,11 @@ function generateDefault(): GardenOptions {
     // this is the zero config, clone and run config
     return join(process.cwd(), "../test-gardens/content");
   })();
-  return {
+  return toConfig({
     gardens,
     hasMultiple: !fs.existsSync(`${directory}/README.md`),
-    repository: {
-      type: "file",
-      directory,
-      excludedDirectories: ["node_modules", "digital-garden"],
-    },
-  };
+    directory,
+  });
 }
 
 export default generateDefault();
