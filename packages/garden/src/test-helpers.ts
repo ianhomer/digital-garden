@@ -1,3 +1,5 @@
+import { GardenOptions } from "./garden";
+
 export const iterableToArray = async (iterator: AsyncIterable<string>) => {
   const objects = [];
   for await (const object of iterator) {
@@ -6,20 +8,20 @@ export const iterableToArray = async (iterator: AsyncIterable<string>) => {
   return objects;
 };
 
-export const garden1Config = {
+export const garden1Config: GardenOptions = {
   allowGlobalMeta: false,
   directory: "../test-gardens/content/garden1",
   verbose: false,
 };
 
-export const garden1WithLiveMetaConfig = {
+export const garden1WithLiveMetaConfig: GardenOptions = {
   allowGlobalMeta: false,
   directory: "../test-gardens/content/garden1",
   verbose: false,
   liveMeta: true,
 };
 
-export const gardenConfig = {
+export const gardenConfig: GardenOptions = {
   allowGlobalMeta: false,
   directory: "../test-gardens/content",
   verbose: false,
