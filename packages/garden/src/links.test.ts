@@ -7,7 +7,7 @@ const garden = createGarden(garden1WithLiveMetaConfig);
 
 describe("links", () => {
   it("should have links", async () => {
-    const item = await findItem(garden.config, "word");
+    const item = await findItem(garden.repository, "word");
     const links = await findLinks(garden, item);
     expect(links.length).toBe(8);
     [

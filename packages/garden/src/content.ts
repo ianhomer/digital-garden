@@ -1,8 +1,7 @@
-import { Item } from "@garden/types";
-import { dirname, join, sep } from "path";
+import { GardenRepository, Item } from "@garden/types";
+import { dirname, sep } from "path";
 
-import { FileGardenRepository } from "./file-garden-repository";
-import { findFile, findFiles, findFilesInNamedDirectory } from "./find";
+import { findFilesInNamedDirectory } from "./find";
 import { Garden, GardenConfig } from "./garden";
 
 export async function findImplicitBackLinks(
@@ -40,31 +39,29 @@ export async function findBackLinks(
 
 const DEFAULT_NAME = "README";
 
-export async function findItem(config: GardenConfig, name: string | false) {
-  return new FileGardenRepository(
-    config.directory,
-    config.excludedDirectories
-  ).load(name ? name : DEFAULT_NAME);
+export async function findItem(
+  repository: GardenRepository,
+  name: string | false
+) {
+  return repository.load(name ? name : DEFAULT_NAME);
 }
 
 export async function findItemOrWanted(
-  config: GardenConfig,
+  repository: GardenRepository,
   name: string | false
 ): Promise<Item> {
-  return findItem(config, name).catch(() => ({
+  return findItem(repository, name).catch(() => ({
     name: name || DEFAULT_NAME,
     content: `# ${name}\n\nWanted`,
   }));
 }
 
-export async function getAllItems(config: GardenConfig): Promise<Item[]> {
-  const gardenRepository = new FileGardenRepository(
-    config.directory,
-    config.excludedDirectories
-  );
+export async function getAllItems(
+  repository: GardenRepository
+): Promise<Item[]> {
   const array = [];
-  for await (const itemReference of gardenRepository.findAll()) {
-    array.push(await gardenRepository.load(itemReference));
+  for await (const itemReference of repository.findAll()) {
+    array.push(await repository.load(itemReference));
   }
   return array;
 }

@@ -11,7 +11,7 @@ const shouldIncludeDirectory = (excludedDirectories: string[], name: string) =>
 const withoutMarkdownExtension = (filename: string) =>
   filename.substring(0, filename.length - 3);
 
-class FileItemReference implements ItemReference {
+export class FileItemReference implements ItemReference {
   name;
   filename;
 
@@ -37,6 +37,21 @@ export class FileGardenRepository implements GardenRepository {
     this.excludedDirectories = excludedDirectories;
     this.directory = directory;
     this.gardenDirectoryLength = resolve(directory).length + 1;
+  }
+
+  toValue(itemReference: ItemReference) {
+    if (itemReference instanceof FileItemReference) {
+      // Fixed list of path elements that lead to a zero value thing which is
+      // excluded from the graph. This is a cheap implementation of a value
+      // concept that will evolved in the future. For now it helps reduce noise
+      // in the graph.
+      for (const ignore of ["archive", "not", "stop"]) {
+        if (itemReference.filename.includes(`/${ignore}/`)) {
+          return 0;
+        }
+      }
+    }
+    return undefined;
   }
 
   toUri(itemReference: ItemReference) {

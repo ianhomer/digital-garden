@@ -1,19 +1,31 @@
-import { Link, LinkType, Meta, Things, ThingType } from "@garden/types";
+import {
+  GardenRepository,
+  Link,
+  LinkType,
+  Meta,
+  Things,
+  ThingType,
+} from "@garden/types";
 import fs from "fs";
 import os from "os";
 import { join } from "path";
 
+import { BaseGardenRepository } from "./base-garden-repository";
 import { unique } from "./common";
-import { FileGardenRepository } from "./file-garden-repository";
+import {
+  FileGardenRepository,
+  FileItemReference,
+} from "./file-garden-repository";
 import { linkResolver } from "./link";
 import { logger } from "./logger";
 import { toMultipleThingMeta } from "./markdown";
 import { naturalAliases } from "./nlp";
-import { FileThing } from "./thing";
+import { FileThing, Thing } from "./thing";
 
 const gardenMetaFile = ".garden-meta.json";
 
 export interface Garden {
+  repository: GardenRepository;
   config: GardenConfig;
   thing: (filename: string) => FileThing;
   findBackLinks: (things: Things, name: string) => Array<Link>;
@@ -23,70 +35,70 @@ export interface Garden {
   refresh: (filenameToPatch?: string) => Promise<Things>;
 }
 
-export interface GardenOptions {
-  allowGlobalMeta?: boolean;
-  content?: { [key: string]: string };
-  directory?: string;
-  excludedDirectories?: string[];
-  gardens?: { [key: string]: string };
-  hasMultiple?: boolean;
-  liveMeta?: boolean;
-  verbose?: boolean;
+export type GardenRepositoryType = "file" | "inmemory";
+
+export interface GardenRepositoryConfig {
+  type: GardenRepositoryType;
+  directory: string;
+  excludedDirectories: string[];
 }
 
-export interface GardenConfig {
+export interface GardenConfig extends GardenRepositoryConfig {
   allowGlobalMeta: boolean;
-  directory: string;
   content: { [key: string]: string };
-  excludedDirectories: string[];
   gardens: { [key: string]: string };
   hasMultiple: boolean;
   liveMeta: boolean;
   verbose: boolean;
 }
 
+export type GardenOptions = Partial<GardenConfig>;
+
 export interface MetaMap {
   [key: string]: Meta;
 }
 
-const defaultConfig = {
+const defaultConfig: GardenConfig = {
   allowGlobalMeta: true,
-  content: {},
+  type: "file",
   directory: ".gardens",
   excludedDirectories: ["node_modules", "digital-garden"],
+  content: {},
   hasMultiple: false,
   gardens: {},
   liveMeta: false,
   verbose: true,
 };
 
-const loadThing = (config: GardenConfig, filename: string): FileThing => {
+const loadThing = (
+  gardenRepository: GardenRepository,
+  config: GardenConfig,
+  filename: string
+): FileThing => {
   const matchName = /([^/]*).md$/.exec(filename);
   const name = matchName ? matchName[1] : filename;
   const matchBaseName = /(.*).md$/.exec(filename);
   const baseName = matchBaseName ? matchBaseName[1] : filename;
+
+  const itemReference = new FileItemReference(name, filename);
   return {
     filename,
     name,
+    value: gardenRepository.toValue(itemReference),
     content: async (): Promise<string> =>
       baseName in config.content
         ? config.content[baseName]
-        : await new FileGardenRepository(config.directory)
-            .load(name)
-            .then((item) => item.content),
+        : await gardenRepository.load(name).then((item) => item.content),
   };
 };
 
-const fileThingToMultipleThingMeta = async (fileThing: FileThing) => {
-  const extra: { value?: number } = {};
-  ["archive", "not", "stop"].forEach((ignore) => {
-    if (fileThing.filename.includes(`/${ignore}/`)) {
-      extra.value = 0;
-    }
-  });
+const fileThingToMultipleThingMeta = async (thing: Thing) => {
+  const extra: { value?: number } = {
+    value: thing.value,
+  };
   return {
-    thingName: fileThing.name,
-    thingMeta: await toMultipleThingMeta(fileThing.content),
+    thingName: thing.name,
+    thingMeta: await toMultipleThingMeta(thing.content),
     extra,
   };
 };
@@ -124,17 +136,21 @@ export const loadFileThingIntoMetaMap = async (
 };
 
 const generateMeta = async (
+  repository: GardenRepository,
   config: GardenConfig,
   metaMap: MetaMap = {},
   filenameToPatch?: string
 ): Promise<{ [key: string]: Meta }> => {
   if (Object.keys(config.content).length > 0) {
     for (const key in config.content) {
-      await loadFileThingIntoMetaMap(metaMap, loadThing(config, `${key}.md`));
+      await loadFileThingIntoMetaMap(
+        metaMap,
+        loadThing(repository, config, `${key}.md`)
+      );
     }
   } else {
     const populateMetaFromFilename = async (filename: string) => {
-      const fileThing = loadThing(config, filename);
+      const fileThing = loadThing(repository, config, filename);
       await loadFileThingIntoMetaMap(metaMap, fileThing);
     };
 
@@ -142,12 +158,8 @@ const generateMeta = async (
       console.log(`Patching meta with : ${filenameToPatch}`);
       populateMetaFromFilename(filenameToPatch);
     } else {
-      const gardenRepository = new FileGardenRepository(
-        config.directory,
-        config.excludedDirectories
-      );
-      for await (const itemReference of gardenRepository.findAll()) {
-        await populateMetaFromFilename(gardenRepository.toUri(itemReference));
+      for await (const itemReference of repository.findAll()) {
+        await populateMetaFromFilename(repository.toUri(itemReference));
       }
     }
   }
@@ -247,13 +259,6 @@ export const findUnwantedLinks = (meta: MetaMap) => {
       link.type === LinkType.NaturalTo || link.type === LinkType.NaturalAlias
   );
 
-  const wantedNaturalToLinks = findLinksExcludingExplicit(
-    meta,
-    explicitThingNames,
-    unreferencedExplicitLinks,
-    (link) => link.type === LinkType.NaturalTo
-  );
-
   // Natural links that referenced multiple times, i.e. keepers
   const duplicateWantedNaturalToLinks = wantedNaturalLinks.reduce(
     (accumulator: string[], linkName, i, array: string[]) => {
@@ -282,10 +287,19 @@ const getMetaFilename = (config: GardenConfig) => {
   }
 };
 
-const refresh = async (config: GardenConfig, filenameToPatch?: string) => {
+const refresh = async (
+  repository: GardenRepository,
+  config: GardenConfig,
+  filenameToPatch?: string
+) => {
   const meta = filenameToPatch
-    ? await generateMeta(config, await loadMeta(config), filenameToPatch)
-    : await generateMeta(config);
+    ? await generateMeta(
+        repository,
+        config,
+        await loadMeta(repository, config),
+        filenameToPatch
+      )
+    : await generateMeta(repository, config);
   const fullGardenMetaFile = getMetaFilename(config);
   logger.info(
     `Refreshing ${fullGardenMetaFile} : ${Object.keys(meta).length} things`
@@ -294,9 +308,9 @@ const refresh = async (config: GardenConfig, filenameToPatch?: string) => {
   return meta;
 };
 
-async function loadMeta(config: GardenConfig) {
+async function loadMeta(repository: GardenRepository, config: GardenConfig) {
   if (config.liveMeta) {
-    return await generateMeta(config);
+    return await generateMeta(repository, config);
   }
   const metaFilename = getMetaFilename(config);
   if (fs.existsSync(metaFilename)) {
@@ -349,21 +363,33 @@ export const toConfig = (options: GardenOptions): GardenConfig => ({
   ...options,
 });
 
+const toRepository = (config: GardenConfig): GardenRepository => {
+  if (config.type == "file") {
+    return new FileGardenRepository(
+      config.directory,
+      config.excludedDirectories
+    );
+  }
+  return new BaseGardenRepository(config.content);
+};
+
 export const createGarden = (options: GardenOptions): Garden => {
   const config = toConfig(options);
+  const repository = toRepository(config);
 
   return {
     config,
-    meta: async () => await generateMeta(config),
+    repository,
+    meta: async () => await generateMeta(repository, config),
     refresh: async (filenameToPatch?: string) =>
-      await refresh(config, filenameToPatch),
-    load: async () => await loadMeta(config),
+      await refresh(repository, config, filenameToPatch),
+    load: async () => await loadMeta(repository, config),
     findBackLinks: (things: Things, name: string) => {
       return findBackLinks(things, name);
     },
     getMetaFilename: () => getMetaFilename(config),
     thing: (filename: string) => {
-      return loadThing(config, filename);
+      return loadThing(repository, config, filename);
     },
   };
 };
