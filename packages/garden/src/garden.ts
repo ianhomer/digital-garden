@@ -4,12 +4,15 @@ import os from "os";
 import { join } from "path";
 
 import { unique } from "./common";
-import { FileGardenRepository } from "./file-garden-repository";
+import {
+  FileGardenRepository,
+  FileItemReference,
+} from "./file-garden-repository";
 import { linkResolver } from "./link";
 import { logger } from "./logger";
 import { toMultipleThingMeta } from "./markdown";
 import { naturalAliases } from "./nlp";
-import { FileThing } from "./thing";
+import { FileThing, Thing } from "./thing";
 
 const gardenMetaFile = ".garden-meta.json";
 
@@ -23,17 +26,6 @@ export interface Garden {
   refresh: (filenameToPatch?: string) => Promise<Things>;
 }
 
-export interface GardenOptions {
-  allowGlobalMeta?: boolean;
-  content?: { [key: string]: string };
-  directory?: string;
-  excludedDirectories?: string[];
-  gardens?: { [key: string]: string };
-  hasMultiple?: boolean;
-  liveMeta?: boolean;
-  verbose?: boolean;
-}
-
 export interface GardenConfig {
   allowGlobalMeta: boolean;
   directory: string;
@@ -44,6 +36,8 @@ export interface GardenConfig {
   liveMeta: boolean;
   verbose: boolean;
 }
+
+type GardenOptions = Partial<GardenConfig>;
 
 export interface MetaMap {
   [key: string]: Meta;
@@ -65,28 +59,27 @@ const loadThing = (config: GardenConfig, filename: string): FileThing => {
   const name = matchName ? matchName[1] : filename;
   const matchBaseName = /(.*).md$/.exec(filename);
   const baseName = matchBaseName ? matchBaseName[1] : filename;
+
+  const gardenRepository = new FileGardenRepository(config.directory);
+  const itemReference = new FileItemReference(name, filename);
   return {
     filename,
     name,
+    value: gardenRepository.toValue(itemReference),
     content: async (): Promise<string> =>
       baseName in config.content
         ? config.content[baseName]
-        : await new FileGardenRepository(config.directory)
-            .load(name)
-            .then((item) => item.content),
+        : await gardenRepository.load(name).then((item) => item.content),
   };
 };
 
-const fileThingToMultipleThingMeta = async (fileThing: FileThing) => {
-  const extra: { value?: number } = {};
-  ["archive", "not", "stop"].forEach((ignore) => {
-    if (fileThing.filename.includes(`/${ignore}/`)) {
-      extra.value = 0;
-    }
-  });
+const fileThingToMultipleThingMeta = async (thing: Thing) => {
+  const extra: { value?: number } = {
+    value: thing.value,
+  };
   return {
-    thingName: fileThing.name,
-    thingMeta: await toMultipleThingMeta(fileThing.content),
+    thingName: thing.name,
+    thingMeta: await toMultipleThingMeta(thing.content),
     extra,
   };
 };
