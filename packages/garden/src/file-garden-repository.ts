@@ -1,7 +1,8 @@
-import { GardenRepository, ItemReference } from "@garden/types";
+import { ItemReference } from "@garden/types";
 import fs from "fs";
 import { join, resolve } from "path";
 
+import { BaseGardenRepository } from "./base-garden-repository";
 import { BaseItem } from "./base-item";
 const { readdir } = fs.promises;
 
@@ -28,12 +29,13 @@ export class FileItem extends BaseItem {
   }
 }
 
-export class FileGardenRepository implements GardenRepository {
+export class FileGardenRepository extends BaseGardenRepository {
   excludedDirectories;
   gardenDirectoryLength;
   directory;
 
   constructor(directory: string, excludedDirectories: string[] = []) {
+    super();
     this.excludedDirectories = excludedDirectories;
     this.directory = directory;
     this.gardenDirectoryLength = resolve(directory).length + 1;
@@ -51,15 +53,14 @@ export class FileGardenRepository implements GardenRepository {
         }
       }
     }
-    return undefined;
+    return super.toValue(itemReference);
   }
 
   toUri(itemReference: ItemReference) {
     if (itemReference instanceof FileItemReference) {
       return itemReference.filename;
-    } else {
-      throw `Can't get uri from ${itemReference} since not a FileItemReference`;
     }
+    return super.toUri(this.toUri);
   }
 
   async load(itemReference: ItemReference | string) {
@@ -70,9 +71,8 @@ export class FileGardenRepository implements GardenRepository {
         this.directory,
         ((await this.find(itemReference)) as FileItemReference).filename
       );
-    } else {
-      throw `Cannot load ${itemReference.name} since not a FileItemReference`;
     }
+    return super.load(itemReference);
   }
 
   async #findInDirectory(

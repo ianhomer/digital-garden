@@ -6,7 +6,7 @@ import {
   findLinkedThings,
   findUnwantedLinks,
   findWantedThings,
-  loadFileThingIntoMetaMap,
+  loadThingIntoMetaMap,
   MetaMap,
 } from "./garden";
 import { gardenConfig } from "./test-helpers";
@@ -118,7 +118,7 @@ describe("garden", () => {
       content: async () => "# thing title\n\n" + "thing content",
     };
     const metaMap: MetaMap = {};
-    await loadFileThingIntoMetaMap(metaMap, fileThing);
+    await loadThingIntoMetaMap(metaMap, fileThing);
     expect(Object.keys(metaMap)).toHaveLength(1);
   });
 
@@ -132,7 +132,7 @@ describe("garden", () => {
         "### sub-section title\n\nSub-section content",
     };
     const metaMap: MetaMap = {};
-    await loadFileThingIntoMetaMap(metaMap, fileThing);
+    await loadThingIntoMetaMap(metaMap, fileThing);
     expect(Object.keys(metaMap)).toHaveLength(3);
     expect(
       metaMap["my-filename"].links
