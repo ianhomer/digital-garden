@@ -12,10 +12,7 @@ import { join } from "path";
 
 import { BaseGardenRepository } from "./base-garden-repository";
 import { unique } from "./common";
-import {
-  FileGardenRepository,
-  FileItemReference,
-} from "./file-garden-repository";
+import { FileGardenRepository } from "./file-garden-repository";
 import { linkResolver } from "./link";
 import { logger } from "./logger";
 import { toMultipleThingMeta } from "./markdown";
@@ -71,30 +68,22 @@ const defaultConfig: GardenConfig = {
 };
 
 const loadThing = (
-  gardenRepository: GardenRepository,
-  config: GardenConfig,
+  repository: GardenRepository,
   filename: string
 ): FileThing => {
-  const matchName = /([^/]*).md$/.exec(filename);
-  const name = matchName ? matchName[1] : filename;
-  const matchBaseName = /(.*).md$/.exec(filename);
-  const baseName = matchBaseName ? matchBaseName[1] : filename;
-
-  const itemReference = new FileItemReference(name, filename);
+  const itemReference = repository.toItemReference(filename);
   return {
     filename,
-    name,
-    value: gardenRepository.toValue(itemReference),
+    name: itemReference.name,
+    value: repository.toValue(itemReference),
     content: async (): Promise<string> =>
-      baseName in config.content
-        ? config.content[baseName]
-        : await gardenRepository
-            .load(name)
-            .then((item) => item.content)
-            .catch((error) => {
-              console.error(error);
-              return error;
-            }),
+      repository
+        .load(itemReference.name)
+        .then((item) => item.content)
+        .catch((error) => {
+          console.error(error);
+          return error;
+        }),
   };
 };
 
@@ -144,14 +133,11 @@ const generateMeta = async (
 ): Promise<{ [key: string]: Meta }> => {
   if (Object.keys(config.content).length > 0) {
     for (const key in config.content) {
-      await loadThingIntoMetaMap(
-        metaMap,
-        loadThing(repository, config, `${key}.md`)
-      );
+      await loadThingIntoMetaMap(metaMap, loadThing(repository, `${key}.md`));
     }
   } else {
     const populateMetaFromUri = async (uri: string) => {
-      const thing = loadThing(repository, config, uri);
+      const thing = loadThing(repository, uri);
       await loadThingIntoMetaMap(metaMap, thing);
     };
 
@@ -390,8 +376,8 @@ export const createGarden = (options: GardenOptions): Garden => {
       return findBackLinks(things, name);
     },
     getMetaFilename: () => getMetaFilename(config),
-    thing: (filename: string) => {
-      return loadThing(repository, config, filename);
+    thing: (uri: string) => {
+      return loadThing(repository, uri);
     },
   };
 };

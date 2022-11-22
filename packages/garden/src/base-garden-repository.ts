@@ -9,12 +9,24 @@ export class BaseGardenRepository implements GardenRepository {
     this.content = content;
   }
 
-  toUri(itemReference: ItemReference) {
-    return `garden:${itemReference.name}`;
+  toItemReference(name: string) {
+    const matchName = /([^/]*).md$/.exec(name);
+    return {
+      name: matchName ? matchName[1] : name,
+    };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  toValue(_: ItemReference): number | undefined {
+  toUri(itemReference: ItemReference) {
+    return itemReference.name;
+  }
+
+  toValue(itemReference: ItemReference): number | undefined {
+    for (const ignore of ["archive"]) {
+      if (itemReference.name.includes(ignore)) {
+        return 0;
+      }
+    }
+
     return undefined;
   }
 
@@ -29,9 +41,7 @@ export class BaseGardenRepository implements GardenRepository {
 
   async find(name: string) {
     if (name in this.content) {
-      return {
-        name,
-      };
+      return this.toItemReference(name);
     }
     throw `Cannot find ${name} in memory`;
   }

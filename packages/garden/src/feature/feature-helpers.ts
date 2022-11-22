@@ -12,7 +12,7 @@ export const metaAndContentFrom = async (content: {
 };
 
 export const metaFrom = async (content: { [key: string]: string }) =>
-  createGarden({ content }).meta();
+  createGarden({ content, type: "inmemory" }).meta();
 
 export const dump = (meta: MetaMap) => {
   console.log(JSON.stringify(meta, null, "  "));

@@ -5,6 +5,7 @@ export interface ItemReference {
 export interface GardenRepository {
   toUri: (itemReference: ItemReference) => string;
   toValue: (itemReference: ItemReference) => number | undefined;
+  toItemReference: (name: string) => ItemReference;
   load: (itemReference: ItemReference | string) => Promise<Item>;
   find: (name: string) => Promise<ItemReference>;
   findAll: () => AsyncIterable<ItemReference>;
