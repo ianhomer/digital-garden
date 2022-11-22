@@ -21,8 +21,8 @@ export class BaseGardenRepository implements GardenRepository {
   }
 
   toValue(itemReference: ItemReference): number | undefined {
-    for (const ignore of ["archive", "not", "stop"]) {
-      if (itemReference.name.includes(`${ignore}-`)) {
+    for (const ignore of ["archive"]) {
+      if (itemReference.name.includes(ignore)) {
         return 0;
       }
     }
