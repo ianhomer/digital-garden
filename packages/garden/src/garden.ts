@@ -155,17 +155,17 @@ const generateMeta = async (
       );
     }
   } else {
-    const populateMetaFromFilename = async (filename: string) => {
-      const fileThing = loadThing(repository, config, filename);
-      await loadFileThingIntoMetaMap(metaMap, fileThing);
+    const populateMetaFromUri = async (uri: string) => {
+      const thing = loadThing(repository, config, uri);
+      await loadFileThingIntoMetaMap(metaMap, thing);
     };
 
     if (filenameToPatch) {
       console.log(`Patching meta with : ${filenameToPatch}`);
-      populateMetaFromFilename(filenameToPatch);
+      populateMetaFromUri(filenameToPatch);
     } else {
       for await (const itemReference of repository.findAll()) {
-        await populateMetaFromFilename(repository.toUri(itemReference));
+        await populateMetaFromUri(repository.toUri(itemReference));
       }
     }
   }

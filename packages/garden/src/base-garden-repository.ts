@@ -5,7 +5,7 @@ import { BaseItem } from "./base-item";
 export class BaseGardenRepository implements GardenRepository {
   content;
 
-  constructor(content: { [key: string]: string }) {
+  constructor(content: { [key: string]: string } = {}) {
     this.content = content;
   }
 
@@ -13,14 +13,18 @@ export class BaseGardenRepository implements GardenRepository {
     return `garden:${itemReference.name}`;
   }
 
-  toValue() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  toValue(_: ItemReference): number | undefined {
     return undefined;
   }
 
   async load(itemReference: string | ItemReference) {
     const name =
       typeof itemReference === "string" ? itemReference : itemReference.name;
-    return new BaseItem(name, this.content[name]);
+    if (name in this.content) {
+      return new BaseItem(name, this.content[name]);
+    }
+    throw `Cannot load ${name} since does not exist in repository`;
   }
 
   async find(name: string) {
