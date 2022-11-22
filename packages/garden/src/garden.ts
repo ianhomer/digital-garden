@@ -88,7 +88,13 @@ const loadThing = (
     content: async (): Promise<string> =>
       baseName in config.content
         ? config.content[baseName]
-        : await gardenRepository.load(name).then((item) => item.content),
+        : await gardenRepository
+            .load(name)
+            .then((item) => item.content)
+            .catch((error) => {
+              console.error(error);
+              return error;
+            }),
   };
 };
 
@@ -292,14 +298,15 @@ const refresh = async (
   config: GardenConfig,
   filenameToPatch?: string
 ) => {
-  const meta = filenameToPatch
-    ? await generateMeta(
-        repository,
-        config,
-        await loadMeta(repository, config),
-        filenameToPatch
-      )
-    : await generateMeta(repository, config);
+  const meta =
+    filenameToPatch && filenameToPatch.endsWith(".md")
+      ? await generateMeta(
+          repository,
+          config,
+          await loadMeta(repository, config),
+          filenameToPatch
+        )
+      : await generateMeta(repository, config);
   const fullGardenMetaFile = getMetaFilename(config);
   logger.info(
     `Refreshing ${fullGardenMetaFile} : ${Object.keys(meta).length} things`

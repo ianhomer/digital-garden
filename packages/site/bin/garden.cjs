@@ -58,8 +58,12 @@ const debounce = (_prepare, timeout = 5000) => {
 const debouncedPrepare = debounce(prepare);
 
 watch(gardensDirectory, { recursive: true }, (eventType, filename) => {
-  if (!filename.includes("/.") && !filename.startsWith(".")) {
-    console.log(`${eventType} : ${filename}`);
+  if (
+    !filename.includes("/.") &&
+    !filename.startsWith(".") &&
+    filename.endsWith(".md")
+  ) {
+    console.log(`garden : ${eventType} : ${filename}`);
     debouncedPrepare(filename);
   }
 });
