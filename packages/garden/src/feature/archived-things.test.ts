@@ -1,4 +1,4 @@
-import { dump, metaFrom } from "./feature-helpers";
+import { metaFrom } from "./feature-helpers";
 
 const archived = `
 # Archived thing
