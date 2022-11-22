@@ -17,17 +17,17 @@ describe("archived thing", () => {
   // Then the thing should have zero value
   it("should have zero value", async () => {
     const meta = await metaFrom({
-      "/archive/archived": archived,
+      "archive-archived": archived,
     });
-    expect(meta.archived.title).toBe("Archived thing");
-    expect(meta.archived.value).toBe(0);
+    expect(meta["archive-archived"].title).toBe("Archived thing");
+    expect(meta["archive-archived"].value).toBe(0);
   });
 
   // Given thing links to archived thing
   // Then the link should have zero value
   it("should should have zero value from non-archived thing", async () => {
     const meta = await metaFrom({
-      "/archive/archived": archived,
+      "archive-archived": archived,
       foo,
     });
     expect(meta.foo.links[0].value).toBe(0);

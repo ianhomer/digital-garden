@@ -41,6 +41,12 @@ export class FileGardenRepository extends BaseGardenRepository {
     this.gardenDirectoryLength = resolve(directory).length + 1;
   }
 
+  toItemReference(filename: string) {
+    const matchName = /([^/]*).md$/.exec(filename);
+    const name = matchName ? matchName[1] : filename;
+    return new FileItemReference(name, filename);
+  }
+
   toValue(itemReference: ItemReference) {
     if (itemReference instanceof FileItemReference) {
       // Fixed list of path elements that lead to a zero value thing which is
