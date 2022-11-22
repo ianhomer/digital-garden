@@ -98,7 +98,7 @@ const loadThing = (
   };
 };
 
-const fileThingToMultipleThingMeta = async (thing: Thing) => {
+const thingToMultipleThingMeta = async (thing: Thing) => {
   const extra: { value?: number } = {
     value: thing.value,
   };
@@ -109,13 +109,8 @@ const fileThingToMultipleThingMeta = async (thing: Thing) => {
   };
 };
 
-export const loadFileThingIntoMetaMap = async (
-  metaMap: MetaMap,
-  fileThing: FileThing
-) => {
-  const { thingName, thingMeta, extra } = await fileThingToMultipleThingMeta(
-    fileThing
-  );
+export const loadThingIntoMetaMap = async (metaMap: MetaMap, thing: Thing) => {
+  const { thingName, thingMeta, extra } = await thingToMultipleThingMeta(thing);
 
   thingMeta.forEach((singleThingMeta) => {
     const singleThingName =
@@ -149,7 +144,7 @@ const generateMeta = async (
 ): Promise<{ [key: string]: Meta }> => {
   if (Object.keys(config.content).length > 0) {
     for (const key in config.content) {
-      await loadFileThingIntoMetaMap(
+      await loadThingIntoMetaMap(
         metaMap,
         loadThing(repository, config, `${key}.md`)
       );
@@ -157,7 +152,7 @@ const generateMeta = async (
   } else {
     const populateMetaFromUri = async (uri: string) => {
       const thing = loadThing(repository, config, uri);
-      await loadFileThingIntoMetaMap(metaMap, thing);
+      await loadThingIntoMetaMap(metaMap, thing);
     };
 
     if (filenameToPatch) {
