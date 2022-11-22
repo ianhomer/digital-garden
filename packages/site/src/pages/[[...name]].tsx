@@ -50,7 +50,8 @@ function ItemPage({ item }: Props) {
 
   const itemName = () => {
     const childName = window.location.hash;
-    return item.name + childName;
+    const compositeName = item.name + childName;
+    return compositeName in data ? compositeName : item.name;
   };
 
   return (
