@@ -1,17 +1,17 @@
 import {
+  findItemOrWanted,
+  findLinks,
+  getPageItems,
+  isNotValidPageName,
+} from "@garden/garden";
+import {
   createGraph,
   findDeepLinks,
   GraphDiagram,
   markdownToHtml,
   useKey,
   useWindowDimensions,
-} from "@garden/client";
-import {
-  findItemOrWanted,
-  findLinks,
-  getPageItems,
-  isNotValidPageName,
-} from "@garden/garden";
+} from "@garden/react";
 import { Item, Link, Things } from "@garden/types";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useEffect, useState } from "react";
