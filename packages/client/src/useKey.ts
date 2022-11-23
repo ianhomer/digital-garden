@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 
-export function useKey(callback: (key: string) => void, keys: string[]): void {
+export default function useKey(
+  callback: (key: string) => void,
+  keys: string[]
+): void {
   const keyHandler = ({ key }: KeyboardEvent) => {
     if (keys.includes(key)) {
       callback(key);
