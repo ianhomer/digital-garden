@@ -3,8 +3,8 @@ import * as d3 from "d3";
 import { SimulationNodeDatum } from "d3";
 import { useEffect, useRef } from "react";
 
-import { Graph, Node, NodeLink } from "../lib/graph/types";
 import collideRectangle from "./collideRectangle";
+import { Graph, Node, NodeLink } from "./types";
 
 interface GraphDiagramProps {
   graph: Graph;

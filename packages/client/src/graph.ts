@@ -1,101 +1,78 @@
-import { ItemLink, Link, LinkType, Things } from "@garden/types";
+import { ItemLink, Things } from "@garden/types";
 
-const valuable = (link: Link) => link.value !== 0;
+import { toParentName } from "./link";
+import { Graph, NodeType } from "./types";
 
-const backLinks = (
-  things: Things,
-  name: string,
-  depth: number,
-  predicate = (link: Link) =>
-    !link.type ||
-    link.type == LinkType.NaturalAlias ||
-    link.type == LinkType.Child,
-  backLinkType = LinkType.From
-): ItemLink[] => {
-  return Object.keys(things)
-    .filter((fromName) => {
-      return (
-        things[fromName].links
-          .filter(valuable)
-          .filter(predicate)
-          .map((link) => link.name)
-          .indexOf(name) > -1
-      );
-    })
-    .map((fromName) => ({
-      source: name,
-      target: fromName,
-      depth,
-      type: backLinkType,
-    }));
-};
-
-const HARD_DEPTH = 7;
-const goDeeper = (
-  depth: number,
-  maxDepth: number,
-  linkType: LinkType | undefined
-) => {
-  if (depth < maxDepth + 1) {
-    return true;
-  } else if (depth > HARD_DEPTH) {
-    return false;
-  } else if (linkType == LinkType.Child) {
-    // Show the link to child as long as we haven't gone past the hard depth
-    return true;
+const countSiblings = (name: string, links: Array<ItemLink>, depth: number) => {
+  if (depth == 0) {
+    return 1;
   }
-  return false;
+  const linksToName = links.filter((link) => link.target === name);
+  const parentLink = linksToName.find((link) => link.depth == depth);
+  if (!parentLink) {
+    throw `Cannot find parent of ${name} from ${JSON.stringify(
+      linksToName
+    )} at depth ${depth}`;
+  }
+  return links.filter((link) => link.source === parentLink.source).length;
 };
 
-export const findDeepLinks = (
+export const createGraph = (
+  root: string,
   things: Things,
-  name: string,
-  maxDepth: number,
-  depth = 1,
-  linkType: LinkType | undefined = undefined
-): ItemLink[] => {
-  const directLinks = [
-    ...(name in things
-      ? things[name].links.filter(valuable).map((link: Link) => ({
-          source: name,
-          target: link.name,
+  links: Array<ItemLink>
+): Graph => {
+  const names = links
+    .map((link) => [link.source, link.target])
+    .flat()
+    .filter((value, index, self) => self.indexOf(value) === index);
+
+  const getParentTitle = (name: string) => {
+    const parentName = toParentName(name);
+    if (parentName && parentName in things) {
+      return things[parentName].title;
+    }
+    return undefined;
+  };
+
+  const getDepth = (name: string) => {
+    if (root === name) {
+      return 0;
+    }
+    const connections = links
+      .filter((link) => link.target === name)
+      .map((link) => link.depth);
+    if (connections.length == 0) {
+      return 0;
+    } else return Math.min(...connections);
+  };
+
+  return {
+    nodes: [
+      ...names.map((name: string) => {
+        const depth = getDepth(name);
+        const fixedCoordinates =
+          depth == 0
+            ? {
+                fx: 0,
+                fy: 0,
+              }
+            : {};
+        const siblings = countSiblings(name, links, depth);
+        const thing = things[name];
+        return {
+          id: name || "na",
+          title: name in things ? thing.title : name,
+          context: getParentTitle(name),
+          type: NodeType.Thing,
+          wanted: !(name in things),
+          siblings,
+          showLabel: depth < 3 && (depth < 2 || siblings < 20),
           depth,
-          type: link.type ?? LinkType.To,
-        }))
-      : []),
-    ...backLinks(things, name, depth),
-    ...backLinks(
-      things,
-      name,
-      depth,
-      (link: Link) => link.type == LinkType.NaturalTo,
-      LinkType.NaturalFrom
-    ),
-  ];
-  return [
-    ...directLinks,
-    ...(goDeeper(depth, maxDepth, linkType)
-      ? directLinks
-          .map((link) =>
-            findDeepLinks(things, link.target, maxDepth, depth + 1, linkType)
-          )
-          .flat()
-      : []),
-  ]
-    .filter(
-      // de-dupe
-      (value, index, self) =>
-        index ===
-        self.findIndex(
-          (compareTo) =>
-            ((value.source == compareTo.source &&
-              value.target == compareTo.target) ||
-              (value.source == compareTo.target &&
-                value.target == compareTo.source)) &&
-            // choose one with lowest depth
-            value.depth >= compareTo.depth
-        )
-    )
-    .sort((a, b) => a.depth - b.depth)
-    .slice(0, 500);
+          ...fixedCoordinates,
+        };
+      }),
+    ],
+    links: links,
+  };
 };
