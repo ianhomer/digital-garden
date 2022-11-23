@@ -1,4 +1,4 @@
-import { findDeepLinks } from "../graph";
+import findDeepLinks from "../findDeepLinks";
 import { bySource, factory } from "./feature-helpers";
 
 describe("graph depth", () => {
