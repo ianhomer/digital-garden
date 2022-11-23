@@ -131,7 +131,6 @@ importers:
       '@garden/core': workspace:0.0.1
       '@garden/types': workspace:0.0.1
       '@types/jest': ^29.2.1
-      '@types/lodash': ^4.14.187
       '@types/mdast': ^3.0.10
       '@types/unist': ^2.0.6
       compromise: ^14.7.1
@@ -139,7 +138,6 @@ importers:
       jest: ^29.2.2
       jest-environment-jsdom: ^29.2.2
       jest-html-reporters: ^3.0.11
-      lodash: ^4.17.21
       mdast-util-to-string: ^3.1.0
       pino: ^8.7.0
       remark-parse: ^10.0.1
@@ -153,7 +151,6 @@ importers:
       '@garden/types': link:../types
       compromise: 14.7.1
       gray-matter: 4.0.3
-      lodash: 4.17.21
       mdast-util-to-string: 3.1.0
       pino: 8.7.0
       remark-rehype: 10.1.0
@@ -164,7 +161,6 @@ importers:
       '@babel/preset-env': 7.19.4_@babel+core@7.19.6
       '@babel/preset-typescript': 7.18.6_@babel+core@7.19.6
       '@types/jest': 29.2.1
-      '@types/lodash': 4.14.187
       '@types/mdast': 3.0.10
       '@types/unist': 2.0.6
       jest: 29.2.2
@@ -191,7 +187,6 @@ importers:
       dotenv: ^16.0.3
       highlight.js: ^11.6.0
       jest: ^29.2.2
-      lodash: ^4.17.21
       next: ^13.0.1
       next-remote-watch: ^2.0.0
       pino-pretty: ^9.1.1
@@ -215,7 +210,6 @@ importers:
       '@garden/types': link:../types
       dotenv: 16.0.3
       highlight.js: 11.6.0
-      lodash: 4.17.21
       next: 13.0.1_qtpcxnaaarbm4ws7ughq6oxfve
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
