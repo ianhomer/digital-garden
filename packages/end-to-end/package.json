@@ -12,9 +12,9 @@
     "test:e2e:cucumber": "cucumber-js"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^8.7.0",
-    "@playwright/test": "^1.27.1",
+    "@cucumber/cucumber": "^8.8.0",
+    "@playwright/test": "^1.28.0",
     "allure-playwright": "2.0.0-beta.19",
-    "playwright": "^1.27.1"
+    "playwright": "^1.28.0"
   }
 }
