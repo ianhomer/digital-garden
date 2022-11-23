@@ -1,7 +1,7 @@
 {
   "name": "@garden/root",
-  "version": "1.0.0",
-  "description": "Digital Garden template",
+  "version": "0.0.1",
+  "description": "Digital garden tools",
   "license": "ISC",
   "repository": {
     "type": "git",
@@ -14,6 +14,7 @@
   "scripts": {
     "build": "pnpm --filter @garden/site build",
     "build:prepare": "pnpm --filter @garden/site build:prepare",
+    "clean": "pnpm --filter {packages/**} clean",
     "dev": "pnpm --filter @garden/site dev",
     "dev:test": "pnpm --filter @garden/site dev:test",
     "eslint": "pnpm --filter {packages} eslint",

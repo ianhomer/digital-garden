@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "next build",
+    "clean": "rimraf out .next .gardem-meta.json",
     "export": "next export",
     "build:prepare": "node --experimental-specifier-resolution=node --loader ts-node/esm src/scripts/pre-build.ts",
     "dev": "next dev",
@@ -28,9 +29,9 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@garden/garden": "workspace:1.0.0",
-    "@garden/graph": "workspace:1.0.0",
-    "@garden/types": "workspace:1.0.0",
+    "@garden/garden": "workspace:0.0.1",
+    "@garden/graph": "workspace:0.0.1",
+    "@garden/types": "workspace:0.0.1",
     "d3": "^7.6.1",
     "dotenv": "^16.0.3",
     "gray-matter": "^4.0.3",
@@ -71,6 +72,7 @@
     "remark": "^14.0.2",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
+    "rimraf": "3.0.2",
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.2.1",
     "ts-node": "^10.9.1",

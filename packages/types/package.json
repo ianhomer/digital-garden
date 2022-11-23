@@ -1,7 +1,7 @@
 {
   "name": "@garden/types",
-  "version": "1.0.0",
-  "description": "Digital Garden Types",
+  "version": "0.0.1",
+  "description": "Digital garden types",
   "license": "ISC",
   "main": "src/index.ts",
   "type": "module",
