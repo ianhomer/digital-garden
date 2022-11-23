@@ -41,16 +41,44 @@ importers:
       '@types/d3-force': ^3.0.3
       '@types/d3-quadtree': ^3.0.2
       '@types/jest': ^29.2.1
+      '@types/mdast': ^3.0.10
       '@types/react': ^18.0.24
+      '@types/unist': ^2.0.6
       d3: ^7.6.1
+      hastscript: ^7.1.0
       jest: ^29.2.2
       react: ^18.2.0
+      rehype-autolink-headings: ^6.1.1
+      rehype-highlight: ^6.0.0
+      rehype-slug: ^5.1.0
+      rehype-stringify: ^9.0.3
+      remark: ^14.0.2
+      remark-directive: ^2.0.1
+      remark-emoji: ^3.0.2
+      remark-gfm: ^3.0.1
+      remark-parse: ^10.0.1
+      remark-rehype: ^10.1.0
+      remark-wiki-link: ^1.0.4
       typescript: ^4.8.4
+      unified: ^10.1.2
+      unist-util-visit: ^4.1.1
     dependencies:
       '@garden/core': link:../core
       '@garden/types': link:../types
       d3: 7.6.1
+      hastscript: 7.1.0
       react: 18.2.0
+      rehype-autolink-headings: 6.1.1
+      rehype-highlight: 6.0.0
+      rehype-slug: 5.1.0
+      rehype-stringify: 9.0.3
+      remark-directive: 2.0.1
+      remark-emoji: 3.0.2
+      remark-gfm: 3.0.1
+      remark-rehype: 10.1.0
+      remark-wiki-link: 1.0.4
+      unified: 10.1.2
+      unist-util-visit: 4.1.1
     devDependencies:
       '@babel/core': 7.19.6
       '@babel/preset-env': 7.19.4_@babel+core@7.19.6
@@ -59,8 +87,12 @@ importers:
       '@types/d3-force': 3.0.3
       '@types/d3-quadtree': 3.0.2
       '@types/jest': 29.2.1
+      '@types/mdast': 3.0.10
       '@types/react': 18.0.24
+      '@types/unist': 2.0.6
       jest: 29.2.2
+      remark: 14.0.2
+      remark-parse: 10.0.1
       typescript: 4.8.4
 
   packages/core:

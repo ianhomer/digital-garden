@@ -2,6 +2,7 @@ import {
   createGraph,
   findDeepLinks,
   GraphDiagram,
+  markdownToHtml,
   useKey,
   useWindowDimensions,
 } from "@garden/client";
@@ -16,7 +17,6 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { useEffect, useState } from "react";
 
 import { garden } from "../components/siteGarden";
-import markdownToHtml from "../lib/markdownToHtml";
 
 interface Props {
   item: {
