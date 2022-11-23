@@ -6,6 +6,7 @@
   "author": "",
   "main": "index.js",
   "scripts": {
+    "clean": "rimraf output",
     "report:html": "npx playwright show-report",
     "start": "cd ../.. && pnpm start",
     "test:e2e": "playwright test -g '.*.spec.mjs'",
@@ -15,6 +16,7 @@
     "@cucumber/cucumber": "^8.7.0",
     "@playwright/test": "^1.27.1",
     "allure-playwright": "2.0.0-beta.19",
-    "playwright": "^1.27.1"
+    "playwright": "^1.27.1",
+    "rimraf": "3.0.2"
   }
 }
