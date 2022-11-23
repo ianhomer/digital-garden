@@ -1,5 +1,5 @@
-import findDeepLinks from "./findDeepLinks";
-import { createGraph } from "./graph";
+import { createGraph, findDeepLinks } from "@garden/graph";
+
 import GraphDiagram from "./graph-diagram";
 import markdownToHtml from "./markdownToHtml";
 import useKey from "./useKey";
