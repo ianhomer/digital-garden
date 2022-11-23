@@ -1,7 +1,7 @@
 {
-  "name": "@garden/graph",
+  "name": "@garden/client",
   "version": "0.0.1",
-  "description": "Digital garden Graph",
+  "description": "Digital garden client",
   "license": "ISC",
   "main": "src/index.ts",
   "scripts": {

@@ -1,10 +1,10 @@
+import { findDeepLinks } from "@garden/client";
 import {
   findItemOrWanted,
   findLinks,
   getPageItems,
   isNotValidPageName,
 } from "@garden/garden";
-import { findDeepLinks } from "@garden/graph";
 import { Item, Link, Things } from "@garden/types";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useEffect, useState } from "react";
