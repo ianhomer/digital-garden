@@ -1,7 +1,7 @@
 {
   "name": "@garden/core",
   "version": "0.0.1",
-  "description": "Garden core",
+  "description": "Digital garden core",
   "main": "src/index.ts",
   "scripts": {
     "test": "LOG_LEVEL=warn jest --no-watchman",
@@ -9,7 +9,6 @@
   },
   "type": "module",
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.20.2",
