@@ -29,7 +29,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@garden/client": "workspace:0.0.1",
+    "@garden/react": "workspace:0.0.1",
     "@garden/garden": "workspace:0.0.1",
     "@garden/types": "workspace:0.0.1",
     "dotenv": "^16.0.3",

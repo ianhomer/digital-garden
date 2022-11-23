@@ -1,7 +1,7 @@
 {
-  "name": "@garden/client",
+  "name": "@garden/react",
   "version": "0.0.1",
-  "description": "Digital garden client",
+  "description": "Digital garden react client",
   "license": "ISC",
   "main": "src/index.ts",
   "scripts": {
