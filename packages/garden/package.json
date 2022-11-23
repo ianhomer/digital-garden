@@ -13,6 +13,7 @@
   "type": "module",
   "dependencies": {
     "@garden/types": "workspace:0.0.1",
+    "@garden/core": "workspace:0.0.1",
     "compromise": "^14.7.1",
     "gray-matter": "^4.0.3",
     "lodash": "^4.17.21",

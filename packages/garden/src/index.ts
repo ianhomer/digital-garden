@@ -1,3 +1,9 @@
+import {
+  isNotValidPageName,
+  isValidPageName,
+  pageResolver,
+} from "@garden/core";
+
 import { findItem, findItemOrWanted, getAllItems } from "./content";
 import {
   createGarden,
@@ -5,7 +11,6 @@ import {
   GardenOptions,
   toConfig,
 } from "./garden";
-import { isNotValidPageName, isValidPageName, pageResolver } from "./link";
 import { findLinks } from "./links";
 import { getPageItems } from "./page";
 
