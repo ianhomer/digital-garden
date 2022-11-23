@@ -23,7 +23,6 @@
   },
   "devDependencies": {
     "@types/mdast": "^3.0.10",
-    "@types/react": "^18.0.25",
     "@types/unist": "^2.0.6",
     "remark": "^14.0.2",
     "remark-parse": "^10.0.1",

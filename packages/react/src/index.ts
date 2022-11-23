@@ -1,5 +1,5 @@
 import { createGraph, findDeepLinks } from "@garden/graph";
-import markdownToHtml from "@garden/markdown";
+import { markdownToHtml } from "@garden/markdown";
 
 import GraphDiagram from "./graph-diagram";
 import useKey from "./useKey";
