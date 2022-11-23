@@ -131,7 +131,6 @@ importers:
       '@garden/core': workspace:0.0.1
       '@garden/types': workspace:0.0.1
       '@types/jest': ^29.2.1
-      '@types/lodash': ^4.14.187
       '@types/mdast': ^3.0.10
       '@types/unist': ^2.0.6
       compromise: ^14.7.1
@@ -139,7 +138,6 @@ importers:
       jest: ^29.2.2
       jest-environment-jsdom: ^29.2.2
       jest-html-reporters: ^3.0.11
-      lodash: ^4.17.21
       mdast-util-to-string: ^3.1.0
       pino: ^8.7.0
       remark-parse: ^10.0.1
@@ -153,7 +151,6 @@ importers:
       '@garden/types': link:../types
       compromise: 14.7.1
       gray-matter: 4.0.3
-      lodash: 4.17.21
       mdast-util-to-string: 3.1.0
       pino: 8.7.0
       remark-rehype: 10.1.0
@@ -164,7 +161,6 @@ importers:
       '@babel/preset-env': 7.19.4_@babel+core@7.19.6
       '@babel/preset-typescript': 7.18.6_@babel+core@7.19.6
       '@types/jest': 29.2.1
-      '@types/lodash': 4.14.187
       '@types/mdast': 3.0.10
       '@types/unist': 2.0.6
       jest: 29.2.2
@@ -184,46 +180,24 @@ importers:
       '@garden/types': workspace:0.0.1
       '@testing-library/jest-dom': ^5.16.5
       '@testing-library/react': ^13.4.0
-      '@types/d3': ^7.4.0
-      '@types/d3-force': ^3.0.3
-      '@types/d3-quadtree': ^3.0.2
-      '@types/mdast': ^3.0.10
       '@types/node': ^18.11.9
       '@types/react': ^18.0.24
-      '@types/unist': ^2.0.6
       '@types/yargs': ^17.0.13
       autoprefixer: ^10.4.13
-      d3: ^7.6.1
       dotenv: ^16.0.3
-      gray-matter: ^4.0.3
-      hastscript: ^7.1.0
       highlight.js: ^11.6.0
       jest: ^29.2.2
-      lodash: ^4.17.21
       next: ^13.0.1
       next-remote-watch: ^2.0.0
       pino-pretty: ^9.1.1
       postcss: ^8.4.18
       react: ^18.2.0
       react-dom: ^18.2.0
-      rehype-autolink-headings: ^6.1.1
-      rehype-highlight: ^6.0.0
-      rehype-slug: ^5.1.0
-      rehype-stringify: ^9.0.3
-      remark: ^14.0.2
-      remark-directive: ^2.0.1
-      remark-emoji: ^3.0.2
-      remark-gfm: ^3.0.1
-      remark-parse: ^10.0.1
-      remark-rehype: ^10.1.0
-      remark-wiki-link: ^1.0.4
       rimraf: 3.0.2
       start-server-and-test: ^1.14.0
       tailwindcss: ^3.2.1
       ts-node: ^10.9.1
       typescript: ^4.8.4
-      unified: ^10.1.2
-      unist-util-visit: ^4.1.1
       yargs: ^17.6.0
     dependencies:
       '@emotion/react': 11.10.5_5ihuxrpe4zse4p4tf6ubxcyzuu
@@ -231,45 +205,23 @@ importers:
       '@garden/client': link:../client
       '@garden/garden': link:../garden
       '@garden/types': link:../types
-      d3: 7.6.1
       dotenv: 16.0.3
-      gray-matter: 4.0.3
-      hastscript: 7.1.0
       highlight.js: 11.6.0
-      lodash: 4.17.21
       next: 13.0.1_qtpcxnaaarbm4ws7ughq6oxfve
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      rehype-autolink-headings: 6.1.1
-      rehype-highlight: 6.0.0
-      rehype-slug: 5.1.0
-      rehype-stringify: 9.0.3
-      remark-directive: 2.0.1
-      remark-emoji: 3.0.2
-      remark-gfm: 3.0.1
-      remark-wiki-link: 1.0.4
-      unified: 10.1.2
-      unist-util-visit: 4.1.1
     devDependencies:
       '@babel/core': 7.19.6
       '@testing-library/jest-dom': 5.16.5
       '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
-      '@types/d3': 7.4.0
-      '@types/d3-force': 3.0.3
-      '@types/d3-quadtree': 3.0.2
-      '@types/mdast': 3.0.10
       '@types/node': 18.11.9
       '@types/react': 18.0.24
-      '@types/unist': 2.0.6
       '@types/yargs': 17.0.13
       autoprefixer: 10.4.13_postcss@8.4.18
       jest: 29.2.2_odkjkoia5xunhxkdrka32ib6vi
       next-remote-watch: 2.0.0_next@13.0.1
       pino-pretty: 9.1.1
       postcss: 8.4.18
-      remark: 14.0.2
-      remark-parse: 10.0.1
-      remark-rehype: 10.1.0
       rimraf: 3.0.2
       start-server-and-test: 1.14.0
       tailwindcss: 3.2.1_neo3lunb2qpadwxplzw7r2isgm
@@ -2603,6 +2555,7 @@ packages:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
     dependencies:
       '@types/unist': 2.0.6
+    dev: false
 
   /@types/istanbul-lib-coverage/2.0.4:
     resolution: {integrity: sha512-z/QT1XN4K4KYuslS23k62yDIDLwLFkzxOuMplDtObz0+y7VqJCaO2o+SPwHCvLFZh7xazvvoor2tA/hPz9ee7g==}
@@ -6465,6 +6418,7 @@ packages:
       '@types/mdast': 3.0.10
       '@types/unist': 2.0.6
       unist-util-visit: 4.1.1
+    dev: false
 
   /mdast-util-directive/2.2.2:
     resolution: {integrity: sha512-6BuW4dFkCbTIf9peVMXdtWylI6ovMidVjnHyJpx7IDhwk3GosIgUs87Rl3x6T6kP5iAf1qIE3lMn6CgWw40d+g==}
@@ -6571,6 +6525,7 @@ packages:
       unist-util-generated: 2.0.0
       unist-util-position: 4.0.3
       unist-util-visit: 4.1.1
+    dev: false
 
   /mdast-util-to-markdown/0.6.5:
     resolution: {integrity: sha512-XeV9sDE7ZlOQvs45C9UKMtfTcctcaj/pGwH8YLbMHoMOXNNCn2LsqVQOqrF1+/NU8lKDAqozme9SCXWyo9oAcQ==}
@@ -7882,6 +7837,7 @@ packages:
       '@types/mdast': 3.0.10
       mdast-util-to-hast: 12.2.4
       unified: 10.1.2
+    dev: false
 
   /remark-stringify/10.0.2:
     resolution: {integrity: sha512-6wV3pvbPvHkbNnWB0wdDvVFHOe1hBRAx1Q/5g/EpH4RppAII6J8Gnwe7VbHuXaoKIF6LAg6ExTel/+kNqSQ7lw==}
@@ -8549,6 +8505,7 @@ packages:
 
   /trim-lines/3.0.1:
     resolution: {integrity: sha512-kRj8B+YHZCc9kQYdWfJB2/oUl9rA99qbowYYBtr4ui4mZyAQ2JpvVBd/6U2YloATfqBhBTSMhTpgBHtU0Mf3Rg==}
+    dev: false
 
   /trough/2.1.0:
     resolution: {integrity: sha512-AqTiAOLcj85xS7vQ8QkAV41hPDIJ71XJB4RCUrzo/1GM2CQwhkJGaf9Hgr7BOugMRpgGUrqRg/DrBDl4H40+8g==}
@@ -8699,6 +8656,7 @@ packages:
     resolution: {integrity: sha512-GFxmfEAa0vi9i5sd0R2kcrI9ks0r82NasRq5QHh2ysGngrc6GiqD5CDf1FjPenY4vApmFASBIIlk/jj5J5YbmQ==}
     dependencies:
       '@types/unist': 2.0.6
+    dev: false
 
   /unist-util-find-after/4.0.0:
     resolution: {integrity: sha512-gfpsxKQde7atVF30n5Gff2fQhAc4/HTOV4CvkXpTg9wRfQhZWdXitpyXHWB6YcYgnsxLx+4gGHeVjCTAAp9sjw==}
@@ -8709,6 +8667,7 @@ packages:
 
   /unist-util-generated/2.0.0:
     resolution: {integrity: sha512-TiWE6DVtVe7Ye2QxOVW9kqybs6cZexNwTwSMVgkfjEReqy/xwGpAXb99OxktoWwmL+Z+Epb0Dn8/GNDYP1wnUw==}
+    dev: false
 
   /unist-util-is/5.1.1:
     resolution: {integrity: sha512-F5CZ68eYzuSvJjGhCLPL3cYx45IxkqXSetCcRgUXtbcm50X2L9oOWQlfUfDdAf+6Pd27YDblBfdtmsThXmwpbQ==}
@@ -8717,6 +8676,7 @@ packages:
     resolution: {integrity: sha512-p/5EMGIa1qwbXjA+QgcBXaPWjSnZfQ2Sc3yBEEfgPwsEmJd8Qh+DSk3LGnmOM4S1bY2C0AjmMnB8RuEYxpPwXQ==}
     dependencies:
       '@types/unist': 2.0.6
+    dev: false
 
   /unist-util-stringify-position/3.0.2:
     resolution: {integrity: sha512-7A6eiDCs9UtjcwZOcCpM4aPII3bAAGv13E96IkawkOAW0OhH+yRxtY0lzo8KiHpzEMfH7Q+FizUmwp8Iqy5EWg==}
