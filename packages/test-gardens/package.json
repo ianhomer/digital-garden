@@ -1,0 +1,13 @@
+{
+  "name": "@garden/test-gardens",
+  "version": "0.0.1",
+  "description": "Test gardens",
+  "scripts": {
+    "clean": "rimraf **/.garden-meta.json"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "rimraf": "3.0.2"
+  }
+}

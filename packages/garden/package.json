@@ -1,17 +1,18 @@
 {
   "name": "@garden/garden",
-  "version": "1.0.0",
-  "description": "Digital Garden Library",
+  "version": "0.0.1",
+  "description": "Digital garden Library",
   "license": "ISC",
   "main": "src/index.ts",
   "scripts": {
+    "clean": "rimraf output",
     "test": "LOG_LEVEL=warn jest --no-watchman",
     "test:watch": "jest --watch",
     "test:debug": "NODE_OPTIONS=--inspect-brk jest"
   },
   "type": "module",
   "dependencies": {
-    "@garden/types": "workspace:1.0.0",
+    "@garden/types": "workspace:0.0.1",
     "compromise": "^14.7.1",
     "gray-matter": "^4.0.3",
     "lodash": "^4.17.21",
@@ -33,6 +34,7 @@
     "jest-environment-jsdom": "^29.2.2",
     "jest-html-reporters": "^3.0.11",
     "remark-parse": "^10.0.1",
+    "rimraf": "3.0.2",
     "typescript": "^4.8.4"
   }
 }
