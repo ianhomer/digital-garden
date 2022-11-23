@@ -15,6 +15,7 @@
     "build": "pnpm --filter @garden/site build",
     "build:prepare": "pnpm --filter @garden/site build:prepare",
     "clean": "pnpm --filter {packages/**} clean",
+    "clean:full": "pnpm clean && rimraf node_modules",
     "dev": "pnpm --filter @garden/site dev",
     "dev:test": "pnpm --filter @garden/site dev:test",
     "eslint": "pnpm --filter {packages} eslint",
@@ -30,6 +31,7 @@
     "test": "pnpm --filter !@garden/end-to-end test",
     "test:build": "pnpm --filter @garden/site test:build",
     "test:e2e": "pnpm --filter @garden/end-to-end test:e2e",
+    "test:build-and-e2e": "pnpm build:prepare && pnpm test:build && pnpm test:e2e",
     "test:e2e:cucumber": "pnpm --filter @garden/end-to-end test:e2e:cucumber",
     "test:e2e:cucumber:dev": "server-test dev:test 3000 test:e2e:cucumber"
   },
@@ -44,6 +46,7 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
+    "rimraf": "3.0.2",
     "start-server-and-test": "^1.14.0",
     "typescript": "^4.8.4"
   }

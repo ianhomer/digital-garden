@@ -14,6 +14,7 @@ importers:
       husky: ^8.0.1
       lint-staged: ^13.0.3
       prettier: ^2.7.1
+      rimraf: 3.0.2
       start-server-and-test: ^1.14.0
       typescript: ^4.8.4
     devDependencies:
@@ -27,6 +28,7 @@ importers:
       husky: 8.0.1
       lint-staged: 13.0.3
       prettier: 2.7.1
+      rimraf: 3.0.2
       start-server-and-test: 1.14.0
       typescript: 4.8.4
 
@@ -117,11 +119,13 @@ importers:
       '@playwright/test': ^1.27.1
       allure-playwright: 2.0.0-beta.19
       playwright: ^1.27.1
+      rimraf: 3.0.2
     devDependencies:
       '@cucumber/cucumber': 8.7.0
       '@playwright/test': 1.27.1
       allure-playwright: 2.0.0-beta.19
       playwright: 1.27.1
+      rimraf: 3.0.2
 
   packages/garden:
     specifiers:
