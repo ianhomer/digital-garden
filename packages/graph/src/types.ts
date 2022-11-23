@@ -25,3 +25,30 @@ export interface Graph {
   nodes: Node[];
   links: NodeLink[];
 }
+
+export interface GraphConfiguration {
+  viewWidth: number;
+  viewHeight: number;
+  minDimension: number;
+  xOffset: number;
+  yOffset: number;
+  boundarySize: number;
+  leftBoundary: number;
+  rightBoundary: number;
+  topBoundary: number;
+  bottomBoundary: number;
+  xOffsetText: number;
+  yOffsetText: number;
+  heightText: number;
+  widthText: number;
+  linkForceFactor: number;
+  chargeForceFactor: number;
+  centerForceFactor: number;
+
+  getRadius: (d: Node | SimulationNodeDatum) => number;
+  getCharge: (factor: number) => (d: Node | SimulationNodeDatum) => number;
+  getLinkStrokeWidth: (d: NodeLink) => number;
+  linkTypeForceWeight: (linkType: LinkType) => number;
+  linkDepthForceWeight: (link: NodeLink) => number;
+  getLinkForce: (factor: number) => (d: NodeLink) => number;
+}
