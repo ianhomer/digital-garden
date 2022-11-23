@@ -1,6 +1,6 @@
 import { quadtree, QuadtreeInternalNode, QuadtreeLeaf } from "d3-quadtree";
 
-import { Node } from "../lib/graph/types";
+import { Node } from "./types";
 
 function x(d: Node) {
   return (d.x ?? 0) + (d.vx ?? 0);
