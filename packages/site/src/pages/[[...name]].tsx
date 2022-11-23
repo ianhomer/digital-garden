@@ -1,4 +1,4 @@
-import { findDeepLinks } from "@garden/client";
+import { findDeepLinks, useWindowDimensions } from "@garden/client";
 import {
   findItemOrWanted,
   findLinks,
@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import GraphDiagram from "../components/graph-diagram";
 import { garden } from "../components/siteGarden";
 import { useKey } from "../components/useKey";
-import useWindowDimensions from "../components/useWindowDimensions";
 import { createGraph } from "../lib/graph/graph";
 import markdownToHtml from "../lib/markdownToHtml";
 
