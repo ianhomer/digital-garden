@@ -1,14 +1,13 @@
 {
   "name": "@garden/graph",
   "version": "0.0.1",
-  "description": "Garden graph client",
+  "description": "Digital garden graph client",
   "main": "src/index.ts",
   "scripts": {
     "test": "LOG_LEVEL=warn jest --no-watchman",
     "test:watch": "jest --watch"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.20.2",

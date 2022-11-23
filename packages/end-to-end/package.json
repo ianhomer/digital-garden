@@ -1,9 +1,8 @@
 {
   "name": "@garden/end-to-end",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Digital garden end to end tests",
   "license": "ISC",
-  "author": "",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf output",
