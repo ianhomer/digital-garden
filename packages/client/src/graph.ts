@@ -1,6 +1,6 @@
+import { toParentName } from "@garden/core";
 import { ItemLink, Things } from "@garden/types";
 
-import { toParentName } from "./link";
 import { Graph, NodeType } from "./types";
 
 const countSiblings = (name: string, links: Array<ItemLink>, depth: number) => {

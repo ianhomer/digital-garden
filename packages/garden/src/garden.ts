@@ -1,3 +1,4 @@
+import { linkResolver } from "@garden/core";
 import {
   GardenRepository,
   Link,
@@ -13,7 +14,6 @@ import { join } from "path";
 import { BaseGardenRepository } from "./base-garden-repository";
 import { unique } from "./common";
 import { FileGardenRepository } from "./file-garden-repository";
-import { linkResolver } from "./link";
 import { logger } from "./logger";
 import { toMultipleThingMeta } from "./markdown";
 import { naturalAliases } from "./nlp";

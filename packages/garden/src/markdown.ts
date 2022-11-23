@@ -1,3 +1,4 @@
+import { linkResolver } from "@garden/core";
 import { LinkType, Meta, ThingType } from "@garden/types";
 import { Heading, Link, Literal } from "mdast";
 import { toString } from "mdast-util-to-string";
@@ -6,7 +7,6 @@ import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
 import { Data, Node, Parent } from "unist";
 
-import { linkResolver } from "./link";
 import { naturalProcess } from "./nlp";
 
 interface Section {
