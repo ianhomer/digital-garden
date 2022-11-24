@@ -103,6 +103,15 @@
   }
 }
 
+line.active {
+  stroke-width: 3;
+  transition: stroke-width 0s;
+}
+
+line {
+  transition: stroke-width 2s;
+}
+
 div.container-directive {
   border: 1px solid #000;
   border-left: 4px solid #000;
