@@ -8,11 +8,25 @@ const onNodeMouseOver = (_: MouseEvent, current: Node) => {
   d3.selectAll<SVGAElement, Node>(".group")
     .filter((d: Node) => d.id === current.id)
     .classed("active", true);
+  d3.selectAll<SVGAElement, NodeLink>("line")
+    .filter(
+      (d: NodeLink) =>
+        (d.target as Node).id === current.id ||
+        (d.source as Node).id === current.id
+    )
+    .classed("active", true);
 };
 
 const onNodeMouseLeave = (_: MouseEvent, current: Node) => {
   d3.selectAll<SVGAElement, Node>(".group")
     .filter((d: Node) => d.id === current.id)
+    .classed("active", false);
+  d3.selectAll<SVGAElement, NodeLink>("line")
+    .filter(
+      (d: NodeLink) =>
+        (d.target as Node).id === current.id ||
+        (d.source as Node).id === current.id
+    )
     .classed("active", false);
 };
 
