@@ -148,6 +148,10 @@ rect {
 }
 .node {
   fill: #555;
+  transition: stroke-width 1s;
+}
+.node.active {
+  stroke-width: 3px;
 }
 .fixed .node {
   stroke: #000;

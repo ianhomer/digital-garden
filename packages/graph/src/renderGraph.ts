@@ -4,6 +4,18 @@ import { Selection } from "d3";
 import collideRectangle from "./collideRectangle";
 import { Graph, GraphConfiguration, Node, NodeLink } from "./types";
 
+const onNodeMouseOver = (_: MouseEvent, current: Node) => {
+  d3.selectAll<SVGAElement, Node>(".node")
+    .filter((d: Node) => d.id === current.id)
+    .classed("active", true);
+};
+
+const onNodeMouseLeave = (_: MouseEvent, current: Node) => {
+  d3.selectAll<SVGAElement, Node>(".node")
+    .filter((d: Node) => d.id === current.id)
+    .classed("active", false);
+};
+
 const renderGraph = (
   graph: Graph,
   config: GraphConfiguration,
@@ -34,6 +46,8 @@ const renderGraph = (
 
   group
     .append("circle")
+    .on("mouseover", onNodeMouseOver)
+    .on("mouseleave", onNodeMouseLeave)
     .attr("r", config.getRadius)
     .classed("node", true)
     .append("title")
