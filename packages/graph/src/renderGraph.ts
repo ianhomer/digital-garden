@@ -5,13 +5,13 @@ import collideRectangle from "./collideRectangle";
 import { Graph, GraphConfiguration, Node, NodeLink } from "./types";
 
 const onNodeMouseOver = (_: MouseEvent, current: Node) => {
-  d3.selectAll<SVGAElement, Node>(".node")
+  d3.selectAll<SVGAElement, Node>(".group")
     .filter((d: Node) => d.id === current.id)
     .classed("active", true);
 };
 
 const onNodeMouseLeave = (_: MouseEvent, current: Node) => {
-  d3.selectAll<SVGAElement, Node>(".node")
+  d3.selectAll<SVGAElement, Node>(".group")
     .filter((d: Node) => d.id === current.id)
     .classed("active", false);
 };
@@ -41,6 +41,7 @@ const renderGraph = (
     .classed("group", true)
     .classed("wanted", (d: Node) => d.wanted)
     .classed("fixed", (d: Node) => d.fx !== undefined)
+    .classed("hideLabel", (d: Node) => !d.showLabel)
     .attr("transform", `translate(${config.xOffset},${config.yOffset})`)
     .raise();
 
@@ -56,7 +57,6 @@ const renderGraph = (
   const anchor = group.append("a").attr("href", (d: Node) => `/${d.id}`);
 
   anchor
-    .filter((d: Node) => d.showLabel)
     .append("text")
     .text((d: Node) => d.title)
     .attr("x", config.xOffsetText)
