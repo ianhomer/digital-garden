@@ -109,6 +109,18 @@ div.container-directive {
   padding-left: 1em;
   margin-bottom: 1em;
 }
+g a text {
+  transition: font-size 5s ease-in;
+}
+
+g.hideLabel:not(.active) a text {
+  font-size: 0em;
+}
+
+g.active a text {
+  transition: font-size 0s;
+  font-size: 3.5em;
+}
 
 text.label {
   font-size: 1.5em;
@@ -148,10 +160,6 @@ rect {
 }
 .node {
   fill: #555;
-  transition: stroke-width 1s;
-}
-.node.active {
-  stroke-width: 3px;
 }
 .fixed .node {
   stroke: #000;
