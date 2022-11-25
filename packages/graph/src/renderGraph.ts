@@ -172,9 +172,6 @@ const newTick =
     yOffset: number
   ) =>
   () => {
-    if (Math.random() > 0.4) {
-      return;
-    }
     svg
       .selectAll<SVGLineElement, NodeLink>(".link")
       .attr("x1", (d) => ((d.source as GraphNode).x ?? 0) + xOffset)
