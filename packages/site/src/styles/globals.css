@@ -140,6 +140,16 @@ text.context-label {
   opacity: 0.4;
 }
 
+g.depth-0 {
+  z-index: 100;
+}
+g.depth-1 {
+  z-index: 90;
+}
+g.depth-2 {
+  z-index: 80;
+}
+
 .depth-0 text {
   font-size: 3em;
 }
@@ -162,6 +172,7 @@ text.context-label {
 
 line {
   stroke-width: 1;
+  z-index: 10;
 }
 line.depth-0 {
   stroke-width: 5;
