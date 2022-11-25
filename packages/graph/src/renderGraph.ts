@@ -5,46 +5,56 @@ import { Selection } from "d3";
 import collideRectangle from "./collideRectangle";
 import findDeepLinks from "./findDeepLinks";
 import { createGraph } from "./graph";
-import { GraphConfiguration, Node, NodeLink } from "./types";
+import {
+  GardenSimulation,
+  Graph,
+  GraphConfiguration,
+  GraphNode,
+  NodeLink,
+} from "./types";
 
-const onNodeMouseOver = (_: MouseEvent, current: Node) => {
-  d3.selectAll<SVGAElement, Node>(".group")
-    .filter((d: Node) => d.id === current.id)
+const onNodeMouseOver = (_: MouseEvent, current: GraphNode) => {
+  d3.selectAll<SVGAElement, GraphNode>(".group")
+    .filter((d: GraphNode) => d.id === current.id)
     .classed("active", true);
   d3.selectAll<SVGAElement, NodeLink>("line")
     .filter(
       (d: NodeLink) =>
-        (d.target as Node).id === current.id ||
-        (d.source as Node).id === current.id
+        (d.target as GraphNode).id === current.id ||
+        (d.source as GraphNode).id === current.id
     )
     .classed("active", true);
 };
 
-const onNodeMouseLeave = (_: MouseEvent, current: Node) => {
-  d3.selectAll<SVGAElement, Node>(".group")
-    .filter((d: Node) => d.id === current.id)
+const onNodeMouseLeave = (_: MouseEvent, current: GraphNode) => {
+  d3.selectAll<SVGAElement, GraphNode>(".group")
+    .filter((d: GraphNode) => d.id === current.id)
     .classed("active", false);
   d3.selectAll<SVGAElement, NodeLink>("line")
     .filter(
       (d: NodeLink) =>
-        (d.target as Node).id === current.id ||
-        (d.source as Node).id === current.id
+        (d.target as GraphNode).id === current.id ||
+        (d.source as GraphNode).id === current.id
     )
     .classed("active", false);
 };
 
-const renderGraph = (
-  start: string,
-  data: Things,
-  depth: number,
+function clamp(x: number, low: number, high: number) {
+  return x < low ? low : x > high ? high : x;
+}
+
+function dragstart(this: SVGElement) {
+  d3.select(this).classed("fixed", true);
+}
+
+const update = (
   config: GraphConfiguration,
+  graph: Graph,
   svg: Selection<null, unknown, null, undefined>
 ) => {
-  const graph = createGraph(start, data, findDeepLinks(data, start, depth));
-
   svg.selectAll("svg > *").remove();
 
-  const link = svg
+  svg
     .selectAll<SVGLineElement, NodeLink>(".link")
     .data(graph.links)
     .join("line")
@@ -55,14 +65,14 @@ const renderGraph = (
     .attr("y2", config.yOffset);
 
   const group = svg
-    .selectAll<SVGElement, Node>(".group")
+    .selectAll<SVGElement, GraphNode>(".group")
     .data(graph.nodes)
     .join("g")
     .classed("group", true)
-    .classed("wanted", (d: Node) => d.wanted)
-    .classed("fixed", (d: Node) => d.fx !== undefined)
-    .classed("hideLabel", (d: Node) => !d.showLabel)
-    .attr("class", function (d: Node) {
+    .classed("wanted", (d: GraphNode) => d.wanted)
+    .classed("fixed", (d: GraphNode) => d.fx !== undefined)
+    .classed("hideLabel", (d: GraphNode) => !d.showLabel)
+    .attr("class", function (d: GraphNode) {
       return `${d3.select(this).attr("class")} depth-${d.depth}`;
     })
     .attr("transform", `translate(${config.xOffset},${config.yOffset})`)
@@ -75,67 +85,71 @@ const renderGraph = (
     .attr("r", config.getRadius)
     .classed("node", true)
     .append("title")
-    .text((d: Node) => d.id);
+    .text((d: GraphNode) => d.id);
 
-  const anchor = group.append("a").attr("href", (d: Node) => `/${d.id}`);
+  const anchor = group.append("a").attr("href", (d: GraphNode) => `/${d.id}`);
 
   anchor
     .append("text")
     .on("mouseover", onNodeMouseOver)
     .on("mouseleave", onNodeMouseLeave)
-    .text((d: Node) => d.title)
+    .text((d: GraphNode) => d.title)
     .attr("x", config.xOffsetText)
     .attr("y", config.yOffsetText)
     .classed("label", true)
     .append("text");
 
   anchor
-    .filter((d: Node) => d.showLabel && !!d.context)
+    .filter((d: GraphNode) => d.showLabel && !!d.context)
     .append("text")
     .attr("x", config.xOffsetText)
     .attr(
       "y",
-      (d: Node) =>
+      (d: GraphNode) =>
         config.yOffsetText -
         ((depth) => (depth == 0 ? 40 : depth == 1 ? 30 : depth == 2 ? 15 : 10))(
           d.depth
         )
     )
-    .text((d: Node) => d.context || "n/a")
+    .text((d: GraphNode) => d.context || "n/a")
     .classed("context-label", true);
+};
 
-  function tick() {
-    if (Math.random() > 0.4) {
+const newTick =
+  (
+    svg: Selection<null, unknown, null, undefined>,
+    xOffset: number,
+    yOffset: number
+  ) =>
+  () => {
+    if (Math.random() > 0.8) {
       return;
     }
-    link
-      .attr("x1", (d) => ((d.source as Node).x ?? 0) + config.xOffset)
-      .attr("y1", (d) => ((d.source as Node).y ?? 0) + config.yOffset)
-      .attr("x2", (d) => ((d.target as Node).x ?? 0) + config.xOffset)
-      .attr("y2", (d) => ((d.target as Node).y ?? 0) + config.yOffset);
-    group.attr(
-      "transform",
-      (d: Node) =>
-        "translate(" +
-        (config.xOffset + (d?.x ?? 0)) +
-        "," +
-        (config.yOffset + (d?.y ?? 0)) +
-        ")"
-    );
-  }
+    svg
+      .selectAll<SVGLineElement, NodeLink>(".link")
+      .attr("x1", (d) => ((d.source as GraphNode).x ?? 0) + xOffset)
+      .attr("y1", (d) => ((d.source as GraphNode).y ?? 0) + yOffset)
+      .attr("x2", (d) => ((d.target as GraphNode).x ?? 0) + xOffset)
+      .attr("y2", (d) => ((d.target as GraphNode).y ?? 0) + yOffset);
+    svg
+      .selectAll<SVGElement, GraphNode>(".group")
+      .attr(
+        "transform",
+        (d: GraphNode) =>
+          "translate(" +
+          (xOffset + (d?.x ?? 0)) +
+          "," +
+          (yOffset + (d?.y ?? 0)) +
+          ")"
+      );
+  };
 
-  function click(
-    this: SVGElement,
-    event: { currentTarget: never },
-    d: Node
-  ): void {
-    delete d.fx;
-    delete d.fy;
-    d3.select(event.currentTarget).classed("fixed", false);
-    simulation.alpha(0).restart();
-  }
-
-  const forceLink = d3.forceLink<Node, NodeLink>(graph.links);
+const applySimulation = (
+  config: GraphConfiguration,
+  graph: Graph,
+  svg: Selection<null, unknown, null, undefined>
+): GardenSimulation => {
+  const tick = newTick(svg, config.xOffset, config.yOffset);
 
   const simulation = d3
     .forceSimulation()
@@ -161,8 +175,9 @@ const renderGraph = (
     .force("forceY", d3.forceY(0).strength(config.centerForceFactor))
     .force(
       "link",
-      forceLink
-        .id((d: Node) => d.id)
+      d3
+        .forceLink<GraphNode, NodeLink>(graph.links)
+        .id((d: GraphNode) => d.id)
         .strength(config.getLinkForce(config.linkForceFactor))
     )
     .tick(50)
@@ -172,12 +187,15 @@ const renderGraph = (
     .on("tick", tick)
     .on("end", tick);
 
-  function dragstart(this: SVGElement) {
-    d3.select(this).classed("fixed", true);
-  }
-
-  function clamp(x: number, low: number, high: number) {
-    return x < low ? low : x > high ? high : x;
+  function click(
+    this: SVGElement,
+    event: { currentTarget: never },
+    d: GraphNode
+  ): void {
+    delete d.fx;
+    delete d.fy;
+    d3.select(event.currentTarget).classed("fixed", false);
+    simulation.alpha(0).restart();
   }
 
   function dragged(
@@ -198,11 +216,26 @@ const renderGraph = (
   }
 
   const drag = d3
-    .drag<SVGElement, Node, never>()
+    .drag<SVGElement, GraphNode, never>()
     .on("start", dragstart)
     .on("drag", dragged);
 
-  group.call(drag).on("click", click);
+  svg.selectAll<SVGElement, GraphNode>(".group").call(drag).on("click", click);
+
+  return simulation as GardenSimulation;
+};
+
+const renderGraph = (
+  start: string,
+  data: Things,
+  depth: number,
+  config: GraphConfiguration,
+  svg: Selection<null, unknown, null, undefined>
+) => {
+  const graph = createGraph(start, data, findDeepLinks(data, start, depth));
+
+  update(config, graph, svg);
+  return applySimulation(config, graph, svg);
 };
 
 export default renderGraph;

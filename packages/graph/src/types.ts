@@ -1,11 +1,13 @@
 import { LinkType } from "@garden/types";
 import { SimulationLinkDatum, SimulationNodeDatum } from "d3-force";
 
+export type GardenSimulation = d3.Simulation<SimulationNodeDatum, undefined>;
+
 export enum NodeType {
   Thing = "thing",
 }
 
-export interface Node extends SimulationNodeDatum {
+export interface GraphNode extends SimulationNodeDatum {
   id: string;
   title: string;
   context?: string;
@@ -16,13 +18,13 @@ export interface Node extends SimulationNodeDatum {
   wanted: boolean;
 }
 
-export interface NodeLink extends SimulationLinkDatum<Node> {
+export interface NodeLink extends SimulationLinkDatum<GraphNode> {
   type: LinkType;
   depth: number;
 }
 
 export interface Graph {
-  nodes: Node[];
+  nodes: GraphNode[];
   links: NodeLink[];
 }
 
@@ -45,8 +47,8 @@ export interface GraphConfiguration {
   chargeForceFactor: number;
   centerForceFactor: number;
 
-  getRadius: (d: Node | SimulationNodeDatum) => number;
-  getCharge: (factor: number) => (d: Node | SimulationNodeDatum) => number;
+  getRadius: (d: GraphNode | SimulationNodeDatum) => number;
+  getCharge: (factor: number) => (d: GraphNode | SimulationNodeDatum) => number;
   linkTypeForceWeight: (linkType: LinkType) => number;
   linkDepthForceWeight: (link: NodeLink) => number;
   getLinkForce: (factor: number) => (d: NodeLink) => number;
