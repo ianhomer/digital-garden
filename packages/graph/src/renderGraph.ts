@@ -142,6 +142,7 @@ const update = (
       },
       (update) => {
         update
+          .classed("hideLabel", (d: GraphNode) => !d.showLabel)
           .classed("depth-0", (d: GraphNode) => d.depth == 0)
           .classed("depth-1", (d: GraphNode) => d.depth == 1)
           .classed("depth-2", (d: GraphNode) => d.depth == 2)
