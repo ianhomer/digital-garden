@@ -122,7 +122,7 @@ const newTick =
     yOffset: number
   ) =>
   () => {
-    if (Math.random() > 0.8) {
+    if (Math.random() > 0.4) {
       return;
     }
     svg
