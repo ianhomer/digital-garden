@@ -6,10 +6,16 @@ import {
   GardenSimulation,
   Graph,
   GraphConfiguration,
-  Node,
+  GraphNode,
   NodeLink,
 } from "./types";
 
-export type { GardenSimulation, Graph, GraphConfiguration, Node, NodeLink };
+export type {
+  GardenSimulation,
+  Graph,
+  GraphConfiguration,
+  GraphNode as Node,
+  NodeLink,
+};
 
 export { collideRectangle, defaultConfiguration, itemName, renderGraph };

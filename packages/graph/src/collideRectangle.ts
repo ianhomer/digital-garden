@@ -1,26 +1,26 @@
 import { quadtree, QuadtreeInternalNode, QuadtreeLeaf } from "d3-quadtree";
 
-import { Node } from "./types";
+import { GraphNode } from "./types";
 
-function x(d: Node) {
+function x(d: GraphNode) {
   return (d.x ?? 0) + (d.vx ?? 0);
 }
 
-function y(d: Node) {
+function y(d: GraphNode) {
   return (d.y ?? 0) + (d.vy ?? 0);
 }
 
-function xCenterOfBox(d: Node, box: number[]) {
+function xCenterOfBox(d: GraphNode, box: number[]) {
   return (d.x ?? 0) + box[0] + box[2] / 2;
 }
 
-function yCenterOfBox(d: Node, box: number[]) {
+function yCenterOfBox(d: GraphNode, box: number[]) {
   return (d.y ?? 0) + box[1] + box[3] / 2;
 }
 
 // box is [x,y,width,height]
-function apply(d: Node, box: number[], strength: number) {
-  return (quad: QuadtreeInternalNode<Node> | QuadtreeLeaf<Node>) => {
+function apply(d: GraphNode, box: number[], strength: number) {
+  return (quad: QuadtreeInternalNode<GraphNode> | QuadtreeLeaf<GraphNode>) => {
     if (quad.length == 4 || !d) {
       return;
     }
@@ -58,7 +58,7 @@ function apply(d: Node, box: number[], strength: number) {
 }
 
 export default function (box: number[], strength = 0.4) {
-  let nodes: Node[];
+  let nodes: GraphNode[];
   let iterations = 1;
   function force() {
     const tree = quadtree(nodes, x, y);
@@ -76,6 +76,6 @@ export default function (box: number[], strength = 0.4) {
     return arguments.length ? ((iterations = +_), force) : iterations;
   };
 
-  force.initialize = (_: Node[]) => (nodes = _);
+  force.initialize = (_: GraphNode[]) => (nodes = _);
   return force;
 }
