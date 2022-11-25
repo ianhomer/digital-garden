@@ -5,7 +5,13 @@ import { Selection } from "d3";
 import collideRectangle from "./collideRectangle";
 import findDeepLinks from "./findDeepLinks";
 import { createGraph } from "./graph";
-import { GraphConfiguration, Node, NodeLink } from "./types";
+import {
+  GardenSimulation,
+  Graph,
+  GraphConfiguration,
+  Node,
+  NodeLink,
+} from "./types";
 
 const onNodeMouseOver = (_: MouseEvent, current: Node) => {
   d3.selectAll<SVGAElement, Node>(".group")
@@ -33,18 +39,22 @@ const onNodeMouseLeave = (_: MouseEvent, current: Node) => {
     .classed("active", false);
 };
 
-const renderGraph = (
-  start: string,
-  data: Things,
-  depth: number,
+function clamp(x: number, low: number, high: number) {
+  return x < low ? low : x > high ? high : x;
+}
+
+function dragstart(this: SVGElement) {
+  d3.select(this).classed("fixed", true);
+}
+
+const update = (
   config: GraphConfiguration,
+  graph: Graph,
   svg: Selection<null, unknown, null, undefined>
 ) => {
-  const graph = createGraph(start, data, findDeepLinks(data, start, depth));
-
   svg.selectAll("svg > *").remove();
 
-  const link = svg
+  svg
     .selectAll<SVGLineElement, NodeLink>(".link")
     .data(graph.links)
     .join("line")
@@ -103,39 +113,43 @@ const renderGraph = (
     )
     .text((d: Node) => d.context || "n/a")
     .classed("context-label", true);
+};
 
-  function tick() {
-    if (Math.random() > 0.4) {
+const newTick =
+  (
+    svg: Selection<null, unknown, null, undefined>,
+    xOffset: number,
+    yOffset: number
+  ) =>
+  () => {
+    if (Math.random() > 0.8) {
       return;
     }
-    link
-      .attr("x1", (d) => ((d.source as Node).x ?? 0) + config.xOffset)
-      .attr("y1", (d) => ((d.source as Node).y ?? 0) + config.yOffset)
-      .attr("x2", (d) => ((d.target as Node).x ?? 0) + config.xOffset)
-      .attr("y2", (d) => ((d.target as Node).y ?? 0) + config.yOffset);
-    group.attr(
-      "transform",
-      (d: Node) =>
-        "translate(" +
-        (config.xOffset + (d?.x ?? 0)) +
-        "," +
-        (config.yOffset + (d?.y ?? 0)) +
-        ")"
-    );
-  }
+    svg
+      .selectAll<SVGLineElement, NodeLink>(".link")
+      .attr("x1", (d) => ((d.source as Node).x ?? 0) + xOffset)
+      .attr("y1", (d) => ((d.source as Node).y ?? 0) + yOffset)
+      .attr("x2", (d) => ((d.target as Node).x ?? 0) + xOffset)
+      .attr("y2", (d) => ((d.target as Node).y ?? 0) + yOffset);
+    svg
+      .selectAll<SVGElement, Node>(".group")
+      .attr(
+        "transform",
+        (d: Node) =>
+          "translate(" +
+          (xOffset + (d?.x ?? 0)) +
+          "," +
+          (yOffset + (d?.y ?? 0)) +
+          ")"
+      );
+  };
 
-  function click(
-    this: SVGElement,
-    event: { currentTarget: never },
-    d: Node
-  ): void {
-    delete d.fx;
-    delete d.fy;
-    d3.select(event.currentTarget).classed("fixed", false);
-    simulation.alpha(0).restart();
-  }
-
-  const forceLink = d3.forceLink<Node, NodeLink>(graph.links);
+const applySimulation = (
+  config: GraphConfiguration,
+  graph: Graph,
+  svg: Selection<null, unknown, null, undefined>
+): GardenSimulation => {
+  const tick = newTick(svg, config.xOffset, config.yOffset);
 
   const simulation = d3
     .forceSimulation()
@@ -161,7 +175,8 @@ const renderGraph = (
     .force("forceY", d3.forceY(0).strength(config.centerForceFactor))
     .force(
       "link",
-      forceLink
+      d3
+        .forceLink<Node, NodeLink>(graph.links)
         .id((d: Node) => d.id)
         .strength(config.getLinkForce(config.linkForceFactor))
     )
@@ -172,12 +187,15 @@ const renderGraph = (
     .on("tick", tick)
     .on("end", tick);
 
-  function dragstart(this: SVGElement) {
-    d3.select(this).classed("fixed", true);
-  }
-
-  function clamp(x: number, low: number, high: number) {
-    return x < low ? low : x > high ? high : x;
+  function click(
+    this: SVGElement,
+    event: { currentTarget: never },
+    d: Node
+  ): void {
+    delete d.fx;
+    delete d.fy;
+    d3.select(event.currentTarget).classed("fixed", false);
+    simulation.alpha(0).restart();
   }
 
   function dragged(
@@ -202,7 +220,22 @@ const renderGraph = (
     .on("start", dragstart)
     .on("drag", dragged);
 
-  group.call(drag).on("click", click);
+  svg.selectAll<SVGElement, Node>(".group").call(drag).on("click", click);
+
+  return simulation as GardenSimulation;
+};
+
+const renderGraph = (
+  start: string,
+  data: Things,
+  depth: number,
+  config: GraphConfiguration,
+  svg: Selection<null, unknown, null, undefined>
+) => {
+  const graph = createGraph(start, data, findDeepLinks(data, start, depth));
+
+  update(config, graph, svg);
+  return applySimulation(config, graph, svg);
 };
 
 export default renderGraph;

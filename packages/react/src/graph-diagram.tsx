@@ -2,10 +2,12 @@ import {
   defaultConfiguration,
   GraphConfiguration,
   renderGraph,
+  Node,
+  GardenSimulation,
 } from "@garden/graph";
 import { Things } from "@garden/types";
 import * as d3 from "d3";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface GraphDiagramProps {
   width: number;
@@ -29,6 +31,7 @@ export default function GraphDiagram({
   width,
 }: GraphDiagramProps) {
   const ref = useRef(null);
+  const [simulation, setSimulation] = useState<GardenSimulation | null>(null);
 
   const viewHeight = height * scale;
   const viewWidth = width * scale;
@@ -39,13 +42,16 @@ export default function GraphDiagram({
   }, [width, height, scale]);
 
   useEffect(() => {
+    if (simulation) {
+      simulation.stop();
+    }
     const svg = d3.select(ref.current);
     const graphConfiguration: GraphConfiguration = defaultConfiguration({
       viewWidth,
       viewHeight,
     });
 
-    renderGraph(start, data, depth, graphConfiguration, svg);
+    setSimulation(renderGraph(start, data, depth, graphConfiguration, svg));
   }, [width, height, data]);
 
   return (

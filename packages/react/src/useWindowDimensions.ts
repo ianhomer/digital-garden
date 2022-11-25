@@ -16,11 +16,14 @@ export default function useWindowDimensions() {
     getWindowDimensions()
   );
 
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
+  let timer: number;
 
+  function handleResize() {
+    clearTimeout(timer);
+    timer = setTimeout(() => setWindowDimensions(getWindowDimensions()), 500);
+  }
+
+  useEffect(() => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);

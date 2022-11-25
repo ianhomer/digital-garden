@@ -1,6 +1,8 @@
 import { LinkType } from "@garden/types";
 import { SimulationLinkDatum, SimulationNodeDatum } from "d3-force";
 
+export type GardenSimulation = d3.Simulation<Node, undefined>;
+
 export enum NodeType {
   Thing = "thing",
 }
