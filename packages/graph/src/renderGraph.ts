@@ -72,6 +72,8 @@ const renderGraph = (
 
   anchor
     .append("text")
+    .on("mouseover", onNodeMouseOver)
+    .on("mouseleave", onNodeMouseLeave)
     .text((d: Node) => d.title)
     .attr("x", config.xOffsetText)
     .attr("y", config.yOffsetText)
