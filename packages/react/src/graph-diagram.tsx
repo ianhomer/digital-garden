@@ -1,9 +1,8 @@
 import {
   defaultConfiguration,
+  GardenSimulation,
   GraphConfiguration,
   renderGraph,
-  Node,
-  GardenSimulation,
 } from "@garden/graph";
 import { Things } from "@garden/types";
 import * as d3 from "d3";
