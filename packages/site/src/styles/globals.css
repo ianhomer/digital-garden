@@ -139,26 +139,37 @@ text.context-label {
   font-size: 0.8em;
   opacity: 0.4;
 }
-text.depth-3 {
+
+.depth-0 text {
+  font-size: 3em;
+}
+.depth-1 text {
+  font-size: 2em;
+}
+.depth-2 text {
+  font-size: 1em;
+}
+.depth-3 text {
   font-size: 0.5em;
   fill: #aaa;
 }
-text.depth-2 {
-  font-size: 1em;
-}
-text.depth-1 {
-  font-size: 2em;
-}
-text.depth-null {
+.depth-null text {
   fill: #f00;
 }
-text.depth-Infinity {
+.depth-Infinity text {
   fill: #f00;
 }
 
-text.depth-0 {
-  font-size: 3em;
+line {
+  stroke-width: 1;
 }
+line.depth-0 {
+  stroke-width: 5;
+}
+line.depth-1 {
+  stroke-width: 2;
+}
+
 rect {
   fill: none;
   stroke: #000;

@@ -95,9 +95,6 @@ const defaultConfiguration = (
       }
     },
 
-    getLinkStrokeWidth: (d: NodeLink) =>
-      d.depth == 0 ? 8 : d.depth == 1 ? 2 : 1,
-
     linkTypeForceWeight,
     linkDepthForceWeight,
 
