@@ -1,17 +1,19 @@
 import {
   defaultConfiguration,
-  Graph,
   GraphConfiguration,
   renderGraph,
 } from "@garden/graph";
+import { Things } from "@garden/types";
 import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 
 interface GraphDiagramProps {
-  graph: Graph;
   width: number;
   height: number;
   scale: number;
+  start: string;
+  depth: number;
+  data: Things;
 }
 
 GraphDiagram.defaultProps = {
@@ -19,10 +21,12 @@ GraphDiagram.defaultProps = {
 };
 
 export default function GraphDiagram({
-  graph,
-  width,
+  data,
+  depth,
   height,
   scale,
+  start,
+  width,
 }: GraphDiagramProps) {
   const ref = useRef(null);
 
@@ -41,8 +45,8 @@ export default function GraphDiagram({
       viewHeight,
     });
 
-    renderGraph(graph, graphConfiguration, svg);
-  }, [width, height, graph]);
+    renderGraph(start, data, depth, graphConfiguration, svg);
+  }, [width, height, data]);
 
   return (
     <>
