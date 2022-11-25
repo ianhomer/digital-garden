@@ -44,7 +44,7 @@ function clamp(x: number, low: number, high: number) {
 }
 
 function dragstart(this: SVGElement) {
-  // d3.select(this).classed("fixed", true);
+  d3.select(this).classed("fixed", true);
 }
 
 const update = (
@@ -93,7 +93,7 @@ const update = (
           })
           .classed("group", true)
           .classed("wanted", (d: GraphNode) => d.wanted)
-          // .classed("fixed", (d: GraphNode) => d.fx !== undefined)
+          .classed("fixed", (d: GraphNode) => d.fx !== undefined)
           .classed("hideLabel", (d: GraphNode) => !d.showLabel)
           .attr("transform", `translate(${config.xOffset},${config.yOffset})`)
           .raise();
@@ -102,7 +102,7 @@ const update = (
           .append("circle")
           .on("mouseover", onNodeMouseOver)
           .on("mouseleave", onNodeMouseLeave)
-          .on("click", updateEvent)
+          .on("dblclick", updateEvent)
           .attr("r", config.getRadius)
           .classed("node", true)
           .append("title")
@@ -147,8 +147,10 @@ const update = (
           .classed("depth-1", (d: GraphNode) => d.depth == 1)
           .classed("depth-2", (d: GraphNode) => d.depth == 2)
           .classed("depth-3", (d: GraphNode) => d.depth == 3)
+          .classed("fixed", (d: GraphNode) => d.fx !== undefined)
           .attr("data-depth", (d: GraphNode) => d.depth)
           .attr("data-start", start)
+          .attr("data-fx", (d: GraphNode) => d.fx ?? -1)
           .select("circle")
           .attr("r", config.getRadius);
         return update;
@@ -241,7 +243,7 @@ const applySimulation = (
   ): void {
     delete d.fx;
     delete d.fy;
-    // d3.select(event.currentTarget).classed("fixed", false);
+    d3.select(event.currentTarget).classed("fixed", false);
     simulation.alpha(0).restart();
   }
 
@@ -259,6 +261,9 @@ const applySimulation = (
       config.topBoundary,
       config.bottomBoundary
     );
+    d3.select(this)
+      .attr("data-fx", event.subject.fx)
+      .attr("data-fy", event.subject.fy);
     simulation.alpha(1).restart();
   }
 
@@ -267,10 +272,7 @@ const applySimulation = (
     .on("start", dragstart)
     .on("drag", dragged);
 
-  svg
-    .selectAll<SVGElement, GraphNode>(".group")
-    .call(drag)
-    .on("dblclick", click);
+  svg.selectAll<SVGElement, GraphNode>(".group").call(drag).on("click", click);
 
   return simulation as GardenSimulation;
 };

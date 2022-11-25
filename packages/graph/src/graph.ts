@@ -51,7 +51,13 @@ export const createGraph = (
     nodes: [
       ...names.map((name: string) => {
         const depth = getDepth(name);
-        const fixedCoordinates = {};
+        const fixedCoordinates =
+          depth == 0
+            ? {
+                fx: 0,
+                fy: 0,
+              }
+            : {};
         const siblings = countSiblings(name, links, depth);
         const thing = things[name];
         return {
