@@ -49,9 +49,18 @@ function dragstart(this: SVGElement) {
 
 const update = (
   config: GraphConfiguration,
-  graph: Graph,
-  svg: Selection<null, unknown, null, undefined>
+  svg: Selection<null, unknown, null, undefined>,
+  start: string,
+  data: Things,
+  depth: number,
+  updateEvent: (
+    this: SVGElement,
+    event: { currentTarget: never },
+    d: GraphNode
+  ) => void
 ) => {
+  const graph = createGraph(start, data, findDeepLinks(data, start, depth));
+
   svg.selectAll("svg > *").remove();
 
   svg
@@ -82,6 +91,7 @@ const update = (
     .append("circle")
     .on("mouseover", onNodeMouseOver)
     .on("mouseleave", onNodeMouseLeave)
+    .on("click", updateEvent)
     .attr("r", config.getRadius)
     .classed("node", true)
     .append("title")
@@ -113,6 +123,10 @@ const update = (
     )
     .text((d: GraphNode) => d.context || "n/a")
     .classed("context-label", true);
+
+  svg.selectAll<SVGElement, GraphNode>(".group");
+
+  return applySimulation(config, graph, svg);
 };
 
 const newTick =
@@ -220,7 +234,10 @@ const applySimulation = (
     .on("start", dragstart)
     .on("drag", dragged);
 
-  svg.selectAll<SVGElement, GraphNode>(".group").call(drag).on("click", click);
+  svg
+    .selectAll<SVGElement, GraphNode>(".group")
+    .call(drag)
+    .on("dblclick", click);
 
   return simulation as GardenSimulation;
 };
@@ -232,10 +249,16 @@ const renderGraph = (
   config: GraphConfiguration,
   svg: Selection<null, unknown, null, undefined>
 ) => {
-  const graph = createGraph(start, data, findDeepLinks(data, start, depth));
+  function updateEvent(
+    this: SVGElement,
+    event: { currentTarget: never },
+    d: GraphNode
+  ): void {
+    console.log(`Starting from ${d.id}`);
+    update(config, svg, d.id, data, depth, updateEvent);
+  }
 
-  update(config, graph, svg);
-  return applySimulation(config, graph, svg);
+  return update(config, svg, start, data, depth, updateEvent);
 };
 
 export default renderGraph;
