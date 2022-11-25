@@ -24,9 +24,6 @@ function apply(d: GraphNode, box: number[], strength: number) {
     if (quad.length == 4 || !d) {
       return;
     }
-    if (!quad.data.showLabel) {
-      return;
-    }
     if ((quad.data.index ?? 0) <= (d.index ?? 0)) {
       // only apply force between 2 nodes once
       return;
@@ -66,9 +63,7 @@ export default function (box: number[], strength = 0.4) {
     // When iterations set then we automatically run given number of iterations
     for (let k = 0; k < iterations; ++k) {
       for (const d of nodes) {
-        if (d.showLabel) {
-          tree.visit(apply(d, box, strength));
-        }
+        tree.visit(apply(d, box, strength));
       }
     }
   }
@@ -76,6 +71,7 @@ export default function (box: number[], strength = 0.4) {
     return arguments.length ? ((iterations = +_), force) : iterations;
   };
 
-  force.initialize = (_: GraphNode[]) => (nodes = _);
+  force.initialize = (_: GraphNode[]) =>
+    (nodes = _.filter((node) => node.showLabel));
   return force;
 }
