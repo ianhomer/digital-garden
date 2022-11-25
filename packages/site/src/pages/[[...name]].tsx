@@ -5,9 +5,8 @@ import {
   isNotValidPageName,
 } from "@garden/garden";
 import {
-  createGraph,
-  findDeepLinks,
   GraphDiagram,
+  itemName,
   markdownToHtml,
   useKey,
   useWindowDimensions,
@@ -50,12 +49,6 @@ function ItemPage({ item }: Props) {
       });
   }, []);
 
-  const itemName = () => {
-    const childName = window.location.hash;
-    const compositeName = item.name + childName;
-    return compositeName in data ? compositeName : item.name;
-  };
-
   return (
     <>
       <div className="container max-w-4xl px-4">
@@ -63,14 +56,12 @@ function ItemPage({ item }: Props) {
       </div>
       {!isLoading && data && (
         <GraphDiagram
-          width={width}
+          data={data}
+          depth={depth}
           height={height}
           scale={scale}
-          graph={createGraph(
-            itemName(),
-            data,
-            findDeepLinks(data, itemName(), depth)
-          )}
+          start={itemName(data, item.name)}
+          width={width}
         />
       )}
     </>

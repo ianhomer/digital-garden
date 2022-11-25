@@ -1,8 +1,11 @@
+import { Things } from "@garden/types";
 import * as d3 from "d3";
 import { Selection } from "d3";
 
 import collideRectangle from "./collideRectangle";
-import { Graph, GraphConfiguration, Node, NodeLink } from "./types";
+import findDeepLinks from "./findDeepLinks";
+import { createGraph } from "./graph";
+import { GraphConfiguration, Node, NodeLink } from "./types";
 
 const onNodeMouseOver = (_: MouseEvent, current: Node) => {
   d3.selectAll<SVGAElement, Node>(".group")
@@ -31,10 +34,14 @@ const onNodeMouseLeave = (_: MouseEvent, current: Node) => {
 };
 
 const renderGraph = (
-  graph: Graph,
+  start: string,
+  data: Things,
+  depth: number,
   config: GraphConfiguration,
   svg: Selection<null, unknown, null, undefined>
 ) => {
+  const graph = createGraph(start, data, findDeepLinks(data, start, depth));
+
   svg.selectAll("svg > *").remove();
 
   const link = svg
