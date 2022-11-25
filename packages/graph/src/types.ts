@@ -47,7 +47,6 @@ export interface GraphConfiguration {
 
   getRadius: (d: Node | SimulationNodeDatum) => number;
   getCharge: (factor: number) => (d: Node | SimulationNodeDatum) => number;
-  getLinkStrokeWidth: (d: NodeLink) => number;
   linkTypeForceWeight: (linkType: LinkType) => number;
   linkDepthForceWeight: (link: NodeLink) => number;
   getLinkForce: (factor: number) => (d: NodeLink) => number;

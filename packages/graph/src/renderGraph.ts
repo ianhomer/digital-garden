@@ -48,12 +48,11 @@ const renderGraph = (
     .selectAll<SVGLineElement, NodeLink>(".link")
     .data(graph.links)
     .join("line")
-    .attr("class", (d: NodeLink) => `link ${d.type}`)
+    .attr("class", (d: NodeLink) => `link ${d.type} depth-${d.depth}`)
     .attr("x1", config.xOffset)
     .attr("x2", config.xOffset)
     .attr("y1", config.yOffset)
-    .attr("y2", config.yOffset)
-    .attr("stroke-width", config.getLinkStrokeWidth);
+    .attr("y2", config.yOffset);
 
   const group = svg
     .selectAll<SVGElement, Node>(".group")
@@ -63,6 +62,9 @@ const renderGraph = (
     .classed("wanted", (d: Node) => d.wanted)
     .classed("fixed", (d: Node) => d.fx !== undefined)
     .classed("hideLabel", (d: Node) => !d.showLabel)
+    .attr("class", function (d: Node) {
+      return `${d3.select(this).attr("class")} depth-${d.depth}`;
+    })
     .attr("transform", `translate(${config.xOffset},${config.yOffset})`)
     .raise();
 
@@ -84,7 +86,6 @@ const renderGraph = (
     .text((d: Node) => d.title)
     .attr("x", config.xOffsetText)
     .attr("y", config.yOffsetText)
-    .attr("class", (d: Node) => `depth-${d.depth}`)
     .classed("label", true)
     .append("text");
 
