@@ -148,8 +148,6 @@ const update = (
           .classed("depth-2", (d: GraphNode) => d.depth == 2)
           .classed("depth-3", (d: GraphNode) => d.depth == 3)
           .classed("fixed", (d: GraphNode) => d.fx !== undefined)
-          .attr("data-depth", (d: GraphNode) => d.depth)
-          .attr("data-start", start)
           .attr("data-fx", (d: GraphNode) => d.fx ?? -1)
           .select("circle")
           .attr("r", config.getRadius);
@@ -284,7 +282,8 @@ const applySimulation = (
     .on("start", dragstart)
     .on("drag", dragged);
 
-  svg.selectAll<SVGElement, GraphNode>(".group").call(drag).on("click", click);
+  svg.selectAll<SVGElement, GraphNode>(".group").call(drag);
+  svg.selectAll<SVGElement, GraphNode>(".circle").on("click", click);
 };
 
 const renderGraph = (
