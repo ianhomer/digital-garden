@@ -28,6 +28,17 @@ export interface Graph {
   links: NodeLink[];
 }
 
+export interface InitialNodeValue {
+  x?: number;
+  y?: number;
+  vx?: number;
+  vy?: number;
+  fx?: number;
+  fy?: number;
+}
+
+export type InitialNodeValueMap = { [key: string]: InitialNodeValue };
+
 export interface GraphConfiguration {
   viewWidth: number;
   viewHeight: number;

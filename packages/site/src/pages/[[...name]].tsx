@@ -8,12 +8,14 @@ import {
   GraphDiagram,
   itemName,
   markdownToHtml,
+  toParentName,
   useKey,
   useWindowDimensions,
 } from "@garden/react";
 import { Item, Link, Things } from "@garden/types";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 
 import { garden } from "../components/siteGarden";
 
@@ -26,11 +28,16 @@ interface Props {
 }
 
 function ItemPage({ item }: Props) {
+  const ref = useRef<null | HTMLDivElement>(null);
+
+  const [callbackInvoked, setCallbackInvoked] = useState(false);
+
   const { height, width } = useWindowDimensions();
   const [depth, setDepth] = useState(3);
   const [scale, setScale] = useState(1.3);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<Things>({});
+  const router = useRouter();
 
   useKey((key) => setDepth(parseInt(key)), ["1", "2", "3", "4", "5"]);
 
@@ -39,6 +46,12 @@ function ItemPage({ item }: Props) {
   useKey(() => setScale(scale), ["c"]);
   useKey(() => setScale(scale * 1.3), ["x"]);
   useKey(() => setScale(scale * 1.5), ["z"]);
+
+  useEffect(() => {
+    if (callbackInvoked) {
+      ref.current?.scrollIntoView();
+    }
+  }, [callbackInvoked, item]);
 
   useEffect(() => {
     fetch("/garden.json")
@@ -54,15 +67,26 @@ function ItemPage({ item }: Props) {
       <div className="container max-w-4xl px-4">
         <div dangerouslySetInnerHTML={{ __html: item.content }} />
       </div>
+
       {!isLoading && data && (
-        <GraphDiagram
-          data={data}
-          depth={depth}
-          height={height}
-          scale={scale}
-          start={itemName(data, item.name)}
-          width={width}
-        />
+        <div ref={ref}>
+          <GraphDiagram
+            data={data}
+            depth={depth}
+            height={height}
+            scale={scale}
+            start={itemName(data, item.name)}
+            width={width}
+            callback={(name, event) => {
+              const href = "/" + name;
+              const baseHref = toParentName(href) ?? href;
+              router.push(baseHref, undefined, { scroll: false });
+              // window.history.replaceState(null, name, href);
+              setCallbackInvoked(true);
+              // event.preventDefault();
+            }}
+          />
+        </div>
       )}
     </>
   );

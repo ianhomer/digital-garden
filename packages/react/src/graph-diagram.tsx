@@ -15,6 +15,7 @@ interface GraphDiagramProps {
   start: string;
   depth: number;
   data: Things;
+  callback: (name: string, event: MouseEvent) => void;
 }
 
 GraphDiagram.defaultProps = {
@@ -28,6 +29,7 @@ export default function GraphDiagram({
   scale,
   start,
   width,
+  callback,
 }: GraphDiagramProps) {
   const ref = useRef(null);
   const [simulation, setSimulation] = useState<GardenSimulation | null>(null);
@@ -50,7 +52,9 @@ export default function GraphDiagram({
       viewHeight,
     });
 
-    setSimulation(renderGraph(start, data, depth, graphConfiguration, svg));
+    setSimulation(
+      renderGraph(start, data, depth, graphConfiguration, svg, callback)
+    );
   }, [width, height, data]);
 
   return (
