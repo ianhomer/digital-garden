@@ -13,6 +13,7 @@ import {
 } from "@garden/react";
 import { Item, Link, Things } from "@garden/types";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { garden } from "../components/siteGarden";
@@ -31,6 +32,7 @@ function ItemPage({ item }: Props) {
   const [scale, setScale] = useState(1.3);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<Things>({});
+  const router = useRouter();
 
   useKey((key) => setDepth(parseInt(key)), ["1", "2", "3", "4", "5"]);
 
@@ -51,9 +53,6 @@ function ItemPage({ item }: Props) {
 
   return (
     <>
-      <div className="container max-w-4xl px-4">
-        <div dangerouslySetInnerHTML={{ __html: item.content }} />
-      </div>
       {!isLoading && data && (
         <GraphDiagram
           data={data}
@@ -62,8 +61,16 @@ function ItemPage({ item }: Props) {
           scale={scale}
           start={itemName(data, item.name)}
           width={width}
+          callback={(name) => {
+            const href = "/" + name;
+            router.push(href);
+            // window.history.replaceState(null, name, href);
+          }}
         />
       )}
+      <div className="container max-w-4xl px-4">
+        <div dangerouslySetInnerHTML={{ __html: item.content }} />
+      </div>
     </>
   );
 }

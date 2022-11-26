@@ -303,7 +303,6 @@ const renderGraph = (
     event: { currentTarget: never },
     d: GraphNode
   ): void {
-    console.log(`Updating with ${JSON.stringify(d)}`);
     callback(d.id);
     update(config, svg, simulation, d.id, data, depth, updateEvent, false);
   }
