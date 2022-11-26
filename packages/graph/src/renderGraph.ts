@@ -10,6 +10,7 @@ import {
   Graph,
   GraphConfiguration,
   GraphNode,
+  InitialNodeValueMap,
   NodeLink,
 } from "./types";
 
@@ -61,7 +62,35 @@ const update = (
   ) => void,
   firstTime = true
 ) => {
-  const graph = createGraph(start, data, findDeepLinks(data, start, depth));
+  const selectGroup = svg.selectAll<SVGElement, GraphNode>(".group");
+
+  const initialValues: InitialNodeValueMap = {};
+  selectGroup.data().forEach((node: GraphNode) => {
+    initialValues[node.id] = {
+      // x: node.x ?? undefined,
+      // y: node.y ?? undefined,
+      // vx: node.vx ?? undefined,
+      // vy: node.vy ?? undefined
+    };
+  });
+
+  const graph = createGraph(
+    start,
+    data,
+    initialValues,
+    findDeepLinks(data, start, depth)
+  );
+
+  function click(
+    this: SVGElement,
+    event: { currentTarget: never },
+    d: GraphNode
+  ): void {
+    delete d.fx;
+    delete d.fy;
+    d3.select(this.parentElement).classed("fixed", false);
+    simulation.alpha(1).restart();
+  }
 
   svg
     .selectAll<SVGLineElement, NodeLink>(".link")
@@ -83,8 +112,7 @@ const update = (
       (exit) => exit.remove()
     );
 
-  svg
-    .selectAll<SVGElement, GraphNode>(".group")
+  selectGroup
     .data(graph.nodes, (d: GraphNode) => d.id)
     .join(
       (entry) => {
@@ -104,6 +132,7 @@ const update = (
           .append("circle")
           .on("mouseover", onNodeMouseOver)
           .on("mouseleave", onNodeMouseLeave)
+          .on("click", click)
           .attr("r", config.getRadius)
           .classed("node", true)
           .append("title")
@@ -148,7 +177,6 @@ const update = (
           .classed("depth-2", (d: GraphNode) => d.depth == 2)
           .classed("depth-3", (d: GraphNode) => d.depth == 3)
           .classed("fixed", (d: GraphNode) => d.fx !== undefined)
-          .attr("data-fx", (d: GraphNode) => d.fx ?? -1)
           .select("circle")
           .attr("r", config.getRadius);
         return update;
@@ -180,16 +208,15 @@ const newTick =
       .attr("y2", (d) => ((d?.target as GraphNode)?.y ?? 0) + yOffset);
     svg
       .selectAll<SVGElement, GraphNode>(".group")
-      .attr("transform", (d: GraphNode) => {
-        // console.log(d.id);
-        return (
+      .attr(
+        "transform",
+        (d: GraphNode) =>
           "translate(" +
           (xOffset + (d?.x ?? 0)) +
           "," +
           (yOffset + (d?.y ?? 0)) +
           ")"
-        );
-      });
+      );
   };
 
 const createSimulation = (
@@ -246,17 +273,6 @@ const applySimulation = (
     setTimeout(() => simulation.tick(50).alpha(1).restart(), 10);
   }
 
-  function click(
-    this: SVGElement,
-    event: { currentTarget: never },
-    d: GraphNode
-  ): void {
-    delete d.fx;
-    delete d.fy;
-    d3.select(event.currentTarget).classed("fixed", false);
-    simulation.alpha(0).restart();
-  }
-
   function dragged(
     this: SVGElement,
     event: { subject: { fx: number; fy: number }; x: number; y: number }
@@ -283,7 +299,6 @@ const applySimulation = (
     .on("drag", dragged);
 
   svg.selectAll<SVGElement, GraphNode>(".group").call(drag);
-  svg.selectAll<SVGElement, GraphNode>(".circle").on("click", click);
 };
 
 const renderGraph = (
@@ -296,6 +311,7 @@ const renderGraph = (
     console.log(`Linked to ${name} : ${event}`);
   }
 ) => {
+  console.log("rendering graph");
   const simulation = createSimulation(config, svg);
   function updateEvent(
     this: HTMLAnchorElement,
