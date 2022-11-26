@@ -220,7 +220,7 @@ const createSimulation = (
     )
     .force("forceX", d3.forceX(0).strength(config.centerForceFactor))
     .force("forceY", d3.forceY(0).strength(config.centerForceFactor))
-    .tick(50)
+    .tick(80)
     .alpha(1)
     .alphaMin(0.02)
     .alphaDecay(0.05)
@@ -245,7 +245,7 @@ const applySimulation = (
 
   if (!firstTime) {
     // hack - delay restart otherwise simulation doesn't apply. Not sure why.
-    setTimeout(() => simulation.alpha(1).restart(), 10);
+    setTimeout(() => simulation.tick(50).alpha(1).restart(), 10);
   }
 
   function click(
