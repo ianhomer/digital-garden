@@ -56,7 +56,7 @@ const update = (
   depth: number,
   updateEvent: (
     this: HTMLAnchorElement,
-    event: { currentTarget: never },
+    event: MouseEvent,
     d: GraphNode
   ) => void,
   firstTime = true
@@ -293,17 +293,17 @@ const renderGraph = (
   depth: number,
   config: GraphConfiguration,
   svg: Selection<null, unknown, null, undefined>,
-  callback = (name: string) => {
-    console.log(`Linked to ${name}`);
+  callback = (name: string, event: MouseEvent) => {
+    console.log(`Linked to ${name} : ${event}`);
   }
 ) => {
   const simulation = createSimulation(config, svg);
   function updateEvent(
     this: HTMLAnchorElement,
-    event: { currentTarget: never },
+    event: MouseEvent,
     d: GraphNode
   ): void {
-    callback(d.id);
+    callback(d.id, event);
     update(config, svg, simulation, d.id, data, depth, updateEvent, false);
   }
 

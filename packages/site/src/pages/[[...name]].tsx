@@ -8,6 +8,7 @@ import {
   GraphDiagram,
   itemName,
   markdownToHtml,
+  toParentName,
   useKey,
   useWindowDimensions,
 } from "@garden/react";
@@ -27,7 +28,7 @@ interface Props {
 }
 
 function ItemPage({ item }: Props) {
-  const ref = useRef(null);
+  const ref = useRef<null | HTMLDivElement>(null);
 
   const [callbackInvoked, setCallbackInvoked] = useState(false);
 
@@ -76,11 +77,13 @@ function ItemPage({ item }: Props) {
             scale={scale}
             start={itemName(data, item.name)}
             width={width}
-            callback={(name) => {
+            callback={(name, event) => {
               const href = "/" + name;
-              router.push(href);
-              setCallbackInvoked(true);
+              const baseHref = toParentName(href) ?? href;
+              router.push(baseHref, undefined, { scroll: false });
               // window.history.replaceState(null, name, href);
+              setCallbackInvoked(true);
+              // event.preventDefault();
             }}
           />
         </div>

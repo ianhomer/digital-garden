@@ -15,7 +15,7 @@ interface GraphDiagramProps {
   start: string;
   depth: number;
   data: Things;
-  callback: (name: string) => void;
+  callback: (name: string, event: MouseEvent) => void;
 }
 
 GraphDiagram.defaultProps = {
