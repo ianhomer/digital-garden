@@ -14,7 +14,7 @@ import {
 import { Item, Link, Things } from "@garden/types";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { garden } from "../components/siteGarden";
 
@@ -27,6 +27,10 @@ interface Props {
 }
 
 function ItemPage({ item }: Props) {
+  const ref = useRef(null);
+
+  const [callbackInvoked, setCallbackInvoked] = useState(false);
+
   const { height, width } = useWindowDimensions();
   const [depth, setDepth] = useState(3);
   const [scale, setScale] = useState(1.3);
@@ -43,6 +47,12 @@ function ItemPage({ item }: Props) {
   useKey(() => setScale(scale * 1.5), ["z"]);
 
   useEffect(() => {
+    if (callbackInvoked) {
+      ref.current?.scrollIntoView();
+    }
+  }, [callbackInvoked, item]);
+
+  useEffect(() => {
     fetch("/garden.json")
       .then((res) => res.json())
       .then((data) => {
@@ -53,24 +63,28 @@ function ItemPage({ item }: Props) {
 
   return (
     <>
-      {!isLoading && data && (
-        <GraphDiagram
-          data={data}
-          depth={depth}
-          height={height}
-          scale={scale}
-          start={itemName(data, item.name)}
-          width={width}
-          callback={(name) => {
-            const href = "/" + name;
-            router.push(href);
-            // window.history.replaceState(null, name, href);
-          }}
-        />
-      )}
       <div className="container max-w-4xl px-4">
         <div dangerouslySetInnerHTML={{ __html: item.content }} />
       </div>
+
+      {!isLoading && data && (
+        <div ref={ref}>
+          <GraphDiagram
+            data={data}
+            depth={depth}
+            height={height}
+            scale={scale}
+            start={itemName(data, item.name)}
+            width={width}
+            callback={(name) => {
+              const href = "/" + name;
+              router.push(href);
+              setCallbackInvoked(true);
+              // window.history.replaceState(null, name, href);
+            }}
+          />
+        </div>
+      )}
     </>
   );
 }
