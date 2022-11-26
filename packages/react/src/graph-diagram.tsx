@@ -42,7 +42,6 @@ export default function GraphDiagram({
 
   useEffect(() => {
     if (simulation) {
-      console.log("Stopping previous simulation");
       simulation.stop();
     }
     const svg = d3.select(ref.current);

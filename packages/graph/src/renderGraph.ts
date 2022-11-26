@@ -58,9 +58,9 @@ const update = (
     this: HTMLAnchorElement,
     event: { currentTarget: never },
     d: GraphNode
-  ) => void
+  ) => void,
+  firstTime = true
 ) => {
-  console.log(`Updating from ${start}`);
   const graph = createGraph(start, data, findDeepLinks(data, start, depth));
 
   svg
@@ -164,44 +164,41 @@ const update = (
 
   svg.selectAll<SVGElement, GraphNode>(".group");
 
-  return applySimulation(config, graph, svg, simulation);
+  return applySimulation(config, graph, svg, simulation, firstTime);
 };
 
-const newTick = (
-  svg: Selection<null, unknown, null, undefined>,
-  xOffset: number,
-  yOffset: number
-) => {
-  const time = new Date().getTime();
-  console.log(`Creating new tick : ${time}`);
-  return () => {
-    console.log(`tick : ${time}`);
+const newTick =
+  (
+    svg: Selection<null, unknown, null, undefined>,
+    xOffset: number,
+    yOffset: number
+  ) =>
+  () => {
     svg
       .selectAll<SVGLineElement, NodeLink>(".link")
-      .attr("x1", (d) => ((d.source as GraphNode).x ?? 0) + xOffset)
-      .attr("y1", (d) => ((d.source as GraphNode).y ?? 0) + yOffset)
-      .attr("x2", (d) => ((d.target as GraphNode).x ?? 0) + xOffset)
-      .attr("y2", (d) => ((d.target as GraphNode).y ?? 0) + yOffset);
+      .attr("x1", (d) => ((d?.source as GraphNode)?.x ?? 0) + xOffset)
+      .attr("y1", (d) => ((d?.source as GraphNode)?.y ?? 0) + yOffset)
+      .attr("x2", (d) => ((d?.target as GraphNode)?.x ?? 0) + xOffset)
+      .attr("y2", (d) => ((d?.target as GraphNode)?.y ?? 0) + yOffset);
     svg
       .selectAll<SVGElement, GraphNode>(".group")
-      .attr(
-        "transform",
-        (d: GraphNode) =>
+      .attr("transform", (d: GraphNode) => {
+        // console.log(d.id);
+        return (
           "translate(" +
           (xOffset + (d?.x ?? 0)) +
           "," +
           (yOffset + (d?.y ?? 0)) +
           ")"
-      );
+        );
+      });
   };
-};
 
 const createSimulation = (
   config: GraphConfiguration,
   svg: Selection<null, unknown, null, undefined>
 ): GardenSimulation => {
   const tick = newTick(svg, config.xOffset, config.yOffset);
-
   return d3
     .forceSimulation()
     .force(
@@ -223,7 +220,7 @@ const createSimulation = (
     )
     .force("forceX", d3.forceX(0).strength(config.centerForceFactor))
     .force("forceY", d3.forceY(0).strength(config.centerForceFactor))
-    .tick(0)
+    .tick(50)
     .alpha(1)
     .alphaMin(0.02)
     .alphaDecay(0.05)
@@ -234,7 +231,8 @@ const applySimulation = (
   config: GraphConfiguration,
   graph: Graph,
   svg: Selection<null, unknown, null, undefined>,
-  simulation: GardenSimulation
+  simulation: GardenSimulation,
+  firstTime: boolean
 ) => {
   simulation.nodes(graph.nodes);
   simulation.force(
@@ -245,10 +243,10 @@ const applySimulation = (
       .strength(config.getLinkForce(config.linkForceFactor))
   );
 
-  console.log("Restarting simulation");
-  console.log(simulation);
-  console.log(simulation.alpha());
-  simulation.alpha(1).stop().restart();
+  if (!firstTime) {
+    // hack - delay restart otherwise simulation doesn't apply. Not sure why.
+    setTimeout(() => simulation.alpha(1).restart(), 10);
+  }
 
   function click(
     this: SVGElement,
@@ -307,7 +305,7 @@ const renderGraph = (
   ): void {
     console.log(`Updating with ${JSON.stringify(d)}`);
     callback(d.id);
-    update(config, svg, simulation, d.id, data, depth, updateEvent);
+    update(config, svg, simulation, d.id, data, depth, updateEvent, false);
   }
 
   update(config, svg, simulation, start, data, depth, updateEvent);
