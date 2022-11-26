@@ -33,6 +33,8 @@ export interface InitialNodeValue {
   y?: number;
   vx?: number;
   vy?: number;
+  fx?: number;
+  fy?: number;
 }
 
 export type InitialNodeValueMap = { [key: string]: InitialNodeValue };

@@ -48,6 +48,13 @@ function dragstart(this: SVGElement) {
   d3.select(this).classed("fixed", true);
 }
 
+const safeInitialValue = (x: number | null | undefined) => {
+  if (!x || Math.abs(x) < 0.1) {
+    return undefined;
+  }
+  return x;
+};
+
 const update = (
   config: GraphConfiguration,
   svg: Selection<null, unknown, null, undefined>,
@@ -67,10 +74,10 @@ const update = (
   const initialValues: InitialNodeValueMap = {};
   selectGroup.data().forEach((node: GraphNode) => {
     initialValues[node.id] = {
-      // x: node.x ?? undefined,
-      // y: node.y ?? undefined,
-      // vx: node.vx ?? undefined,
-      // vy: node.vy ?? undefined
+      x: safeInitialValue(node.x),
+      y: safeInitialValue(node.y),
+      fx: safeInitialValue(node.fx),
+      fy: safeInitialValue(node.fy),
     };
   });
 
@@ -270,7 +277,7 @@ const applySimulation = (
 
   if (!firstTime) {
     // hack - delay restart otherwise simulation doesn't apply. Not sure why.
-    setTimeout(() => simulation.tick(50).alpha(1).restart(), 10);
+    setTimeout(() => simulation.alpha(1).restart(), 10);
   }
 
   function dragged(
@@ -287,9 +294,6 @@ const applySimulation = (
       config.topBoundary,
       config.bottomBoundary
     );
-    d3.select(this)
-      .attr("data-fx", event.subject.fx)
-      .attr("data-fy", event.subject.fy);
     simulation.alpha(1).restart();
   }
 
