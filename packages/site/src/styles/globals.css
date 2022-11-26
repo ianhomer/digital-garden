@@ -119,7 +119,7 @@ div.container-directive {
   margin-bottom: 1em;
 }
 g a text {
-  transition: font-size 5s ease-in;
+  transition: font-size 4s ease-in;
 }
 
 g.hideLabel:not(.active) a text {
