@@ -50,15 +50,17 @@ function dragstart(this: SVGElement) {
 const update = (
   config: GraphConfiguration,
   svg: Selection<null, unknown, null, undefined>,
+  simulation: GardenSimulation,
   start: string,
   data: Things,
   depth: number,
   updateEvent: (
-    this: SVGElement,
+    this: HTMLAnchorElement,
     event: { currentTarget: never },
     d: GraphNode
   ) => void
 ) => {
+  console.log(`Updating from ${start}`);
   const graph = createGraph(start, data, findDeepLinks(data, start, depth));
 
   svg
@@ -102,15 +104,13 @@ const update = (
           .append("circle")
           .on("mouseover", onNodeMouseOver)
           .on("mouseleave", onNodeMouseLeave)
-          .on("dblclick", updateEvent)
           .attr("r", config.getRadius)
           .classed("node", true)
           .append("title")
           .text((d: GraphNode) => d.id);
 
-        const anchor = group
-          .append("a")
-          .attr("href", (d: GraphNode) => `/${d.id}`);
+        const anchor = group.append("a").on("click", updateEvent);
+        // .attr("href", (d: GraphNode) => `/${d.id}`);
 
         anchor
           .append("text")
@@ -164,16 +164,18 @@ const update = (
 
   svg.selectAll<SVGElement, GraphNode>(".group");
 
-  return applySimulation(config, graph, svg);
+  return applySimulation(config, graph, svg, simulation);
 };
 
-const newTick =
-  (
-    svg: Selection<null, unknown, null, undefined>,
-    xOffset: number,
-    yOffset: number
-  ) =>
-  () => {
+const newTick = (
+  svg: Selection<null, unknown, null, undefined>,
+  xOffset: number,
+  yOffset: number
+) => {
+  const time = new Date().getTime();
+  console.log(`Creating new tick : ${time}`);
+  return () => {
+    console.log(`tick : ${time}`);
     svg
       .selectAll<SVGLineElement, NodeLink>(".link")
       .attr("x1", (d) => ((d.source as GraphNode).x ?? 0) + xOffset)
@@ -192,17 +194,16 @@ const newTick =
           ")"
       );
   };
+};
 
-const applySimulation = (
+const createSimulation = (
   config: GraphConfiguration,
-  graph: Graph,
   svg: Selection<null, unknown, null, undefined>
 ): GardenSimulation => {
   const tick = newTick(svg, config.xOffset, config.yOffset);
 
-  const simulation = d3
+  return d3
     .forceSimulation()
-    .nodes(graph.nodes)
     .force(
       "charge",
       d3.forceManyBody().strength(config.getCharge(config.chargeForceFactor))
@@ -222,19 +223,32 @@ const applySimulation = (
     )
     .force("forceX", d3.forceX(0).strength(config.centerForceFactor))
     .force("forceY", d3.forceY(0).strength(config.centerForceFactor))
-    .force(
-      "link",
-      d3
-        .forceLink<GraphNode, NodeLink>(graph.links)
-        .id((d: GraphNode) => d.id)
-        .strength(config.getLinkForce(config.linkForceFactor))
-    )
     .tick(0)
     .alpha(1)
     .alphaMin(0.02)
     .alphaDecay(0.05)
-    .on("tick", tick)
-    .on("end", tick);
+    .on("tick", tick);
+};
+
+const applySimulation = (
+  config: GraphConfiguration,
+  graph: Graph,
+  svg: Selection<null, unknown, null, undefined>,
+  simulation: GardenSimulation
+) => {
+  simulation.nodes(graph.nodes);
+  simulation.force(
+    "link",
+    d3
+      .forceLink<GraphNode, NodeLink>(graph.links)
+      .id((d: GraphNode) => d.id)
+      .strength(config.getLinkForce(config.linkForceFactor))
+  );
+
+  console.log("Restarting simulation");
+  console.log(simulation);
+  console.log(simulation.alpha());
+  simulation.alpha(1).stop().restart();
 
   function click(
     this: SVGElement,
@@ -273,8 +287,6 @@ const applySimulation = (
     .on("drag", dragged);
 
   svg.selectAll<SVGElement, GraphNode>(".group").call(drag).on("click", click);
-
-  return simulation as GardenSimulation;
 };
 
 const renderGraph = (
@@ -282,17 +294,24 @@ const renderGraph = (
   data: Things,
   depth: number,
   config: GraphConfiguration,
-  svg: Selection<null, unknown, null, undefined>
+  svg: Selection<null, unknown, null, undefined>,
+  callback = (name: string) => {
+    console.log(`Linked to ${name}`);
+  }
 ) => {
+  const simulation = createSimulation(config, svg);
   function updateEvent(
-    this: SVGElement,
+    this: HTMLAnchorElement,
     event: { currentTarget: never },
     d: GraphNode
   ): void {
-    update(config, svg, d.id, data, depth, updateEvent);
+    console.log(`Updating with ${JSON.stringify(d)}`);
+    callback(d.id);
+    update(config, svg, simulation, d.id, data, depth, updateEvent);
   }
 
-  return update(config, svg, start, data, depth, updateEvent);
+  update(config, svg, simulation, start, data, depth, updateEvent);
+  return simulation;
 };
 
 export default renderGraph;
