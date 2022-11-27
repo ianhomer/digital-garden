@@ -315,7 +315,6 @@ const renderGraph = (
     console.log(`Linked to ${name} : ${event}`);
   }
 ) => {
-  console.log("rendering graph");
   const simulation = createSimulation(config, svg);
   function updateEvent(
     this: HTMLAnchorElement,
