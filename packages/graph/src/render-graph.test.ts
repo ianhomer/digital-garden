@@ -3,8 +3,8 @@ import { findAllByText } from "@testing-library/dom";
 import * as d3 from "d3";
 import { BaseType } from "d3";
 
-import defaultConfiguration from "./defaultConfiguration";
-import renderGraph from "./renderGraph";
+import defaultConfiguration from "./default-configuration";
+import renderGraph from "./render-graph";
 import { GraphConfiguration } from "./types";
 
 describe("render graph", () => {
