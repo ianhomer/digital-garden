@@ -1,6 +1,6 @@
 import { getAllItems } from "@garden/garden";
 
-import { garden } from "../../components/siteGarden";
+import { garden } from "../../components/site-garden";
 
 type AllData = {
   items: string[];

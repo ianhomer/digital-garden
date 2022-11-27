@@ -1,8 +1,8 @@
 import { Things } from "@garden/types";
 import * as d3 from "d3";
 
-import collideRectangle from "./collideRectangle";
-import findDeepLinks from "./findDeepLinks";
+import collideRectangle from "./collide-rectangle";
+import findDeepLinks from "./find-deep-links";
 import { createGraph } from "./graph";
 import {
   GardenSimulation,

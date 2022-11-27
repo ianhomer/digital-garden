@@ -3,8 +3,8 @@ import { itemName } from "@garden/graph";
 import { markdownToHtml } from "@garden/markdown";
 
 import GraphDiagram from "./graph-diagram";
-import useKey from "./useKey";
-import useWindowDimensions from "./useWindowDimensions";
+import useKey from "./use-key";
+import useWindowDimensions from "./use-window-dimensions";
 
 export {
   GraphDiagram,

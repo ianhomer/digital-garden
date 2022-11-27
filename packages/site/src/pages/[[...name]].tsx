@@ -17,7 +17,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
-import { garden } from "../components/siteGarden";
+import { garden } from "../components/site-garden";
 
 interface Props {
   item: {
