@@ -48,7 +48,7 @@ export default function GraphDiagram({
     if (simulation) {
       simulation.stop();
     }
-    const svg = d3.select(ref.current);
+    const svg = d3.select<d3.BaseType, null>(ref.current);
     const graphConfiguration: GraphConfiguration = defaultConfiguration({
       viewWidth,
       viewHeight,
