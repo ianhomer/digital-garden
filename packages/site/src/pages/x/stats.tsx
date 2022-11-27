@@ -1,7 +1,7 @@
 import { findWantedThings } from "@garden/garden";
 import { LinkType } from "@garden/types";
 
-import { garden } from "../../components/siteGarden";
+import { garden } from "../../components/site-garden";
 
 type Props = {
   thingsCount: number;

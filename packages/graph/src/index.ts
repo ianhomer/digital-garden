@@ -1,7 +1,7 @@
-import collideRectangle from "./collideRectangle";
-import defaultConfiguration from "./defaultConfiguration";
-import itemName from "./itemName";
-import renderGraph from "./renderGraph";
+import collideRectangle from "./collide-rectangle";
+import defaultConfiguration from "./default-configuration";
+import itemName from "./item-name";
+import renderGraph from "./render-graph";
 import {
   GardenSimulation,
   Graph,
