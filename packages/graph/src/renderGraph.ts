@@ -57,7 +57,7 @@ const safeInitialValue = (x: number | null | undefined) => {
 
 const update = (
   config: GraphConfiguration,
-  svg: Selection<null, unknown, null, undefined>,
+  svg: Selection<d3.BaseType | null, unknown, HTMLElement | null, undefined>,
   simulation: GardenSimulation,
   start: string,
   data: Things,
@@ -202,7 +202,7 @@ const update = (
 
 const newTick =
   (
-    svg: Selection<null, unknown, null, undefined>,
+    svg: Selection<d3.BaseType | null, unknown, HTMLElement | null, undefined>,
     xOffset: number,
     yOffset: number
   ) =>
@@ -228,7 +228,7 @@ const newTick =
 
 const createSimulation = (
   config: GraphConfiguration,
-  svg: Selection<null, unknown, null, undefined>
+  svg: Selection<d3.BaseType | null, unknown, HTMLElement | null, undefined>
 ): GardenSimulation => {
   const tick = newTick(svg, config.xOffset, config.yOffset);
   return d3
@@ -262,7 +262,7 @@ const createSimulation = (
 const applySimulation = (
   config: GraphConfiguration,
   graph: Graph,
-  svg: Selection<null, unknown, null, undefined>,
+  svg: Selection<d3.BaseType | null, unknown, null, undefined>,
   simulation: GardenSimulation,
   firstTime: boolean
 ) => {
@@ -310,7 +310,7 @@ const renderGraph = (
   data: Things,
   depth: number,
   config: GraphConfiguration,
-  svg: Selection<null, unknown, null, undefined>,
+  svg: Selection<d3.BaseType | null, unknown, HTMLElement | null, undefined>,
   callback = (name: string, event: MouseEvent) => {
     console.log(`Linked to ${name} : ${event}`);
   }
