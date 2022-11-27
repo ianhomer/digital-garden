@@ -7,18 +7,29 @@ import GraphDiagram from "./graph-diagram";
 
 describe("graph diagram", () => {
   it("should render OK", async () => {
-    const data: Things = { root: { title: "root", links: [] } };
+    const data: Things = {
+      foo: { title: "foo", links: [{ name: "bar" }] },
+      bar: { title: "bar", links: [] },
+    };
     render(
       <GraphDiagram
         data={data}
         depth={3}
         height={400}
         scale={1}
-        start={"root"}
+        start={"foo"}
         width={400}
       />
     );
 
-    expect(screen.findByRole("figure")).toBeDefined();
+    const svg = await screen.findByRole("figure");
+    expect(svg).toBeDefined();
+    const fooNode = await screen.findAllByText("foo");
+    expect(fooNode).toBeDefined();
+    expect(fooNode).toHaveLength(2);
+    const nodes = svg.getElementsByTagName("circle");
+    expect(nodes).toHaveLength(2);
+    const links = svg.getElementsByTagName("line");
+    expect(links).toHaveLength(1);
   });
 });
