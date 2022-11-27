@@ -6,7 +6,7 @@
     "incremental": true,
     "isolatedModules": true,
     "lib": ["es2020", "dom"],
-    "module": "CommonJS",
+    "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
     "resolveJsonModule": true,
@@ -14,7 +14,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2020",
-    "jsx": "preserve"
+    "jsx": "react-jsx"
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*.ts", "src/**/*.tsx"]
