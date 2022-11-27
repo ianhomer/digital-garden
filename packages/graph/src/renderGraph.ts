@@ -1,6 +1,5 @@
 import { Things } from "@garden/types";
 import * as d3 from "d3";
-import { Selection } from "d3";
 
 import collideRectangle from "./collideRectangle";
 import findDeepLinks from "./findDeepLinks";
@@ -10,6 +9,7 @@ import {
   Graph,
   GraphConfiguration,
   GraphNode,
+  GraphSelect,
   InitialNodeValueMap,
   NodeLink,
 } from "./types";
@@ -57,7 +57,7 @@ const safeInitialValue = (x: number | null | undefined) => {
 
 const update = (
   config: GraphConfiguration,
-  svg: Selection<null, unknown, null, undefined>,
+  svg: GraphSelect,
   simulation: GardenSimulation,
   start: string,
   data: Things,
@@ -200,35 +200,29 @@ const update = (
   return applySimulation(config, graph, svg, simulation, firstTime);
 };
 
-const newTick =
-  (
-    svg: Selection<null, unknown, null, undefined>,
-    xOffset: number,
-    yOffset: number
-  ) =>
-  () => {
-    svg
-      .selectAll<SVGLineElement, NodeLink>(".link")
-      .attr("x1", (d) => ((d?.source as GraphNode)?.x ?? 0) + xOffset)
-      .attr("y1", (d) => ((d?.source as GraphNode)?.y ?? 0) + yOffset)
-      .attr("x2", (d) => ((d?.target as GraphNode)?.x ?? 0) + xOffset)
-      .attr("y2", (d) => ((d?.target as GraphNode)?.y ?? 0) + yOffset);
-    svg
-      .selectAll<SVGElement, GraphNode>(".group")
-      .attr(
-        "transform",
-        (d: GraphNode) =>
-          "translate(" +
-          (xOffset + (d?.x ?? 0)) +
-          "," +
-          (yOffset + (d?.y ?? 0)) +
-          ")"
-      );
-  };
+const newTick = (svg: GraphSelect, xOffset: number, yOffset: number) => () => {
+  svg
+    .selectAll<SVGLineElement, NodeLink>(".link")
+    .attr("x1", (d) => ((d?.source as GraphNode)?.x ?? 0) + xOffset)
+    .attr("y1", (d) => ((d?.source as GraphNode)?.y ?? 0) + yOffset)
+    .attr("x2", (d) => ((d?.target as GraphNode)?.x ?? 0) + xOffset)
+    .attr("y2", (d) => ((d?.target as GraphNode)?.y ?? 0) + yOffset);
+  svg
+    .selectAll<SVGElement, GraphNode>(".group")
+    .attr(
+      "transform",
+      (d: GraphNode) =>
+        "translate(" +
+        (xOffset + (d?.x ?? 0)) +
+        "," +
+        (yOffset + (d?.y ?? 0)) +
+        ")"
+    );
+};
 
 const createSimulation = (
   config: GraphConfiguration,
-  svg: Selection<null, unknown, null, undefined>
+  svg: GraphSelect
 ): GardenSimulation => {
   const tick = newTick(svg, config.xOffset, config.yOffset);
   return d3
@@ -262,7 +256,7 @@ const createSimulation = (
 const applySimulation = (
   config: GraphConfiguration,
   graph: Graph,
-  svg: Selection<null, unknown, null, undefined>,
+  svg: GraphSelect,
   simulation: GardenSimulation,
   firstTime: boolean
 ) => {
@@ -310,7 +304,7 @@ const renderGraph = (
   data: Things,
   depth: number,
   config: GraphConfiguration,
-  svg: Selection<null, unknown, null, undefined>,
+  svg: GraphSelect,
   callback = (name: string, event: MouseEvent) => {
     console.log(`Linked to ${name} : ${event}`);
   }

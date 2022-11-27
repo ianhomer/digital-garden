@@ -64,3 +64,10 @@ export interface GraphConfiguration {
   linkDepthForceWeight: (link: NodeLink) => number;
   getLinkForce: (factor: number) => (d: NodeLink) => number;
 }
+
+export type GraphSelect = d3.Selection<
+  d3.BaseType,
+  null,
+  HTMLElement | null,
+  undefined
+>;
