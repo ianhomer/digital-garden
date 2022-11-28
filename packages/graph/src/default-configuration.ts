@@ -11,9 +11,9 @@ const linkTypeForceWeight = (linkType: LinkType) => {
     case LinkType.Child:
       return 0.9;
     case LinkType.To:
-      return 0.6;
+      return 0.8;
     case LinkType.From:
-      return 0.5;
+      return 0.7;
     case LinkType.NaturalTo:
       return 0.45;
     case LinkType.NaturalFrom:
@@ -26,13 +26,7 @@ const linkTypeForceWeight = (linkType: LinkType) => {
 };
 
 const linkDepthForceWeight = (link: NodeLink) =>
-  link.depth == 0
-    ? 0.08
-    : link.depth == 1
-    ? 0.2
-    : link.depth == 2
-    ? 0.15
-    : 0.08;
+  link.depth == 0 ? 1.0 : link.depth == 1 ? 1.0 : link.depth == 2 ? 0.15 : 0.08;
 
 type DefaultConfigurationParameters = {
   viewWidth: number;
@@ -84,9 +78,9 @@ const defaultConfiguration = (
     getCharge: (factor: number) => (d: Node | SimulationNodeDatum) => {
       if ("depth" in d) {
         return d.depth == 0
-          ? -5000 * factor
+          ? -1000 * factor
           : d.depth == 1
-          ? -500 * factor
+          ? -2000 * factor
           : d.depth == 2
           ? -50 * factor
           : -5 * factor;
