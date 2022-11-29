@@ -1,6 +1,14 @@
 #!/usr/bin/env node
+const yargs = require("yargs");
+
 const { watch } = require("node:fs");
 // Spin up local garden
+
+const argv = yargs(process.argv.slice(2))
+  .options({
+    watch: { type: "boolean", default: true, alias: "w" },
+  })
+  .help("h", "help").argv;
 
 console.log("Local Garden");
 
@@ -30,16 +38,12 @@ const prepare = (filename) => {
 };
 prepare();
 
-const subprocess = require("child_process").spawn(
-  "pnpm",
-  ["dev:hot", "--", gardensDirectory],
-  {
-    cwd: siteRoot,
-    env,
-    detached: false,
-    stdio: "inherit",
-  }
-);
+const subprocess = require("child_process").spawn("pnpm", ["dev"], {
+  cwd: siteRoot,
+  env,
+  detached: false,
+  stdio: "inherit",
+});
 
 subprocess.on("error", (err) => {
   console.error(`Cannot start garden : ${err}`);
@@ -57,13 +61,16 @@ const debounce = (_prepare, timeout = 5000) => {
 
 const debouncedPrepare = debounce(prepare);
 
-watch(gardensDirectory, { recursive: true }, (eventType, filename) => {
-  if (
-    !filename.includes("/.") &&
-    !filename.startsWith(".") &&
-    filename.endsWith(".md")
-  ) {
-    console.log(`garden : ${eventType} : ${filename}`);
-    debouncedPrepare(filename);
-  }
-});
+if (argv["watch"]) {
+  console.log("(reloading on change)");
+  watch(gardensDirectory, { recursive: true }, (eventType, filename) => {
+    if (
+      !filename.includes("/.") &&
+      !filename.startsWith(".") &&
+      filename.endsWith(".md")
+    ) {
+      console.log(`garden : ${eventType} : ${filename}`);
+      debouncedPrepare(filename);
+    }
+  });
+}
