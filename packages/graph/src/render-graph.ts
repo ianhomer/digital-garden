@@ -44,10 +44,6 @@ function clamp(x: number, low: number, high: number) {
   return x < low ? low : x > high ? high : x;
 }
 
-function dragstart(this: SVGElement) {
-  d3.select(this).classed("fixed", true);
-}
-
 const safeInitialValue = (x: number | null | undefined) => {
   if (!x || Math.abs(x) < 0.1) {
     return undefined;
@@ -96,7 +92,7 @@ const update = (
     delete d.fx;
     delete d.fy;
     d3.select(this.parentElement).classed("fixed", false);
-    simulation.alpha(1).restart();
+    simulation.restart();
   }
 
   svg
@@ -246,10 +242,11 @@ const createSimulation = (
     )
     .force("forceX", d3.forceX(0).strength(config.centerForceFactor))
     .force("forceY", d3.forceY(0).strength(config.centerForceFactor))
-    .tick(80)
+    .tick(100)
     .alpha(1)
     .alphaMin(0.02)
-    .alphaDecay(0.05)
+    .alphaDecay(0.03)
+    .velocityDecay(0.5)
     .on("tick", tick);
 };
 
@@ -271,7 +268,11 @@ const applySimulation = (
 
   if (!firstTime) {
     // hack - delay restart otherwise simulation doesn't apply. Not sure why.
-    setTimeout(() => simulation.alpha(1).restart(), 10);
+    setTimeout(() => simulation.velocityDecay(0.6).alpha(0.5).restart(), 10);
+  }
+
+  function dragstart(this: SVGElement) {
+    d3.select(this).classed("fixed", true);
   }
 
   function dragged(
@@ -288,7 +289,7 @@ const applySimulation = (
       config.topBoundary,
       config.bottomBoundary
     );
-    simulation.alpha(1).restart();
+    simulation.alphaTarget(0.001).alphaDecay(0.02).alpha(0.3).restart();
   }
 
   const drag = d3
