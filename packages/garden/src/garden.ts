@@ -143,7 +143,7 @@ const generateMeta = async (
 
     if (filenameToPatch) {
       console.log(`Patching meta with : ${filenameToPatch}`);
-      populateMetaFromUri(filenameToPatch);
+      await populateMetaFromUri(filenameToPatch);
     } else {
       for await (const itemReference of repository.findAll()) {
         await populateMetaFromUri(repository.toUri(itemReference));
