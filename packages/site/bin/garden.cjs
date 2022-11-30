@@ -28,15 +28,16 @@ const prepare = (filename) => {
   if (filename) {
     args.push(`--patch=${filename}`);
   }
-  require("child_process").spawn("time", args, {
+  const childProcess = require("child_process").spawn("time", args, {
     cwd: siteRoot,
     env,
     detached: false,
     stdio: "inherit",
   });
   console.log(`Prepared in ${new Date().getTime() - start}s`);
+  return childProcess;
 };
-prepare();
+const prepareProcess = prepare();
 
 const subprocess = require("child_process").spawn("pnpm", ["dev"], {
   cwd: siteRoot,
@@ -47,6 +48,9 @@ const subprocess = require("child_process").spawn("pnpm", ["dev"], {
 
 subprocess.on("error", (err) => {
   console.error(`Cannot start garden : ${err}`);
+});
+subprocess.on("spawn", () => {
+  console.log("Starting garden");
 });
 
 const debounce = (_prepare, timeout = 5000) => {
@@ -63,14 +67,28 @@ const debouncedPrepare = debounce(prepare);
 
 if (argv["watch"]) {
   console.log("(reloading on change)");
-  watch(gardensDirectory, { recursive: true }, (eventType, filename) => {
-    if (
-      !filename.includes("/.") &&
-      !filename.startsWith(".") &&
-      filename.endsWith(".md")
-    ) {
-      console.log(`garden : ${eventType} : ${filename}`);
-      debouncedPrepare(filename);
+  const watcher = watch(
+    gardensDirectory,
+    { recursive: true },
+    (eventType, filename) => {
+      if (
+        !filename.includes("/.") &&
+        !filename.startsWith(".") &&
+        filename.endsWith(".md")
+      ) {
+        console.log(`garden : ${eventType} : ${filename}`);
+        debouncedPrepare(filename);
+      }
     }
+  );
+  process.on("SIGINT", () => {
+    console.log("Stopping watcher");
+    watcher.close();
   });
 }
+
+process.on("SIGINT", () => {
+  console.log("Closing garden");
+  subprocess.kill();
+  prepareProcess.kill();
+});
