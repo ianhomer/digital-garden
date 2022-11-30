@@ -47,6 +47,7 @@ export interface GardenConfig extends GardenRepositoryConfig {
   hasMultiple: boolean;
   liveMeta: boolean;
   verbose: boolean;
+  scripts: { [key: string]: string }[];
 }
 
 export type GardenOptions = Partial<GardenConfig>;
@@ -65,6 +66,7 @@ const defaultConfig: GardenConfig = {
   gardens: {},
   liveMeta: false,
   verbose: true,
+  scripts: [],
 };
 
 const loadThing = (

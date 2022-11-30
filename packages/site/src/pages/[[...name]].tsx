@@ -14,7 +14,9 @@ import {
 } from "@garden/react";
 import { Item, Link, Things } from "@garden/types";
 import { GetStaticPaths, GetStaticProps } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
+import Script from "next/script";
 import { useEffect, useRef, useState } from "react";
 
 import { garden } from "../components/site-garden";
@@ -25,9 +27,10 @@ interface Props {
     content: string;
     links: Link[];
   };
+  scripts: { [key: string]: string }[];
 }
 
-function ItemPage({ item }: Props) {
+function ItemPage({ item, scripts }: Props) {
   const ref = useRef<null | HTMLDivElement>(null);
 
   const [callbackInvoked, setCallbackInvoked] = useState(false);
@@ -64,6 +67,13 @@ function ItemPage({ item }: Props) {
 
   return (
     <>
+      <Head>
+        <title>{data[item.name]?.title || item.name}</title>
+      </Head>
+      {scripts.map((script, index) => (
+        <Script key={`script-${index}`} {...script} />
+      ))}
+
       <div className="container max-w-4xl px-4">
         <div dangerouslySetInnerHTML={{ __html: item.content }} />
       </div>
@@ -105,6 +115,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
         links,
         content,
       },
+      scripts: garden.config.scripts,
     },
   };
 };

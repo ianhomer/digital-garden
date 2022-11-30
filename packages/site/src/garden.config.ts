@@ -5,6 +5,8 @@ import { isAbsolute, join } from "path";
 dotenv.config({ path: "../../.env" });
 
 const gardenDirectoryFromEnv = process.env.GARDENS_DIRECTORY;
+const scriptsAsString = process.env.SCRIPTS || "[]";
+const scripts = JSON.parse(scriptsAsString);
 
 function resolveDirectory() {
   if (gardenDirectoryFromEnv) {
@@ -48,6 +50,7 @@ function generateDefault() {
   return toConfig({
     gardens,
     hasMultiple: !fs.existsSync(`${directory}/README.md`),
+    scripts,
     directory,
   });
 }
