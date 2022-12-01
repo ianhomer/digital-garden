@@ -41,6 +41,7 @@ const defaultConfiguration = (
   const minDimension = Math.min(viewWidth, viewHeight);
   const xOffset = viewWidth / 2;
   const yOffset = viewHeight / 2;
+  const depth = minDimension < 600 ? 1 : 3;
 
   return {
     viewHeight,
@@ -60,6 +61,7 @@ const defaultConfiguration = (
     chargeForceFactor: 1.5,
     centerForceFactor: Math.min(0.25 * (1100.0 / minDimension) ** 2, 0.3),
     boundarySize,
+    depth,
     getRadius: (d: Node | SimulationNodeDatum) => {
       if ("depth" in d) {
         return d.depth == 0

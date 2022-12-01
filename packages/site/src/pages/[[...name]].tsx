@@ -36,7 +36,6 @@ function ItemPage({ item, scripts }: Props) {
   const [callbackInvoked, setCallbackInvoked] = useState(false);
 
   const { height, width } = useWindowDimensions();
-  const [depth, setDepth] = useState(3);
   const [scale, setScale] = useState(1.3);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<Things>({});
@@ -82,7 +81,6 @@ function ItemPage({ item, scripts }: Props) {
         <div ref={ref}>
           <GraphDiagram
             data={data}
-            depth={depth}
             height={height}
             scale={scale}
             start={itemName(data, item.name)}
