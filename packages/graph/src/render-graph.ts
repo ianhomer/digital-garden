@@ -57,7 +57,6 @@ const update = (
   simulation: GardenSimulation,
   start: string,
   data: Things,
-  depth: number,
   updateEvent: (
     this: HTMLAnchorElement,
     event: MouseEvent,
@@ -81,7 +80,7 @@ const update = (
     start,
     data,
     initialValues,
-    findDeepLinks(data, start, depth)
+    findDeepLinks(data, start, config.depth)
   );
 
   function click(
@@ -303,7 +302,6 @@ const applySimulation = (
 const renderGraph = (
   start: string,
   data: Things,
-  depth: number,
   config: GraphConfiguration,
   svg: GraphSelect,
   callback = (name: string, event: MouseEvent) => {
@@ -317,10 +315,10 @@ const renderGraph = (
     d: GraphNode
   ): void {
     callback(d.id, event);
-    update(config, svg, simulation, d.id, data, depth, updateEvent, false);
+    update(config, svg, simulation, d.id, data, updateEvent, false);
   }
 
-  update(config, svg, simulation, start, data, depth, updateEvent);
+  update(config, svg, simulation, start, data, updateEvent);
   return simulation;
 };
 

@@ -58,6 +58,7 @@ export interface GraphConfiguration {
   chargeForceFactor: number;
   centerForceFactor: number;
 
+  depth: number;
   getRadius: (d: GraphNode | SimulationNodeDatum) => number;
   getCharge: (factor: number) => (d: GraphNode | SimulationNodeDatum) => number;
   linkTypeForceWeight: (linkType: LinkType) => number;

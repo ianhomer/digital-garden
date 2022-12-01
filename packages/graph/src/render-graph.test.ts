@@ -15,8 +15,8 @@ describe("render graph", () => {
     };
 
     const graphConfiguration: GraphConfiguration = defaultConfiguration({
-      viewWidth: 400,
-      viewHeight: 400,
+      viewWidth: 800,
+      viewHeight: 800,
     });
 
     const container = document.createElement("svg");
@@ -24,7 +24,7 @@ describe("render graph", () => {
       container.getRootNode() as BaseType
     );
 
-    renderGraph("foo", data, 3, graphConfiguration, svg);
+    renderGraph("foo", data, graphConfiguration, svg);
 
     const fooNode = await findAllByText(container, "foo");
     expect(fooNode).toBeDefined();

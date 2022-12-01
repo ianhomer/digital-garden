@@ -14,11 +14,10 @@ describe("graph diagram", () => {
     render(
       <GraphDiagram
         data={data}
-        depth={3}
-        height={400}
+        height={800}
         scale={1}
         start={"foo"}
-        width={400}
+        width={800}
       />
     );
 
