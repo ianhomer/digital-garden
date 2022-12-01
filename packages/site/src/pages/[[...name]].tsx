@@ -41,8 +41,6 @@ function ItemPage({ item, scripts }: Props) {
   const [data, setData] = useState<Things>({});
   const router = useRouter();
 
-  useKey((key) => setDepth(parseInt(key)), ["1", "2", "3", "4", "5"]);
-
   useKey(() => setScale(scale / 1.5), ["b"]);
   useKey(() => setScale(scale / 1.3), ["v"]);
   useKey(() => setScale(scale), ["c"]);
