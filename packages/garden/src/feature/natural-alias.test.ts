@@ -1,5 +1,5 @@
 import { justNaturalLinks, toLinkName } from "../links";
-import { dump, metaFrom } from "./feature-helpers";
+import { metaFrom } from "./feature-helpers";
 
 const foo = `
 # Foo
@@ -72,7 +72,7 @@ describe("natural language", () => {
       expect(meta.bars.links).toHaveLength(0);
     });
 
-    it.only("should have multiple natural wanted and multiple wanted alias", async () => {
+    it("should have multiple natural wanted and multiple wanted alias", async () => {
       const meta = await metaFrom({
         foo,
         fez,

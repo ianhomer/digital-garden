@@ -2,14 +2,16 @@
   "name": "@garden/core",
   "version": "0.0.1",
   "description": "Digital garden core",
+  "license": "ISC",
+  "keywords": [],
+  "type": "module",
   "main": "src/index.ts",
   "scripts": {
+    "eslint": "eslint src --ext .ts",
+    "eslint:fix": "eslint src --ext .ts --fix",
     "test": "LOG_LEVEL=warn jest --no-watchman",
     "test:watch": "jest --watch"
   },
-  "type": "module",
-  "keywords": [],
-  "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",

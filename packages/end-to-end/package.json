@@ -6,6 +6,8 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf output",
+    "eslint": "eslint src --ext .ts --ext .mjs --ext .js",
+    "eslint:fix": "eslint src --ext .ts --ext .mjs --ext .js --fix",
     "report:html": "npx playwright show-report",
     "start": "cd ../.. && pnpm start",
     "test:e2e": "playwright test -g '.*.spec.mjs'",

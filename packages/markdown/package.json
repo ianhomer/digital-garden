@@ -2,10 +2,13 @@
   "name": "@garden/markdown",
   "version": "0.0.1",
   "description": "Digital garden markdown library",
-  "main": "src/index.ts",
-  "scripts": {},
-  "keywords": [],
   "license": "ISC",
+  "keywords": [],
+  "main": "src/index.ts",
+  "scripts": {
+    "eslint": "eslint src --ext .ts",
+    "eslint:fix": "eslint src --ext .ts --fix"
+  },
   "dependencies": {
     "@garden/core": "workspace:0.0.1",
     "hastscript": "^7.1.0",

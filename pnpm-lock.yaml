@@ -8,6 +8,7 @@ importers:
       '@typescript-eslint/parser': ^5.44.0
       eslint: ^8.28.0
       eslint-config-prettier: ^8.5.0
+      eslint-plugin-no-only-tests: ^3.1.0
       eslint-plugin-simple-import-sort: ^8.0.0
       eslint-plugin-sonarjs: ^0.16.0
       format-package: ^7.0.0
@@ -22,6 +23,7 @@ importers:
       '@typescript-eslint/parser': 5.44.0_hsf322ms6xhhd4b5ne6lb74y4a
       eslint: 8.28.0
       eslint-config-prettier: 8.5.0_eslint@8.28.0
+      eslint-plugin-no-only-tests: 3.1.0
       eslint-plugin-simple-import-sort: 8.0.0_eslint@8.28.0
       eslint-plugin-sonarjs: 0.16.0_eslint@8.28.0
       format-package: 7.0.0_prettier@2.8.0
@@ -4347,6 +4349,11 @@ packages:
       eslint: '>=7.0.0'
     dependencies:
       eslint: 8.28.0
+    dev: true
+
+  /eslint-plugin-no-only-tests/3.1.0:
+    resolution: {integrity: sha512-Lf4YW/bL6Un1R6A76pRZyE1dl1vr31G/ev8UzIc/geCgFWyrKil8hVjYqWVKGB/UIGmb6Slzs9T0wNezdSVegw==}
+    engines: {node: '>=5.0.0'}
     dev: true
 
   /eslint-plugin-simple-import-sort/8.0.0_eslint@8.28.0:

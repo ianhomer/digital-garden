@@ -1,5 +1,5 @@
 import { BaseItem } from "../base-item";
-import { createGarden, MetaMap } from "../garden";
+import { createGarden } from "../garden";
 
 export const metaAndContentFrom = async (content: {
   [key: string]: string;
@@ -13,7 +13,3 @@ export const metaAndContentFrom = async (content: {
 
 export const metaFrom = async (content: { [key: string]: string }) =>
   createGarden({ content, type: "inmemory" }).meta();
-
-export const dump = (meta: MetaMap) => {
-  console.log(JSON.stringify(meta, null, "  "));
-};

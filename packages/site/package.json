@@ -6,26 +6,25 @@
   "bin": {
     "garden": "bin/garden.cjs"
   },
+  "type": "module",
   "scripts": {
     "build": "next build",
-    "clean": "rimraf out .next .gardem-meta.json",
-    "export": "next export",
     "build:prepare": "node --experimental-specifier-resolution=node --loader ts-node/esm src/scripts/pre-build.ts",
+    "clean": "rimraf out .next .gardem-meta.json",
     "dev": "next dev",
     "dev:debug": "NODE_OPTIONS=--inspect-brk next dev",
     "dev:hot": "next-remote-watch",
     "dev:test": "GARDENS_DIRECTORY=../test-gardens/content next dev",
     "eslint": "eslint src --ext .js --ext .tsx --ext .ts",
     "eslint:fix": "eslint src --ext .js --ext .tsx --ext .ts --fix",
+    "export": "next export",
     "start": "next start",
-    "test": "echo 'tests missing'",
     "test:build": "GARDENS_DIRECTORY=../test-gardens/content next build",
     "test:e2e": "pnpm --filter @digital-garden/end-to-end test:e2e",
     "test:e2e:cucumber": "pnpm --filter @digital-garden/end-to-end test:e2e:cucumber",
     "test:e2e:cucumber:dev": "server-test dev:test 3000 test:e2e:cucumber",
     "test:watch": "jest --watch"
   },
-  "type": "module",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",

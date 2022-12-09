@@ -1,4 +1,4 @@
-import { ItemLink, Link, Meta, Things } from "@garden/types";
+import { ItemLink, Meta, Things } from "@garden/types";
 
 class MetaFactory {
   meta;
