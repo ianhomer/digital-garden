@@ -83,13 +83,11 @@ function ItemPage({ item, scripts }: Props) {
             scale={scale}
             start={itemName(data, item.name)}
             width={width}
-            callback={(name, event) => {
+            callback={(name) => {
               const href = "/" + name;
               const baseHref = toParentName(href) ?? href;
               router.push(baseHref, undefined, { scroll: false });
-              // window.history.replaceState(null, name, href);
               setCallbackInvoked(true);
-              // event.preventDefault();
             }}
           />
         </div>

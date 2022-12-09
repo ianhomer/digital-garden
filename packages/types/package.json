@@ -3,8 +3,12 @@
   "version": "0.0.1",
   "description": "Digital garden types",
   "license": "ISC",
-  "main": "src/index.ts",
   "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "eslint": "eslint src --ext .ts",
+    "eslint:fix": "eslint src --ext .ts --fix"
+  },
   "devDependencies": {
     "typescript": "^4.9.3"
   }

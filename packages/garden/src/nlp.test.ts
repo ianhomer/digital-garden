@@ -30,7 +30,7 @@ describe("natural language processing", () => {
     ]);
   });
 
-  it.only("should extract list of things", async () => {
+  it("should extract list of things", async () => {
     const thing = naturalProcess(
       "the principle, the practice, technique, or process may be good"
     );

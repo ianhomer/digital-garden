@@ -111,10 +111,12 @@ describe("garden", () => {
     expect(findUnwantedLinks(meta)).toStrictEqual([NATURAL_LINK_ALONE]);
   });
 
+  const myFilename = "my-filename";
+
   it("should generate single thing", async () => {
     const fileThing = {
-      filename: "my-filename",
-      name: "my-filename",
+      filename: myFilename,
+      name: myFilename,
       content: async () => "# thing title\n\n" + "thing content",
     };
     const metaMap: MetaMap = {};
@@ -123,9 +125,10 @@ describe("garden", () => {
   });
 
   it("should generate multiple things", async () => {
+    const sectionTitle = "my-filename#section-title";
     const fileThing = {
-      filename: "my-filename",
-      name: "my-filename",
+      filename: myFilename,
+      name: myFilename,
       content: async () =>
         "# thing title\n\nThing content\n\n" +
         "## section title\n\nSection content\n\n" +
@@ -135,17 +138,17 @@ describe("garden", () => {
     await loadThingIntoMetaMap(metaMap, fileThing);
     expect(Object.keys(metaMap)).toHaveLength(3);
     expect(
-      metaMap["my-filename"].links
+      metaMap[myFilename].links
         .filter((link) => link.type == LinkType.Child)
         .map((link) => link.name)
-    ).toEqual(["my-filename#section-title"]);
+    ).toEqual([sectionTitle]);
     expect(metaMap["my-filename"].title).toBe("thing title");
     expect(
       metaMap["my-filename#section-title"].links
         .filter((link) => link.type == LinkType.Child)
         .map((link) => link.name)
     ).toEqual(["my-filename#sub-section-title"]);
-    expect(metaMap["my-filename#section-title"].title).toBe("section title");
+    expect(metaMap[sectionTitle].title).toBe("section title");
     expect(metaMap["my-filename#sub-section-title"].title).toBe(
       "sub-section title"
     );

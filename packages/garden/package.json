@@ -3,14 +3,16 @@
   "version": "0.0.1",
   "description": "Digital garden Library",
   "license": "ISC",
+  "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "clean": "rimraf output",
+    "eslint": "eslint src --ext .ts",
+    "eslint:fix": "eslint src --ext .ts --fix",
     "test": "LOG_LEVEL=warn jest --no-watchman",
-    "test:watch": "jest --watch",
-    "test:debug": "NODE_OPTIONS=--inspect-brk jest"
+    "test:debug": "NODE_OPTIONS=--inspect-brk jest",
+    "test:watch": "jest --watch"
   },
-  "type": "module",
   "dependencies": {
     "@garden/core": "workspace:0.0.1",
     "@garden/types": "workspace:0.0.1",
