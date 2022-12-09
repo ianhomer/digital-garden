@@ -13,6 +13,12 @@ const bar = `
 Bar linking to [[foo]]
 `;
 
+const bars = `
+# Bars
+
+Bars
+`;
+
 const gum = `
 # Gum
 
@@ -37,9 +43,11 @@ describe("natural language", () => {
       const meta = await metaFrom({
         foo,
         bar,
+        bars,
       });
       expect(Object.keys(meta)).toHaveLength(3);
-      expect(meta.bars.title).toBe("bars");
+      expect(meta.bar.title).toBe("Bar");
+      expect(meta.bars.title).toBe("Bars");
       expect(
         meta.foo.links.filter(justNaturalLinks).map(toLinkName)
       ).toStrictEqual(["foo", "bars"]);
@@ -72,20 +80,19 @@ describe("natural language", () => {
       expect(meta.bars.links).toHaveLength(0);
     });
 
-    it("should have multiple natural wanted link to single alias", async () => {
+    it("should have multiple natural wanted links to single alias", async () => {
       const meta = await metaFrom({
         bar,
         foo,
         baz,
       });
-      console.log("meta", JSON.stringify(meta, null, " "));
       expect(Object.keys(meta)).toHaveLength(3);
       expect(meta.bar.title).toBe("Bar");
 
       expect(
         meta.foo.links.filter(justNaturalLinks).map(toLinkName)
       ).toStrictEqual(["foo", "bar"]);
-      expect(meta.bar.links).toHaveLength(0);
+      expect(meta.bar.links).toHaveLength(2);
     });
 
     it("should have multiple natural wanted and multiple wanted alias", async () => {

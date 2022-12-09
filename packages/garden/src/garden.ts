@@ -200,18 +200,21 @@ const reduceAliases = async (meta: { [key: string]: Meta }) => {
     .filter(
       ([, value]) =>
         value.type == ThingType.NaturallyWanted &&
-        value.links.every((link) => link.type == LinkType.NaturalAlias)
+        value.links.length > 0 &&
+        value.links.every(
+          (link) => link.type == LinkType.NaturalAlias && link.name in meta
+        )
     )
     .map(([key, value]) => [key, value.links.map((link) => link.name)]);
   const reducibleAliasLookup: { [key: string]: string } = Object.fromEntries(
     reducibleAliases
-      .map(([key, aliases]) => aliases.map((alias) => [alias, key]))
+      .map(([key, aliases]) => aliases.map((alias) => [key, alias]))
       .flat()
   );
-  const reducibleAliasNames = Object.fromEntries(reducibleAliases);
+  const reducibleAliasNames = reducibleAliases.map(([key]) => key);
   return Object.fromEntries(
     Object.entries(meta)
-      .filter(([key]) => !(key in reducibleAliasNames))
+      .filter(([key]) => reducibleAliasNames.indexOf(key) == -1)
       .map(([key, { title, type, aliases, links }]) => [
         key,
         {
