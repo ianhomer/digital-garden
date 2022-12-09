@@ -45,7 +45,9 @@ describe("markdown", () => {
       const meta = (
         await toMultipleThingMeta(async () => "# Mock\n\nA [[one-day-maybe]]")
       )[0];
-      expect(meta.links).toStrictEqual([{ name: "one-day-maybe" }]);
+      expect(meta.links).toStrictEqual([
+        { name: "one-day-maybe", type: "to", value: 1 },
+      ]);
     });
 
     it("should not extra meaning from wiki links and URIs", async () => {
@@ -86,7 +88,11 @@ describe("markdown", () => {
         )
       )[0];
       expect(meta.title).toBe("Word 1");
-      expect(meta.links).toContainEqual({ name: "word-2" });
+      expect(meta.links).toContainEqual({
+        name: "word-2",
+        type: "to",
+        value: 1,
+      });
       expect(meta.links).toContainEqual({
         name: "natural-word",
         type: LinkType.NaturalTo,

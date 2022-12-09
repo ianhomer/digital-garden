@@ -55,7 +55,10 @@ export function naturalAliases(name: string): string[] {
 
 const postStrip = /,|'s/g;
 
-export function naturalProcess(content: string, excludes: string[] = []) {
+export function naturalProcess(
+  content: string,
+  excludes: string[] = []
+): { links: Link[] } {
   const document = nlp(preStrip(content));
   const enhancedExcludes = [...excludes, "", ",", "s", "ing"];
   const links: Link[] = (document.not("#Pronoun") as Three)
@@ -79,6 +82,6 @@ export function naturalProcess(content: string, excludes: string[] = []) {
     .flat()
     .filter((name: string) => !enhancedExcludes.includes(name))
     .filter(unique)
-    .map((name: string) => ({ name, type: LinkType.NaturalTo }));
+    .map((name: string) => ({ name, type: LinkType.NaturalTo, value: 1 }));
   return { links };
 }
