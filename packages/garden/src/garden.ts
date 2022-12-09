@@ -215,7 +215,7 @@ const reduceAliases = async (meta: { [key: string]: Meta }) => {
   return Object.fromEntries(
     Object.entries(meta)
       .filter(([key]) => reducibleAliasNames.indexOf(key) == -1)
-      .map(([key, { title, type, aliases, links }]) => [
+      .map(([key, { title, type, aliases, links, value }]) => [
         key,
         {
           title,
@@ -225,12 +225,14 @@ const reduceAliases = async (meta: { [key: string]: Meta }) => {
               .filter(([, aliases]) => aliases.indexOf(key) > -1)
               .map(([aliasKey]) => aliasKey),
           ],
-          links: links.map(({ name, type }) => ({
+          links: links.map(({ name, type, value }) => ({
             name:
               name in reducibleAliasLookup ? reducibleAliasLookup[name] : name,
             type,
+            value,
           })),
           type,
+          value,
         },
       ])
   );
