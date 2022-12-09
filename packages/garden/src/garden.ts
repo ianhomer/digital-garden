@@ -14,6 +14,7 @@ import { join } from "path";
 import { BaseGardenRepository } from "./base-garden-repository";
 import { unique } from "./common";
 import { FileGardenRepository } from "./file-garden-repository";
+import { justNaturalAliasLinks } from "./links";
 import { logger } from "./logger";
 import { toMultipleThingMeta } from "./markdown";
 import { naturalAliases } from "./nlp";
@@ -192,7 +193,60 @@ const generateMeta = async (
       };
     });
 
-  return transformedMeta;
+  return sortMeta(reduceAliases(transformedMeta));
+};
+
+const sortMeta = async (meta: { [key: string]: Meta }) => {
+  const entries = Object.entries(meta);
+  entries.sort(([key1], [key2]) => key1.localeCompare(key2));
+  return Object.fromEntries(entries);
+};
+
+const reduceAliases = (meta: { [key: string]: Meta }) => {
+  const naturallyWantedAliases = findWantedThings(meta, justNaturalAliasLinks);
+  const reducibleAliases: [string, string[]][] = Object.entries(meta)
+    .filter(
+      ([, value]) =>
+        value.type == ThingType.NaturallyWanted &&
+        value.links.length > 0 &&
+        value.links.every(
+          (link) =>
+            link.type == LinkType.NaturalAlias &&
+            (link.name in meta ||
+              naturallyWantedAliases.indexOf(link.name) > -1)
+        )
+    )
+    .map(([key, value]) => [key, value.links.map((link) => link.name)]);
+  const reducibleAliasLookup: { [key: string]: string } = Object.fromEntries(
+    reducibleAliases
+      .map(([key, aliases]) => aliases.map((alias) => [key, alias]))
+      .flat()
+  );
+  const reducibleAliasNames = reducibleAliases.map(([key]) => key);
+  return Object.fromEntries(
+    Object.entries(meta)
+      .filter(([key]) => reducibleAliasNames.indexOf(key) == -1)
+      .map(([key, { title, type, aliases, links, value }]) => [
+        key,
+        {
+          title,
+          aliases: [
+            ...(aliases ?? []),
+            ...reducibleAliases
+              .filter(([, aliases]) => aliases.indexOf(key) > -1)
+              .map(([aliasKey]) => aliasKey),
+          ],
+          links: links.map(({ name, type, value }) => ({
+            name:
+              name in reducibleAliasLookup ? reducibleAliasLookup[name] : name,
+            type,
+            value,
+          })),
+          type,
+          value,
+        },
+      ])
+  );
 };
 
 export const findLinksExcludingExplicit = (
