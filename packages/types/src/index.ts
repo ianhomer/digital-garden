@@ -33,6 +33,7 @@ export interface ItemLink {
 export interface Meta {
   title: string;
   type?: ThingType;
+  aliases?: Array<string>;
   links: Array<Link>;
   value?: number;
 }

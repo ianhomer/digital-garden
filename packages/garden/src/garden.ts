@@ -192,7 +192,45 @@ const generateMeta = async (
       };
     });
 
-  return transformedMeta;
+  return reduceAliases(transformedMeta);
+};
+
+const reduceAliases = async (meta: { [key: string]: Meta }) => {
+  const reducibleAliases: [string, string[]][] = Object.entries(meta)
+    .filter(
+      ([, value]) =>
+        value.type == ThingType.NaturallyWanted &&
+        value.links.every((link) => link.type == LinkType.NaturalAlias)
+    )
+    .map(([key, value]) => [key, value.links.map((link) => link.name)]);
+  const reducibleAliasLookup: { [key: string]: string } = Object.fromEntries(
+    reducibleAliases
+      .map(([key, aliases]) => aliases.map((alias) => [alias, key]))
+      .flat()
+  );
+  const reducibleAliasNames = Object.fromEntries(reducibleAliases);
+  return Object.fromEntries(
+    Object.entries(meta)
+      .filter(([key]) => !(key in reducibleAliasNames))
+      .map(([key, { title, type, aliases, links }]) => [
+        key,
+        {
+          title,
+          aliases: [
+            ...(aliases ?? []),
+            ...reducibleAliases
+              .filter(([, aliases]) => aliases.indexOf(key) > -1)
+              .map(([aliasKey]) => aliasKey),
+          ],
+          links: links.map(({ name, type }) => ({
+            name:
+              name in reducibleAliasLookup ? reducibleAliasLookup[name] : name,
+            type,
+          })),
+          type,
+        },
+      ])
+  );
 };
 
 export const findLinksExcludingExplicit = (
