@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { Things } from "@garden/types";
+import { LinkType, Things, ThingType } from "@garden/types";
 import { render, screen } from "@testing-library/react";
 
 import GraphDiagram from "./graph-diagram";
@@ -8,8 +8,20 @@ import GraphDiagram from "./graph-diagram";
 describe("graph diagram", () => {
   it("should render OK", async () => {
     const data: Things = {
-      foo: { title: "foo", links: [{ name: "bar" }] },
-      bar: { title: "bar", links: [] },
+      foo: {
+        title: "foo",
+        aliases: [],
+        value: 1,
+        type: ThingType.Item,
+        links: [{ name: "bar", type: LinkType.To, value: 1 }],
+      },
+      bar: {
+        title: "bar",
+        aliases: [],
+        value: 1,
+        type: ThingType.Item,
+        links: [],
+      },
     };
     render(
       <GraphDiagram
