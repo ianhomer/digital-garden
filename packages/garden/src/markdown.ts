@@ -154,10 +154,14 @@ function toSingleThingMeta(section: Section): Meta {
         link.type === "wikiLink"
           ? linkResolver((link as Literal).value)
           : extractName((link as Link).url),
+      type: LinkType.To,
+      value: 1,
     }));
   return {
     title: section.title,
-    type: section.depth > 1 ? ThingType.Child : undefined,
+    value: 1,
+    type: section.depth > 1 ? ThingType.Child : ThingType.Item,
+    aliases: [],
     links: [
       ...explicitLinks,
       ...naturalProcess(
@@ -167,6 +171,7 @@ function toSingleThingMeta(section: Section): Meta {
       ...section.sections.map((childSection) => ({
         type: LinkType.Child,
         name: "#" + linkResolver(childSection.title),
+        value: 1,
       })),
     ],
   };

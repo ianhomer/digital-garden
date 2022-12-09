@@ -28,6 +28,6 @@ describe("content with explicit link to existing things", () => {
     expect(
       meta.bar.links.filter(justExplicitLinks).map(toLinkName)
     ).toStrictEqual(["foo"]);
-    expect(meta.bar.links.filter(justExplicitLinks)[0].value).toBeUndefined();
+    expect(meta.bar.links.filter(justExplicitLinks)[0].value).toBe(1);
   });
 });

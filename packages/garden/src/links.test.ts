@@ -11,10 +11,10 @@ describe("links", () => {
     const links = await findLinks(garden, item);
     expect(links.length).toBe(8);
     [
-      { name: "meta", type: "in" },
-      { name: "vocabulary", type: "in" },
-      { name: "word-2", type: "from" },
-      { name: "word-3", type: "has" },
+      { name: "meta", type: "in", value: 1 },
+      { name: "vocabulary", type: "in", value: 1 },
+      { name: "word-2", type: "from", value: 1 },
+      { name: "word-3", type: "has", value: 1 },
     ].forEach((expected) => expect(links).toContainEqual(expected));
   });
 });

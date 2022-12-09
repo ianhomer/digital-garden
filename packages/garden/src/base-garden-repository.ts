@@ -20,14 +20,14 @@ export class BaseGardenRepository implements GardenRepository {
     return itemReference.name;
   }
 
-  toValue(itemReference: ItemReference): number | undefined {
+  toValue(itemReference: ItemReference): number {
     for (const ignore of ["archive"]) {
       if (itemReference.name.includes(ignore)) {
         return 0;
       }
     }
 
-    return undefined;
+    return 1;
   }
 
   async load(itemReference: string | ItemReference) {

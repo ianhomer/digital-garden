@@ -113,11 +113,14 @@ export const loadThingIntoMetaMap = async (metaMap: MetaMap, thing: Thing) => {
       ...{
         title: singleThingMeta.title,
         type: singleThingMeta.type,
+        aliases: singleThingMeta.aliases,
+        value: singleThingMeta.value,
         links: singleThingMeta.links.map((link) => {
           if (link.name.startsWith("#")) {
             return {
               name: thingName + link.name,
               type: link.type,
+              value: 1,
             };
           }
           return link;
@@ -160,10 +163,13 @@ const generateMeta = async (
       metaMap[title] = {
         title,
         type: ThingType.NaturallyWanted,
+        aliases: [],
+        value: 1,
         links: links.map(
           (name: string): Link => ({
             name: linkResolver(name),
             type: LinkType.NaturalAlias,
+            value: 1,
           })
         ),
       };
@@ -181,11 +187,16 @@ const generateMeta = async (
         title: thing.title,
         type: thing.type,
         value: thing.value,
+        aliases: thing.aliases,
         links: thing.links
           .filter((link) => !unwantedLinks.includes(link.name))
           .map((link) => {
-            const transformedLink: Link = { name: link.name, type: link.type };
-            if (thing?.value == 0 || metaMap[link.name]?.value == 0) {
+            const transformedLink: Link = {
+              name: link.name,
+              type: link.type,
+              value: link.value,
+            };
+            if (thing.value == 0 || metaMap[link.name]?.value == 0) {
               transformedLink.value = 0;
             }
             return transformedLink;
@@ -281,7 +292,7 @@ export const findUnwantedLinks = (meta: MetaMap) => {
         if (!thing) {
           return false;
         }
-        return !thing.type || thing.type === ThingType.Wanted;
+        return thing.type == ThingType.Item || thing.type === ThingType.Wanted;
       });
     })
     .map((entry) => entry[0]);
@@ -289,7 +300,10 @@ export const findUnwantedLinks = (meta: MetaMap) => {
   const unreferencedExplicitLinks = explicitThingNames
     .map((key) => {
       return meta[key].links
-        .filter((link) => !link.type && !explicitThingNames.includes(link.name))
+        .filter(
+          (link) =>
+            link.type == LinkType.To && !explicitThingNames.includes(link.name)
+        )
         .map((link) => link.name);
     })
     .flat();
@@ -371,13 +385,13 @@ const findBackLinks = (things: Things, name: string) => {
     .filter((fromName) => {
       return things[fromName].links.map((link) => link.name).includes(name);
     })
-    .map((fromName) => ({ name: fromName, type: LinkType.From }));
+    .map((fromName) => ({ name: fromName, type: LinkType.From, value: 1 }));
 };
 
 export const findKnownThings = (things: Things) => {
   return Object.keys(
     Object.fromEntries(
-      Object.entries(things).filter(([, thing]) => !thing.type)
+      Object.entries(things).filter(([, thing]) => thing.type == ThingType.Item)
     )
   );
 };

@@ -7,7 +7,7 @@ import {
 } from "./content";
 import { Garden } from "./garden";
 
-export const justExplicitLinks = (link: Link) => !link.type;
+export const justExplicitLinks = (link: Link) => link.type == LinkType.To;
 export const justNaturalLinks = (link: Link) => link.type == LinkType.NaturalTo;
 export const justNaturalAliasLinks = (link: Link) =>
   link.type == LinkType.NaturalAlias;
@@ -34,6 +34,7 @@ export const findLinks = async (garden: Garden, item: Item) => {
     .map(
       (link): Link => ({
         name: link,
+        value: 1,
         type: ((link) => {
           if (explicitBackLinks.includes(link)) {
             return LinkType.From;

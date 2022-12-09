@@ -1,4 +1,4 @@
-import { ItemLink, Meta, Things } from "@garden/types";
+import { ItemLink, LinkType, Meta, Things, ThingType } from "@garden/types";
 
 class MetaFactory {
   meta;
@@ -11,7 +11,7 @@ class MetaFactory {
 
   links(...names: string[]) {
     for (const name of names) {
-      this.meta.links.push({ name });
+      this.meta.links.push({ name, value: 1, type: LinkType.To });
     }
     return this;
   }
@@ -28,6 +28,9 @@ class ThingsFactory {
     const meta = {
       title: name,
       links: [],
+      aliases: [],
+      value: 1,
+      type: ThingType.Item,
     };
     this.things[name] = meta;
     return new MetaFactory(this, meta);

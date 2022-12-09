@@ -10,7 +10,7 @@ const backLinks = (
   name: string,
   depth: number,
   predicate = (link: Link) =>
-    !link.type ||
+    link.type == LinkType.To ||
     link.type == LinkType.NaturalAlias ||
     link.type == LinkType.Child,
   backLinkType = LinkType.From
@@ -84,7 +84,7 @@ const findDeepLinks = (
           source: name,
           target: link.name,
           depth,
-          type: link.type ?? LinkType.To,
+          type: link.type,
         }))
       : []),
     ...backLinks(populatedBackLinkCache, things, name, depth),

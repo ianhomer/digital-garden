@@ -25,7 +25,7 @@ describe("create garden", () => {
     });
     expect(Object.keys(meta)).toHaveLength(1);
     expect(meta.thing.title).toBe("Thing");
-    expect(meta.thing.value).toBeUndefined();
+    expect(meta.thing.value).toBe(1);
     expect(await content("thing")).toBe(thing);
   });
 

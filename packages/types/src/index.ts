@@ -4,7 +4,7 @@ export interface ItemReference {
 
 export interface GardenRepository {
   toUri: (itemReference: ItemReference) => string;
-  toValue: (itemReference: ItemReference) => number | undefined;
+  toValue: (itemReference: ItemReference) => number;
   toItemReference: (name: string) => ItemReference;
   load: (itemReference: ItemReference | string) => Promise<Item>;
   find: (name: string) => Promise<ItemReference>;
@@ -19,8 +19,8 @@ export interface Item {
 
 export interface Link {
   name: string;
-  type?: LinkType;
-  value?: number;
+  type: LinkType;
+  value: number;
 }
 
 export interface ItemLink {
@@ -32,13 +32,14 @@ export interface ItemLink {
 
 export interface Meta {
   title: string;
-  type?: ThingType;
-  aliases?: Array<string>;
+  type: ThingType;
+  aliases: Array<string>;
   links: Array<Link>;
-  value?: number;
+  value: number;
 }
 
 export enum ThingType {
+  Item = "item",
   Wanted = "wanted",
   NaturallyWanted = "naturallyWanted",
   Child = "child",

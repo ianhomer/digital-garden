@@ -90,6 +90,7 @@ describe("markdown", () => {
       expect(meta.links).toContainEqual({
         name: "natural-word",
         type: LinkType.NaturalTo,
+        value: 1,
       });
     });
   });

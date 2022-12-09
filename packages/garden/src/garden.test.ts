@@ -1,4 +1,4 @@
-import { Link, LinkType } from "@garden/types";
+import { Link, LinkType, ThingType } from "@garden/types";
 
 import {
   createGarden,
@@ -60,7 +60,7 @@ describe("garden", () => {
 
   it("should have achived links with zero value", async () => {
     const things = await garden.meta();
-    expect(things["README"].value).toBeUndefined();
+    expect(things["README"].value).toBe(1);
     expect(things["archived-thing"].value).toBe(0);
     expect(
       things["archive-linked"].links.find(
@@ -69,7 +69,7 @@ describe("garden", () => {
     ).toBe(0);
     expect(
       things["README"].links.find((link) => (link.name = "vocabulary"))?.value
-    ).toBeUndefined();
+    ).toBe(1);
   });
 
   it("should have wanted things", async () => {
@@ -95,18 +95,24 @@ describe("garden", () => {
     const meta: MetaMap = {
       foo: {
         title: "foo",
+        aliases: [],
+        value: 1,
+        type: ThingType.Item,
         links: [
-          { name: "explicit-link" },
-          { name: NATURAL_LINK_SHARED, type: LinkType.NaturalTo },
-          { name: NATURAL_LINK_ALONE, type: LinkType.NaturalTo },
+          { name: "explicit-link", type: LinkType.To, value: 1 },
+          { name: NATURAL_LINK_SHARED, type: LinkType.NaturalTo, value: 1 },
+          { name: NATURAL_LINK_ALONE, type: LinkType.NaturalTo, value: 1 },
         ],
       },
       bar: {
         title: "bar",
+        aliases: [],
+        value: 1,
+        type: ThingType.Item,
         links: [
-          { name: "explicit-link", type: LinkType.NaturalTo },
-          { name: NATURAL_LINK_SHARED, type: LinkType.NaturalTo },
-          { name: "bar", type: LinkType.NaturalTo },
+          { name: "explicit-link", type: LinkType.NaturalTo, value: 1 },
+          { name: NATURAL_LINK_SHARED, type: LinkType.NaturalTo, value: 1 },
+          { name: "bar", type: LinkType.NaturalTo, value: 1 },
         ],
       },
     };
