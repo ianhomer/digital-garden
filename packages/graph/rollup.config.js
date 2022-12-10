@@ -15,7 +15,7 @@ export default {
       "d3-quadtree": "d3",
     },
   },
-  external: ["d3", "d3-quadtree", "@garden/core"],
+  external: ["d3", "d3-quadtree"],
   plugins: [
     // alias({
     //   entries: [{ find: "@garden/types", replacement:path.resolve(projectRootDir, "../types") }],
@@ -28,14 +28,14 @@ export default {
     typescript({
       compilerOptions: {
         preserveSymlinks: false,
-        rootDir: path.resolve(projectRootDir, ".."),
-        rootDirs: [
-          path.resolve(projectRootDir, "../core"),
-          path.resolve(projectRootDir, "../types"),
-          path.resolve(projectRootDir, "../graph"),
-        ],
+        // rootDir: path.resolve(projectRootDir, ".."),
+        // rootDirs: [
+        //   path.resolve(projectRootDir, "../core"),
+        //   // path.resolve(projectRootDir, "../types"),
+        //   path.resolve(projectRootDir, "../graph"),
+        // ],
       },
-      filterRoot: false, //"/Users/ian/projects/my/digital-garden",
+      // filterRoot: path.resolve(projectRootDir, "..")
       // exclude: ["node_modules/(?!@garden)","**/*.test.ts"]
     }),
   ],

@@ -3,7 +3,7 @@ import {
   isValidPageName,
   pageResolver,
   toParentName,
-} from "./link";
+} from ".";
 
 describe("link", () => {
   it("should render link in lowercase", () => {
