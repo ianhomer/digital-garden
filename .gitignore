@@ -9,6 +9,7 @@ output/
 
 packages/site/public/garden.json
 
+bundle.js
 *.tsbuildinfo
 .env
 .pnpm-debug.log
