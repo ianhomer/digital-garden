@@ -1,4 +1,4 @@
-import { ItemLink, LinkType, Meta, Things, ThingType } from "@garden/types";
+import { LinkType, Meta, Things, ThingType } from "@garden/types";
 
 class MetaFactory {
   meta;
@@ -16,7 +16,7 @@ class MetaFactory {
     return this;
   }
 
-  pop() {
+  new() {
     return this.thingsFactory;
   }
 }
@@ -37,7 +37,7 @@ class ThingsFactory {
   }
 
   linked(name: string, to: string) {
-    return this.thing(name).links(to).pop();
+    return this.thing(name).links(to).new();
   }
 
   deep(base: string, count: number) {
@@ -47,11 +47,9 @@ class ThingsFactory {
     return this;
   }
 
-  create() {
+  build() {
     return this.things;
   }
 }
 
 export const factory = () => new ThingsFactory();
-export const bySource = (source: string) => (link: ItemLink) =>
-  link.source === source;
