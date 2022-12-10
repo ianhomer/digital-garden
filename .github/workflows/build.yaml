@@ -18,7 +18,7 @@ jobs:
         uses: pnpm/action-setup@v2.0.1
         with:
           version: 7.x
-      - name: install and lint
+      - name: install
         run: pnpm install --filter !@garden/end-to-end
       - name: lint
         run: pnpm lint
