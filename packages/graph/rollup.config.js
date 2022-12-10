@@ -28,10 +28,11 @@ export default {
     typescript({
       compilerOptions: {
         preserveSymlinks: false,
-        rootDir: "/Users/ian/projects/my/digital-garden/packages/",
+        rootDir: path.resolve(projectRootDir, ".."),
         rootDirs: [
-          "/Users/ian/projects/my/digital-garden/packages/types",
-          "/Users/ian/projects/my/digital-garden/packages/graph",
+          path.resolve(projectRootDir, "../core"),
+          path.resolve(projectRootDir, "../types"),
+          path.resolve(projectRootDir, "../graph"),
         ],
       },
       filterRoot: false, //"/Users/ian/projects/my/digital-garden",
