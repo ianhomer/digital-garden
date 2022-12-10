@@ -11,14 +11,16 @@ export interface GardenRepository {
   findAll: () => AsyncIterable<ItemReference>;
 }
 
-export interface Item {
+export interface Nameable {
   name: string;
+}
+
+export interface Item extends Nameable {
   filename?: string;
   content: string;
 }
 
-export interface Link {
-  name: string;
+export interface Link extends Nameable {
   type: LinkType;
   value: number;
 }

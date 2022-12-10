@@ -14,6 +14,9 @@
     "test": "LOG_LEVEL=warn jest --no-watchman",
     "test:watch": "jest --watch"
   },
+  "dependencies": {
+    "@garden/types": "0.0.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
