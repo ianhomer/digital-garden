@@ -18,13 +18,12 @@ jobs:
         uses: pnpm/action-setup@v2.0.1
         with:
           version: 7.x
-      - name: install and lint
-        run: |
-          pnpm install --filter !@garden/end-to-end
-          pnpm lint
+      - name: install
+        run: pnpm install --filter !@garden/end-to-end
+      - name: lint
+        run: pnpm lint
       - name: unit test
-        run: |
-          pnpm test
+        run: pnpm test
       - name: build
         run: |
           pnpm build:prepare
@@ -42,13 +41,11 @@ jobs:
         with:
           version: 7.x
       - name: install
-        run: |
-          pnpm install
+        run: pnpm install
       - name: e2e test
         run: |
           pnpm build:prepare
           pnpm test:build
           pnpm test:e2e
       - name: cucumber
-        run: |
-          pnpm test:e2e:cucumber:dev
+        run: pnpm test:e2e:cucumber:dev

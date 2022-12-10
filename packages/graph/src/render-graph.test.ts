@@ -1,4 +1,4 @@
-import { Things } from "@garden/types";
+import { LinkType, Things, ThingType } from "@garden/types";
 import { findAllByText } from "@testing-library/dom";
 import * as d3 from "d3";
 import { BaseType } from "d3";
@@ -10,8 +10,20 @@ import { GraphConfiguration } from "./types";
 describe("render graph", () => {
   it("should render OK", async () => {
     const data: Things = {
-      foo: { title: "foo", links: [{ name: "bar" }] },
-      bar: { title: "bar", links: [] },
+      foo: {
+        title: "foo",
+        aliases: [],
+        type: ThingType.Item,
+        value: 0,
+        links: [{ name: "bar", value: 1, type: LinkType.To }],
+      },
+      bar: {
+        title: "bar",
+        aliases: [],
+        type: ThingType.Item,
+        value: 0,
+        links: [],
+      },
     };
 
     const graphConfiguration: GraphConfiguration = defaultConfiguration({

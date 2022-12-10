@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>graph smoke test</title>
+
+    <script src="../graph/node_modules/d3/dist/d3.js"></script>
+    <script src="../graph/node_modules/d3-quadtree/dist/d3-quadtree.js"></script>
+    <script src="../types/bundle.js"></script>
+    <script src="../core/bundle.js"></script>
+    <script src="../graph/bundle.js"></script>
+
+    <style>
+      line.link {
+        stroke: black;
+      }
+      line.active {
+        stroke-width: 3;
+        transition: stroke-width 0s;
+      }
+
+      line {
+        transition: stroke-width 2s;
+      }
+
+      line {
+        stroke-width: 1;
+      }
+
+      line.depth-0 {
+        stroke-width: 5;
+      }
+
+      line.depth-1 {
+        stroke-width: 2;
+      }
+
+      .wanted .node {
+        stroke: #000;
+        fill: #fff;
+      }
+
+      .node {
+        fill: #555;
+      }
+
+      .fixed .node {
+        stroke: #000;
+        fill: #ff0080;
+        fill-opacity: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>graph smoke test</h1>
+    <svg id="graph" />
+    <script>
+      window.onload = function () {
+        var svg = d3.select("#graph");
+        svg.attr("viewBox", `0 0 400 400`);
+        var data = {
+          start: {
+            title: "Start",
+            aliases: [],
+            value: 1,
+            links: [
+              {
+                name: "second",
+                value: 1,
+                type: "to",
+              },
+            ],
+            type: "item",
+          },
+          second: {
+            title: "Second",
+            aliases: [],
+            value: 1,
+            links: [],
+            type: "item",
+          },
+        };
+        graph.renderGraph(
+          "start",
+          data,
+          graph.defaultConfiguration({ viewWidth: 400, viewHeight: 400 }),
+          svg
+        );
+        console.log("loaded graph");
+      };
+      console.log("loading page");
+    </script>
+  </body>
+</html>

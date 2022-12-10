@@ -1,12 +1,15 @@
 .gardens/
 .next/
 .parcel-cache/
+.rollup.cache/
+dist/
 node_modules/
 out/
 output/
 
 packages/site/public/garden.json
 
+bundle.js
 *.tsbuildinfo
 .env
 .pnpm-debug.log
