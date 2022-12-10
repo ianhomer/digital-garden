@@ -5,7 +5,9 @@
   "license": "ISC",
   "keywords": [],
   "main": "src/index.ts",
+  "type": "module",
   "scripts": {
+    "build": "tsc",
     "eslint": "eslint src --ext .ts",
     "eslint:fix": "eslint src --ext .ts --fix",
     "test": "LOG_LEVEL=warn jest --no-watchman",

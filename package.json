@@ -13,6 +13,7 @@
   "homepage": "https://github.com/ianhomer/digital-garden#readme",
   "scripts": {
     "build": "pnpm --filter @garden/site build",
+    "build:packages": "pnpm --filter !{packages/site} build",
     "build:prepare": "pnpm --filter @garden/site build:prepare",
     "clean": "pnpm --filter {packages/**} clean",
     "clean:full": "pnpm clean && rimraf node_modules",

@@ -1,6 +1,8 @@
 .gardens/
 .next/
 .parcel-cache/
+.rollup.cache/
+dist/
 node_modules/
 out/
 output/
