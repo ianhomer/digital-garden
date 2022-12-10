@@ -24,6 +24,8 @@ jobs:
         run: pnpm lint
       - name: unit test
         run: pnpm test
+      - name: build packages
+        run: pnpm build:packages
       - name: build
         run: |
           pnpm build:prepare
