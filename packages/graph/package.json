@@ -4,8 +4,8 @@
   "description": "Digital garden graph client",
   "license": "ISC",
   "keywords": [],
-  "main": "src/index.ts",
   "type": "module",
+  "main": "src/index.ts",
   "scripts": {
     "build": "tsc && BROWSER=true rollup -c",
     "eslint": "eslint src --ext .ts",
