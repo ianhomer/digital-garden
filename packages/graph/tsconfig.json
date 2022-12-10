@@ -16,6 +16,6 @@
     "strict": true,
     "target": "es2020"
   },
-  "exclude": ["node_modules"],
-  "include": ["src/**/*.ts"]
+  "exclude": ["node_modules/(?!@garden)"],
+  "include": ["src/**/*.ts", "../types/src/**/*.ts"]
 }

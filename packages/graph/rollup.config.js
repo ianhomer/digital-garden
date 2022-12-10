@@ -1,5 +1,11 @@
+import alias from "@rollup/plugin-alias";
+import nodeResolve from "@rollup/plugin-node-resolve";
+import typescript from "@rollup/plugin-typescript";
+import path from "path";
+const projectRootDir = path.resolve(__dirname);
+
 export default {
-  input: "dist/index.js",
+  input: "src/index.ts",
   output: {
     file: "bundle.js",
     format: "umd",
@@ -7,9 +13,29 @@ export default {
     globals: {
       d3: "d3",
       "d3-quadtree": "d3",
-      "@garden/core": "core",
-      "@garden/types": "types",
     },
   },
-  external: ["d3", "d3-quadtree", "@garden/core", "@garden/types"],
+  external: ["d3", "d3-quadtree", "@garden/core"],
+  plugins: [
+    // alias({
+    //   entries: [{ find: "@garden/types", replacement:path.resolve(projectRootDir, "../types") }],
+    // }),
+    // nodeResolve({
+    //   rootDir: path.join(projectRootDir, '../..'),
+    //   preserveSymlinks : true,
+    //   resolveOnly: ["@garden/types"]
+    // }),
+    typescript({
+      compilerOptions: {
+        preserveSymlinks: false,
+        rootDir: "/Users/ian/projects/my/digital-garden/packages/",
+        rootDirs: [
+          "/Users/ian/projects/my/digital-garden/packages/types",
+          "/Users/ian/projects/my/digital-garden/packages/graph",
+        ],
+      },
+      filterRoot: false, //"/Users/ian/projects/my/digital-garden",
+      // exclude: ["node_modules/(?!@garden)","**/*.test.ts"]
+    }),
+  ],
 };
