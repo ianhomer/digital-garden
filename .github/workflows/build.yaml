@@ -26,6 +26,8 @@ jobs:
         run: pnpm test
       - name: build packages
         run: pnpm build:packages
+      - name: test packages
+        run: pnpm test:packages
       - name: build
         run: |
           pnpm build:prepare

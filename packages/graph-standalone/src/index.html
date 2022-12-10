@@ -3,9 +3,9 @@
   <head>
     <title>graph smoke test</title>
 
-    <script src="../graph/node_modules/d3/dist/d3.js"></script>
-    <script src="../graph/node_modules/d3-quadtree/dist/d3-quadtree.js"></script>
-    <script src="../graph/bundle.js"></script>
+    <script src="../../graph/node_modules/d3/dist/d3.js"></script>
+    <script src="../../graph/node_modules/d3-quadtree/dist/d3-quadtree.js"></script>
+    <script src="../../graph/bundle.js"></script>
 
     <style>
       line.link {
@@ -57,21 +57,21 @@
         var svg = d3.select("#graph");
         svg.attr("viewBox", `0 0 400 400`);
         var data = {
-          start: {
-            title: "Start",
+          foo: {
+            title: "Foo",
             aliases: [],
             value: 1,
             links: [
               {
-                name: "second",
+                name: "bar",
                 value: 1,
                 type: "to",
               },
             ],
             type: "item",
           },
-          second: {
-            title: "Second",
+          bar: {
+            title: "Bar",
             aliases: [],
             value: 1,
             links: [],
@@ -79,7 +79,7 @@
           },
         };
         graph.renderGraph(
-          "start",
+          "foo",
           data,
           graph.defaultConfiguration({ viewWidth: 400, viewHeight: 400 }),
           svg
