@@ -1,4 +1,4 @@
-import { factory } from "./factory";
+import { builder } from "./builder";
 import {
   bySource,
   isNotValidPageName,
@@ -9,8 +9,8 @@ import {
 } from "./link";
 
 export {
+  builder,
   bySource,
-  factory,
   isNotValidPageName,
   isValidPageName,
   linkResolver,

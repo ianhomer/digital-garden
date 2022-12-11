@@ -11,6 +11,7 @@
       line.link {
         stroke: black;
       }
+
       line.active {
         stroke-width: 3;
         transition: stroke-width 0s;
@@ -56,28 +57,7 @@
       window.onload = function () {
         var svg = d3.select("#graph");
         svg.attr("viewBox", `0 0 400 400`);
-        var data = {
-          foo: {
-            title: "Foo",
-            aliases: [],
-            value: 1,
-            links: [
-              {
-                name: "bar",
-                value: 1,
-                type: "to",
-              },
-            ],
-            type: "item",
-          },
-          bar: {
-            title: "Bar",
-            aliases: [],
-            value: 1,
-            links: [],
-            type: "item",
-          },
-        };
+        var data = graph.builder().thing("foo").to("bar").thing("bar").build();
         graph.renderGraph(
           "foo",
           data,

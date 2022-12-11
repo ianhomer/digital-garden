@@ -1,4 +1,4 @@
 {
   "*.{cjs,css,js,json,ts,tsx,md}": "prettier --write .",
-  "*.{cjs,js,ts,tsx}": "pnpm eslint:fix"
+  "*.{cjs,js,ts,tsx}": "eslint --fix"
 }

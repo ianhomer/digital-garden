@@ -1,3 +1,5 @@
+import { builder } from "@garden/core";
+
 import collideRectangle from "./collide-rectangle";
 import defaultConfiguration from "./default-configuration";
 import itemName from "./item-name";
@@ -18,4 +20,10 @@ export type {
   NodeLink,
 };
 
-export { collideRectangle, defaultConfiguration, itemName, renderGraph };
+export {
+  builder,
+  collideRectangle,
+  defaultConfiguration,
+  itemName,
+  renderGraph,
+};
