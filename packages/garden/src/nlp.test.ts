@@ -208,5 +208,11 @@ describe("natural language processing", () => {
         "technical-question",
       ]);
     });
+
+    it("should ignore markdown link uri", () => {
+      expect(
+        linksOfText("Dog and the [cat](./animals/some/) and the rabbit")
+      ).toStrictEqual(["dog", "cat", "rabbit"]);
+    });
   });
 });

@@ -50,6 +50,15 @@ describe("markdown", () => {
       ]);
     });
 
+    it("should extra meaning from elements in relative link", async () => {
+      const meta = (
+        await toMultipleThingMeta(
+          async () => "# Title\n\nLion, [dog](./animals/mammals/canine/)"
+        )
+      )[0];
+      expect(meta.links.map(toName)).toStrictEqual(["canine", "lion", "dog"]);
+    });
+
     it("should not extra meaning from wiki links and URIs", async () => {
       const meta = (
         await toMultipleThingMeta(
