@@ -35,6 +35,12 @@ describe("file garden repository", () => {
     expect(itemReference.name).toEqual("word-1");
   });
 
+  it("should find capitalised item", async () => {
+    const gardenRepository = new FileGardenRepository(GARDEN1_DIRECTORY);
+    const itemReference = await gardenRepository.find("capitalised");
+    expect(itemReference.name).toEqual("capitalised");
+  });
+
   it("should load item", async () => {
     const gardenRepository = new FileGardenRepository(GARDEN1_DIRECTORY);
     const itemReference = await gardenRepository.find("word-3");
