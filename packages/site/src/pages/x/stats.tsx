@@ -29,7 +29,7 @@ export async function getStaticProps() {
     (name) =>
       listOfThings.filter((thing) =>
         thing.links.find((link) => link.name === name)
-      ).length == 1
+      ).length === 1
   );
   const singleNaturalWantedThings = wantedThings.filter(
     (name) =>
@@ -37,7 +37,7 @@ export async function getStaticProps() {
         thing.links.find(
           (link) => link.name === name && link.type === LinkType.NaturalTo
         )
-      ).length == 1
+      ).length === 1
   );
 
   return {

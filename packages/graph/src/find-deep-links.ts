@@ -10,9 +10,9 @@ const backLinks = (
   name: string,
   depth: number,
   predicate = (link: Link) =>
-    link.type == LinkType.To ||
-    link.type == LinkType.NaturalAlias ||
-    link.type == LinkType.Child,
+    link.type === LinkType.To ||
+    link.type === LinkType.NaturalAlias ||
+    link.type === LinkType.Child,
   backLinkType = LinkType.From
 ): ItemLink[] => {
   const backLinksAvailable = backLinkCache[name];
@@ -47,7 +47,7 @@ const goDeeper = (
     return true;
   } else if (depth > HARD_DEPTH) {
     return false;
-  } else if (linkType == LinkType.Child) {
+  } else if (linkType === LinkType.Child) {
     // Show the link to child as long as we haven't gone past the hard depth
     return true;
   }
@@ -93,7 +93,7 @@ const findDeepLinks = (
       things,
       name,
       depth,
-      (link: Link) => link.type == LinkType.NaturalTo,
+      (link: Link) => link.type === LinkType.NaturalTo,
       LinkType.NaturalFrom
     ),
   ];
@@ -120,10 +120,10 @@ const findDeepLinks = (
         index ===
         self.findIndex(
           (compareTo) =>
-            ((value.source == compareTo.source &&
-              value.target == compareTo.target) ||
-              (value.source == compareTo.target &&
-                value.target == compareTo.source)) &&
+            ((value.source === compareTo.source &&
+              value.target === compareTo.target) ||
+              (value.source === compareTo.target &&
+                value.target === compareTo.source)) &&
             // choose one with lowest depth
             value.depth >= compareTo.depth
         )

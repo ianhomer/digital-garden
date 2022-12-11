@@ -90,7 +90,7 @@ export class FileGardenRepository extends BaseGardenRepository {
     });
     // Files first
     for (const child of directories) {
-      if (!child.isDirectory() && child.name.toLowerCase() == filename) {
+      if (!child.isDirectory() && child.name.toLowerCase() === filename) {
         return resolve(explicitDirectory, child.name);
       }
     }

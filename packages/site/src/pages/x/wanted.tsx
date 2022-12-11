@@ -10,7 +10,7 @@ function Wanted({ items }: AllData) {
     <ul>
       {Array.from(new Set(items))
         .sort((a, b) =>
-          a.count == b.count
+          a.count === b.count
             ? a.name > b.name
               ? 1
               : -1
