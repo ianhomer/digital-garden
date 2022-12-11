@@ -2,12 +2,12 @@
   "name": "@garden/graph-standalone",
   "version": "0.0.1",
   "description": "Standalone example of graph rendering",
+  "license": "ISC",
+  "keywords": [],
+  "type": "module",
   "scripts": {
     "test:package": "jest --no-watchman"
   },
-  "keywords": [],
-  "license": "ISC",
-  "type": "module",
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@testing-library/dom": "^8.19.0",
