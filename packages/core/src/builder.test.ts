@@ -24,4 +24,9 @@ describe("factor", () => {
     const things = builder().deep("word", 6).build();
     expect(Object.keys(things)).toHaveLength(6);
   });
+
+  it("should create many things", () => {
+    const things = builder().many(50).build();
+    expect(Object.keys(things)).toHaveLength(50);
+  });
 });

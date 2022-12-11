@@ -56,12 +56,14 @@
     <script>
       window.onload = function () {
         var svg = d3.select("#graph");
-        svg.attr("viewBox", `0 0 400 400`);
-        var data = graph.builder().thing("foo").to("bar").thing("bar").build();
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        svg.attr("viewBox", `0 0 ${width} ${height}`);
+        var data = graph.builder().many(100).build();
         graph.renderGraph(
           "foo",
           data,
-          graph.defaultConfiguration({ viewWidth: 400, viewHeight: 400 }),
+          graph.defaultConfiguration({ viewWidth: width, viewHeight: height }),
           svg
         );
       };
