@@ -35,6 +35,20 @@ class MetaBuilder implements ChainedBuilder {
   }
 }
 
+const WORDS = ["foo", "bar", "baz", "qux", "fez", "tik", "mox"];
+const RADIX = WORDS.length;
+
+// numberToName that returns a deterministic name from a given number based on
+// the array of available words.
+const numberToName = (n: number) => {
+  return n
+    .toString(RADIX)
+    .split("")
+    .reverse()
+    .map((i) => WORDS[parseInt(i)])
+    .join("-");
+};
+
 class ThingsBuilder implements ChainedBuilder {
   things: Things = {};
 
@@ -54,6 +68,48 @@ class ThingsBuilder implements ChainedBuilder {
     for (let i = 0; i < count; i++) {
       this.thing(`${base}-${i}`).to(`${base}-${i + 1}`);
     }
+    return this;
+  }
+
+  // Generate many things in a deterministic way. The same inputs will
+  // consistently give the same set of things.
+  many(
+    count: number,
+    options: { linkCount?: number; linkCluster?: number } = {}
+  ) {
+    const { linkCluster, linkCount } = {
+      ...{ linkCount: 5, linkCluster: 0.75 },
+      ...options,
+    };
+    const lookup: string[] = [];
+    for (let i = 0; i < count; i++) {
+      const name = numberToName(i);
+      lookup.push(name);
+    }
+
+    // Generate links between things
+    for (let i = 0; i < count; i++) {
+      const metaBuilder = this.thing(lookup[i]);
+      let distance = 1;
+      let trigger = linkCluster;
+      let direction = 1;
+      for (let j = 0; j < linkCount; j++) {
+        // Aim for the given the number of links. Clustered around the given
+        // thing
+        let relation = i + distance * direction;
+        while (trigger < 1 && relation > -1 && relation < count) {
+          trigger += linkCluster;
+          distance += 1;
+          direction *= -1;
+          relation = i + distance * direction;
+        }
+        trigger -= 1;
+        if (relation > -1 && relation < count) {
+          metaBuilder.to(lookup[relation]);
+        }
+      }
+    }
+
     return this;
   }
 
