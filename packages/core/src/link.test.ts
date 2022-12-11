@@ -17,7 +17,7 @@ describe("link", () => {
     expect(isValidPageName("foo-bar")).toBeTruthy();
     expect(isValidPageName("123-foo-bar")).toBeTruthy();
     expect(isValidPageName("foo-bar>")).toBeFalsy();
-    expect(isValidPageName("README")).toBeTruthy();
+    expect(isValidPageName("README")).toBeFalsy();
     expect(isValidPageName("")).toBeTruthy();
   });
 

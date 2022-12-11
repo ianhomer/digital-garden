@@ -11,7 +11,6 @@ describe("normalise thing names", () => {
     const { meta } = await metaAndContentFrom({
       THING: thing,
     });
-    console.log(JSON.stringify(meta, null, "  "));
     expect(Object.keys(meta)).toHaveLength(1);
     expect(meta.thing.title).toBe("Thing");
   });

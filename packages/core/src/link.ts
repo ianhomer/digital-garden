@@ -9,7 +9,7 @@ export const linkResolver = (name: string) =>
 // A page resolver plugin compatible with the remark-wiki-link pageResolver
 export const pageResolver = (name: string) => [linkResolver(name)];
 
-const ALLOWED_ALTERNATIVE_PAGE_NAMES = ["README", ""];
+const ALLOWED_ALTERNATIVE_PAGE_NAMES = [""];
 
 export const isValidPageName = (name: string) =>
   /^[0-9a-z\\-]+$/.test(name) || ALLOWED_ALTERNATIVE_PAGE_NAMES.includes(name);

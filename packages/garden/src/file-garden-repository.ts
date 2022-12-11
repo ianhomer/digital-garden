@@ -9,9 +9,6 @@ const { readdir } = fs.promises;
 const shouldIncludeDirectory = (excludedDirectories: string[], name: string) =>
   !excludedDirectories.includes(name) && !name.startsWith(".");
 
-const withoutMarkdownExtension = (filename: string) =>
-  filename.substring(0, filename.length - 3);
-
 export class FileItemReference implements ItemReference {
   name;
   filename;
@@ -23,9 +20,12 @@ export class FileItemReference implements ItemReference {
 }
 
 export class FileItem extends BaseItem {
-  constructor(directory: string, filename: string) {
-    const fileContent = fs.readFileSync(join(directory, filename), "utf8");
-    super(filename, fileContent);
+  constructor(itemReference: FileItemReference, directory: string) {
+    const fileContent = fs.readFileSync(
+      join(directory, itemReference.filename),
+      "utf8"
+    );
+    super(itemReference.name, itemReference.filename, fileContent);
   }
 }
 
@@ -44,7 +44,7 @@ export class FileGardenRepository extends BaseGardenRepository {
   toItemReference(filename: string) {
     const matchName = /([^/]*).md$/.exec(filename);
     const name = matchName ? matchName[1] : filename;
-    return new FileItemReference(name, filename);
+    return new FileItemReference(this.normaliseName(name), filename);
   }
 
   toValue(itemReference: ItemReference) {
@@ -71,11 +71,11 @@ export class FileGardenRepository extends BaseGardenRepository {
 
   async load(itemReference: ItemReference | string) {
     if (itemReference instanceof FileItemReference) {
-      return new FileItem(this.directory, itemReference.filename);
+      return new FileItem(itemReference, this.directory);
     } else if (typeof itemReference === "string") {
       return new FileItem(
-        this.directory,
-        ((await this.find(itemReference)) as FileItemReference).filename
+        (await this.find(itemReference)) as FileItemReference,
+        this.directory
       );
     }
     return super.load(itemReference);
@@ -90,7 +90,7 @@ export class FileGardenRepository extends BaseGardenRepository {
     });
     // Files first
     for (const child of directories) {
-      if (!child.isDirectory() && child.name == filename) {
+      if (!child.isDirectory() && child.name.toLowerCase() == filename) {
         return resolve(explicitDirectory, child.name);
       }
     }
@@ -141,8 +141,7 @@ export class FileGardenRepository extends BaseGardenRepository {
     for (const child of directories) {
       const resolved = resolve(explicitDirectory, child.name);
       if (!child.isDirectory() && child.name.endsWith(".md")) {
-        yield new FileItemReference(
-          withoutMarkdownExtension(child.name),
+        yield this.toItemReference(
           resolved.substring(this.gardenDirectoryLength)
         );
       }

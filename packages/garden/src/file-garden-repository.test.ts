@@ -22,9 +22,11 @@ describe("file garden repository", () => {
     const gardenRepository = new FileGardenRepository(GARDEN1_DIRECTORY);
 
     const items = await asyncFrom(gardenRepository.findAll());
-    expect(items.map(toName).sort().slice(0, 2)).toStrictEqual([
-      "README",
+    expect(items.map(toName).sort().slice(0, 4)).toStrictEqual([
       "archive-linked",
+      "archived-thing",
+      "capitalised",
+      "frontmatter",
     ]);
     expect(items.map(toUri(gardenRepository))).toContain("word/word-1.md");
   });
