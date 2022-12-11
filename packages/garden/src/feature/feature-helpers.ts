@@ -7,7 +7,7 @@ export const metaAndContentFrom = async (content: {
   return {
     meta: await metaFrom(content),
     content: async (name: string) =>
-      new BaseItem(`${name}.md`, content[name]).content,
+      new BaseItem(name, `${name}.md`, content[name]).content,
   };
 };
 

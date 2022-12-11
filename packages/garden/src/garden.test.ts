@@ -12,7 +12,7 @@ import {
 import { gardenConfig } from "./test-helpers";
 
 const garden = createGarden(gardenConfig);
-const gardenItemCount = 23;
+const gardenItemCount = 24;
 const NATURAL_LINK_SHARED = "natural-link-shared";
 const NATURAL_LINK_ALONE = "natural-link-alone";
 const noNaturalLinks = (link: Link) => link.type !== LinkType.NaturalTo;
@@ -43,7 +43,7 @@ describe("garden", () => {
   it("should have known things", async () => {
     const things = await garden.meta();
     const knownThings = findKnownThings(things);
-    expect(knownThings.length).toBe(16);
+    expect(knownThings.length).toBe(17);
   });
 
   it("should have linked things", async () => {
@@ -60,7 +60,7 @@ describe("garden", () => {
 
   it("should have achived links with zero value", async () => {
     const things = await garden.meta();
-    expect(things["README"].value).toBe(1);
+    expect(things["readme"].value).toBe(1);
     expect(things["archived-thing"].value).toBe(0);
     expect(
       things["archive-linked"].links.find(
@@ -68,7 +68,7 @@ describe("garden", () => {
       )?.value
     ).toBe(0);
     expect(
-      things["README"].links.find((link) => (link.name = "vocabulary"))?.value
+      things["readme"].links.find((link) => (link.name = "vocabulary"))?.value
     ).toBe(1);
   });
 
