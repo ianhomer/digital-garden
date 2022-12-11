@@ -161,7 +161,7 @@ const update = (
             (d: GraphNode) =>
               config.yOffsetText -
               ((depth) =>
-                depth == 0 ? 40 : depth == 1 ? 30 : depth == 2 ? 15 : 10)(
+                depth === 0 ? 40 : depth === 1 ? 30 : depth === 2 ? 15 : 10)(
                 d.depth
               )
           )
@@ -173,10 +173,10 @@ const update = (
       (update) => {
         update
           .classed("hideLabel", (d: GraphNode) => !d.showLabel)
-          .classed("depth-0", (d: GraphNode) => d.depth == 0)
-          .classed("depth-1", (d: GraphNode) => d.depth == 1)
-          .classed("depth-2", (d: GraphNode) => d.depth == 2)
-          .classed("depth-3", (d: GraphNode) => d.depth == 3)
+          .classed("depth-0", (d: GraphNode) => d.depth === 0)
+          .classed("depth-1", (d: GraphNode) => d.depth === 1)
+          .classed("depth-2", (d: GraphNode) => d.depth === 2)
+          .classed("depth-3", (d: GraphNode) => d.depth === 3)
           .classed("fixed", (d: GraphNode) => d.fx !== undefined)
           .select("circle")
           .attr("r", config.getRadius);

@@ -70,7 +70,7 @@ export function naturalProcess(
     .map((term: Term) => {
       const rawRoot = strip(term.noun.root);
       const root = rawRoot.replace(postStrip, "");
-      if (term.noun.adjectives.length == 0) {
+      if (term.noun.adjectives.length === 0) {
         return root;
       }
       return [

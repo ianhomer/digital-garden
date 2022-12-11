@@ -1,4 +1,7 @@
+dist/
 out/
 output/
+
+bundle.js
 
 packages/site/public/garden.json

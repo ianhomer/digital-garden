@@ -147,13 +147,13 @@ describe("garden", () => {
     expect(Object.keys(metaMap)).toHaveLength(3);
     expect(
       metaMap[myFilename].links
-        .filter((link) => link.type == LinkType.Child)
+        .filter((link) => link.type === LinkType.Child)
         .map((link) => link.name)
     ).toEqual([sectionTitle]);
     expect(metaMap["my-filename"].title).toBe("thing title");
     expect(
       metaMap["my-filename#section-title"].links
-        .filter((link) => link.type == LinkType.Child)
+        .filter((link) => link.type === LinkType.Child)
         .map((link) => link.name)
     ).toEqual(["my-filename#sub-section-title"]);
     expect(metaMap[sectionTitle].title).toBe("section title");

@@ -26,7 +26,13 @@ const linkTypeForceWeight = (linkType: LinkType) => {
 };
 
 const linkDepthForceWeight = (link: NodeLink) =>
-  link.depth == 0 ? 1.0 : link.depth == 1 ? 1.0 : link.depth == 2 ? 0.15 : 0.08;
+  link.depth === 0
+    ? 1.0
+    : link.depth === 1
+    ? 1.0
+    : link.depth === 2
+    ? 0.15
+    : 0.08;
 
 type DefaultConfigurationParameters = {
   viewWidth: number;
@@ -64,11 +70,11 @@ const defaultConfiguration = (
     depth,
     getRadius: (d: Node | SimulationNodeDatum) => {
       if ("depth" in d) {
-        return d.depth == 0
+        return d.depth === 0
           ? DEPTH_1_RADIUS
-          : d.depth == 1
+          : d.depth === 1
           ? 15
-          : d.depth == 2
+          : d.depth === 2
           ? 5
           : 2;
       } else {
@@ -79,11 +85,11 @@ const defaultConfiguration = (
     // How much node repels
     getCharge: (factor: number) => (d: Node | SimulationNodeDatum) => {
       if ("depth" in d) {
-        return d.depth == 0
+        return d.depth === 0
           ? -1000 * factor
-          : d.depth == 1
+          : d.depth === 1
           ? -2000 * factor
-          : d.depth == 2
+          : d.depth === 2
           ? -50 * factor
           : -5 * factor;
       } else {

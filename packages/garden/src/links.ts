@@ -7,10 +7,11 @@ import {
 } from "./content";
 import { Garden } from "./garden";
 
-export const justExplicitLinks = (link: Link) => link.type == LinkType.To;
-export const justNaturalLinks = (link: Link) => link.type == LinkType.NaturalTo;
+export const justExplicitLinks = (link: Link) => link.type === LinkType.To;
+export const justNaturalLinks = (link: Link) =>
+  link.type === LinkType.NaturalTo;
 export const justNaturalAliasLinks = (link: Link) =>
-  link.type == LinkType.NaturalAlias;
+  link.type === LinkType.NaturalAlias;
 export const toLinkName = (link: Link) => link.name;
 
 export const findLinks = async (garden: Garden, item: Item) => {

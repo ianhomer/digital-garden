@@ -2,7 +2,7 @@ import { Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 
 Given("I am on the {word} page", async function (name) {
-  await this.page.goto(`/${name == "index" ? "" : name}`);
+  await this.page.goto(`/${name === "index" ? "" : name}`);
 });
 
 When("I click {word}", async function (name) {

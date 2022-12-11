@@ -24,7 +24,8 @@
     "no-only-tests/no-only-tests": ["error", { "fix": true }],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "sonarjs/cognitive-complexity": "off"
+    "sonarjs/cognitive-complexity": "off",
+    "eqeqeq": ["error", "smart"]
   },
   "env": {
     "node": true
