@@ -5,6 +5,7 @@ const config = {
       "<rootDir>/node_modules/d3-quadtree/dist/d3-quadtree.min.js",
   },
   testEnvironment: "jsdom",
+  testMatch: ["**/*.test.ts"],
 };
 
 module.exports = config;
