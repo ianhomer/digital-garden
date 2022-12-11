@@ -9,7 +9,7 @@
     "clean": "rimraf output",
     "eslint": "eslint src --ext .ts",
     "eslint:fix": "eslint src --ext .ts --fix",
-    "test": "LOG_LEVEL=warn jest --no-watchman",
+    "test": "jest --no-watchman",
     "test:debug": "NODE_OPTIONS=--inspect-brk jest",
     "test:watch": "jest --watch"
   },

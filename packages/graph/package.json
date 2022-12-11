@@ -11,7 +11,7 @@
     "clean": "rimraf tsconfig.tsbuildinfo bundle.js dist .rollup.cache",
     "eslint": "eslint src --ext .ts",
     "eslint:fix": "eslint src --ext .ts --fix",
-    "test": "LOG_LEVEL=warn jest --no-watchman",
+    "test": "jest --no-watchman",
     "test:watch": "jest --watch"
   },
   "dependencies": {
