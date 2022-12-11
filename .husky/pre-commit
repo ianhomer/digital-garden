@@ -2,3 +2,8 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npx lint-staged
+
+if [[ "$branch" == "main" ]] ; then 
+   echo "Committing on main branch, extra checks"
+   exit 1
+fi
