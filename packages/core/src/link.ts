@@ -25,4 +25,4 @@ export const bySource = (source: string) => (link: ItemLink) =>
   link.source === source;
 
 export const byName = (name: string) => (nameable: Nameable) =>
-  nameable.name === name + "";
+  nameable.name === name;
