@@ -29,7 +29,7 @@
     "prettier": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
     "start": "pnpm --filter @garden/site start",
-    "test": "pnpm test",
+    "test": "pnpm --filter {packages/**} test",
     "test:since-main": "pnpm --filter '...[origin/main]' test",
     "test:build": "pnpm --filter @garden/site test:build",
     "test:packages": "pnpm --filter {packages/**} test:package",
