@@ -131,7 +131,7 @@ function extractTitle(node: Section) {
 }
 
 function extractName(url: string) {
-  const match = /([^/]*).md$/.exec(url);
+  const match = /([^/]*?)(?:.md|\/)*$/.exec(url);
   return match ? match[1] : url;
 }
 
