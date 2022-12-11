@@ -1,10 +1,10 @@
-import { bySource, factory } from "@garden/core";
+import { builder, bySource } from "@garden/core";
 
 import findDeepLinks from "../find-deep-links";
 
 describe("graph depth", () => {
   it("should be limited", async () => {
-    const things = factory().deep("word", 6).build();
+    const things = builder().deep("word", 6).build();
     const deepLinks = findDeepLinks(things, "word-1", 3);
     expect(deepLinks.find(bySource("word-4"))).toBeDefined();
     expect(deepLinks.find(bySource("word-5"))).toBeUndefined();

@@ -1,11 +1,11 @@
 import { LinkType, Meta, Things, ThingType } from "@garden/types";
 
-class MetaFactory {
+class MetaBuilder {
   meta;
-  thingsFactory;
+  thingsBuilder;
 
-  constructor(thingsFactory: ThingsFactory, meta: Meta) {
-    this.thingsFactory = thingsFactory;
+  constructor(thingsBuilder: ThingsBuilder, meta: Meta) {
+    this.thingsBuilder = thingsBuilder;
     this.meta = meta;
   }
 
@@ -17,11 +17,11 @@ class MetaFactory {
   }
 
   new() {
-    return this.thingsFactory;
+    return this.thingsBuilder;
   }
 }
 
-class ThingsFactory {
+class ThingsBuilder {
   things: Things = {};
 
   thing(name: string) {
@@ -33,7 +33,7 @@ class ThingsFactory {
       type: ThingType.Item,
     };
     this.things[name] = meta;
-    return new MetaFactory(this, meta);
+    return new MetaBuilder(this, meta);
   }
 
   linked(name: string, to: string) {
@@ -52,4 +52,4 @@ class ThingsFactory {
   }
 }
 
-export const factory = () => new ThingsFactory();
+export const builder = () => new ThingsBuilder();
