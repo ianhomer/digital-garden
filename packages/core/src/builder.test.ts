@@ -8,13 +8,13 @@ describe("factor", () => {
   });
 
   it("should create a single thing", () => {
-    const things = builder().thing("foo").new().build();
+    const things = builder().thing("foo").build();
     expect(Object.keys(things)).toHaveLength(1);
     expect(things.foo.title).toStrictEqual("foo");
   });
 
   it("should create linked things", () => {
-    const things = builder().thing("foo").new().linked("bar", "foo").build();
+    const things = builder().thing("foo").and().thing("bar").to("foo").build();
     expect(Object.keys(things)).toHaveLength(2);
     expect(things.bar.links.find(byName("foo"))).toBeDefined();
     expect(things.foo.title).toStrictEqual("foo");

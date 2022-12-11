@@ -1,6 +1,12 @@
 import { LinkType, Meta, Things, ThingType } from "@garden/types";
 
-class MetaBuilder {
+interface ChainedBuilder {
+  build: () => Things;
+  thing: (name: string) => MetaBuilder;
+  and: () => ThingsBuilder;
+}
+
+class MetaBuilder implements ChainedBuilder {
   meta;
   thingsBuilder;
 
@@ -9,19 +15,27 @@ class MetaBuilder {
     this.meta = meta;
   }
 
-  links(...names: string[]) {
+  to(...names: string[]) {
     for (const name of names) {
       this.meta.links.push({ name, value: 1, type: LinkType.To });
     }
     return this;
   }
 
-  new() {
+  and() {
     return this.thingsBuilder;
+  }
+
+  build() {
+    return this.thingsBuilder.build();
+  }
+
+  thing(name: string) {
+    return this.thingsBuilder.thing(name);
   }
 }
 
-class ThingsBuilder {
+class ThingsBuilder implements ChainedBuilder {
   things: Things = {};
 
   thing(name: string) {
@@ -36,14 +50,14 @@ class ThingsBuilder {
     return new MetaBuilder(this, meta);
   }
 
-  linked(name: string, to: string) {
-    return this.thing(name).links(to).new();
-  }
-
   deep(base: string, count: number) {
     for (let i = 0; i < count; i++) {
-      this.thing(`${base}-${i}`).links(`${base}-${i + 1}`);
+      this.thing(`${base}-${i}`).to(`${base}-${i + 1}`);
     }
+    return this;
+  }
+
+  and() {
     return this;
   }
 
