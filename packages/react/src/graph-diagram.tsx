@@ -2,7 +2,7 @@ import {
   defaultConfiguration,
   GardenSimulation,
   GraphConfiguration,
-  renderGraph,
+  render,
 } from "@garden/graph";
 import { Things } from "@garden/types";
 import * as d3 from "d3";
@@ -52,7 +52,7 @@ export default function GraphDiagram({
       viewHeight,
     });
 
-    setSimulation(renderGraph(start, data, graphConfiguration, svg, callback));
+    setSimulation(render(start, data, graphConfiguration, svg, callback));
   }, [width, height, data]);
 
   return (

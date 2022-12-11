@@ -3,7 +3,7 @@ import { builder } from "@garden/core";
 import collideRectangle from "./collide-rectangle";
 import defaultConfiguration from "./default-configuration";
 import itemName from "./item-name";
-import renderGraph from "./render-graph";
+import render from "./render";
 import {
   GardenSimulation,
   Graph,
@@ -20,10 +20,4 @@ export type {
   NodeLink,
 };
 
-export {
-  builder,
-  collideRectangle,
-  defaultConfiguration,
-  itemName,
-  renderGraph,
-};
+export { builder, collideRectangle, defaultConfiguration, itemName, render };

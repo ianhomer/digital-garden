@@ -4,7 +4,7 @@ import * as d3 from "d3";
 import { BaseType } from "d3";
 
 import defaultConfiguration from "./default-configuration";
-import renderGraph from "./render-graph";
+import render from "./render";
 import { GraphConfiguration } from "./types";
 
 describe("render graph", () => {
@@ -36,7 +36,7 @@ describe("render graph", () => {
       container.getRootNode() as BaseType
     );
 
-    renderGraph("foo", data, graphConfiguration, svg);
+    render("foo", data, graphConfiguration, svg);
 
     const fooNode = await findAllByText(container, "foo");
     expect(fooNode).toBeDefined();

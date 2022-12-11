@@ -141,7 +141,6 @@ const update = (
           .text((d: GraphNode) => d.id);
 
         const anchor = group.append("a").on("click", updateEvent);
-        // .attr("href", (d: GraphNode) => `/${d.id}`);
 
         anchor
           .append("text")
@@ -299,7 +298,7 @@ const applySimulation = (
   svg.selectAll<SVGElement, GraphNode>(".group").call(drag);
 };
 
-const renderGraph = (
+const render = (
   start: string,
   data: Things,
   config: GraphConfiguration,
@@ -322,4 +321,4 @@ const renderGraph = (
   return simulation;
 };
 
-export default renderGraph;
+export default render;
