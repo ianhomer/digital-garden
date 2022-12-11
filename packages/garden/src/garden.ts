@@ -106,7 +106,7 @@ export const loadThingIntoMetaMap = async (metaMap: MetaMap, thing: Thing) => {
 
   thingMeta.forEach((singleThingMeta) => {
     const singleThingName =
-      singleThingMeta.type == ThingType.Child
+      singleThingMeta.type === ThingType.Child
         ? thingName + "#" + linkResolver(singleThingMeta.title)
         : thingName;
     metaMap[singleThingName] = {
@@ -196,7 +196,7 @@ const generateMeta = async (
               type: link.type,
               value: link.value,
             };
-            if (thing.value == 0 || metaMap[link.name]?.value == 0) {
+            if (thing.value === 0 || metaMap[link.name]?.value === 0) {
               transformedLink.value = 0;
             }
             return transformedLink;
@@ -218,11 +218,11 @@ const reduceAliases = (meta: { [key: string]: Meta }) => {
   const reducibleAliases: [string, string[]][] = Object.entries(meta)
     .filter(
       ([, value]) =>
-        value.type == ThingType.NaturallyWanted &&
+        value.type === ThingType.NaturallyWanted &&
         value.links.length > 0 &&
         value.links.every(
           (link) =>
-            link.type == LinkType.NaturalAlias &&
+            link.type === LinkType.NaturalAlias &&
             (link.name in meta ||
               naturallyWantedAliases.indexOf(link.name) > -1)
         )
@@ -236,7 +236,7 @@ const reduceAliases = (meta: { [key: string]: Meta }) => {
   const reducibleAliasNames = reducibleAliases.map(([key]) => key);
   return Object.fromEntries(
     Object.entries(meta)
-      .filter(([key]) => reducibleAliasNames.indexOf(key) == -1)
+      .filter(([key]) => reducibleAliasNames.indexOf(key) === -1)
       .map(([key, { title, type, aliases, links, value }]) => [
         key,
         {
@@ -292,7 +292,7 @@ export const findUnwantedLinks = (meta: MetaMap) => {
         if (!thing) {
           return false;
         }
-        return thing.type == ThingType.Item || thing.type === ThingType.Wanted;
+        return thing.type === ThingType.Item || thing.type === ThingType.Wanted;
       });
     })
     .map((entry) => entry[0]);
@@ -302,7 +302,7 @@ export const findUnwantedLinks = (meta: MetaMap) => {
       return meta[key].links
         .filter(
           (link) =>
-            link.type == LinkType.To && !explicitThingNames.includes(link.name)
+            link.type === LinkType.To && !explicitThingNames.includes(link.name)
         )
         .map((link) => link.name);
     })
@@ -391,7 +391,9 @@ const findBackLinks = (things: Things, name: string) => {
 export const findKnownThings = (things: Things) => {
   return Object.keys(
     Object.fromEntries(
-      Object.entries(things).filter(([, thing]) => thing.type == ThingType.Item)
+      Object.entries(things).filter(
+        ([, thing]) => thing.type === ThingType.Item
+      )
     )
   );
 };
@@ -422,7 +424,7 @@ export const toConfig = (options: GardenOptions): GardenConfig => ({
 });
 
 const toRepository = (config: GardenConfig): GardenRepository => {
-  if (config.type == "file") {
+  if (config.type === "file") {
     return new FileGardenRepository(
       config.directory,
       config.excludedDirectories
