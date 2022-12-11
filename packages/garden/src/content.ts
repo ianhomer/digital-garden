@@ -37,7 +37,7 @@ export async function findBackLinks(
   return garden.findBackLinks(things, name).map((link) => link.name);
 }
 
-const DEFAULT_NAME = "README";
+const DEFAULT_NAME = "readme";
 
 export async function findItem(
   repository: GardenRepository,

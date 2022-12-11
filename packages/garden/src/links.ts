@@ -29,7 +29,7 @@ export const findLinks = async (garden: Garden, item: Item) => {
       ...implicitBackLinks,
     ]).values()
   )
-    .filter((name) => name !== "README" && name !== item.name)
+    .filter((name) => name !== item.name)
     .sort()
     .map(
       (link): Link => ({
