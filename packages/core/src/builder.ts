@@ -73,7 +73,14 @@ class ThingsBuilder implements ChainedBuilder {
 
   // Generate many things in a deterministic way. The same inputs will
   // consistently give the same set of things.
-  many(count: number, options = { linkCount: 5, linkCluster: 0.75 }) {
+  many(
+    count: number,
+    options: { linkCount?: number; linkCluster?: number } = {}
+  ) {
+    const { linkCluster, linkCount } = {
+      ...{ linkCount: 5, linkCluster: 0.75 },
+      ...options,
+    };
     const lookup: string[] = [];
     for (let i = 0; i < count; i++) {
       const name = numberToName(i);
@@ -84,14 +91,14 @@ class ThingsBuilder implements ChainedBuilder {
     for (let i = 0; i < count; i++) {
       const metaBuilder = this.thing(lookup[i]);
       let distance = 1;
-      let trigger = options.linkCluster;
+      let trigger = linkCluster;
       let direction = 1;
-      for (let j = 0; j < options.linkCount; j++) {
+      for (let j = 0; j < linkCount; j++) {
         // Aim for the given the number of links. Clustered around the given
         // thing
         let relation = i + distance * direction;
         while (trigger < 1 && relation > -1 && relation < count) {
-          trigger += options.linkCluster;
+          trigger += linkCluster;
           distance += 1;
           direction *= -1;
           relation = i + distance * direction;

@@ -59,7 +59,7 @@
         var width = window.innerWidth;
         var height = window.innerHeight;
         svg.attr("viewBox", `0 0 ${width} ${height}`);
-        var data = graph.builder().many(100).build();
+        var data = graph.builder().many(1000, { linkCount: 6, linkCluster: 0.2}).build();
         graph.renderGraph(
           "foo",
           data,
