@@ -33,8 +33,8 @@ async function* findFilesInNamedDirectoryDeep(
   for (const child of directories) {
     const resolved = resolve(directory, child.name);
     if (child.isDirectory() && shouldIncludeDirectory(config, child.name)) {
-      if (child.name == name) {
-        const children = await readdir(resolved, { withFileTypes: true });
+      const children = await readdir(resolved, { withFileTypes: true });
+      if (child.name === name) {
         for (const candidate of children) {
           if (candidate.isFile()) {
             yield candidate.name;
@@ -54,7 +54,7 @@ export async function findAbsoluteFile(
   const directories = await readdir(directory, { withFileTypes: true });
   // Files first
   for (const child of directories) {
-    if (!child.isDirectory() && child.name == filename) {
+    if (!child.isDirectory() && child.name === filename) {
       return resolve(directory, child.name);
     }
   }

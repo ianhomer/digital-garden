@@ -21,7 +21,7 @@ function yCenterOfBox(d: GraphNode, box: number[]) {
 // box is [x,y,width,height]
 function apply(d: GraphNode, box: number[], strength: number) {
   return (quad: QuadtreeInternalNode<GraphNode> | QuadtreeLeaf<GraphNode>) => {
-    if (quad.length == 4 || !d) {
+    if (quad.length === 4 || !d) {
       return;
     }
     if ((quad.data.index ?? 0) <= (d.index ?? 0)) {

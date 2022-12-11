@@ -4,11 +4,11 @@ import { ItemLink, Things } from "@garden/types";
 import { Graph, InitialNodeValueMap, NodeType } from "./types";
 
 const countSiblings = (name: string, links: Array<ItemLink>, depth: number) => {
-  if (depth == 0) {
+  if (depth === 0) {
     return 1;
   }
   const linksToName = links.filter((link) => link.target === name);
-  const parentLink = linksToName.find((link) => link.depth == depth);
+  const parentLink = linksToName.find((link) => link.depth === depth);
   if (!parentLink) {
     throw `Cannot find parent of ${name} from ${JSON.stringify(
       linksToName
@@ -43,7 +43,7 @@ export const createGraph = (
     const connections = links
       .filter((link) => link.target === name)
       .map((link) => link.depth);
-    if (connections.length == 0) {
+    if (connections.length === 0) {
       return 0;
     } else return Math.min(...connections);
   };

@@ -57,7 +57,7 @@ function toSections(root: Parent) {
         }
       }
     }
-    const section = depth == 1 ? sections[0] : sections[sectionCount - 1];
+    const section = depth === 1 ? sections[0] : sections[sectionCount - 1];
     if (!skip) {
       section.children.push(node);
     }
@@ -114,7 +114,9 @@ function getFirstValue(node: Node, filter: (node: Node) => boolean): string {
 }
 
 function getFrontText(node: Section, filter: (node: Node) => boolean) {
-  const firstParagraph = node.children.find((node) => node.type == "paragraph");
+  const firstParagraph = node.children.find(
+    (node) => node.type === "paragraph"
+  );
   if (firstParagraph) {
     return getFirstValue(firstParagraph, filter);
   }
@@ -122,7 +124,7 @@ function getFrontText(node: Section, filter: (node: Node) => boolean) {
 }
 
 function extractTitle(node: Section) {
-  const firstHeading = node.children.find((node) => node.type == "heading");
+  const firstHeading = node.children.find((node) => node.type === "heading");
   if (!firstHeading) {
     return getFrontText(node, justTextNodes) ?? "no title";
   }

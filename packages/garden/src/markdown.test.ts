@@ -7,7 +7,7 @@ import { gardenConfig } from "./test-helpers";
 const garden = createGarden(gardenConfig);
 
 const toName = (link: Link) => link.name;
-const justNaturalLinks = (link: Link) => link.type == LinkType.NaturalTo;
+const justNaturalLinks = (link: Link) => link.type === LinkType.NaturalTo;
 
 describe("markdown", () => {
   describe("basic content", () => {
