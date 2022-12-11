@@ -30,7 +30,7 @@ const matchLeadingSymbols = new RegExp(`^[${symbols}\\p{Zs}]+`, "gu");
 const matchTrailingSymbols = new RegExp(`[${symbols}\\p{Zs}]+$`, "gu");
 const matchSymbols = new RegExp(`[${symbols}]`, "gu");
 const matchApostropheNotContraction = /'(?!t|s|ve)/g;
-const matchMarkdownUri = /\(.*\)/g;
+const matchMarkdownUri = /(?<=])\(.*\)/g;
 
 export const preStrip = (text: string) =>
   text
