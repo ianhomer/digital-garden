@@ -74,7 +74,7 @@ describe("natural language processing", () => {
   it("should find nouns with adjectives with chatter", async () => {
     const thing = naturalProcess(
       "hello you, lightweight fun acme tool is, yeah,  an awesome small library, " +
-        "what's up, are some of you over it?"
+      "what's up, are some of you over it?"
     );
     expect(linksOf(thing)).toStrictEqual([
       "acme-tool",
@@ -135,6 +135,25 @@ describe("natural language processing", () => {
       expect(linksOfText("| table with a word |")).toStrictEqual([
         "table",
         "word",
+      ]);
+    });
+
+    it("should strip from a code block table", () => {
+      expect(
+        linksOfText(`|             |                  |
+| --------------- | ---------------- |
+| \`viWS+\`       | make a word bold |
+| \`zR\`          | open all folds   |
+| \`zM\`          | close all folds  |
+| \`<space>+l\`   | Lint file        |
+`)
+      ).toStrictEqual([
+        "word",
+        "bold",
+        "folds",
+        "all",
+        "all-folds",
+        "lint-file",
       ]);
     });
 
