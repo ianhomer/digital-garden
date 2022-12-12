@@ -214,5 +214,11 @@ describe("natural language processing", () => {
         linksOfText("Dog and the [cat](./animals/some/) and the rabbit")
       ).toStrictEqual(["dog", "cat", "rabbit"]);
     });
+
+    it("should ignore one letter chracters", () => {
+      expect(
+        linksOfText("Dog, cat or rabbit and ctrl+e and ctrl+f and ctrl+n")
+      ).toStrictEqual(["dog", "cat", "rabbit"]);
+    });
   });
 });

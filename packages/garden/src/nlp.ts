@@ -57,6 +57,8 @@ export function naturalAliases(name: string): string[] {
 
 const postStrip = /,|'s/g;
 
+const allowedLinks = (name: string) => name.length > 1;
+
 export function naturalProcess(
   content: string,
   excludes: string[] = []
@@ -82,6 +84,7 @@ export function naturalProcess(
       ];
     })
     .flat()
+    .filter(allowedLinks)
     .filter((name: string) => !enhancedExcludes.includes(name))
     .filter(unique)
     .map((name: string) => ({ name, type: LinkType.NaturalTo, value: 1 }));
