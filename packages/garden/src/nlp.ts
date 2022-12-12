@@ -24,27 +24,35 @@ const symbols = "|;\\/:*\\p{Ps}\\p{Pe}\\p{S}";
 const matchDashSymbols = /\p{Pd}/gu;
 const matchIgnoreSymbols = /["]/g;
 const matchCleanUpSymbols = /\s\u064D/g;
+const matchAlternativeSentanceEnd = /[|]+/g;
 const matchMultipleSpaces = /\s+/g;
-const matchSpacesBeforeComma = /\s+,/g;
+const matchMultipleCommas = /,+/g;
+const matchMultipleFullstops = /\.+/g;
+const matchSpacesBeforePunctuation = /(\s+)(?=[,.])/g;
 const matchLeadingSymbols = new RegExp(`^[${symbols}\\p{Zs}]+`, "gu");
 const matchTrailingSymbols = new RegExp(`[${symbols}\\p{Zs}]+$`, "gu");
 const matchSymbols = new RegExp(`[${symbols}]`, "gu");
 const matchApostropheNotContraction = /'(?!t|s|ve)/g;
 const matchMarkdownUri = /(?<=])\(.*\)/g;
+const matchCodeBlock = /`[^`]+`/g;
 
 export const preStrip = (text: string) =>
   text
     .trim()
     .replace(matchMarkdownUri, "")
+    .replace(matchCodeBlock, "")
     .replace(matchCleanUpSymbols, "")
     .replace(matchIgnoreSymbols, "")
     .replace(matchApostropheNotContraction, "")
     .replace(matchDashSymbols, " ")
     .replace(matchLeadingSymbols, "")
-    .replace(matchTrailingSymbols, "")
+    .replace(matchAlternativeSentanceEnd, ". ")
+    .replace(matchTrailingSymbols, ".")
     .replace(matchSymbols, ", ")
-    .replace(matchMultipleSpaces, " ")
-    .replace(matchSpacesBeforeComma, ",");
+    .replace(matchSpacesBeforePunctuation, "")
+    .replace(matchMultipleCommas, ",")
+    .replace(matchMultipleFullstops, ".")
+    .replace(matchMultipleSpaces, " ");
 
 // Return aarray of aliases for words
 export function naturalAliases(name: string): string[] {

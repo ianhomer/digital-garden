@@ -74,7 +74,7 @@ describe("natural language processing", () => {
   it("should find nouns with adjectives with chatter", async () => {
     const thing = naturalProcess(
       "hello you, lightweight fun acme tool is, yeah,  an awesome small library, " +
-      "what's up, are some of you over it?"
+        "what's up, are some of you over it?"
     );
     expect(linksOf(thing)).toStrictEqual([
       "acme-tool",
@@ -150,6 +150,7 @@ describe("natural language processing", () => {
       ).toStrictEqual([
         "word",
         "bold",
+        "bold-word",
         "folds",
         "all",
         "all-folds",
@@ -157,8 +158,8 @@ describe("natural language processing", () => {
       ]);
     });
 
-    it("should strip path elements", () => {
-      expect(linksOfText("`dog/and/cat`")).toStrictEqual(["dog", "cat"]);
+    it("should not strip path elements", () => {
+      expect(linksOfText("`dog/and/cat`")).toStrictEqual([]);
     });
 
     it("should strip symbols", () => {
