@@ -22,11 +22,9 @@ Many q threads.
 Using typed constructors.
 `,
     });
-    const thing1 = meta.exceptional;
-    console.log(JSON.stringify(thing1, null, "  "));
     const thing2 = meta["exceptional#heading-test"];
-    console.log(JSON.stringify(thing2, null, "  "));
-    console.log(JSON.stringify(thing2.links.map((link) => link.name)));
-    expect(thing2.links.map((link) => link.name)).toStrictEqual([]);
+    expect(thing2.links.map((link) => link.name)).toStrictEqual([
+      "constructor",
+    ]);
   });
 });
