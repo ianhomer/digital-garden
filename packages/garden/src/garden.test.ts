@@ -161,16 +161,4 @@ describe("garden", () => {
       "sub-section title"
     );
   });
-
-  describe("exceptional scenarios", () => {
-    it("example 1 - empty link name bug", async () => {
-      const things = await garden.meta();
-      const thing1 = things["exceptional-example-1"];
-      console.log(JSON.stringify(thing1, null, "  "));
-      const thing2 = things["exceptional-example-1#heading-test"];
-      console.log(JSON.stringify(thing2, null, "  "));
-      console.log(JSON.stringify(thing2.links.map((link) => link.name)));
-      expect(thing2.links.map((link) => link.name)).toStrictEqual([]);
-    });
-  });
 });
