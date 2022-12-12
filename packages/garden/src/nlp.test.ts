@@ -138,8 +138,28 @@ describe("natural language processing", () => {
       ]);
     });
 
-    it("should strip path elements", () => {
-      expect(linksOfText("`dog/and/cat`")).toStrictEqual(["dog", "cat"]);
+    it("should strip from a code block table", () => {
+      expect(
+        linksOfText(`|             |                  |
+| --------------- | ---------------- |
+| \`viWS+\`       | make a word bold |
+| \`zR\`          | open all folds   |
+| \`zM\`          | close all folds  |
+| \`<space>+l\`   | Lint file        |
+`)
+      ).toStrictEqual([
+        "word",
+        "bold",
+        "bold-word",
+        "folds",
+        "all",
+        "all-folds",
+        "lint-file",
+      ]);
+    });
+
+    it("should not strip path elements", () => {
+      expect(linksOfText("`dog/and/cat`")).toStrictEqual([]);
     });
 
     it("should strip symbols", () => {
