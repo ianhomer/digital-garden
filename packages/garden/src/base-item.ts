@@ -1,6 +1,24 @@
 import { Item } from "@garden/types";
 import matter from "gray-matter";
 
+import { MarkdownMessage } from "./markdown-message";
+
+const safeMatter = (content: string) => {
+  try {
+    // Note that the gray matter API caches the results if there are no options.
+    // Caching is not desired in this system so this side effect is appropriate.
+    return matter(content, { language: "yaml" });
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : JSON.stringify(error);
+    return {
+      content:
+        content +
+        new MarkdownMessage("Frontmatter error", message).toMarkdown(),
+    };
+  }
+};
+
 export class BaseItem implements Item {
   name: string;
   filename: string;
@@ -10,7 +28,7 @@ export class BaseItem implements Item {
     this.filename = filename;
     this.name = name;
 
-    const itemMatter = matter(content);
+    const itemMatter = safeMatter(content);
     this.content = itemMatter.content;
   }
 }

@@ -10,6 +10,6 @@ describe("page", () => {
     const things = await garden.meta();
     const items = await getPageItems(garden.repository, things);
     const names = items.map((item) => item.name);
-    expect(names).toHaveLength(23);
+    expect(names).toHaveLength(24);
   });
 });
