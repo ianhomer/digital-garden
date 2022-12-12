@@ -12,7 +12,7 @@ import {
 import { gardenConfig } from "./test-helpers";
 
 const garden = createGarden(gardenConfig);
-const gardenItemCount = 24;
+const gardenItemCount = 26;
 const NATURAL_LINK_SHARED = "natural-link-shared";
 const NATURAL_LINK_ALONE = "natural-link-alone";
 const noNaturalLinks = (link: Link) => link.type !== LinkType.NaturalTo;
@@ -43,7 +43,7 @@ describe("garden", () => {
   it("should have known things", async () => {
     const things = await garden.meta();
     const knownThings = findKnownThings(things);
-    expect(knownThings.length).toBe(17);
+    expect(knownThings.length).toBe(18);
   });
 
   it("should have linked things", async () => {
@@ -85,7 +85,7 @@ describe("garden", () => {
   });
 
   it("should refresh meta", async () => {
-    await garden.refresh().then(async () => {
+    await garden.refresh().then(async (generated) => {
       const meta = await garden.load();
       expect(Object.keys(meta).length).toBe(gardenItemCount);
     });
