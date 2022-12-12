@@ -403,7 +403,14 @@ export const findLinkedThings = (
   filter = (link: Link) => !!link
 ) => {
   return Object.values(things)
-    .map((thing) => thing.links.filter(filter).map((link: Link) => link.name))
+    .map((thing) =>
+      thing.links.filter(filter).map((link: Link) => {
+        if (!link.name) {
+          console.log(`Link is null in ${JSON.stringify(thing, null, "  ")}`);
+        }
+        return link.name;
+      })
+    )
     .flat()
     .filter(unique);
 };
