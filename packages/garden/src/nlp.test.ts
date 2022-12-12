@@ -217,7 +217,7 @@ describe("natural language processing", () => {
 
     it("should ignore one letter chracters", () => {
       expect(
-        linksOfText("Dog and cat or rabbit and ctrl+e and ctrl+f and ctrl+n")
+        linksOfText("Dog, cat or rabbit and ctrl+e and ctrl+f and ctrl+n")
       ).toStrictEqual(["dog", "cat", "rabbit"]);
     });
   });
