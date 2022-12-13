@@ -1,3 +1,4 @@
+import { builder } from "@garden/core";
 import { Link, LinkType, Things, ThingType } from "@garden/types";
 
 import {
@@ -20,6 +21,11 @@ const naturalLinks = (link: Link) => link.type === LinkType.NaturalTo;
 describe("garden", () => {
   it("should be created", () => {
     expect(garden.config.directory).toBe("../test-gardens/content");
+  });
+
+  it("should have name", () => {
+    const thing = garden.thing("garden/my-name.md");
+    expect(thing.name).toBe("my-name");
   });
 
   it("should have meta", async () => {
@@ -91,30 +97,16 @@ describe("garden", () => {
   });
 
   it("should not find unwanted links", () => {
-    const meta: Things = {
-      foo: {
-        title: "foo",
-        aliases: [],
-        value: 1,
-        type: ThingType.Item,
-        links: [
-          { name: "explicit-link", type: LinkType.To, value: 1 },
-          { name: NATURAL_LINK_SHARED, type: LinkType.NaturalTo, value: 1 },
-          { name: NATURAL_LINK_ALONE, type: LinkType.NaturalTo, value: 1 },
-        ],
-      },
-      bar: {
-        title: "bar",
-        aliases: [],
-        value: 1,
-        type: ThingType.Item,
-        links: [
-          { name: "explicit-link", type: LinkType.NaturalTo, value: 1 },
-          { name: NATURAL_LINK_SHARED, type: LinkType.NaturalTo, value: 1 },
-          { name: "bar", type: LinkType.NaturalTo, value: 1 },
-        ],
-      },
-    };
+    const meta: Things = builder()
+      .name("foo")
+      .link("explicit-link")
+      .link(NATURAL_LINK_SHARED, LinkType.NaturalTo)
+      .link(NATURAL_LINK_ALONE, LinkType.NaturalTo)
+      .name("bar")
+      .link("explicit-link", LinkType.NaturalTo)
+      .link(NATURAL_LINK_SHARED, LinkType.NaturalTo)
+      .link("bar", LinkType.NaturalTo)
+      .build();
     expect(findUnwantedLinks(meta)).toStrictEqual([NATURAL_LINK_ALONE]);
   });
 

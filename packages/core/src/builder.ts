@@ -15,9 +15,14 @@ class MetaBuilder implements ChainedBuilder {
     this.meta = meta;
   }
 
+  link(name: string, type = LinkType.To) {
+    this.meta.links.push({ name, value: 1, type });
+    return this;
+  }
+
   to(...names: string[]) {
     for (const name of names) {
-      this.meta.links.push({ name, value: 1, type: LinkType.To });
+      this.link(name);
     }
     return this;
   }
