@@ -1,6 +1,5 @@
 import { linkResolver } from "@garden/core";
 import {
-  FileThing,
   GardenRepository,
   Link,
   LinkType,
@@ -26,7 +25,7 @@ const gardenMetaFile = ".garden-meta.json";
 export interface Garden {
   repository: GardenRepository;
   config: GardenConfig;
-  thing: (filename: string) => FileThing;
+  thing: (filename: string) => Thing;
   findBackLinks: (things: Things, name: string) => Array<Link>;
   getMetaFilename: () => string;
   meta: () => Promise<Things>;
@@ -71,13 +70,9 @@ const defaultConfig: GardenConfig = {
   scripts: [],
 };
 
-const loadThing = (
-  repository: GardenRepository,
-  filename: string
-): FileThing => {
+const loadThing = (repository: GardenRepository, filename: string): Thing => {
   const itemReference = repository.toItemReference(filename);
   return {
-    filename,
     name: itemReference.name,
     value: repository.toValue(itemReference),
     content: async (): Promise<string> =>
