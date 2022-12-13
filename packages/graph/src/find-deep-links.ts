@@ -2,7 +2,7 @@ import { ItemLink, Link, LinkType, Things } from "@garden/types";
 
 const valuable = (link: Link) => link.value !== 0;
 
-type BackLinkCache = { [key: string]: string[] };
+type BackLinkCache = Map<string, string[]>;
 
 const backLinks = (
   backLinkCache: BackLinkCache,
@@ -15,7 +15,7 @@ const backLinks = (
     link.type === LinkType.Child,
   backLinkType = LinkType.From
 ): ItemLink[] => {
-  const backLinksAvailable = backLinkCache[name];
+  const backLinksAvailable = backLinkCache.get(name);
   if (!backLinksAvailable) {
     return [];
   }
@@ -55,13 +55,15 @@ const goDeeper = (
 };
 
 const generateBackLinkCache = (things: Things) => {
-  const backLinkCache: BackLinkCache = {};
+  const backLinkCache: BackLinkCache = new Map();
   for (const name in things) {
     for (const backLink of things[name].links.map((link) => link.name)) {
       const backLinkCacheEntry =
-        backLinkCache[backLink] ??
+        backLinkCache.get(backLink) ??
         (() => {
-          return (backLinkCache[backLink] = []);
+          const entry: string[] = [];
+          backLinkCache.set(backLink, entry);
+          return entry;
         })();
       backLinkCacheEntry.push(name);
     }
