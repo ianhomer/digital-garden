@@ -164,11 +164,12 @@ describe("garden", () => {
 
   it("should handle content items with same name", async () => {
     const things = await garden.meta();
+    console.log(JSON.stringify(things, null, "  "));
     const thing = things.readme;
     expect(thing.title).toBe("Garden 1 README");
-    const thing1 = things.readme_abcdef;
+    const thing1 = things["readme+abcdef"];
     expect(thing1.title).toBe("Garden 1 README");
-    const thing2 = things.readme_ghight;
+    const thing2 = things["readme+ghijkl"];
     expect(thing2.title).toBe("Garden 2 README");
   });
 });
