@@ -1,9 +1,9 @@
 // cheap checksum
 export const hash = (source: string) => {
-  let value = 0;
   if (source.length === 0) {
-    return value;
+    return "0";
   }
+  let value = 0;
   // classic checksum
   for (let i = 0; i < source.length; i++) {
     // shift (1->32), minus current and add new character

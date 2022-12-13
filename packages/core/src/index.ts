@@ -1,4 +1,5 @@
 import { builder } from "./builder";
+import { hash } from "./hash";
 import {
   bySource,
   isNotValidPageName,
@@ -11,6 +12,7 @@ import {
 export {
   builder,
   bySource,
+  hash,
   isNotValidPageName,
   isValidPageName,
   linkResolver,
