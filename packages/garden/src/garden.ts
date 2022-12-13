@@ -228,9 +228,11 @@ const reduceAliases = (meta: { [key: string]: Meta }) => {
         )
     )
     .map(([key, value]) => [key, value.links.map((link) => link.name)]);
-  const reducibleAliasLookup: { [key: string]: string } = Object.fromEntries(
+  const reducibleAliasLookup: Map<string, string> = new Map(
     reducibleAliases
-      .map(([key, aliases]) => aliases.map((alias) => [key, alias]))
+      .map(([key, aliases]) =>
+        aliases.map((alias): [string, string] => [key, alias])
+      )
       .flat()
   );
   const reducibleAliasNames = reducibleAliases.map(([key]) => key);
@@ -248,8 +250,9 @@ const reduceAliases = (meta: { [key: string]: Meta }) => {
               .map(([aliasKey]) => aliasKey),
           ],
           links: links.map(({ name, type, value }) => ({
-            name:
-              name in reducibleAliasLookup ? reducibleAliasLookup[name] : name,
+            name: reducibleAliasLookup.has(name)
+              ? reducibleAliasLookup.get(name) ?? name
+              : name,
             type,
             value,
           })),
