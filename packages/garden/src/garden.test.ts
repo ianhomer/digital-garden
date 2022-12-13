@@ -161,4 +161,14 @@ describe("garden", () => {
       "sub-section title"
     );
   });
+
+  it("should handle content items with same name", async () => {
+    const things = await garden.meta();
+    const thing = things.readme;
+    expect(thing.title).toBe("Garden 1 README");
+    const thing1 = things.readme_abcdef;
+    expect(thing1.title).toBe("Garden 1 README");
+    const thing2 = things.readme_ghight;
+    expect(thing2.title).toBe("Garden 2 README");
+  });
 });
