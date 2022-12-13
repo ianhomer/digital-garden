@@ -2,7 +2,7 @@ import { LinkType, Meta, Things, ThingType } from "@garden/types";
 
 interface ChainedBuilder {
   build: () => Things;
-  thing: (name: string) => MetaBuilder;
+  name: (name: string) => MetaBuilder;
   and: () => ThingsBuilder;
 }
 
@@ -30,8 +30,8 @@ class MetaBuilder implements ChainedBuilder {
     return this.thingsBuilder.build();
   }
 
-  thing(name: string) {
-    return this.thingsBuilder.thing(name);
+  name(name: string) {
+    return this.thingsBuilder.name(name);
   }
 }
 
@@ -52,7 +52,7 @@ const numberToName = (n: number) => {
 class ThingsBuilder implements ChainedBuilder {
   things: Things = {};
 
-  thing(name: string) {
+  name(name: string) {
     const meta = {
       title: name,
       links: [],
@@ -66,7 +66,7 @@ class ThingsBuilder implements ChainedBuilder {
 
   deep(base: string, count: number) {
     for (let i = 0; i < count; i++) {
-      this.thing(`${base}-${i}`).to(`${base}-${i + 1}`);
+      this.name(`${base}-${i}`).to(`${base}-${i + 1}`);
     }
     return this;
   }
@@ -89,7 +89,7 @@ class ThingsBuilder implements ChainedBuilder {
 
     // Generate links between things
     for (let i = 0; i < count; i++) {
-      const metaBuilder = this.thing(lookup[i]);
+      const metaBuilder = this.name(lookup[i]);
       let distance = 1;
       let trigger = linkCluster;
       let direction = 1;
