@@ -204,7 +204,7 @@ const generateMeta = async (
       };
     });
 
-  return await sortMeta(reduceAliases(transformedMeta));
+  return sortMeta(reduceAliases(transformedMeta));
 };
 
 const sortMeta = async (meta: { [key: string]: Meta }) => {
@@ -251,7 +251,7 @@ const reduceAliases = (meta: { [key: string]: Meta }) => {
           ],
           links: links.map(({ name, type, value }) => ({
             name: reducibleAliasLookup.has(name)
-              ? reducibleAliasLookup.get(name)
+              ? reducibleAliasLookup.get(name) ?? name
               : name,
             type,
             value,
