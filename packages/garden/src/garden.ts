@@ -1,9 +1,11 @@
 import { linkResolver } from "@garden/core";
 import {
+  FileThing,
   GardenRepository,
   Link,
   LinkType,
   Meta,
+  Thing,
   Things,
   ThingType,
 } from "@garden/types";
@@ -18,7 +20,6 @@ import { justNaturalAliasLinks } from "./links";
 import { logger } from "./logger";
 import { toMultipleThingMeta } from "./markdown";
 import { naturalAliases } from "./nlp";
-import { FileThing, Thing } from "./thing";
 
 const gardenMetaFile = ".garden-meta.json";
 
