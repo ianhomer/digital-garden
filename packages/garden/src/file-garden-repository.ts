@@ -69,14 +69,9 @@ export class FileGardenRepository extends BaseGardenRepository {
     return super.toUri(this.toUri);
   }
 
-  async load(itemReference: ItemReference | string) {
+  async load(itemReference: ItemReference) {
     if (itemReference instanceof FileItemReference) {
       return new FileItem(itemReference, this.directory);
-    } else if (typeof itemReference === "string") {
-      return new FileItem(
-        (await this.find(itemReference)) as FileItemReference,
-        this.directory
-      );
     }
     return super.load(itemReference);
   }

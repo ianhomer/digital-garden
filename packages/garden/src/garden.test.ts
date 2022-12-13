@@ -85,7 +85,7 @@ describe("garden", () => {
   });
 
   it("should refresh meta", async () => {
-    await garden.refresh().then(async (generated) => {
+    await garden.refresh().then(async () => {
       const meta = await garden.load();
       expect(Object.keys(meta).length).toBe(gardenItemCount);
     });
@@ -122,19 +122,19 @@ describe("garden", () => {
   const myFilename = "my-filename";
 
   it("should generate single thing", async () => {
-    const fileThing = {
+    const thing = {
       filename: myFilename,
       name: myFilename,
       content: async () => "# thing title\n\n" + "thing content",
     };
     const metaMap: MetaMap = {};
-    await loadThingIntoMetaMap(metaMap, fileThing);
+    await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(1);
   });
 
   it("should generate multiple things", async () => {
     const sectionTitle = "my-filename#section-title";
-    const fileThing = {
+    const thing = {
       filename: myFilename,
       name: myFilename,
       content: async () =>
@@ -143,7 +143,7 @@ describe("garden", () => {
         "### sub-section title\n\nSub-section content",
     };
     const metaMap: MetaMap = {};
-    await loadThingIntoMetaMap(metaMap, fileThing);
+    await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(3);
     expect(
       metaMap[myFilename].links

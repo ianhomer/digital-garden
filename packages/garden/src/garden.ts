@@ -77,7 +77,7 @@ const loadThing = (repository: GardenRepository, filename: string): Thing => {
     value: repository.toValue(itemReference),
     content: async (): Promise<string> =>
       repository
-        .load(itemReference.name)
+        .load(itemReference)
         .then((item) => item.content)
         .catch((error) => {
           console.error(error);

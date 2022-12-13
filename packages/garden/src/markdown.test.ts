@@ -113,7 +113,7 @@ describe("markdown", () => {
   describe("file with frontmatter", () => {
     it("should have title", async () => {
       const meta = await toMultipleThingMeta(
-        garden.thing("garden1/frontmatter.md").content
+        garden.thing("garden1/frontmatter/frontmatter.md").content
       );
 
       expect(meta).toHaveLength(1);
@@ -124,7 +124,8 @@ describe("markdown", () => {
   describe("file with frontmatter with no content", () => {
     it("should have no title", async () => {
       const meta = await toMultipleThingMeta(
-        garden.thing("garden1/frontmatter-with-no-content.md").content
+        garden.thing("garden1/frontmatter/frontmatter-with-no-content.md")
+          .content
       );
 
       expect(meta).toHaveLength(1);
