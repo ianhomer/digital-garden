@@ -53,7 +53,7 @@ export default async function markdownToHtml(markdown: string) {
     .use(shortenLocalLinks)
     .use(remarkRehype)
     .use(rehypeStringify)
-    .use(rehypeHighlight, { languages: languages })
+    .use(rehypeHighlight, { languages: languages, ignoreMissing: true })
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings, { behavior: "wrap" })
     .use(remarkGardenDirectives)
