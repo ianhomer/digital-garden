@@ -1,30 +1,20 @@
 import { metaFrom } from "./feature-helpers";
 
 describe("exception thing", () => {
-  it("should load OK", async () => {
+  it("should load link with name of a js prototype property", async () => {
     const meta = await metaFrom({
-      exceptional: `# Test file
+      exceptional: `# Heading 1
 
 ## Heading 1.1
 
-### Heading Test
-
-Accepted by the \`K()\` constructor.
-
-### Heading 1.1.1
-
-Many q threads.
+Accepted constructor.
 
 ## Heading 1.2
 
-### Heading 1.2.1
-
-Using typed constructors.
+Using constructors.
 `,
     });
-    const thing2 = meta["exceptional#heading-test"];
-    expect(thing2.links.map((link) => link.name)).toStrictEqual([
-      "constructor",
-    ]);
+    const thing = meta["exceptional#heading-11"];
+    expect(thing.links.map((link) => link.name)).toStrictEqual(["constructor"]);
   });
 });
