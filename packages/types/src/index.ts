@@ -65,7 +65,3 @@ export interface Thing {
   content: () => Promise<string>;
   value?: number;
 }
-
-export interface FileThing extends Thing {
-  filename: string;
-}
