@@ -6,7 +6,7 @@ export interface GardenRepository {
   toUri: (itemReference: ItemReference) => string;
   toValue: (itemReference: ItemReference) => number;
   toItemReference: (name: string) => ItemReference;
-  load: (itemReference: ItemReference | string) => Promise<Item>;
+  load: (itemReference: ItemReference) => Promise<Item>;
   find: (name: string) => Promise<ItemReference>;
   findAll: () => AsyncIterable<ItemReference>;
 }
@@ -59,3 +59,9 @@ export enum LinkType {
 }
 
 export type Things = { [key: string]: Meta };
+
+export interface Thing {
+  name: string;
+  content: () => Promise<string>;
+  value?: number;
+}
