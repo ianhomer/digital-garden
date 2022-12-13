@@ -68,18 +68,7 @@ const defaultConfig: GardenConfig = {
 
 const loadThing = (repository: GardenRepository, filename: string): Thing => {
   const itemReference = repository.toItemReference(filename);
-  return {
-    name: itemReference.name,
-    value: repository.toValue(itemReference),
-    content: async (): Promise<string> =>
-      repository
-        .load(itemReference)
-        .then((item) => item.content)
-        .catch((error) => {
-          console.error(error);
-          return error;
-        }),
-  };
+  return repository.loadThing(itemReference);
 };
 
 const thingToMultipleThingMeta = async (thing: Thing) => {
