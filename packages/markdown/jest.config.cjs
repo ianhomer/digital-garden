@@ -1,0 +1,35 @@
+const transformIgnores = [
+  ".*bail",
+  ".*ccount",
+  ".*character",
+  ".*comma",
+  ".*emoticon",
+  ".*escape",
+  ".*hast",
+  ".*is-*",
+  ".*github",
+  ".*fault",
+  ".*html",
+  ".*lowlight",
+  ".*markdown",
+  ".*mdast",
+  ".*micromark",
+  ".*parse",
+  ".*property",
+  ".*remark-*",
+  ".*rehype-*",
+  ".*space",
+  ".*stringify",
+  ".*trim-lines",
+  ".*trough",
+  ".*unified",
+  ".*unist",
+  ".*vfile",
+].join("|");
+const config = {
+  testEnvironment: "jsdom",
+  testMatch: ["**/*.test.ts"],
+  transformIgnorePatterns: [`/node_modules/(?!${transformIgnores})`],
+};
+
+module.exports = config;
