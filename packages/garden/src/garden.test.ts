@@ -1,5 +1,5 @@
 import { builder } from "@garden/core";
-import { Link, LinkType, Things, ThingType } from "@garden/types";
+import { Link, LinkType, Things } from "@garden/types";
 
 import {
   createGarden,
@@ -113,11 +113,10 @@ describe("garden", () => {
   const myFilename = "my-filename";
 
   it("should generate single thing", async () => {
-    const thing = {
-      filename: myFilename,
-      name: myFilename,
-      content: async () => "# thing title\n\n" + "thing content",
-    };
+    const thing = garden.repository.toThing(
+      myFilename,
+      async () => "# thing title\n\n" + "thing content"
+    );
     const metaMap: Things = {};
     await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(1);
@@ -125,14 +124,13 @@ describe("garden", () => {
 
   it("should generate multiple things", async () => {
     const sectionTitle = "my-filename#section-title";
-    const thing = {
-      filename: myFilename,
-      name: myFilename,
-      content: async () =>
+    const thing = garden.repository.toThing(
+      myFilename,
+      async () =>
         "# thing title\n\nThing content\n\n" +
         "## section title\n\nSection content\n\n" +
-        "### sub-section title\n\nSub-section content",
-    };
+        "### sub-section title\n\nSub-section content"
+    );
     const metaMap: Things = {};
     await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(3);

@@ -44,18 +44,29 @@ export class BaseGardenRepository implements GardenRepository {
     throw `Cannot load ${name} since does not exist in repository`;
   }
 
-  loadThing(itemReference: ItemReference) {
+  toThing(reference: ItemReference | string, content: () => Promise<string>) {
+    const itemReference =
+      typeof reference === "object"
+        ? reference
+        : this.toItemReference(reference);
     return {
       name: itemReference.name,
       value: this.toValue(itemReference),
-      content: async (): Promise<string> =>
+      content,
+    };
+  }
+
+  loadThing(itemReference: ItemReference) {
+    return this.toThing(
+      itemReference,
+      async (): Promise<string> =>
         this.load(itemReference)
           .then((item) => item.content)
           .catch((error) => {
             console.error(error);
             return error;
-          }),
-    };
+          })
+    );
   }
 
   async find(name: string) {
