@@ -257,7 +257,7 @@ const reduceAliases = (meta: { [key: string]: Meta }) => {
             value,
           })),
           type,
-          value: value,
+          value,
         },
       ])
   );
