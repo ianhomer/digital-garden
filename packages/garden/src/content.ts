@@ -43,7 +43,8 @@ export async function findItem(
   repository: GardenRepository,
   name: string | false
 ) {
-  return repository.load(name ? name : DEFAULT_NAME);
+  const itemReference = await repository.find(name ? name : DEFAULT_NAME);
+  return repository.load(itemReference);
 }
 
 export async function findItemOrWanted(

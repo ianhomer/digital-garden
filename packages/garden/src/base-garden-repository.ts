@@ -36,9 +36,8 @@ export class BaseGardenRepository implements GardenRepository {
     return 1;
   }
 
-  async load(itemReference: string | ItemReference) {
-    const name =
-      typeof itemReference === "string" ? itemReference : itemReference.name;
+  async load(itemReference: ItemReference) {
+    const name = itemReference.name;
     if (name in this.content) {
       return new BaseItem(name, name, this.content[name]);
     }
