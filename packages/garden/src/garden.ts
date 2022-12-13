@@ -53,10 +53,6 @@ export interface GardenConfig extends GardenRepositoryConfig {
 
 export type GardenOptions = Partial<GardenConfig>;
 
-export interface MetaMap {
-  [key: string]: Meta;
-}
-
 const defaultConfig: GardenConfig = {
   allowGlobalMeta: true,
   type: "file",
@@ -97,7 +93,7 @@ const thingToMultipleThingMeta = async (thing: Thing) => {
   };
 };
 
-export const loadThingIntoMetaMap = async (metaMap: MetaMap, thing: Thing) => {
+export const loadThingIntoMetaMap = async (metaMap: Things, thing: Thing) => {
   const { thingName, thingMeta, extra } = await thingToMultipleThingMeta(thing);
 
   thingMeta.forEach((singleThingMeta) => {
@@ -130,7 +126,7 @@ export const loadThingIntoMetaMap = async (metaMap: MetaMap, thing: Thing) => {
 const generateMeta = async (
   repository: GardenRepository,
   config: GardenConfig,
-  metaMap: MetaMap = {},
+  metaMap: Things = {},
   filenameToPatch?: string
 ): Promise<{ [key: string]: Meta }> => {
   if (Object.keys(config.content).length > 0) {
@@ -173,7 +169,7 @@ const generateMeta = async (
   });
 
   const unwantedLinks = findUnwantedLinks(metaMap);
-  const transformedMeta: MetaMap = {};
+  const transformedMeta: Things = {};
 
   Object.keys(metaMap)
     .filter((key) => !unwantedLinks.includes(key))
@@ -260,7 +256,7 @@ const reduceAliases = (meta: { [key: string]: Meta }) => {
 };
 
 export const findLinksExcludingExplicit = (
-  meta: MetaMap,
+  meta: Things,
   explicitThingNames: string[],
   references: string[],
   filter: (link: Link) => boolean
@@ -280,7 +276,7 @@ export const findLinksExcludingExplicit = (
 };
 
 // Unwanted are unique natural links to non-existent things
-export const findUnwantedLinks = (meta: MetaMap) => {
+export const findUnwantedLinks = (meta: Things) => {
   const explicitThingNames = Object.entries(meta)
     .filter(([, value]) => {
       if (value.type !== ThingType.NaturallyWanted) {

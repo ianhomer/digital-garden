@@ -1,4 +1,4 @@
-import { Link, LinkType, ThingType } from "@garden/types";
+import { Link, LinkType, Things, ThingType } from "@garden/types";
 
 import {
   createGarden,
@@ -7,7 +7,6 @@ import {
   findUnwantedLinks,
   findWantedThings,
   loadThingIntoMetaMap,
-  MetaMap,
 } from "./garden";
 import { gardenConfig } from "./test-helpers";
 
@@ -92,7 +91,7 @@ describe("garden", () => {
   });
 
   it("should not find unwanted links", () => {
-    const meta: MetaMap = {
+    const meta: Things = {
       foo: {
         title: "foo",
         aliases: [],
@@ -127,7 +126,7 @@ describe("garden", () => {
       name: myFilename,
       content: async () => "# thing title\n\n" + "thing content",
     };
-    const metaMap: MetaMap = {};
+    const metaMap: Things = {};
     await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(1);
   });
@@ -142,7 +141,7 @@ describe("garden", () => {
         "## section title\n\nSection content\n\n" +
         "### sub-section title\n\nSub-section content",
     };
-    const metaMap: MetaMap = {};
+    const metaMap: Things = {};
     await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(3);
     expect(
