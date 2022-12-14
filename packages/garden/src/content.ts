@@ -62,7 +62,12 @@ export async function getAllItems(
 ): Promise<Item[]> {
   const array = [];
   for await (const itemReference of repository.findAll()) {
-    array.push(await repository.load(itemReference));
+    const item = await repository.load(itemReference);
+    array.push(item);
+    array.push({
+      name: item.name + "+" + itemReference.hash,
+      content: item.content,
+    });
   }
   return array;
 }

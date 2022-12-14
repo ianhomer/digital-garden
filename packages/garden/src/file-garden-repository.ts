@@ -1,3 +1,4 @@
+import { hash } from "@garden/core";
 import { ItemReference } from "@garden/types";
 import fs from "fs";
 import { join, resolve } from "path";
@@ -12,10 +13,12 @@ const shouldIncludeDirectory = (excludedDirectories: string[], name: string) =>
 export class FileItemReference implements ItemReference {
   name;
   filename;
+  hash;
 
   constructor(name: string, filename: string) {
     this.name = name;
     this.filename = filename;
+    this.hash = hash(filename);
   }
 }
 
@@ -66,7 +69,7 @@ export class FileGardenRepository extends BaseGardenRepository {
     if (itemReference instanceof FileItemReference) {
       return itemReference.filename;
     }
-    return super.toUri(this.toUri);
+    return super.toUri(itemReference);
   }
 
   async load(itemReference: ItemReference) {
@@ -78,7 +81,8 @@ export class FileGardenRepository extends BaseGardenRepository {
 
   async #findInDirectory(
     explicitDirectory: string,
-    filename: string
+    filename: string,
+    hash: string | undefined
   ): Promise<string | false> {
     const directories = await readdir(explicitDirectory, {
       withFileTypes: true,
@@ -86,7 +90,16 @@ export class FileGardenRepository extends BaseGardenRepository {
     // Files first
     for (const child of directories) {
       if (!child.isDirectory() && child.name.toLowerCase() === filename) {
-        return resolve(explicitDirectory, child.name);
+        const resolved = resolve(explicitDirectory, child.name);
+        if (!hash) {
+          return resolved;
+        }
+        const itemReference = this.toItemReference(
+          resolved.substring(this.gardenDirectoryLength)
+        );
+        if (itemReference.hash === hash) {
+          return resolved;
+        }
       }
     }
     // ... then directories
@@ -96,7 +109,7 @@ export class FileGardenRepository extends BaseGardenRepository {
         shouldIncludeDirectory(this.excludedDirectories, child.name)
       ) {
         const resolved = resolve(explicitDirectory, child.name);
-        const candidate = await this.#findInDirectory(resolved, filename);
+        const candidate = await this.#findInDirectory(resolved, filename, hash);
         if (candidate) {
           return candidate;
         }
@@ -107,7 +120,19 @@ export class FileGardenRepository extends BaseGardenRepository {
   }
 
   async find(name: string) {
-    const filename = await this.#findInDirectory(this.directory, `${name}.md`);
+    const [stem, hash] = (() => {
+      const matchName = /([^\\+]+)\+(.*)/.exec(name);
+      if (matchName) {
+        return [matchName[1], matchName[2]];
+      }
+      return [name, undefined];
+    })();
+
+    const filename = await this.#findInDirectory(
+      this.directory,
+      `${stem}.md`,
+      hash
+    );
     if (!filename) {
       throw `Cannot find ${name} in ${this.directory}`;
     }

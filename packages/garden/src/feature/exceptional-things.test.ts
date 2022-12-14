@@ -14,7 +14,7 @@ Accepted constructor.
 Using constructors.
 `,
     });
-    const thing = meta["exceptional#heading-11"];
+    const thing = meta["exceptional#heading-1-1"];
     expect(thing.links.map((link) => link.name)).toStrictEqual(["constructor"]);
   });
 });
