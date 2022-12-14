@@ -1,4 +1,5 @@
 import { GardenRepository, ItemReference } from "@garden/types";
+import { join, resolve } from "path";
 
 import { FileGardenRepository } from "./file-garden-repository";
 
@@ -48,5 +49,14 @@ describe("file garden repository", () => {
     const itemReference = await gardenRepository.find("word-3");
     const item = await gardenRepository.load(itemReference);
     expect(item.content).toEqual("# Word 3\n\nExplicit link [[word-4]].\n");
+  });
+
+  it("should load item reference from absolute filename", async () => {
+    const gardenRepository = new FileGardenRepository(GARDEN1_DIRECTORY);
+    const filename = join(GARDEN1_DIRECTORY, "README.md");
+    const itemReference = gardenRepository.toItemReference(filename);
+    expect(itemReference.filename).toBe("README.md");
+    const item = await gardenRepository.load(itemReference);
+    expect(item.content.substring(0, 10)).toBe("# Garden 1");
   });
 });
