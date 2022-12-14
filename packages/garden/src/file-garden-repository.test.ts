@@ -55,6 +55,7 @@ describe("file garden repository", () => {
     const gardenRepository = new FileGardenRepository(GARDEN1_DIRECTORY);
     const filename = join(GARDEN1_DIRECTORY, "README.md");
     const itemReference = gardenRepository.toItemReference(filename);
+    expect(itemReference.filename).toBe("README.md");
     const item = await gardenRepository.load(itemReference);
     expect(item.content.substring(0, 10)).toBe("# Garden 1");
   });

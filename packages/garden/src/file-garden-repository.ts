@@ -54,7 +54,7 @@ export class FileGardenRepository extends BaseGardenRepository {
         return filename;
       } else {
         if (filename.startsWith(this.directory)) {
-          return filename.substring(this.directory.length);
+          return filename.substring(this.directory.length + 1);
         }
         throw `${filename} is not allowed, relative or located in ${this.directory}`;
       }
