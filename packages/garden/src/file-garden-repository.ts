@@ -89,7 +89,6 @@ export class FileGardenRepository extends BaseGardenRepository {
     });
     // Files first
     for (const child of directories) {
-      console.log(child.name, hash);
       if (!child.isDirectory() && child.name.toLowerCase() === filename) {
         const resolved = resolve(explicitDirectory, child.name);
         if (!hash) {
@@ -98,7 +97,6 @@ export class FileGardenRepository extends BaseGardenRepository {
         const itemReference = this.toItemReference(
           resolved.substring(this.gardenDirectoryLength)
         );
-        console.log(explicitDirectory, resolved, itemReference);
         if (itemReference.hash === hash) {
           return resolved;
         }

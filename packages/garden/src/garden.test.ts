@@ -157,7 +157,7 @@ describe("garden", () => {
     expect(thing).toBeDefined();
     const thing1 = things["readme"];
     expect(thing1.title).toBe("Garden 1 README");
-    const thing2 = things["readme+uei01z"];
+    const thing2 = things["readme+rqyqis"];
     expect(thing2.title).toBe("Garden 2 README");
   });
 });
