@@ -41,7 +41,7 @@ export class BaseGardenRepository implements GardenRepository {
   async load(itemReference: ItemReference) {
     const name = itemReference.name;
     if (name in this.content) {
-      return new BaseItem(name, name, this.content[name]);
+      return new BaseItem(itemReference, name, this.content[name]);
     }
     throw `Cannot load ${name} since does not exist in repository`;
   }
