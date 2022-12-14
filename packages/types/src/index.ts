@@ -23,6 +23,7 @@ export interface Nameable {
 
 export interface Item extends Nameable {
   filename?: string;
+  hash: string;
   content: string;
 }
 

@@ -1,3 +1,4 @@
+import { hash } from "@garden/core";
 import { GardenRepository, Item } from "@garden/types";
 import { dirname, sep } from "path";
 
@@ -53,6 +54,7 @@ export async function findItemOrWanted(
 ): Promise<Item> {
   return findItem(repository, name).catch(() => ({
     name: name || DEFAULT_NAME,
+    hash: hash(name || DEFAULT_NAME),
     content: `# ${name}\n\nWanted`,
   }));
 }
@@ -60,14 +62,27 @@ export async function findItemOrWanted(
 export async function getAllItems(
   repository: GardenRepository
 ): Promise<Item[]> {
-  const array = [];
+  const array: Item[] = [];
   for await (const itemReference of repository.findAll()) {
     const item = await repository.load(itemReference);
     array.push(item);
-    array.push({
-      name: item.name + "+" + itemReference.hash,
-      content: item.content,
-    });
   }
+
+  // Add hashed names for entries with duplicate namings so that they
+  // can still be resolved.
+  const names = array.map((item) => item.name);
+  const duplicateNames = names.filter(
+    (item, index) => names.indexOf(item) !== index
+  );
+  for (const item of array) {
+    if (duplicateNames.indexOf(item.name) > -1) {
+      array.push({
+        name: item.name + "+" + item.hash,
+        hash: item.hash,
+        content: item.content,
+      });
+    }
+  }
+
   return array;
 }
