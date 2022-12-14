@@ -1,5 +1,6 @@
 export interface ItemReference {
   name: string;
+  hash: string;
 }
 
 export interface GardenRepository {
@@ -39,6 +40,7 @@ export interface ItemLink {
 
 export interface Meta {
   title: string;
+  hash: string;
   type: ThingType;
   aliases: Array<string>;
   links: Array<Link>;
@@ -67,6 +69,7 @@ export type Things = { [key: string]: Meta };
 
 export interface Thing {
   name: string;
+  hash: string;
   content: () => Promise<string>;
   value?: number;
 }

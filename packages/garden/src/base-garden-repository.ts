@@ -1,3 +1,4 @@
+import { hash } from "@garden/core";
 import { GardenRepository, ItemReference } from "@garden/types";
 
 import { BaseItem } from "./base-item";
@@ -19,6 +20,7 @@ export class BaseGardenRepository implements GardenRepository {
     const matchName = /([^/]*).md$/.exec(name);
     return {
       name: this.normaliseName(matchName ? matchName[1] : name),
+      hash: hash(name),
     };
   }
 
@@ -51,6 +53,7 @@ export class BaseGardenRepository implements GardenRepository {
         : this.toItemReference(reference);
     return {
       name: itemReference.name,
+      hash: itemReference.hash,
       value: this.toValue(itemReference),
       content,
     };
@@ -78,7 +81,7 @@ export class BaseGardenRepository implements GardenRepository {
 
   async *findAll() {
     for (const name in this.content) {
-      yield { name };
+      yield { name, hash: hash(name) };
     }
   }
 }

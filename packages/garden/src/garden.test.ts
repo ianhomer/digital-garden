@@ -12,7 +12,7 @@ import {
 import { gardenConfig } from "./test-helpers";
 
 const garden = createGarden(gardenConfig);
-const gardenItemCount = 26;
+const gardenItemCount = 27;
 const NATURAL_LINK_SHARED = "natural-link-shared";
 const NATURAL_LINK_ALONE = "natural-link-alone";
 const noNaturalLinks = (link: Link) => link.type !== LinkType.NaturalTo;
@@ -48,7 +48,7 @@ describe("garden", () => {
   it("should have known things", async () => {
     const things = await garden.meta();
     const knownThings = findKnownThings(things);
-    expect(knownThings.length).toBe(18);
+    expect(knownThings.length).toBe(19);
   });
 
   it("should have linked things", async () => {
@@ -57,7 +57,7 @@ describe("garden", () => {
     expect(linkedThings).toContain("word-2");
     expect(linkedThings).toContain("word-3");
     try {
-      expect(linkedThings.length).toBe(21);
+      expect(linkedThings.length).toBe(22);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(linkedThings)}`);
     }
@@ -83,7 +83,7 @@ describe("garden", () => {
     expect(wantedThings).toStrictEqual(["cat", "wanted"]);
     const wantedNaturalThings = findWantedThings(things, naturalLinks);
     try {
-      expect(wantedNaturalThings.length).toBe(3);
+      expect(wantedNaturalThings.length).toBe(5);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(wantedNaturalThings)}`);
     }
@@ -153,12 +153,11 @@ describe("garden", () => {
 
   it("should handle content items with same name", async () => {
     const things = await garden.meta();
-    console.log(JSON.stringify(things, null, "  "));
     const thing = things.readme;
-    expect(thing.title).toBe("Garden 1 README");
-    const thing1 = things["readme+abcdef"];
+    expect(thing).toBeDefined();
+    const thing1 = things["readme"];
     expect(thing1.title).toBe("Garden 1 README");
-    const thing2 = things["readme+ghijkl"];
+    const thing2 = things["readme+uei01z"];
     expect(thing2.title).toBe("Garden 2 README");
   });
 });

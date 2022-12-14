@@ -1,3 +1,5 @@
+import { linkResolver } from "./link";
+
 // cheap checksum
 export const hash = (source: string) => {
   if (source.length === 0) {
@@ -12,5 +14,5 @@ export const hash = (source: string) => {
     value |= 0;
   }
   // redix with radix 36, i.e. characters 0-9a-z
-  return Math.abs(value).toString(36);
+  return Math.abs(value).toString(36); // + linkResolver(source);
 };

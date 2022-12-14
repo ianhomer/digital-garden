@@ -1,5 +1,7 @@
 import { LinkType, Meta, Things, ThingType } from "@garden/types";
 
+import { hash } from "./hash";
+
 interface ChainedBuilder {
   build: () => Things;
   name: (name: string) => MetaBuilder;
@@ -60,6 +62,7 @@ class ThingsBuilder implements ChainedBuilder {
   name(name: string) {
     const meta = {
       title: name,
+      hash: hash(name),
       links: [],
       aliases: [],
       value: 1,
