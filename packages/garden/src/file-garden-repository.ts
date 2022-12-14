@@ -10,6 +10,10 @@ const { readdir } = fs.promises;
 const shouldIncludeDirectory = (excludedDirectories: string[], name: string) =>
   !excludedDirectories.includes(name) && !name.startsWith(".");
 
+// Quick whether this looks like a valid relative filename
+const couldBeRelativeFilename = (filename: string) =>
+  /^[A-Za-z]/.test(filename);
+
 export class FileItemReference implements ItemReference {
   name;
   filename;
@@ -45,9 +49,19 @@ export class FileGardenRepository extends BaseGardenRepository {
   }
 
   toItemReference(filename: string) {
-    const matchName = /([^/]*).md$/.exec(filename);
-    const name = matchName ? matchName[1] : filename;
-    return new FileItemReference(this.normaliseName(name), filename);
+    const relativeFileName = (() => {
+      if (couldBeRelativeFilename(filename)) {
+        return filename;
+      } else {
+        if (filename.startsWith(this.directory)) {
+          return filename.substring(this.directory.length);
+        }
+        throw `${filename} is not allowed, relative or located in ${this.directory}`;
+      }
+    })();
+    const matchName = /([^/]*).md$/.exec(relativeFileName);
+    const name = matchName ? matchName[1] : relativeFileName;
+    return new FileItemReference(this.normaliseName(name), relativeFileName);
   }
 
   toValue(itemReference: ItemReference) {
