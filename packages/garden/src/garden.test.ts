@@ -1,4 +1,5 @@
-import { Link, LinkType, ThingType } from "@garden/types";
+import { builder } from "@garden/core";
+import { Link, LinkType, Things } from "@garden/types";
 
 import {
   createGarden,
@@ -7,7 +8,6 @@ import {
   findUnwantedLinks,
   findWantedThings,
   loadThingIntoMetaMap,
-  MetaMap,
 } from "./garden";
 import { gardenConfig } from "./test-helpers";
 
@@ -21,6 +21,11 @@ const naturalLinks = (link: Link) => link.type === LinkType.NaturalTo;
 describe("garden", () => {
   it("should be created", () => {
     expect(garden.config.directory).toBe("../test-gardens/content");
+  });
+
+  it("should have name", () => {
+    const thing = garden.thing("garden/my-name.md");
+    expect(thing.name).toBe("my-name");
   });
 
   it("should have meta", async () => {
@@ -85,65 +90,49 @@ describe("garden", () => {
   });
 
   it("should refresh meta", async () => {
-    await garden.refresh().then(async (generated) => {
+    await garden.refresh().then(async () => {
       const meta = await garden.load();
       expect(Object.keys(meta).length).toBe(gardenItemCount);
     });
   });
 
   it("should not find unwanted links", () => {
-    const meta: MetaMap = {
-      foo: {
-        title: "foo",
-        aliases: [],
-        value: 1,
-        type: ThingType.Item,
-        links: [
-          { name: "explicit-link", type: LinkType.To, value: 1 },
-          { name: NATURAL_LINK_SHARED, type: LinkType.NaturalTo, value: 1 },
-          { name: NATURAL_LINK_ALONE, type: LinkType.NaturalTo, value: 1 },
-        ],
-      },
-      bar: {
-        title: "bar",
-        aliases: [],
-        value: 1,
-        type: ThingType.Item,
-        links: [
-          { name: "explicit-link", type: LinkType.NaturalTo, value: 1 },
-          { name: NATURAL_LINK_SHARED, type: LinkType.NaturalTo, value: 1 },
-          { name: "bar", type: LinkType.NaturalTo, value: 1 },
-        ],
-      },
-    };
+    const meta: Things = builder()
+      .name("foo")
+      .link("explicit-link")
+      .link(NATURAL_LINK_SHARED, LinkType.NaturalTo)
+      .link(NATURAL_LINK_ALONE, LinkType.NaturalTo)
+      .name("bar")
+      .link("explicit-link", LinkType.NaturalTo)
+      .link(NATURAL_LINK_SHARED, LinkType.NaturalTo)
+      .link("bar", LinkType.NaturalTo)
+      .build();
     expect(findUnwantedLinks(meta)).toStrictEqual([NATURAL_LINK_ALONE]);
   });
 
   const myFilename = "my-filename";
 
   it("should generate single thing", async () => {
-    const fileThing = {
-      filename: myFilename,
-      name: myFilename,
-      content: async () => "# thing title\n\n" + "thing content",
-    };
-    const metaMap: MetaMap = {};
-    await loadThingIntoMetaMap(metaMap, fileThing);
+    const thing = garden.repository.toThing(
+      myFilename,
+      async () => "# thing title\n\n" + "thing content"
+    );
+    const metaMap: Things = {};
+    await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(1);
   });
 
   it("should generate multiple things", async () => {
     const sectionTitle = "my-filename#section-title";
-    const fileThing = {
-      filename: myFilename,
-      name: myFilename,
-      content: async () =>
+    const thing = garden.repository.toThing(
+      myFilename,
+      async () =>
         "# thing title\n\nThing content\n\n" +
         "## section title\n\nSection content\n\n" +
-        "### sub-section title\n\nSub-section content",
-    };
-    const metaMap: MetaMap = {};
-    await loadThingIntoMetaMap(metaMap, fileThing);
+        "### sub-section title\n\nSub-section content"
+    );
+    const metaMap: Things = {};
+    await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(3);
     expect(
       metaMap[myFilename].links
