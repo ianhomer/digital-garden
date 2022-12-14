@@ -28,7 +28,7 @@ export class FileItem extends BaseItem {
       join(directory, itemReference.filename),
       "utf8"
     );
-    super(itemReference.name, itemReference.filename, fileContent);
+    super(itemReference, itemReference.filename, fileContent);
   }
 }
 

@@ -1,4 +1,4 @@
-import { Item } from "@garden/types";
+import { Item, ItemReference } from "@garden/types";
 import matter from "gray-matter";
 
 import { MarkdownMessage } from "./markdown-message";
@@ -23,10 +23,12 @@ export class BaseItem implements Item {
   name: string;
   filename: string;
   content: string;
+  hash: string;
 
-  constructor(name: string, filename: string, content: string) {
+  constructor(itemReference: ItemReference, filename: string, content: string) {
     this.filename = filename;
-    this.name = name;
+    this.name = itemReference.name;
+    this.hash = itemReference.hash;
 
     const itemMatter = safeMatter(content);
     this.content = itemMatter.content;
