@@ -1,12 +1,10 @@
 # Digital garden
 
-Rendering of collection of markdown files into a web site with
-visualisations to help navigation and discovery of related content.
-
-See <https://boxofjam.com> for an example.
+Rendering of collection of markdown files into a web site with visualisations to
+help navigation and discovery of related content.
 
 Run the command `garden` in any local folder to spin up a local web server based
-on your files.
+on your file or deploy site. See below for details.
 
 ![demo](docs/images/demo.gif)
 
