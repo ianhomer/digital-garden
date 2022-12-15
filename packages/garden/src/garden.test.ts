@@ -1,4 +1,5 @@
-import { Link, LinkType, ThingType } from "@garden/types";
+import { builder } from "@garden/core";
+import { Link, LinkType, Things } from "@garden/types";
 
 import {
   createGarden,
@@ -7,12 +8,11 @@ import {
   findUnwantedLinks,
   findWantedThings,
   loadThingIntoMetaMap,
-  MetaMap,
 } from "./garden";
 import { gardenConfig } from "./test-helpers";
 
 const garden = createGarden(gardenConfig);
-const gardenItemCount = 24;
+const gardenItemCount = 27;
 const NATURAL_LINK_SHARED = "natural-link-shared";
 const NATURAL_LINK_ALONE = "natural-link-alone";
 const noNaturalLinks = (link: Link) => link.type !== LinkType.NaturalTo;
@@ -21,6 +21,11 @@ const naturalLinks = (link: Link) => link.type === LinkType.NaturalTo;
 describe("garden", () => {
   it("should be created", () => {
     expect(garden.config.directory).toBe("../test-gardens/content");
+  });
+
+  it("should have name", () => {
+    const thing = garden.thing("garden/my-name.md");
+    expect(thing.name).toBe("my-name");
   });
 
   it("should have meta", async () => {
@@ -43,7 +48,7 @@ describe("garden", () => {
   it("should have known things", async () => {
     const things = await garden.meta();
     const knownThings = findKnownThings(things);
-    expect(knownThings.length).toBe(17);
+    expect(knownThings.length).toBe(19);
   });
 
   it("should have linked things", async () => {
@@ -52,7 +57,7 @@ describe("garden", () => {
     expect(linkedThings).toContain("word-2");
     expect(linkedThings).toContain("word-3");
     try {
-      expect(linkedThings.length).toBe(20);
+      expect(linkedThings.length).toBe(22);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(linkedThings)}`);
     }
@@ -78,7 +83,7 @@ describe("garden", () => {
     expect(wantedThings).toStrictEqual(["cat", "wanted"]);
     const wantedNaturalThings = findWantedThings(things, naturalLinks);
     try {
-      expect(wantedNaturalThings.length).toBe(3);
+      expect(wantedNaturalThings.length).toBe(5);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(wantedNaturalThings)}`);
     }
@@ -92,58 +97,42 @@ describe("garden", () => {
   });
 
   it("should not find unwanted links", () => {
-    const meta: MetaMap = {
-      foo: {
-        title: "foo",
-        aliases: [],
-        value: 1,
-        type: ThingType.Item,
-        links: [
-          { name: "explicit-link", type: LinkType.To, value: 1 },
-          { name: NATURAL_LINK_SHARED, type: LinkType.NaturalTo, value: 1 },
-          { name: NATURAL_LINK_ALONE, type: LinkType.NaturalTo, value: 1 },
-        ],
-      },
-      bar: {
-        title: "bar",
-        aliases: [],
-        value: 1,
-        type: ThingType.Item,
-        links: [
-          { name: "explicit-link", type: LinkType.NaturalTo, value: 1 },
-          { name: NATURAL_LINK_SHARED, type: LinkType.NaturalTo, value: 1 },
-          { name: "bar", type: LinkType.NaturalTo, value: 1 },
-        ],
-      },
-    };
+    const meta: Things = builder()
+      .name("foo")
+      .link("explicit-link")
+      .link(NATURAL_LINK_SHARED, LinkType.NaturalTo)
+      .link(NATURAL_LINK_ALONE, LinkType.NaturalTo)
+      .name("bar")
+      .link("explicit-link", LinkType.NaturalTo)
+      .link(NATURAL_LINK_SHARED, LinkType.NaturalTo)
+      .link("bar", LinkType.NaturalTo)
+      .build();
     expect(findUnwantedLinks(meta)).toStrictEqual([NATURAL_LINK_ALONE]);
   });
 
   const myFilename = "my-filename";
 
   it("should generate single thing", async () => {
-    const fileThing = {
-      filename: myFilename,
-      name: myFilename,
-      content: async () => "# thing title\n\n" + "thing content",
-    };
-    const metaMap: MetaMap = {};
-    await loadThingIntoMetaMap(metaMap, fileThing);
+    const thing = garden.repository.toThing(
+      myFilename,
+      async () => "# thing title\n\n" + "thing content"
+    );
+    const metaMap: Things = {};
+    await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(1);
   });
 
   it("should generate multiple things", async () => {
     const sectionTitle = "my-filename#section-title";
-    const fileThing = {
-      filename: myFilename,
-      name: myFilename,
-      content: async () =>
+    const thing = garden.repository.toThing(
+      myFilename,
+      async () =>
         "# thing title\n\nThing content\n\n" +
         "## section title\n\nSection content\n\n" +
-        "### sub-section title\n\nSub-section content",
-    };
-    const metaMap: MetaMap = {};
-    await loadThingIntoMetaMap(metaMap, fileThing);
+        "### sub-section title\n\nSub-section content"
+    );
+    const metaMap: Things = {};
+    await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(3);
     expect(
       metaMap[myFilename].links
@@ -160,5 +149,15 @@ describe("garden", () => {
     expect(metaMap["my-filename#sub-section-title"].title).toBe(
       "sub-section title"
     );
+  });
+
+  it("should handle content items with same name", async () => {
+    const things = await garden.meta();
+    const thing = things.readme;
+    expect(thing).toBeDefined();
+    const thing1 = things["readme"];
+    expect(thing1.title).toBe("Garden 1 README");
+    const thing2 = things["readme+rqyqis"];
+    expect(thing2.title).toBe("Garden 2 README");
   });
 });

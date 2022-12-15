@@ -11,9 +11,10 @@ export const getPageItems = async (
     ...(await getAllItems(repository)).filter(
       (item) => item.name.indexOf("#") < 0
     ),
-    ...[{ name: "", content: "no content" }],
+    ...[{ name: "", hash: "00", content: "no content" }],
     ...findWantedThings(things).map((name) => ({
       name,
+      hash: "01",
       content: "no content",
     })),
   ];

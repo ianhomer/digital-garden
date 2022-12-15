@@ -1,12 +1,18 @@
 export interface ItemReference {
   name: string;
+  hash: string;
 }
 
 export interface GardenRepository {
   toUri: (itemReference: ItemReference) => string;
   toValue: (itemReference: ItemReference) => number;
   toItemReference: (name: string) => ItemReference;
-  load: (itemReference: ItemReference | string) => Promise<Item>;
+  load: (itemReference: ItemReference) => Promise<Item>;
+  loadThing: (ItemReference: ItemReference) => Thing;
+  toThing: (
+    ItemReference: ItemReference | string,
+    content: () => Promise<string>
+  ) => Thing;
   find: (name: string) => Promise<ItemReference>;
   findAll: () => AsyncIterable<ItemReference>;
 }
@@ -17,6 +23,7 @@ export interface Nameable {
 
 export interface Item extends Nameable {
   filename?: string;
+  hash: string;
   content: string;
 }
 
@@ -34,6 +41,7 @@ export interface ItemLink {
 
 export interface Meta {
   title: string;
+  hash: string;
   type: ThingType;
   aliases: Array<string>;
   links: Array<Link>;
@@ -59,3 +67,10 @@ export enum LinkType {
 }
 
 export type Things = { [key: string]: Meta };
+
+export interface Thing {
+  name: string;
+  hash: string;
+  content: () => Promise<string>;
+  value?: number;
+}

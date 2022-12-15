@@ -1,3 +1,3 @@
-# Garden2 Word
+# Garden 2 Word
 
-Garden2 word.
+Garden 2 word.

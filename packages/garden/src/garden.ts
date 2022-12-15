@@ -1,9 +1,10 @@
-import { linkResolver } from "@garden/core";
+import { hash, linkResolver } from "@garden/core";
 import {
   GardenRepository,
   Link,
   LinkType,
   Meta,
+  Thing,
   Things,
   ThingType,
 } from "@garden/types";
@@ -18,14 +19,13 @@ import { justNaturalAliasLinks } from "./links";
 import { logger } from "./logger";
 import { toMultipleThingMeta } from "./markdown";
 import { naturalAliases } from "./nlp";
-import { FileThing, Thing } from "./thing";
 
 const gardenMetaFile = ".garden-meta.json";
 
 export interface Garden {
   repository: GardenRepository;
   config: GardenConfig;
-  thing: (filename: string) => FileThing;
+  thing: (filename: string) => Thing;
   findBackLinks: (things: Things, name: string) => Array<Link>;
   getMetaFilename: () => string;
   meta: () => Promise<Things>;
@@ -53,10 +53,6 @@ export interface GardenConfig extends GardenRepositoryConfig {
 
 export type GardenOptions = Partial<GardenConfig>;
 
-export interface MetaMap {
-  [key: string]: Meta;
-}
-
 const defaultConfig: GardenConfig = {
   allowGlobalMeta: true,
   type: "file",
@@ -70,24 +66,9 @@ const defaultConfig: GardenConfig = {
   scripts: [],
 };
 
-const loadThing = (
-  repository: GardenRepository,
-  filename: string
-): FileThing => {
+const loadThing = (repository: GardenRepository, filename: string): Thing => {
   const itemReference = repository.toItemReference(filename);
-  return {
-    filename,
-    name: itemReference.name,
-    value: repository.toValue(itemReference),
-    content: async (): Promise<string> =>
-      repository
-        .load(itemReference.name)
-        .then((item) => item.content)
-        .catch((error) => {
-          console.error(error);
-          return error;
-        }),
-  };
+  return repository.loadThing(itemReference);
 };
 
 const thingToMultipleThingMeta = async (thing: Thing) => {
@@ -96,12 +77,12 @@ const thingToMultipleThingMeta = async (thing: Thing) => {
   };
   return {
     thingName: thing.name,
-    thingMeta: await toMultipleThingMeta(thing.content),
+    thingMeta: await toMultipleThingMeta(thing),
     extra,
   };
 };
 
-export const loadThingIntoMetaMap = async (metaMap: MetaMap, thing: Thing) => {
+export const loadThingIntoMetaMap = async (metaMap: Things, thing: Thing) => {
   const { thingName, thingMeta, extra } = await thingToMultipleThingMeta(thing);
 
   thingMeta.forEach((singleThingMeta) => {
@@ -109,9 +90,18 @@ export const loadThingIntoMetaMap = async (metaMap: MetaMap, thing: Thing) => {
       singleThingMeta.type === ThingType.Child
         ? thingName + "#" + linkResolver(singleThingMeta.title)
         : thingName;
-    metaMap[singleThingName] = {
+
+    const fullName =
+      singleThingName +
+      (singleThingName in metaMap &&
+      metaMap[singleThingName].hash !== singleThingMeta.hash
+        ? "+" + singleThingMeta.hash
+        : "");
+
+    metaMap[fullName] = {
       ...{
         title: singleThingMeta.title,
+        hash: singleThingMeta.hash,
         type: singleThingMeta.type,
         aliases: singleThingMeta.aliases,
         value: singleThingMeta.value,
@@ -134,9 +124,9 @@ export const loadThingIntoMetaMap = async (metaMap: MetaMap, thing: Thing) => {
 const generateMeta = async (
   repository: GardenRepository,
   config: GardenConfig,
-  metaMap: MetaMap = {},
+  metaMap: Things = {},
   filenameToPatch?: string
-): Promise<{ [key: string]: Meta }> => {
+): Promise<Things> => {
   if (Object.keys(config.content).length > 0) {
     for (const key in config.content) {
       await loadThingIntoMetaMap(metaMap, loadThing(repository, `${key}.md`));
@@ -162,6 +152,7 @@ const generateMeta = async (
     if (links.length > 0) {
       metaMap[title] = {
         title,
+        hash: hash(title),
         type: ThingType.NaturallyWanted,
         aliases: [],
         value: 1,
@@ -177,7 +168,7 @@ const generateMeta = async (
   });
 
   const unwantedLinks = findUnwantedLinks(metaMap);
-  const transformedMeta: MetaMap = {};
+  const transformedMeta: Things = {};
 
   Object.keys(metaMap)
     .filter((key) => !unwantedLinks.includes(key))
@@ -185,6 +176,7 @@ const generateMeta = async (
       const thing = metaMap[key];
       transformedMeta[key] = {
         title: thing.title,
+        hash: thing.hash,
         type: thing.type,
         value: thing.value,
         aliases: thing.aliases,
@@ -207,13 +199,13 @@ const generateMeta = async (
   return sortMeta(reduceAliases(transformedMeta));
 };
 
-const sortMeta = async (meta: { [key: string]: Meta }) => {
+const sortMeta = async (meta: Things) => {
   const entries = Object.entries(meta);
   entries.sort(([key1], [key2]) => key1.localeCompare(key2));
   return Object.fromEntries(entries);
 };
 
-const reduceAliases = (meta: { [key: string]: Meta }) => {
+const reduceAliases = (meta: Things): Things => {
   const naturallyWantedAliases = findWantedThings(meta, justNaturalAliasLinks);
   const reducibleAliases: [string, string[]][] = Object.entries(meta)
     .filter(
@@ -228,19 +220,22 @@ const reduceAliases = (meta: { [key: string]: Meta }) => {
         )
     )
     .map(([key, value]) => [key, value.links.map((link) => link.name)]);
-  const reducibleAliasLookup: { [key: string]: string } = Object.fromEntries(
+  const reducibleAliasLookup: Map<string, string> = new Map(
     reducibleAliases
-      .map(([key, aliases]) => aliases.map((alias) => [key, alias]))
+      .map(([key, aliases]) =>
+        aliases.map((alias): [string, string] => [key, alias])
+      )
       .flat()
   );
   const reducibleAliasNames = reducibleAliases.map(([key]) => key);
   return Object.fromEntries(
     Object.entries(meta)
       .filter(([key]) => reducibleAliasNames.indexOf(key) === -1)
-      .map(([key, { title, type, aliases, links, value }]) => [
+      .map(([key, { title, hash, type, aliases, links, value }]) => [
         key,
         {
           title,
+          hash,
           aliases: [
             ...(aliases ?? []),
             ...reducibleAliases
@@ -248,8 +243,9 @@ const reduceAliases = (meta: { [key: string]: Meta }) => {
               .map(([aliasKey]) => aliasKey),
           ],
           links: links.map(({ name, type, value }) => ({
-            name:
-              name in reducibleAliasLookup ? reducibleAliasLookup[name] : name,
+            name: reducibleAliasLookup.has(name)
+              ? reducibleAliasLookup.get(name) ?? name
+              : name,
             type,
             value,
           })),
@@ -261,7 +257,7 @@ const reduceAliases = (meta: { [key: string]: Meta }) => {
 };
 
 export const findLinksExcludingExplicit = (
-  meta: MetaMap,
+  meta: Things,
   explicitThingNames: string[],
   references: string[],
   filter: (link: Link) => boolean
@@ -281,7 +277,7 @@ export const findLinksExcludingExplicit = (
 };
 
 // Unwanted are unique natural links to non-existent things
-export const findUnwantedLinks = (meta: MetaMap) => {
+export const findUnwantedLinks = (meta: Things) => {
   const explicitThingNames = Object.entries(meta)
     .filter(([, value]) => {
       if (value.type !== ThingType.NaturallyWanted) {
