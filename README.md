@@ -4,7 +4,10 @@ Rendering of collection of markdown files into a web site with visualisations to
 help navigation and discovery of related content.
 
 Run the command `garden` in any local folder to spin up a local web server based
-on your file or deploy site. See below for details.
+on your file or deploy site.
+
+See <https://digital-garden-blush.vercel.app/> for a deployment of the
+test-garden in this repository.
 
 ![demo](docs/images/demo.gif)
 
