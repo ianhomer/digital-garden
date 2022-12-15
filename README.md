@@ -1,9 +1,10 @@
 # Digital garden
 
-Rendering of a Zettelkasten collection of markdown notes into a web site with
-visualisations to help navigation and discovery of related content. See
-<https://boxofjam.com> for an example. You can run this locally by running the command `garden` in any
-folder of markdown content you may have locally.
+Rendering of collection of markdown files into a web site with visualisations to
+help navigation and discovery of related content.
+
+Run the command `garden` in any local folder to spin up a local web server based
+on your file or deploy site. See below for details.
 
 ![demo](docs/images/demo.gif)
 
