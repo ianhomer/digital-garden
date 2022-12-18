@@ -11,6 +11,12 @@
   .container h6 > a {
     @apply no-underline;
   }
+  html {
+    @apply font-serif;
+  }
+  main {
+    @apply flex justify-center;
+  }
   .container a {
     @apply underline underline-offset-2;
   }
@@ -19,7 +25,7 @@
     @apply decoration-dashed;
   }
   h1 {
-    @apply text-3xl py-2;
+    @apply text-4xl py-2 mx-4 mt-4 mb-8 text-center leading-5;
   }
   h2 {
     @apply text-2xl py-2;
@@ -31,7 +37,7 @@
     @apply m-2 p-2 border-l-4;
   }
   p {
-    @apply my-2;
+    @apply my-2 text-lg;
   }
   ol,
   ul {

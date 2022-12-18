@@ -71,9 +71,11 @@ function ItemPage({ item, scripts }: Props) {
         <Script key={`script-${index}`} {...script} />
       ))}
 
-      <div className="container max-w-4xl px-4">
-        <div dangerouslySetInnerHTML={{ __html: item.content }} />
-      </div>
+      <main>
+        <div className="container max-w-4xl px-4">
+          <div dangerouslySetInnerHTML={{ __html: item.content }} />
+        </div>
+      </main>
 
       {!isLoading && data && (
         <div ref={ref}>
