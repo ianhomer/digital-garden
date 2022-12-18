@@ -141,6 +141,13 @@ text.label {
   font-size: 1.5em;
   fill: #000;
 }
+.depth-2 text.label {
+  fill: #666;
+}
+.depth-3 text.label {
+  fill: #888;
+}
+
 text.context-label {
   font-size: 0.8em;
   opacity: 0.4;
@@ -157,10 +164,10 @@ g.depth-2 {
 }
 
 .depth-0 text {
-  font-size: 3em;
+  font-size: 4em;
 }
 .depth-1 text {
-  font-size: 2em;
+  font-size: 3em;
 }
 .depth-2 text {
   font-size: 1em;
