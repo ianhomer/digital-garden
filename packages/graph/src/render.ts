@@ -242,7 +242,7 @@ const createSimulation = (
     .force("forceY", d3.forceY(0).strength(config.centerForceFactor))
     .tick(100)
     .alpha(1)
-    .alphaMin(0.02)
+    .alphaMin(0.0002)
     .alphaDecay(0.03)
     .velocityDecay(0.5)
     .on("tick", tick);
