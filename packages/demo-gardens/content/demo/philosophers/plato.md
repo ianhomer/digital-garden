@@ -1,3 +1,3 @@
 # Plato
 
-A Greek [[philosopher]] 424-348BC.
+A Greek [[philosopher]] 424-348 BCE.

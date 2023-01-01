@@ -1,3 +1,3 @@
 # Aristotle
 
-Greek [[philosopher]] 384-322BC taught by [[Plato]].
+Greek [[philosopher]] 384-322 BCE taught by [[Plato]].
