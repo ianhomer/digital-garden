@@ -1,3 +1,3 @@
 # Plato
 
-A Greek [[philosopher]] 424-348 BCE.
+A Greek [[philosopher]] (424-348 BCE). Student of [[Socrates]].

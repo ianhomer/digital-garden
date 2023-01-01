@@ -1,3 +1,3 @@
 # Confucius
 
-A Chinese [[philosopher]] 551-479 BCE
+A Chinese [[philosopher]] (551-479 BCE)
