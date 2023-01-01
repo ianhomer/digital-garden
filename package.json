@@ -13,10 +13,13 @@
   "homepage": "https://github.com/ianhomer/digital-garden#readme",
   "scripts": {
     "build": "pnpm --filter @garden/site build",
+    "build:demo": "GARDENS_DIRECTORY=../demo-gardens/content pnpm --filter @garden/site build",
     "build:packages": "pnpm --filter !{packages/site} build",
     "build:prepare": "pnpm --filter @garden/site build:prepare",
+    "build:prepare:demo": "GARDENS_DIRECTORY=../demo-gardens/content pnpm --filter @garden/site build:prepare",
     "clean": "pnpm --filter {packages/**} clean",
     "clean:full": "pnpm clean && rimraf node_modules",
+    "dev:demo": "GARDENS_DIRECTORY=../demo-gardens/content pnpm --filter @garden/site dev",
     "dev": "pnpm --filter @garden/site dev",
     "dev:test": "pnpm --filter @garden/site dev:test",
     "eslint:packages": "pnpm --no-bail --filter {packages/**} eslint",
