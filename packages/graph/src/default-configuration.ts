@@ -63,8 +63,8 @@ const defaultConfiguration = (
     yOffsetText: -10,
     heightText: 60,
     widthText: 1500,
-    linkForceFactor: 1.5,
-    chargeForceFactor: 1.5,
+    linkForceFactor: 1.2,
+    chargeForceFactor: 1.2,
     centerForceFactor: Math.min(0.25 * (1100.0 / minDimension) ** 2, 0.3),
     boundarySize,
     depth,
@@ -86,9 +86,9 @@ const defaultConfiguration = (
     getCharge: (factor: number) => (d: Node | SimulationNodeDatum) => {
       if ("depth" in d) {
         return d.depth === 0
-          ? -1000 * factor
+          ? -8000 * factor
           : d.depth === 1
-          ? -2000 * factor
+          ? -4000 * factor
           : d.depth === 2
           ? -50 * factor
           : -5 * factor;
