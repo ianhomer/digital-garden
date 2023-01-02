@@ -1,6 +1,10 @@
-import { linkResolver } from "./link";
-
-// cheap checksum
+/**
+ * Generate a cheap checksum from a string. This is used to append to duplicate
+ * named things in the garden to allow de-duplication.
+ *
+ * @param source - string to generate a hash from
+ * @returns checksum for the string
+ */
 export const hash = (source: string) => {
   if (source.length === 0) {
     return "0";
@@ -13,6 +17,6 @@ export const hash = (source: string) => {
     // bitwise to 32 bit integer
     value |= 0;
   }
-  // redix with radix 36, i.e. characters 0-9a-z
-  return Math.abs(value).toString(36); // + linkResolver(source);
+  // redix with radix 36, i.e. use characters in the range 0-9 or a-z
+  return Math.abs(value).toString(36);
 };
