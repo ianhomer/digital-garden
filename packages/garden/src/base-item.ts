@@ -6,7 +6,10 @@ import { MarkdownMessage } from "./markdown-message";
 const safeMatter = (content: string) => {
   try {
     // Note that the gray matter API caches the results if there are no options.
-    // Caching is not desired in this system so this side effect is appropriate.
+    // In this system, caching is undesirable since it masks potential errors
+    // and complicates reloading. Explicitly setting the language for the
+    // frontmatter, other than setting our desired front matter also has the
+    // desired side effect that caching is disabled.
     return matter(content, { language: "yaml" });
   } catch (error) {
     const message =

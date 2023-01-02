@@ -1,5 +1,6 @@
 import { LinkType, Meta, Things, ThingType } from "@garden/types";
 
+import { toFakeName } from "./fake";
 import { hash } from "./hash";
 
 interface ChainedBuilder {
@@ -9,8 +10,8 @@ interface ChainedBuilder {
 }
 
 class MetaBuilder implements ChainedBuilder {
-  meta;
-  thingsBuilder;
+  private meta;
+  private thingsBuilder;
 
   constructor(thingsBuilder: ThingsBuilder, meta: Meta) {
     this.thingsBuilder = thingsBuilder;
@@ -42,22 +43,8 @@ class MetaBuilder implements ChainedBuilder {
   }
 }
 
-const WORDS = ["foo", "bar", "baz", "qux", "fez", "tik", "mox"];
-const RADIX = WORDS.length;
-
-// numberToName that returns a deterministic name from a given number based on
-// the array of available words.
-const numberToName = (n: number) => {
-  return n
-    .toString(RADIX)
-    .split("")
-    .reverse()
-    .map((i) => WORDS[parseInt(i)])
-    .join("-");
-};
-
 class ThingsBuilder implements ChainedBuilder {
-  things: Things = {};
+  private things: Things = {};
 
   name(name: string) {
     const meta = {
@@ -91,7 +78,7 @@ class ThingsBuilder implements ChainedBuilder {
     };
     const lookup: string[] = [];
     for (let i = 0; i < count; i++) {
-      const name = numberToName(i);
+      const name = toFakeName(i);
       lookup.push(name);
     }
 

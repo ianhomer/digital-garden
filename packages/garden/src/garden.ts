@@ -1,9 +1,8 @@
-import { hash, linkResolver } from "@garden/core";
+import { hash, linkResolver, unique } from "@garden/core";
 import {
   GardenRepository,
   Link,
   LinkType,
-  Meta,
   Thing,
   Things,
   ThingType,
@@ -13,7 +12,6 @@ import os from "os";
 import { join } from "path";
 
 import { BaseGardenRepository } from "./base-garden-repository";
-import { unique } from "./common";
 import { FileGardenRepository } from "./file-garden-repository";
 import { justNaturalAliasLinks } from "./links";
 import { logger } from "./logger";

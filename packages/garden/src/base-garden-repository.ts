@@ -4,7 +4,7 @@ import { GardenRepository, ItemReference } from "@garden/types";
 import { BaseItem } from "./base-item";
 
 export class BaseGardenRepository implements GardenRepository {
-  content;
+  private content;
 
   constructor(content: { [key: string]: string } = {}) {
     this.content = Object.fromEntries(
