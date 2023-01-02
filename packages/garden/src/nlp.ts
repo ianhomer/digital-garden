@@ -1,8 +1,7 @@
+import { unique } from "@garden/core";
 import { Link, LinkType } from "@garden/types";
 import nlp from "compromise";
 import Three from "compromise/types/view/three";
-
-import { unique } from "./common";
 
 interface Noun {
   adjectives: string[];

@@ -1,3 +1,4 @@
+import { unique } from "./arrays";
 import { builder } from "./builder";
 import { hash } from "./hash";
 import {
@@ -18,4 +19,5 @@ export {
   linkResolver,
   pageResolver,
   toParentName,
+  unique,
 };
