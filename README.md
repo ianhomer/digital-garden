@@ -53,6 +53,11 @@ Define one or more gardens, by providing an environment variable starting with
 
     GARDEN_MY=https://github.com/name/garden.git
 
+Scripts can be injected with the `SCRIPTS` environment variable. This can be
+used to integrate site analytics, for example Plausible analytics
+
+    SCRIPTS=[{"data-domain":"my-domain.com","src":"https://plausible.io/js/script.js"}]
+
 ## Local garden
 
 Install the `garden` global command to render the garden from a given folder.
