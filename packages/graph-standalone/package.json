@@ -9,7 +9,7 @@
     "test:package": "jest --no-watchman"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.5",
+    "@babel/core": "^7.23.6",
     "@testing-library/dom": "^8.19.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@types/jest": "^29.2.4",
