@@ -33,7 +33,7 @@ jobs:
           pnpm build:prepare
           pnpm build
   end-to-end:
-    runs-on: ubuntu-latest
+    runs-on: mcr.microsoft.com/playwright:v1.40.0-jammy
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
