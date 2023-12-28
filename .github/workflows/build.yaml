@@ -46,6 +46,9 @@ jobs:
           version: 8.x
       - name: install
         run: pnpm install
+      - name: install playwright dependencies
+        run: pnpm exec playwright install
+        working-directory: ./packages/end-to-end
       - name: e2e test
         run: |
           pnpm build:prepare
