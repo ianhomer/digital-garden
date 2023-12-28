@@ -97,3 +97,19 @@ did not expect and help guide decisions we may wish to make.
 | small         | second level depth                                |
 | white         | wanted note - referenced note that does not exist |
 | red           | locked note                                       |
+
+## Running tests
+
+Unit tests
+
+    pnpm test
+
+e2e tests
+
+    pnpm test:build
+    pnpm test:e2e
+
+if you need to re-install browsers for playwright
+
+    cd packages/end-to-end
+    pnpm exec playwright install
