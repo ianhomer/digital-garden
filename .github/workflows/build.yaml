@@ -33,7 +33,7 @@ jobs:
           pnpm build:prepare
           pnpm build
   end-to-end:
-    runs-on: mcr.microsoft.com/playwright:v1.40.0-jammy
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
@@ -46,6 +46,9 @@ jobs:
           version: 8.x
       - name: install
         run: pnpm install
+      - name: install playwright dependencies
+        run: pnpm exec playwright install
+        working-directory: ./packages/end-to-end
       - name: e2e test
         run: |
           pnpm build:prepare
