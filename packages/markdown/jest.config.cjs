@@ -25,6 +25,7 @@ const transformIgnores = [
   ".*unified",
   ".*unist",
   ".*vfile",
+  ".*zwitch",
 ].join("|");
 const config = {
   testEnvironment: "jsdom",
