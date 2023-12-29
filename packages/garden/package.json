@@ -18,7 +18,7 @@
     "@garden/types": "workspace:0.0.1",
     "compromise": "^14.8.0",
     "gray-matter": "^4.0.3",
-    "mdast-util-to-string": "^3.1.0",
+    "mdast-util-to-string": "^3.2.0",
     "pino": "^8.17.2",
     "remark-rehype": "^10.1.0",
     "remark-wiki-link": "^1.0.4",
