@@ -5,11 +5,11 @@ import { findWantedThings } from "./garden";
 
 export const getPageItems = async (
   repository: GardenRepository,
-  things: Things
+  things: Things,
 ) => {
   const items: Item[] = [
     ...(await getAllItems(repository)).filter(
-      (item) => item.name.indexOf("#") < 0
+      (item) => item.name.indexOf("#") < 0,
     ),
     ...[{ name: "", hash: "00", content: "no content" }],
     ...findWantedThings(things).map((name) => ({

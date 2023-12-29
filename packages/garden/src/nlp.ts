@@ -68,7 +68,7 @@ const allowedLinks = (name: string) => name.length > 1;
 
 export function naturalProcess(
   content: string,
-  excludes: string[] = []
+  excludes: string[] = [],
 ): { links: Link[] } {
   const document = nlp(preStrip(content));
   const enhancedExcludes = [...excludes, "", ",", "s", "ing"];
@@ -86,7 +86,7 @@ export function naturalProcess(
         root,
         ...term.noun.adjectives.map((adjective) => strip(adjective)),
         ...term.noun.adjectives.map((adjective) =>
-          [strip(adjective), root].join("-")
+          [strip(adjective), root].join("-"),
         ),
       ];
     })

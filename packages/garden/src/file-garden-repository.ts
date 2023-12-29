@@ -30,7 +30,7 @@ export class FileItem extends BaseItem {
   constructor(itemReference: FileItemReference, directory: string) {
     const fileContent = fs.readFileSync(
       join(directory, itemReference.filename),
-      "utf8"
+      "utf8",
     );
     super(itemReference, itemReference.filename, fileContent);
   }
@@ -96,7 +96,7 @@ export class FileGardenRepository extends BaseGardenRepository {
   async #findInDirectory(
     explicitDirectory: string,
     filename: string,
-    hash: string | undefined
+    hash: string | undefined,
   ): Promise<string | false> {
     const directories = await readdir(explicitDirectory, {
       withFileTypes: true,
@@ -109,7 +109,7 @@ export class FileGardenRepository extends BaseGardenRepository {
           return resolved;
         }
         const itemReference = this.toItemReference(
-          resolved.substring(this.gardenDirectoryLength)
+          resolved.substring(this.gardenDirectoryLength),
         );
         if (itemReference.hash === hash) {
           return resolved;
@@ -145,19 +145,19 @@ export class FileGardenRepository extends BaseGardenRepository {
     const filename = await this.#findInDirectory(
       this.directory,
       `${stem}.md`,
-      hash
+      hash,
     );
     if (!filename) {
       throw `Cannot find ${name} in ${this.directory}`;
     }
     return new FileItemReference(
       name,
-      filename.substring(this.gardenDirectoryLength)
+      filename.substring(this.gardenDirectoryLength),
     );
   }
 
   async *#findAllInDirectory(
-    explicitDirectory: string
+    explicitDirectory: string,
   ): AsyncIterable<ItemReference> {
     const directories = await readdir(explicitDirectory, {
       withFileTypes: true,
@@ -176,7 +176,7 @@ export class FileGardenRepository extends BaseGardenRepository {
       const resolved = resolve(explicitDirectory, child.name);
       if (!child.isDirectory() && child.name.endsWith(".md")) {
         yield this.toItemReference(
-          resolved.substring(this.gardenDirectoryLength)
+          resolved.substring(this.gardenDirectoryLength),
         );
       }
     }

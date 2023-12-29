@@ -123,7 +123,7 @@ const generateMeta = async (
   repository: GardenRepository,
   config: GardenConfig,
   metaMap: Things = {},
-  filenameToPatch?: string
+  filenameToPatch?: string,
 ): Promise<Things> => {
   if (Object.keys(config.content).length > 0) {
     for (const key in config.content) {
@@ -159,7 +159,7 @@ const generateMeta = async (
             name: linkResolver(name),
             type: LinkType.NaturalAlias,
             value: 1,
-          })
+          }),
         ),
       };
     }
@@ -214,16 +214,16 @@ const reduceAliases = (meta: Things): Things => {
           (link) =>
             link.type === LinkType.NaturalAlias &&
             (link.name in meta ||
-              naturallyWantedAliases.indexOf(link.name) > -1)
-        )
+              naturallyWantedAliases.indexOf(link.name) > -1),
+        ),
     )
     .map(([key, value]) => [key, value.links.map((link) => link.name)]);
   const reducibleAliasLookup: Map<string, string> = new Map(
     reducibleAliases
       .map(([key, aliases]) =>
-        aliases.map((alias): [string, string] => [key, alias])
+        aliases.map((alias): [string, string] => [key, alias]),
       )
-      .flat()
+      .flat(),
   );
   const reducibleAliasNames = reducibleAliases.map(([key]) => key);
   return Object.fromEntries(
@@ -250,7 +250,7 @@ const reduceAliases = (meta: Things): Things => {
           type,
           value,
         },
-      ])
+      ]),
   );
 };
 
@@ -258,7 +258,7 @@ export const findLinksExcludingExplicit = (
   meta: Things,
   explicitThingNames: string[],
   references: string[],
-  filter: (link: Link) => boolean
+  filter: (link: Link) => boolean,
 ) => {
   return Object.keys(meta)
     .map((key) => {
@@ -267,7 +267,7 @@ export const findLinksExcludingExplicit = (
           (link) =>
             filter(link) &&
             !explicitThingNames.includes(link.name) &&
-            !references.includes(link.name)
+            !references.includes(link.name),
         )
         .map((link) => link.name);
     })
@@ -296,7 +296,8 @@ export const findUnwantedLinks = (meta: Things) => {
       return meta[key].links
         .filter(
           (link) =>
-            link.type === LinkType.To && !explicitThingNames.includes(link.name)
+            link.type === LinkType.To &&
+            !explicitThingNames.includes(link.name),
         )
         .map((link) => link.name);
     })
@@ -307,7 +308,7 @@ export const findUnwantedLinks = (meta: Things) => {
     explicitThingNames,
     unreferencedExplicitLinks,
     (link) =>
-      link.type === LinkType.NaturalTo || link.type === LinkType.NaturalAlias
+      link.type === LinkType.NaturalTo || link.type === LinkType.NaturalAlias,
   );
 
   // Natural links that referenced multiple times, i.e. keepers
@@ -317,11 +318,11 @@ export const findUnwantedLinks = (meta: Things) => {
         accumulator.push(linkName);
       return accumulator;
     },
-    []
+    [],
   );
 
   return wantedNaturalLinks.filter(
-    (name) => !duplicateWantedNaturalToLinks.includes(name)
+    (name) => !duplicateWantedNaturalToLinks.includes(name),
   );
 };
 
@@ -331,7 +332,7 @@ const getMetaFilename = (config: GardenConfig) => {
   if (config.allowGlobalMeta && fs.existsSync(globalMetaDirectory)) {
     return join(
       globalMetaDirectory,
-      config.directory.replace(/[\\/\\.]/g, "-") + "-meta.json"
+      config.directory.replace(/[\\/\\.]/g, "-") + "-meta.json",
     );
   } else {
     return join(config.directory, gardenMetaFile);
@@ -341,7 +342,7 @@ const getMetaFilename = (config: GardenConfig) => {
 const refresh = async (
   repository: GardenRepository,
   config: GardenConfig,
-  filenameToPatch?: string
+  filenameToPatch?: string,
 ) => {
   const meta =
     filenameToPatch && filenameToPatch.endsWith(".md")
@@ -349,12 +350,12 @@ const refresh = async (
           repository,
           config,
           await loadMeta(repository, config),
-          filenameToPatch
+          filenameToPatch,
         )
       : await generateMeta(repository, config);
   const fullGardenMetaFile = getMetaFilename(config);
   logger.info(
-    `Refreshing ${fullGardenMetaFile} : ${Object.keys(meta).length} things`
+    `Refreshing ${fullGardenMetaFile} : ${Object.keys(meta).length} things`,
   );
   fs.writeFileSync(fullGardenMetaFile, JSON.stringify(meta));
   return meta;
@@ -386,15 +387,15 @@ export const findKnownThings = (things: Things) => {
   return Object.keys(
     Object.fromEntries(
       Object.entries(things).filter(
-        ([, thing]) => thing.type === ThingType.Item
-      )
-    )
+        ([, thing]) => thing.type === ThingType.Item,
+      ),
+    ),
   );
 };
 
 export const findLinkedThings = (
   things: Things,
-  filter = (link: Link) => !!link
+  filter = (link: Link) => !!link,
 ) => {
   return Object.values(things)
     .map((thing) => thing.links.filter(filter).map((link: Link) => link.name))
@@ -404,11 +405,11 @@ export const findLinkedThings = (
 
 export const findWantedThings = (
   things: Things,
-  filter = (link: Link) => !!link
+  filter = (link: Link) => !!link,
 ) => {
   const knownThings = findKnownThings(things);
   return findLinkedThings(things, filter).filter(
-    (name: string) => name.indexOf("#") < 0 && !knownThings.includes(name)
+    (name: string) => name.indexOf("#") < 0 && !knownThings.includes(name),
   );
 };
 
@@ -421,7 +422,7 @@ const toRepository = (config: GardenConfig): GardenRepository => {
   if (config.type === "file") {
     return new FileGardenRepository(
       config.directory,
-      config.excludedDirectories
+      config.excludedDirectories,
     );
   }
   return new BaseGardenRepository(config.content);

@@ -70,7 +70,7 @@ class ThingsBuilder implements ChainedBuilder {
   // consistently give the same set of things.
   many(
     count: number,
-    options: { linkCount?: number; linkCluster?: number } = {}
+    options: { linkCount?: number; linkCluster?: number } = {},
   ) {
     const { linkCluster, linkCount } = {
       ...{ linkCount: 5, linkCluster: 0.75 },

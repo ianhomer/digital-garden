@@ -22,7 +22,7 @@ const onNodeMouseOver = (_: MouseEvent, current: GraphNode) => {
     .filter(
       (d: NodeLink) =>
         (d.target as GraphNode).id === current.id ||
-        (d.source as GraphNode).id === current.id
+        (d.source as GraphNode).id === current.id,
     )
     .classed("active", true);
 };
@@ -35,7 +35,7 @@ const onNodeMouseLeave = (_: MouseEvent, current: GraphNode) => {
     .filter(
       (d: NodeLink) =>
         (d.target as GraphNode).id === current.id ||
-        (d.source as GraphNode).id === current.id
+        (d.source as GraphNode).id === current.id,
     )
     .classed("active", false);
 };
@@ -60,9 +60,9 @@ const update = (
   updateEvent: (
     this: HTMLAnchorElement,
     event: MouseEvent,
-    d: GraphNode
+    d: GraphNode,
   ) => void,
-  firstTime = true
+  firstTime = true,
 ) => {
   const selectGroup = svg.selectAll<SVGElement, GraphNode>(".group");
 
@@ -80,13 +80,13 @@ const update = (
     start,
     data,
     initialValues,
-    findDeepLinks(data, start, config.depth)
+    findDeepLinks(data, start, config.depth),
   );
 
   function click(
     this: SVGElement,
     event: { currentTarget: never },
-    d: GraphNode
+    d: GraphNode,
   ): void {
     delete d.fx;
     delete d.fy;
@@ -111,7 +111,7 @@ const update = (
         update
           .attr("class", (d: NodeLink) => `link ${d.type} depth-${d.depth}`)
           .lower(),
-      (exit) => exit.remove()
+      (exit) => exit.remove(),
     );
 
   selectGroup
@@ -162,8 +162,8 @@ const update = (
               config.yOffsetText -
               ((depth) =>
                 depth === 0 ? 40 : depth === 1 ? 30 : depth === 2 ? 15 : 10)(
-                d.depth
-              )
+                d.depth,
+              ),
           )
           .text((d: GraphNode) => d.context || "n/a")
           .classed("context-label", true);
@@ -186,7 +186,7 @@ const update = (
         exit.selectChildren().remove();
         exit.remove();
         return exit;
-      }
+      },
     );
 
   svg.selectAll<SVGElement, GraphNode>(".group");
@@ -210,20 +210,20 @@ const newTick = (svg: GraphSelect, xOffset: number, yOffset: number) => () => {
         (xOffset + (d?.x ?? 0)) +
         "," +
         (yOffset + (d?.y ?? 0)) +
-        ")"
+        ")",
     );
 };
 
 const createSimulation = (
   config: GraphConfiguration,
-  svg: GraphSelect
+  svg: GraphSelect,
 ): GardenSimulation => {
   const tick = newTick(svg, config.xOffset, config.yOffset);
   return d3
     .forceSimulation()
     .force(
       "charge",
-      d3.forceManyBody().strength(config.getCharge(config.chargeForceFactor))
+      d3.forceManyBody().strength(config.getCharge(config.chargeForceFactor)),
     )
     .force("collide", d3.forceCollide().radius(config.getRadius))
     .force(
@@ -235,8 +235,8 @@ const createSimulation = (
           config.widthText,
           config.heightText,
         ],
-        2
-      )
+        2,
+      ),
     )
     .force("forceX", d3.forceX(0).strength(config.centerForceFactor))
     .force("forceY", d3.forceY(0).strength(config.centerForceFactor))
@@ -253,7 +253,7 @@ const applySimulation = (
   graph: Graph,
   svg: GraphSelect,
   simulation: GardenSimulation,
-  firstTime: boolean
+  firstTime: boolean,
 ) => {
   simulation.nodes(graph.nodes);
   simulation.force(
@@ -261,7 +261,7 @@ const applySimulation = (
     d3
       .forceLink<GraphNode, NodeLink>(graph.links)
       .id((d: GraphNode) => d.id)
-      .strength(config.getLinkForce(config.linkForceFactor))
+      .strength(config.getLinkForce(config.linkForceFactor)),
   );
 
   if (!firstTime) {
@@ -275,17 +275,17 @@ const applySimulation = (
 
   function dragged(
     this: SVGElement,
-    event: { subject: { fx: number; fy: number }; x: number; y: number }
+    event: { subject: { fx: number; fy: number }; x: number; y: number },
   ) {
     event.subject.fx = clamp(
       event.x,
       config.leftBoundary,
-      config.rightBoundary
+      config.rightBoundary,
     );
     event.subject.fy = clamp(
       event.y,
       config.topBoundary,
-      config.bottomBoundary
+      config.bottomBoundary,
     );
     simulation.alphaTarget(0.001).alphaDecay(0.02).alpha(0.3).restart();
   }
@@ -305,13 +305,13 @@ const render = (
   svg: GraphSelect,
   callback = (name: string, event: MouseEvent) => {
     console.log(`Linked to ${name} : ${event}`);
-  }
+  },
 ) => {
   const simulation = createSimulation(config, svg);
   function updateEvent(
     this: HTMLAnchorElement,
     event: MouseEvent,
-    d: GraphNode
+    d: GraphNode,
   ): void {
     callback(d.id, event);
     update(config, svg, simulation, d.id, data, updateEvent, false);

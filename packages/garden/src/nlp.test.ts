@@ -32,7 +32,7 @@ describe("natural language processing", () => {
 
   it("should extract list of things", async () => {
     const thing = naturalProcess(
-      "the principle, the practice, technique, or process may be good"
+      "the principle, the practice, technique, or process may be good",
     );
     expect(linksOf(thing)).toStrictEqual([
       "principle",
@@ -55,7 +55,7 @@ describe("natural language processing", () => {
 
   it("should find nouns with adjectives", async () => {
     const thing = naturalProcess(
-      "lightweight fun acme tool is an awesome small library"
+      "lightweight fun acme tool is an awesome small library",
     );
     expect(linksOf(thing)).toStrictEqual([
       "acme-tool",
@@ -74,7 +74,7 @@ describe("natural language processing", () => {
   it("should find nouns with adjectives with chatter", async () => {
     const thing = naturalProcess(
       "hello you, lightweight fun acme tool is, yeah,  an awesome small library, " +
-        "what's up, are some of you over it?"
+        "what's up, are some of you over it?",
     );
     expect(linksOf(thing)).toStrictEqual([
       "acme-tool",
@@ -108,13 +108,13 @@ describe("natural language processing", () => {
 
   it("should find contractions", async () => {
     expect(
-      linksOfText("wouldn't what's don't should've can't we'll we'd")
+      linksOfText("wouldn't what's don't should've can't we'll we'd"),
     ).toHaveLength(0);
   });
 
   it("should handle semicolons", async () => {
     expect(
-      linksOfText("current thinking; status quo; state of the nation")
+      linksOfText("current thinking; status quo; state of the nation"),
     ).toStrictEqual([
       "thinking",
       "current",
@@ -146,7 +146,7 @@ describe("natural language processing", () => {
 | \`zR\`          | open all folds   |
 | \`zM\`          | close all folds  |
 | \`<space>+l\`   | Lint file        |
-`)
+`),
       ).toStrictEqual([
         "word",
         "bold",
@@ -164,7 +164,7 @@ describe("natural language processing", () => {
 
     it("should strip symbols", () => {
       expect(
-        linksOfText("⇒giraffe$elephant→tigger+lion*dog>cat~and-fish<")
+        linksOfText("⇒giraffe$elephant→tigger+lion*dog>cat~and-fish<"),
       ).toStrictEqual([
         "giraffe",
         "elephant",
@@ -231,13 +231,13 @@ describe("natural language processing", () => {
 
     it("should ignore markdown link uri", () => {
       expect(
-        linksOfText("Dog and the [cat](./animals/some/) and the rabbit")
+        linksOfText("Dog and the [cat](./animals/some/) and the rabbit"),
       ).toStrictEqual(["dog", "cat", "rabbit"]);
     });
 
     it("should ignore one letter chracters", () => {
       expect(
-        linksOfText("Dog, cat or rabbit and ctrl+e and ctrl+f and ctrl+n")
+        linksOfText("Dog, cat or rabbit and ctrl+e and ctrl+f and ctrl+n"),
       ).toStrictEqual(["dog", "cat", "rabbit"]);
     });
   });

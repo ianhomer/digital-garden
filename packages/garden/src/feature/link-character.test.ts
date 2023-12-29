@@ -21,7 +21,7 @@ describe("non-alphanumeric links", () => {
     });
     expect(Object.keys(meta)).toHaveLength(2);
     expect(
-      meta.foo.links.filter(justExplicitLinks).map(toLinkName)
+      meta.foo.links.filter(justExplicitLinks).map(toLinkName),
     ).toStrictEqual(["bars-thing"]);
   });
 });

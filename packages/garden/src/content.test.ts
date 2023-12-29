@@ -19,7 +19,7 @@ describe("content module", () => {
   it("should find all items", async () => {
     const allItems = await getAllItems(garden.repository);
     expect(allItems).toEqual(
-      expect.arrayContaining([expect.objectContaining({ name: "word" })])
+      expect.arrayContaining([expect.objectContaining({ name: "word" })]),
     );
   });
 });

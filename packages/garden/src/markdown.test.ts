@@ -23,8 +23,8 @@ describe("markdown", () => {
         await toMultipleThingMeta(
           garden.repository.toThing(
             "my-name",
-            async () => "# My Name\n\n[[wiki-link]] [link](./my-link.md)"
-          )
+            async () => "# My Name\n\n[[wiki-link]] [link](./my-link.md)",
+          ),
         )
       )[0];
 
@@ -39,8 +39,8 @@ describe("markdown", () => {
           "my-name",
           async () =>
             "# My Name\n\n[[top-wiki-link]]\n\n" +
-            "## My heading\n\nSection content [[child-section-link]]"
-        )
+            "## My heading\n\nSection content [[child-section-link]]",
+        ),
       );
 
       expect(meta[0].title).toBe("My Name");
@@ -52,8 +52,8 @@ describe("markdown", () => {
         await toMultipleThingMeta(
           garden.repository.toThing(
             "mock",
-            async () => "# Mock\n\nA [[one-day-maybe]]"
-          )
+            async () => "# Mock\n\nA [[one-day-maybe]]",
+          ),
         )
       )[0];
       expect(meta.links).toStrictEqual([
@@ -66,8 +66,8 @@ describe("markdown", () => {
         await toMultipleThingMeta(
           garden.repository.toThing(
             "title",
-            async () => "# Title\n\nLion, [dog](./animals/mammals/canine/)"
-          )
+            async () => "# Title\n\nLion, [dog](./animals/mammals/canine/)",
+          ),
         )
       )[0];
       expect(meta.links.map(toName)).toStrictEqual(["canine", "lion", "dog"]);
@@ -80,8 +80,8 @@ describe("markdown", () => {
             "title",
             async () =>
               "# Title\n\nLion and [[giraffe]] <https://cat.com> and " +
-              "[dog](https://animal.com)"
-          )
+              "[dog](https://animal.com)",
+          ),
         )
       )[0];
       expect(meta.links.filter(justNaturalLinks).map(toName)).toStrictEqual([
@@ -95,7 +95,7 @@ describe("markdown", () => {
     it("should take title from first line", async () => {
       const meta = (
         await toMultipleThingMeta(
-          garden.repository.toThing("my-name", async () => "My Name")
+          garden.repository.toThing("my-name", async () => "My Name"),
         )
       )[0];
       expect(meta.title).toBe("My Name");
@@ -105,7 +105,7 @@ describe("markdown", () => {
   describe("empty content", () => {
     it("should have explicit no title", async () => {
       const meta = await toMultipleThingMeta(
-        garden.repository.toThing("null", async () => "")
+        garden.repository.toThing("null", async () => ""),
       );
       expect(meta).toHaveLength(1);
       expect(meta[0].title).toBe("no title");
@@ -134,7 +134,7 @@ describe("markdown", () => {
   describe("file with frontmatter", () => {
     it("should have title", async () => {
       const meta = await toMultipleThingMeta(
-        garden.thing("garden1/frontmatter/frontmatter.md")
+        garden.thing("garden1/frontmatter/frontmatter.md"),
       );
 
       expect(meta).toHaveLength(1);
@@ -145,7 +145,7 @@ describe("markdown", () => {
   describe("file with frontmatter with no content", () => {
     it("should have no title", async () => {
       const meta = await toMultipleThingMeta(
-        garden.thing("garden1/frontmatter/frontmatter-with-no-content.md")
+        garden.thing("garden1/frontmatter/frontmatter-with-no-content.md"),
       );
 
       expect(meta).toHaveLength(1);

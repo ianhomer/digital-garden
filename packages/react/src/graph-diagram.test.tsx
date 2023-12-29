@@ -15,7 +15,7 @@ describe("graph diagram", () => {
         scale={1}
         start={"foo"}
         width={800}
-      />
+      />,
     );
 
     const svg = await screen.findByRole("figure");

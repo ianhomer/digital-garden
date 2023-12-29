@@ -15,7 +15,7 @@ describe("standalone graph", () => {
           const fooNode = await findAllByText(dom.window.document.body, "foo");
           expect(fooNode).toBeDefined();
         },
-        { timeout: 3000 }
+        { timeout: 3000 },
       ).catch((error) => {
         console.log(error, dom.serialize());
         throw error;

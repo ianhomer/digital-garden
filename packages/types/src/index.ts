@@ -11,7 +11,7 @@ export interface GardenRepository {
   loadThing: (ItemReference: ItemReference) => Thing;
   toThing: (
     ItemReference: ItemReference | string,
-    content: () => Promise<string>
+    content: () => Promise<string>,
   ) => Thing;
   find: (name: string) => Promise<ItemReference>;
   findAll: () => AsyncIterable<ItemReference>;
