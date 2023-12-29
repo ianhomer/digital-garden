@@ -7,7 +7,7 @@ import { Garden, GardenConfig } from "./garden";
 
 export async function findImplicitBackLinks(
   config: GardenConfig,
-  name: string
+  name: string,
 ): Promise<string[]> {
   return (await findFilesInNamedDirectory(config, config.directory, name))
     .filter((s) => s.endsWith(".md"))
@@ -19,20 +19,20 @@ export async function findImplicitBackLinks(
 
 export async function findImplicitForwardLinks(
   config: GardenConfig,
-  item: Item
+  item: Item,
 ): Promise<string[]> {
   return Promise.resolve(
     item.filename
       ? dirname(item.filename)
           .split(sep)
           .slice(config.hasMultiple ? 1 : 0)
-      : []
+      : [],
   );
 }
 
 export async function findBackLinks(
   garden: Garden,
-  name: string
+  name: string,
 ): Promise<string[]> {
   const things = await garden.load();
   return garden.findBackLinks(things, name).map((link) => link.name);
@@ -42,7 +42,7 @@ const DEFAULT_NAME = "readme";
 
 export async function findItem(
   repository: GardenRepository,
-  name: string | false
+  name: string | false,
 ) {
   const itemReference = await repository.find(name ? name : DEFAULT_NAME);
   return repository.load(itemReference);
@@ -50,7 +50,7 @@ export async function findItem(
 
 export async function findItemOrWanted(
   repository: GardenRepository,
-  name: string | false
+  name: string | false,
 ): Promise<Item> {
   return findItem(repository, name).catch(() => ({
     name: name || DEFAULT_NAME,
@@ -60,7 +60,7 @@ export async function findItemOrWanted(
 }
 
 export async function getAllItems(
-  repository: GardenRepository
+  repository: GardenRepository,
 ): Promise<Item[]> {
   const array: Item[] = [];
   for await (const itemReference of repository.findAll()) {
@@ -72,7 +72,7 @@ export async function getAllItems(
   // can still be resolved.
   const names = array.map((item) => item.name);
   const duplicateNames = names.filter(
-    (item, index) => names.indexOf(item) !== index
+    (item, index) => names.indexOf(item) !== index,
   );
   for (const item of array) {
     if (duplicateNames.indexOf(item.name) > -1) {

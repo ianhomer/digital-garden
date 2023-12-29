@@ -15,8 +15,8 @@ function Wanted({ items }: AllData) {
               ? 1
               : -1
             : a.count < b.count
-            ? 1
-            : -1
+              ? 1
+              : -1,
         )
         .map((item) => (
           <li key={item.name}>
@@ -38,7 +38,7 @@ export async function getStaticProps() {
         name,
         count: links.length,
       };
-    })
+    }),
   );
 
   return { props: { items } };

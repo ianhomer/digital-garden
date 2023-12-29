@@ -8,7 +8,7 @@
  */
 export const toFakeName = (
   index: number,
-  words = ["foo", "bar", "baz", "qux", "fez", "tik", "mox"]
+  words = ["foo", "bar", "baz", "qux", "fez", "tik", "mox"],
 ) => {
   const radix = words.length;
   return index

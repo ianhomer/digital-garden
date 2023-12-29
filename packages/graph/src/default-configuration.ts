@@ -29,10 +29,10 @@ const linkDepthForceWeight = (link: NodeLink) =>
   link.depth === 0
     ? 1.0
     : link.depth === 1
-    ? 1.0
-    : link.depth === 2
-    ? 0.15
-    : 0.08;
+      ? 1.0
+      : link.depth === 2
+        ? 0.15
+        : 0.08;
 
 type DefaultConfigurationParameters = {
   viewWidth: number;
@@ -40,7 +40,7 @@ type DefaultConfigurationParameters = {
 };
 
 const defaultConfiguration = (
-  parameters: DefaultConfigurationParameters
+  parameters: DefaultConfigurationParameters,
 ): GraphConfiguration => {
   const viewHeight = parameters.viewHeight;
   const viewWidth = parameters.viewWidth;
@@ -73,10 +73,10 @@ const defaultConfiguration = (
         return d.depth === 0
           ? DEPTH_1_RADIUS
           : d.depth === 1
-          ? 15
-          : d.depth === 2
-          ? 5
-          : 2;
+            ? 15
+            : d.depth === 2
+              ? 5
+              : 2;
       } else {
         return 2;
       }
@@ -88,10 +88,10 @@ const defaultConfiguration = (
         return d.depth === 0
           ? -8000 * factor
           : d.depth === 1
-          ? -4000 * factor
-          : d.depth === 2
-          ? -50 * factor
-          : -5 * factor;
+            ? -4000 * factor
+            : d.depth === 2
+              ? -50 * factor
+              : -5 * factor;
       } else {
         return -20 * factor;
       }

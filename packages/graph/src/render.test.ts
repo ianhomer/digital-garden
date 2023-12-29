@@ -33,7 +33,7 @@ describe("render graph", () => {
 
     const container = document.createElement("svg");
     const svg = d3.select<d3.BaseType, null>(
-      container.getRootNode() as BaseType
+      container.getRootNode() as BaseType,
     );
 
     render("foo", data, graphConfiguration, svg);

@@ -26,10 +26,10 @@ describe("natural language", () => {
       bar,
     });
     expect(
-      meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+      meta.foo.links.filter(justNaturalLinks).map(toLinkName),
     ).toStrictEqual(["bar"]);
     expect(
-      meta.bar.links.filter(justNaturalLinks).map(toLinkName)
+      meta.bar.links.filter(justNaturalLinks).map(toLinkName),
     ).toStrictEqual(["foo"]);
   });
 
@@ -39,10 +39,10 @@ describe("natural language", () => {
       baz,
     });
     expect(
-      meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+      meta.foo.links.filter(justNaturalLinks).map(toLinkName),
     ).toStrictEqual(["bar"]);
     expect(
-      meta.baz.links.filter(justNaturalLinks).map(toLinkName)
+      meta.baz.links.filter(justNaturalLinks).map(toLinkName),
     ).toStrictEqual(["bar"]);
   });
 });

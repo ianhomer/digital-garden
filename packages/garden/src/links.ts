@@ -18,7 +18,7 @@ export const findLinks = async (garden: Garden, item: Item) => {
   const explicitBackLinks = await findBackLinks(garden, item.name);
   const implicitBackLinks = await findImplicitBackLinks(
     garden.config,
-    item.name
+    item.name,
   );
   const implicitForwardLinks = item.filename
     ? await findImplicitForwardLinks(garden.config, item)
@@ -28,7 +28,7 @@ export const findLinks = async (garden: Garden, item: Item) => {
       ...implicitForwardLinks,
       ...explicitBackLinks,
       ...implicitBackLinks,
-    ]).values()
+    ]).values(),
   )
     .filter((name) => name !== item.name)
     .sort()
@@ -44,6 +44,6 @@ export const findLinks = async (garden: Garden, item: Item) => {
           }
           return LinkType.In;
         })(link),
-      })
+      }),
     );
 };

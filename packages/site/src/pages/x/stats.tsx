@@ -28,16 +28,16 @@ export async function getStaticProps() {
   const singleWantedThings = wantedThings.filter(
     (name) =>
       listOfThings.filter((thing) =>
-        thing.links.find((link) => link.name === name)
-      ).length === 1
+        thing.links.find((link) => link.name === name),
+      ).length === 1,
   );
   const singleNaturalWantedThings = wantedThings.filter(
     (name) =>
       listOfThings.filter((thing) =>
         thing.links.find(
-          (link) => link.name === name && link.type === LinkType.NaturalTo
-        )
-      ).length === 1
+          (link) => link.name === name && link.type === LinkType.NaturalTo,
+        ),
+      ).length === 1,
   );
 
   return {

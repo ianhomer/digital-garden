@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export default function useKey(
   callback: (key: string) => void,
-  keys: string[]
+  keys: string[],
 ): void {
   const keyHandler = ({ key }: KeyboardEvent) => {
     if (keys.includes(key)) {

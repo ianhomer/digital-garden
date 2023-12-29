@@ -8,7 +8,7 @@ const shouldIncludeDirectory = (config: GardenConfig, name: string) =>
 
 async function* findFilesDeep(
   config: GardenConfig,
-  directory: string
+  directory: string,
 ): AsyncIterable<string> {
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
@@ -27,7 +27,7 @@ async function* findFilesDeep(
 async function* findFilesInNamedDirectoryDeep(
   config: GardenConfig,
   directory: string,
-  name: string
+  name: string,
 ): AsyncIterable<string> {
   const directories = await readdir(directory, { withFileTypes: true });
   for (const child of directories) {
@@ -49,7 +49,7 @@ async function* findFilesInNamedDirectoryDeep(
 export async function findAbsoluteFile(
   config: GardenConfig,
   directory: string,
-  filename: string
+  filename: string,
 ): Promise<string | null> {
   const directories = await readdir(directory, { withFileTypes: true });
   // Files first
@@ -75,7 +75,7 @@ export async function findAbsoluteFile(
 export async function findFile(
   config: GardenConfig,
   directory: string,
-  filename: string
+  filename: string,
 ): Promise<string> {
   const found = await findAbsoluteFile(config, directory, filename);
   if (!found) {
@@ -87,7 +87,7 @@ export async function findFile(
 
 export async function findFiles(
   config: GardenConfig,
-  directory: string
+  directory: string,
 ): Promise<string[]> {
   const files: string[] = [];
   for await (const file of findFilesDeep(config, directory)) {
@@ -99,13 +99,13 @@ export async function findFiles(
 export async function findFilesInNamedDirectory(
   config: GardenConfig,
   directory: string,
-  name: string
+  name: string,
 ): Promise<string[]> {
   const files: string[] = [];
   for await (const file of findFilesInNamedDirectoryDeep(
     config,
     directory,
-    name
+    name,
   )) {
     files.push(file);
   }

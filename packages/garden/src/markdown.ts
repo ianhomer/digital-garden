@@ -1,4 +1,4 @@
-import { hash, linkResolver } from "@garden/core";
+import { linkResolver } from "@garden/core";
 import { LinkType, Meta, Thing, ThingType } from "@garden/types";
 import { Heading, Link, Literal } from "mdast";
 import { toString } from "mdast-util-to-string";
@@ -115,7 +115,7 @@ function getFirstValue(node: Node, filter: (node: Node) => boolean): string {
 
 function getFrontText(node: Section, filter: (node: Node) => boolean) {
   const firstParagraph = node.children.find(
-    (node) => node.type === "paragraph"
+    (node) => node.type === "paragraph",
   );
   if (firstParagraph) {
     return getFirstValue(firstParagraph, filter);
@@ -147,7 +147,7 @@ function toSingleThingMeta(thing: Thing, section: Section): Meta {
     .filter(
       (node) =>
         node.type === "wikiLink" ||
-        (node.type === "link" && (node as Link).url.startsWith("./"))
+        (node.type === "link" && (node as Link).url.startsWith("./")),
     )
     .map((link) => ({
       name:
@@ -167,7 +167,7 @@ function toSingleThingMeta(thing: Thing, section: Section): Meta {
       ...explicitLinks,
       ...naturalProcess(
         getFrontText(section, justTextNodesWithoutWikiLinks) ?? "",
-        explicitLinks.map((link) => link.name)
+        explicitLinks.map((link) => link.name),
       ).links,
       ...section.sections.map((childSection) => ({
         type: LinkType.Child,

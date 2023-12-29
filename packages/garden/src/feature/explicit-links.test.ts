@@ -23,10 +23,10 @@ describe("content with explicit link to existing things", () => {
     expect(meta.foo.title).toBe("Foo");
     expect(meta.bar.title).toBe("Bar");
     expect(
-      meta.foo.links.filter(justExplicitLinks).map(toLinkName)
+      meta.foo.links.filter(justExplicitLinks).map(toLinkName),
     ).toStrictEqual(["bar"]);
     expect(
-      meta.bar.links.filter(justExplicitLinks).map(toLinkName)
+      meta.bar.links.filter(justExplicitLinks).map(toLinkName),
     ).toStrictEqual(["foo"]);
     expect(meta.bar.links.filter(justExplicitLinks)[0].value).toBe(1);
   });

@@ -11,7 +11,7 @@ const countSiblings = (name: string, links: Array<ItemLink>, depth: number) => {
   const parentLink = linksToName.find((link) => link.depth === depth);
   if (!parentLink) {
     throw `Cannot find parent of ${name} from ${JSON.stringify(
-      linksToName
+      linksToName,
     )} at depth ${depth}`;
   }
   return links.filter((link) => link.source === parentLink.source).length;
@@ -21,7 +21,7 @@ export const createGraph = (
   root: string,
   things: Things,
   initalValues: InitialNodeValueMap,
-  links: Array<ItemLink>
+  links: Array<ItemLink>,
 ): Graph => {
   const names = links
     .map((link) => [link.source, link.target])

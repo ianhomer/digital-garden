@@ -1,5 +1,5 @@
 import { GardenRepository, ItemReference } from "@garden/types";
-import { join, resolve } from "path";
+import { join } from "path";
 
 import { FileGardenRepository } from "./file-garden-repository";
 

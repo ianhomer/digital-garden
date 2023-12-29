@@ -55,7 +55,7 @@ describe("natural language", () => {
       expect(meta.bar.title).toBe("Bar");
       expect(meta.bars.title).toBe("Bars");
       expect(
-        meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+        meta.foo.links.filter(justNaturalLinks).map(toLinkName),
       ).toStrictEqual(["foo", "bars"]);
     });
   });
@@ -68,7 +68,7 @@ describe("natural language", () => {
       });
       expect(Object.keys(meta)).toHaveLength(2);
       expect(
-        meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+        meta.foo.links.filter(justNaturalLinks).map(toLinkName),
       ).toStrictEqual(["foo"]);
     });
 
@@ -81,7 +81,7 @@ describe("natural language", () => {
       expect(meta.bars.title).toBe("bars");
 
       expect(
-        meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+        meta.foo.links.filter(justNaturalLinks).map(toLinkName),
       ).toStrictEqual(["foo", "bars"]);
       expect(meta.bars.links).toHaveLength(0);
     });
@@ -96,7 +96,7 @@ describe("natural language", () => {
       expect(meta.bar.title).toBe("Bar");
 
       expect(
-        meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+        meta.foo.links.filter(justNaturalLinks).map(toLinkName),
       ).toStrictEqual(["foo", "bar"]);
       expect(meta.bar.links).toHaveLength(1);
     });
@@ -111,7 +111,7 @@ describe("natural language", () => {
       expect(Object.keys(meta)).toHaveLength(3);
 
       expect(
-        meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+        meta.foo.links.filter(justNaturalLinks).map(toLinkName),
       ).toStrictEqual(["foo", "bar"]);
     });
 
@@ -123,7 +123,7 @@ describe("natural language", () => {
       });
       expect(Object.keys(meta)).toStrictEqual(["baz", "fez", "foo"]);
       expect(
-        meta.foo.links.filter(justNaturalLinks).map(toLinkName)
+        meta.foo.links.filter(justNaturalLinks).map(toLinkName),
       ).toStrictEqual(["foo", "bar"]);
     });
   });

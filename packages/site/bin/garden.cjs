@@ -79,7 +79,7 @@ if (argv["watch"]) {
         console.log(`garden : ${eventType} : ${filename}`);
         debouncedPrepare(filename);
       }
-    }
+    },
   );
   process.on("SIGINT", () => {
     console.log("Stopping watcher");

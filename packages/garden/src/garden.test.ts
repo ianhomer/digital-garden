@@ -69,11 +69,11 @@ describe("garden", () => {
     expect(things["archived-thing"].value).toBe(0);
     expect(
       things["archive-linked"].links.find(
-        (link) => (link.name = "archived-thing")
-      )?.value
+        (link) => (link.name = "archived-thing"),
+      )?.value,
     ).toBe(0);
     expect(
-      things["readme"].links.find((link) => (link.name = "vocabulary"))?.value
+      things["readme"].links.find((link) => (link.name = "vocabulary"))?.value,
     ).toBe(1);
   });
 
@@ -115,7 +115,7 @@ describe("garden", () => {
   it("should generate single thing", async () => {
     const thing = garden.repository.toThing(
       myFilename,
-      async () => "# thing title\n\n" + "thing content"
+      async () => "# thing title\n\n" + "thing content",
     );
     const metaMap: Things = {};
     await loadThingIntoMetaMap(metaMap, thing);
@@ -129,7 +129,7 @@ describe("garden", () => {
       async () =>
         "# thing title\n\nThing content\n\n" +
         "## section title\n\nSection content\n\n" +
-        "### sub-section title\n\nSub-section content"
+        "### sub-section title\n\nSub-section content",
     );
     const metaMap: Things = {};
     await loadThingIntoMetaMap(metaMap, thing);
@@ -137,17 +137,17 @@ describe("garden", () => {
     expect(
       metaMap[myFilename].links
         .filter((link) => link.type === LinkType.Child)
-        .map((link) => link.name)
+        .map((link) => link.name),
     ).toEqual([sectionTitle]);
     expect(metaMap["my-filename"].title).toBe("thing title");
     expect(
       metaMap["my-filename#section-title"].links
         .filter((link) => link.type === LinkType.Child)
-        .map((link) => link.name)
+        .map((link) => link.name),
     ).toEqual(["my-filename#sub-section-title"]);
     expect(metaMap[sectionTitle].title).toBe("section title");
     expect(metaMap["my-filename#sub-section-title"].title).toBe(
-      "sub-section title"
+      "sub-section title",
     );
   });
 

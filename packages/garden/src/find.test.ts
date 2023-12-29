@@ -10,7 +10,7 @@ describe("content", () => {
     const filename = await findFile(
       garden.config,
       garden.config.directory,
-      name
+      name,
     );
     expect(filename).toBe("word/word-1.md");
   });

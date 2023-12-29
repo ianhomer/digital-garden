@@ -13,7 +13,7 @@ const backLinks = (
     link.type === LinkType.To ||
     link.type === LinkType.NaturalAlias ||
     link.type === LinkType.Child,
-  backLinkType = LinkType.From
+  backLinkType = LinkType.From,
 ): ItemLink[] => {
   const backLinksAvailable = backLinkCache.get(name);
   if (!backLinksAvailable) {
@@ -41,7 +41,7 @@ const HARD_DEPTH = 7;
 const goDeeper = (
   depth: number,
   maxDepth: number,
-  linkType: LinkType | undefined
+  linkType: LinkType | undefined,
 ) => {
   if (depth < maxDepth + 1) {
     return true;
@@ -77,7 +77,7 @@ const findDeepLinks = (
   maxDepth: number,
   depth = 1,
   linkType: LinkType | undefined = undefined,
-  backLinkCache: BackLinkCache | undefined = undefined
+  backLinkCache: BackLinkCache | undefined = undefined,
 ): ItemLink[] => {
   const populatedBackLinkCache = backLinkCache || generateBackLinkCache(things);
   const directLinks = [
@@ -96,7 +96,7 @@ const findDeepLinks = (
       name,
       depth,
       (link: Link) => link.type === LinkType.NaturalTo,
-      LinkType.NaturalFrom
+      LinkType.NaturalFrom,
     ),
   ];
   return [
@@ -110,8 +110,8 @@ const findDeepLinks = (
               maxDepth,
               depth + 1,
               linkType,
-              populatedBackLinkCache
-            )
+              populatedBackLinkCache,
+            ),
           )
           .flat()
       : []),
@@ -127,8 +127,8 @@ const findDeepLinks = (
               (value.source === compareTo.target &&
                 value.target === compareTo.source)) &&
             // choose one with lowest depth
-            value.depth >= compareTo.depth
-        )
+            value.depth >= compareTo.depth,
+        ),
     )
     .sort((a, b) => a.depth - b.depth)
     .slice(0, 500);

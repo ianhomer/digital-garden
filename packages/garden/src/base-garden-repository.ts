@@ -8,7 +8,7 @@ export class BaseGardenRepository implements GardenRepository {
 
   constructor(content: { [key: string]: string } = {}) {
     this.content = Object.fromEntries(
-      Object.entries(content).map(([key, value]) => [key.toLowerCase(), value])
+      Object.entries(content).map(([key, value]) => [key.toLowerCase(), value]),
     );
   }
 
@@ -68,7 +68,7 @@ export class BaseGardenRepository implements GardenRepository {
           .catch((error) => {
             console.error(error);
             return error;
-          })
+          }),
     );
   }
 

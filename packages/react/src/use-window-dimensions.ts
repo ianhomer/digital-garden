@@ -13,7 +13,7 @@ function getWindowDimensions() {
 
 export default function useWindowDimensions() {
   const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
+    getWindowDimensions(),
   );
 
   let timer: number;
@@ -22,7 +22,7 @@ export default function useWindowDimensions() {
     clearTimeout(timer);
     timer = window.setTimeout(
       () => setWindowDimensions(getWindowDimensions()),
-      500
+      500,
     );
   }
 
