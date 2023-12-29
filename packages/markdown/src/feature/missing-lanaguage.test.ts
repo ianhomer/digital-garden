@@ -1,4 +1,4 @@
-import markdownToHtml from "../markdownToHtml";
+import markdownToHtml from "../markdown-to-html";
 
 describe("missing languageg", () => {
   it("should default if language not recognised", async () => {
