@@ -1,3 +1,3 @@
-import markdownToHtml from "./markdownToHtml";
+import markdownToHtml from "./markdown-to-html";
 
 export { markdownToHtml };
