@@ -24,7 +24,7 @@
     "rehype-slug": "^5.1.0",
     "rehype-stringify": "^9.0.3",
     "remark-directive": "^2.0.1",
-    "remark-emoji": "^3.0.2",
+    "remark-emoji": "^3.1.2",
     "remark-gfm": "^3.0.1",
     "remark-rehype": "^10.1.0",
     "remark-wiki-link": "^1.0.4",
