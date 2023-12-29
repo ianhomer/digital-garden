@@ -57,7 +57,7 @@ describe("garden", () => {
     expect(linkedThings).toContain("word-2");
     expect(linkedThings).toContain("word-3");
     try {
-      expect(linkedThings.length).toBe(22);
+      expect(linkedThings.length).toBe(20);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(linkedThings)}`);
     }
@@ -83,7 +83,7 @@ describe("garden", () => {
     expect(wantedThings).toStrictEqual(["cat", "wanted"]);
     const wantedNaturalThings = findWantedThings(things, naturalLinks);
     try {
-      expect(wantedNaturalThings.length).toBe(5);
+      expect(wantedNaturalThings.length).toBe(3);
     } catch (e) {
       throw new Error(`${e} : ${JSON.stringify(wantedNaturalThings)}`);
     }

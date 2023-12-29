@@ -4,19 +4,19 @@ import { metaFrom } from "./feature-helpers";
 const foo = `
 # Foo
 
-Foo linking to bars
+Foo linking to the bars
 `;
 
 const bar = `
 # Bar
 
-Bar linking to [[foo]]
+Bar linking to a [[foo]]
 `;
 
 const barLink = `
 # Bar link
 
-linking to [[bar]]
+linking to a [[bar]]
 `;
 
 const bars = `
@@ -34,13 +34,13 @@ Gum content
 const baz = `
 # Baz
 
-Baz content linking to bars
+Baz content linking to the bars
 `;
 
 const fez = `
 # Fez
 
-Fez linking to bar
+Fez linking to a bar
 `;
 
 describe("natural language", () => {
@@ -98,7 +98,7 @@ describe("natural language", () => {
       expect(
         meta.foo.links.filter(justNaturalLinks).map(toLinkName)
       ).toStrictEqual(["foo", "bar"]);
-      expect(meta.bar.links).toHaveLength(2);
+      expect(meta.bar.links).toHaveLength(1);
     });
 
     it("should have multiple natural wanted links to single explicitly linked", async () => {

@@ -4,19 +4,19 @@ import { metaFrom } from "./feature-helpers";
 const foo = `
 # Foo
 
-To bar
+To a bar
 `;
 
 const bar = `
 # Bar
 
-To foo
+To a foo
 `;
 
 const baz = `
 # Baz
 
-To bar
+To a bar
 `;
 
 describe("natural language", () => {
