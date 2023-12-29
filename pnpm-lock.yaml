@@ -109,8 +109,8 @@ importers:
         specifier: workspace:0.0.1
         version: link:../types
       compromise:
-        specifier: ^14.8.0
-        version: 14.8.0
+        specifier: ^14.11.0
+        version: 14.11.0
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
@@ -3784,13 +3784,13 @@ packages:
     engines: {node: ^12.20.0 || >=14}
     dev: true
 
-  /compromise@14.8.0:
-    resolution: {integrity: sha512-BmIXNF6Gax/J92Uh2bNMbCkDLaU/m9tkSnm8Cj51+jsW8+FSsrYa6Ltg5woPIMTbuZNCzf1Jr6RadMbwWW1AWQ==}
+  /compromise@14.11.0:
+    resolution: {integrity: sha512-hLvECeYB4jXqXNKto7cr1fev7dZierTdAbHc4Gt15uQTRZ2Piic43pb4cZDBmTQWEbqLtfLbwK7qdWBbQC1zKA==}
     engines: {node: '>=12.0.0'}
     dependencies:
       efrt: 2.7.0
       grad-school: 0.0.5
-      suffix-thumb: 4.0.2
+      suffix-thumb: 5.0.2
     dev: false
 
   /concat-map@0.0.1:
@@ -8627,8 +8627,8 @@ packages:
       ts-interface-checker: 0.1.13
     dev: true
 
-  /suffix-thumb@4.0.2:
-    resolution: {integrity: sha512-CCvCAr7JyeQoO+/lyq3P2foZI/xJz5kpG3L6kg2CaOf9K2/gaM9ixy/JTuRwjEK38l306zE7vl3JoOZYmLQLlA==}
+  /suffix-thumb@5.0.2:
+    resolution: {integrity: sha512-I5PWXAFKx3FYnI9a+dQMWNqTxoRt6vdBdb0O+BJ1sxXCWtSoQCusc13E58f+9p4MYx/qCnEMkD5jac6K2j3dgA==}
     dev: false
 
   /supports-color@5.5.0:
