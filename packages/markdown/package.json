@@ -28,7 +28,7 @@
     "remark-gfm": "^3.0.1",
     "remark-rehype": "^10.1.0",
     "remark-wiki-link": "^1.0.4",
-    "unified": "^10.1.2",
+    "unified": "^11.0.4",
     "unist-util-visit": "^4.1.2"
   },
   "devDependencies": {

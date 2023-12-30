@@ -4,6 +4,7 @@ const transformIgnores = [
   ".*micromark.*",
   ".*decode-named-character-reference",
   ".*character-entities",
+  ".*devlop",
   ".*unist",
   ".*unified",
   ".*bail",

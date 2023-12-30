@@ -22,7 +22,7 @@
     "pino": "^8.17.2",
     "remark-rehype": "^10.1.0",
     "remark-wiki-link": "^1.0.4",
-    "unified": "^10.1.2"
+    "unified": "^11.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.23.7",
