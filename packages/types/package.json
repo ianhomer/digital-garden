@@ -11,7 +11,7 @@
     "eslint:fix": "eslint src --ext .ts --fix"
   },
   "devDependencies": {
-    "rollup": "^4.9.1",
+    "rollup": "^4.9.2",
     "typescript": "^5.3.3"
   }
 }
