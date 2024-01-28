@@ -9,7 +9,7 @@ import {
 } from "@garden/types";
 import fs from "fs";
 import os from "os";
-import { join } from "path";
+import { isAbsolute, join } from "path";
 
 import { BaseGardenRepository } from "./base-garden-repository";
 import { FileGardenRepository } from "./file-garden-repository";
@@ -42,6 +42,7 @@ export interface GardenRepositoryConfig {
 export interface GardenConfig extends GardenRepositoryConfig {
   allowGlobalMeta: boolean;
   content: { [key: string]: string };
+  defaultGardenDirectory: string;
   gardens: { [key: string]: string };
   hasMultiple: boolean;
   liveMeta: boolean;
@@ -54,6 +55,7 @@ export type GardenOptions = Partial<GardenConfig>;
 const defaultConfig: GardenConfig = {
   allowGlobalMeta: true,
   type: "file",
+  defaultGardenDirectory: ".",
   directory: ".gardens",
   excludedDirectories: ["node_modules", "digital-garden"],
   content: {},
@@ -413,9 +415,54 @@ export const findWantedThings = (
   );
 };
 
-export const toConfig = (options: GardenOptions): GardenConfig => ({
+interface ProcessEnv {
+  [key: string]: string | undefined;
+}
+
+export const gardensFromEnv = (env: ProcessEnv): Record<string, string> => {
+  return Object.keys(env)
+    .filter((key) => key.startsWith("GARDEN_"))
+    .reduce((map: Record<string, string>, key: string) => {
+      map[key.substring(7).toLowerCase()] = env[key] ?? "n/a";
+      return map;
+    }, {});
+};
+
+const resolveDirectory = (gardenDirectoryFromEnv?: string) => {
+  if (gardenDirectoryFromEnv) {
+    return isAbsolute(gardenDirectoryFromEnv)
+      ? gardenDirectoryFromEnv
+      : join(process.cwd(), gardenDirectoryFromEnv);
+  }
+  return join(process.cwd(), ".gardens");
+};
+
+const enrichOptions = (options: GardenOptions, env: ProcessEnv) => {
+  const gardens = gardensFromEnv(env);
+  const gardenDirectoryFromEnv = env.GARDENS_DIRECTORY;
+  const gardenRootDirectory = (() => {
+    if (gardenDirectoryFromEnv || Object.keys(gardens).length) {
+      return resolveDirectory(gardenDirectoryFromEnv);
+    }
+    // this is the zero config, clone and run config
+    return join(process.cwd(), "../test-gardens/content");
+  })();
+  return {
+    ...{
+      gardens,
+      hasMultiple: !fs.existsSync(`${gardenRootDirectory}/README.md`),
+      directory: gardenRootDirectory,
+    },
+    ...options,
+  };
+};
+
+export const toConfig = (
+  options: GardenOptions,
+  env?: ProcessEnv,
+): GardenConfig => ({
   ...defaultConfig,
-  ...options,
+  ...(env ? enrichOptions(options, env) : options),
 });
 
 const toRepository = (config: GardenConfig): GardenRepository => {
