@@ -413,6 +413,19 @@ export const findWantedThings = (
   );
 };
 
+interface ProcessEnv {
+  [key: string]: string | undefined;
+}
+
+export const gardensFromEnv = (env: ProcessEnv): Record<string, string> => {
+  return Object.keys(env)
+    .filter((key) => key.startsWith("GARDEN_"))
+    .reduce((map: Record<string, string>, key: string) => {
+      map[key.substring(7).toLowerCase()] = env[key] ?? "n/a";
+      return map;
+    }, {});
+};
+
 export const toConfig = (options: GardenOptions): GardenConfig => ({
   ...defaultConfig,
   ...options,

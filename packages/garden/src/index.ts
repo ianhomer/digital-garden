@@ -9,6 +9,7 @@ import {
   createGarden,
   findWantedThings,
   GardenOptions,
+  gardensFromEnv,
   toConfig,
 } from "./garden";
 import { findLinks } from "./links";
@@ -22,6 +23,7 @@ export {
   findItemOrWanted,
   findLinks,
   findWantedThings,
+  gardensFromEnv,
   getAllItems,
   getPageItems,
   isNotValidPageName,
