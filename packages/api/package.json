@@ -13,6 +13,8 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@garden/garden": "workspace:0.0.1",
+    "@garden/types": "workspace:0.0.1",
     "graphql": "^16.8.1",
     "graphql-http": "^1.22.0",
     "graphql-yoga": "^5.1.1",
