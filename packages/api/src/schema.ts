@@ -1,7 +1,7 @@
 import { createSchema } from "graphql-yoga";
 
 export const schema = createSchema({
-  typeDefs: /* GraphQL */ `
+  typeDefs: `
     type Query {
       hello: String
     }
