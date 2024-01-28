@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "lib": ["es6", "dom"],
+    "lib": ["es2020"],
     "listEmittedFiles": false,
     "listFiles": false,
-    "module": "commonjs",
+    "module": "nodenext",
+    "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
@@ -16,9 +17,12 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es6",
+    "target": "es2020",
     "traceResolution": false
   },
+  // "ts-node": {
+  //   "esm": true
+  // },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules/**"],
   "compileOnSave": false
