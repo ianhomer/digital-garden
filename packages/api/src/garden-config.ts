@@ -5,6 +5,7 @@ function generateDefault() {
     {
       defaultGardenDirectory: "../test-gardens/content",
     },
+    process.cwd(),
     process.env,
   );
 }
