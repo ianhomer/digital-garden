@@ -52,7 +52,7 @@ export interface GardenConfig extends GardenRepositoryConfig {
 
 export type GardenOptions = Partial<GardenConfig>;
 
-const defaultConfig: GardenConfig = {
+export const defaultConfig: GardenConfig = {
   allowGlobalMeta: true,
   type: "file",
   defaultGardenDirectory: ".",
@@ -428,24 +428,31 @@ export const gardensFromEnv = (env: ProcessEnv): Record<string, string> => {
     }, {});
 };
 
-const resolveDirectory = (gardenDirectoryFromEnv?: string) => {
+export const resolveDirectory = (
+  cwd: string,
+  gardenDirectoryFromEnv?: string,
+) => {
   if (gardenDirectoryFromEnv) {
     return isAbsolute(gardenDirectoryFromEnv)
       ? gardenDirectoryFromEnv
-      : join(process.cwd(), gardenDirectoryFromEnv);
+      : join(cwd, gardenDirectoryFromEnv);
   }
-  return join(process.cwd(), ".gardens");
+  return join(cwd, ".gardens");
 };
 
-const enrichOptions = (options: GardenOptions, env: ProcessEnv) => {
-  const gardens = gardensFromEnv(env);
-  const gardenDirectoryFromEnv = env.GARDENS_DIRECTORY;
+const enrichOptions = (
+  options: GardenOptions,
+  cwd: string,
+  env?: ProcessEnv,
+) => {
+  const gardens = env ? gardensFromEnv(env) : {};
+  const gardenDirectoryFromEnv = env ? env.GARDENS_DIRECTORY : undefined;
   const gardenRootDirectory = (() => {
     if (gardenDirectoryFromEnv || Object.keys(gardens).length) {
-      return resolveDirectory(gardenDirectoryFromEnv);
+      return resolveDirectory(cwd, gardenDirectoryFromEnv);
     }
     // this is the zero config, clone and run config
-    return join(process.cwd(), "../test-gardens/content");
+    return join(cwd, "../test-gardens/content");
   })();
   return {
     ...{
@@ -459,10 +466,11 @@ const enrichOptions = (options: GardenOptions, env: ProcessEnv) => {
 
 export const toConfig = (
   options: GardenOptions,
+  cwd?: string,
   env?: ProcessEnv,
 ): GardenConfig => ({
   ...defaultConfig,
-  ...(env ? enrichOptions(options, env) : options),
+  ...(cwd ? enrichOptions(options, cwd, env) : options),
 });
 
 const toRepository = (config: GardenConfig): GardenRepository => {

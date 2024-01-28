@@ -11,6 +11,7 @@ function generateDefault() {
       scripts,
       defaultGardenDirectory: "../test-gardens/content",
     },
+    process.cwd(),
     process.env,
   );
 }

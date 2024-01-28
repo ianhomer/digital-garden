@@ -3,11 +3,15 @@ import { Link, LinkType, Things } from "@garden/types";
 
 import {
   createGarden,
+  defaultConfig,
   findKnownThings,
   findLinkedThings,
   findUnwantedLinks,
   findWantedThings,
+  gardensFromEnv,
   loadThingIntoMetaMap,
+  resolveDirectory,
+  toConfig,
 } from "./garden";
 import { gardenConfig } from "./test-helpers";
 
@@ -159,5 +163,58 @@ describe("garden", () => {
     expect(thing1.title).toBe("Garden 1 README");
     const thing2 = things["readme+rqyqis"];
     expect(thing2.title).toBe("Garden 2 README");
+  });
+
+  describe("from env", () => {
+    it("should find no gardens in empty env", () => {
+      const gardens = gardensFromEnv({});
+      expect(Object.keys(gardens)).toHaveLength(0);
+    });
+
+    it("should find no gardens with no gardens in env", () => {
+      const gardens = gardensFromEnv({ X: "./not-a-garden" });
+      expect(Object.keys(gardens)).toHaveLength(0);
+    });
+
+    it("should find gardens with gardens in env", () => {
+      const gardens = gardensFromEnv({
+        GARDEN_X: "./garden-x",
+        GARDEN_Y: "./garden-y",
+      });
+      expect(Object.keys(gardens)).toHaveLength(2);
+      expect(Object.values(gardens)).toMatchObject([
+        "./garden-x",
+        "./garden-y",
+      ]);
+    });
+  });
+
+  describe("directory", () => {
+    it("should default onto cwd", () => {
+      expect(resolveDirectory("my")).toEqual("my/.gardens");
+    });
+
+    it("should be relative on cwd", () => {
+      expect(resolveDirectory("my", "garden-x")).toEqual("my/garden-x");
+    });
+
+    it("should be absolute", () => {
+      expect(resolveDirectory("my", "/tmp/my/garden-x")).toEqual(
+        "/tmp/my/garden-x",
+      );
+    });
+  });
+
+  describe("config", () => {
+    it("should default", () => {
+      expect(toConfig({})).toMatchObject(defaultConfig);
+    });
+
+    it("should override gardens directory", () => {
+      const configWithGardenFromEnv = toConfig({}, "my", {
+        GARDENS_DIRECTORY: "my-gardens",
+      });
+      expect(configWithGardenFromEnv.directory).toEqual("my/my-gardens");
+    });
   });
 });

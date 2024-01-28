@@ -10,6 +10,7 @@
     "eslint": "eslint src --ext .ts",
     "eslint:fix": "eslint src --ext .ts --fix",
     "test": "jest --no-watchman",
+    "test:coverage": "jest --collect-coverage",
     "test:debug": "NODE_OPTIONS=--inspect-brk jest",
     "test:watch": "jest --watch"
   },

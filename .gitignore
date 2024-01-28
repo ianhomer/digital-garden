@@ -2,6 +2,7 @@
 .next/
 .parcel-cache/
 .rollup.cache/
+coverage/
 dist/
 node_modules/
 out/
