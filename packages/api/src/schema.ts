@@ -1,20 +1,33 @@
-import { createSchema } from "graphql-yoga";
+import { createGarden, getPageItems } from "@garden/garden";
+import { Nameable } from "@garden/types";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 
-const content = () => {};
+import config from "./garden-config";
 
-export const schema = createSchema({
-  typeDefs: `
+const garden = createGarden(config);
+
+const findItems = async (): Promise<Nameable[]> => {
+  const things = await garden.load();
+  return getPageItems(garden.repository, things);
+};
+
+const typeDefinitions = `
     type Query {
-      content: Content[]
+      content: [Item]
     }
 
-    type Content {
+    type Item {
       name: String
     }
-  `,
-  resolvers: {
-    Query: {
-      content: () => content(),
-    },
+  `;
+
+const resolvers = {
+  Query: {
+    content: () => findItems(),
   },
+};
+
+export const schema = makeExecutableSchema({
+  resolvers: [resolvers],
+  typeDefs: [typeDefinitions],
 });

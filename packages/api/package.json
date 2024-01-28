@@ -1,23 +1,25 @@
 {
   "name": "@garden/api",
   "version": "0.0.1",
-  "description": "Digital garden api",
+  "description": "Digital garden API",
   "license": "ISC",
   "keywords": [],
+  "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon ./src/index.ts"
+    "start": "tsx ./src/index.ts"
   },
   "devDependencies": {
-    "ts-node": "^10.9.2",
+    "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   },
   "dependencies": {
     "@garden/garden": "workspace:0.0.1",
     "@garden/types": "workspace:0.0.1",
+    "@graphql-tools/schema": "^10.0.2",
+    "dotenv": "^16.3.1",
     "graphql": "^16.8.1",
     "graphql-http": "^1.22.0",
-    "graphql-yoga": "^5.1.1",
-    "nodemon": "^3.0.3"
+    "graphql-yoga": "^5.1.1"
   }
 }
