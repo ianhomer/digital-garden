@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "lib": ["es6", "dom"],
+    "listEmittedFiles": false,
+    "listFiles": false,
+    "module": "commonjs",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "./build/main",
+    "pretty": true,
+    "resolveJsonModule": true,
+    "rootDir": "src",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es6",
+    "traceResolution": false
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules/**"],
+  "compileOnSave": false
+}
