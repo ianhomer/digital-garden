@@ -30,12 +30,12 @@
     "remark-parse": "^10.0.2",
     "remark-rehype": "^10.1.0",
     "remark-wiki-link": "^1.0.4",
-    "unified": "^10.1.2",
-    "unist-util-visit": "^4.1.2"
+    "unified": "^11.0.4",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@types/mdast": "^3.0.15",
-    "@types/unist": "^2.0.10",
+    "@types/unist": "^3.0.2",
     "typescript": "^5.3.3"
   }
 }
