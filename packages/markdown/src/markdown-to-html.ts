@@ -7,7 +7,7 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import remarkDirective from "remark-directive";
-import remarkEmoji from "remark-emoji";
+// import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
@@ -49,7 +49,7 @@ export default async function markdownToHtml(markdown: string) {
       pageResolver,
     })
     .use(remarkDirective)
-    .use(remarkEmoji)
+    // .use(remarkEmoji)
     .use(shortenLocalLinks)
     .use(remarkRehype)
     .use(rehypeStringify)

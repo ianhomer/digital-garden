@@ -301,7 +301,7 @@ importers:
         specifier: ^7.23.3
         version: 7.23.3(@babel/core@7.24.0)
       '@garden/core':
-        specifier: workspace:*
+        specifier: workspace:0.0.1
         version: link:../core
       '@types/jest':
         specifier: ^29.5.12
