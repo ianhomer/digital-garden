@@ -3,6 +3,7 @@ const transformIgnores = [
   ".*character-entities",
   ".*compromise",
   ".*decode-named-character-reference",
+  ".*devlop",
   ".*efrt",
   ".*grad-school",
   ".*is-plain-obj",

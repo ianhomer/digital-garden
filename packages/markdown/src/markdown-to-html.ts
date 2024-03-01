@@ -7,13 +7,13 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import remarkDirective from "remark-directive";
-import remarkEmoji from "remark-emoji";
+// import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
-import { Data, Node } from "unist";
+import { Node } from "unist";
 import { visit } from "unist-util-visit";
 
 import { remarkGardenDirectives } from "./remark-garden-directives";
@@ -25,7 +25,7 @@ const languages = {
 };
 
 function shortenLocalLinks() {
-  return (tree: Node<Data>) => {
+  return (tree: Node) => {
     visit(tree, (node: { type: string; url?: string }) => {
       if (
         "url" in node &&
@@ -49,11 +49,11 @@ export default async function markdownToHtml(markdown: string) {
       pageResolver,
     })
     .use(remarkDirective)
-    .use(remarkEmoji)
+    // .use(remarkEmoji)
     .use(shortenLocalLinks)
     .use(remarkRehype)
     .use(rehypeStringify)
-    .use(rehypeHighlight, { languages: languages, ignoreMissing: true })
+    .use(rehypeHighlight, { languages: languages })
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings, { behavior: "wrap" })
     .use(remarkGardenDirectives)

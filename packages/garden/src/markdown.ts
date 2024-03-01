@@ -5,12 +5,12 @@ import { toString } from "mdast-util-to-string";
 import remarkParse from "remark-parse";
 import remarkWikiLink from "remark-wiki-link";
 import { unified } from "unified";
-import { Data, Node, Parent } from "unist";
+import { Node, Parent } from "unist";
 
 import { naturalProcess } from "./nlp";
 
 interface Section {
-  children: Node<Data>[];
+  children: Node[];
   sections: Section[];
   depth: number;
   title: string;
