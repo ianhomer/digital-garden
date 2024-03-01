@@ -1,3 +1,6 @@
+// Register directive nodes in mdast:
+/// <reference types="mdast-util-directive" />;
+
 import { h } from "hastscript";
 import { Root } from "mdast";
 import { visit } from "unist-util-visit";
