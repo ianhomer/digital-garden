@@ -4,7 +4,7 @@
   "description": "Digital garden Library",
   "license": "ISC",
   "type": "module",
-  "exports": "./src/index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "clean": "rimraf output",
     "eslint": "eslint src --ext .ts",
