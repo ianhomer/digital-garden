@@ -30,6 +30,7 @@ const transformIgnores = [
   ".*zwitch",
 ].join("|");
 const config = {
+  extensionsToTreatAsEsm: [".ts"],
   testEnvironment: "jsdom",
   testMatch: ["**/*.test.ts"],
   transformIgnorePatterns: [`/node_modules/(?!${transformIgnores})`],

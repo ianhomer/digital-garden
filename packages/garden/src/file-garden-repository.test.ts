@@ -27,7 +27,7 @@ describe("file garden repository", () => {
       "archive-linked",
       "archived-thing",
       "capitalised",
-      "frontmatter",
+      "emoji",
     ]);
     expect(items.map(toUri(gardenRepository))).toContain("word/word-1.md");
   });
