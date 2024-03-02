@@ -17,6 +17,7 @@ const transformIgnores = [
   ".*vfile",
 ].join("|");
 const config = {
+  extensionsToTreatAsEsm: [".ts"],
   setupFilesAfterEnv: ["./src/setupTests.ts"],
   moduleDirectories: ["node_modules", "<rootDir>/"],
   testEnvironment: "jest-environment-jsdom",
@@ -24,4 +25,4 @@ const config = {
   transformIgnorePatterns: [`/node_modules/(?!${transformIgnores})`],
 };
 
-module.exports = config;
+export default config;

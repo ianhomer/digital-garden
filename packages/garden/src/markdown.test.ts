@@ -152,4 +152,15 @@ describe("markdown", () => {
       expect(meta[0].title).toBe("no title");
     });
   });
+
+  describe("file with frontmatter with tags", () => {
+    it("should have no title", async () => {
+      const meta = await toMultipleThingMeta(
+        garden.thing("garden1/frontmatter/frontmatter-with-tags.md"),
+      );
+
+      expect(meta).toHaveLength(1);
+      expect(meta[0].title).toBe("Frontmatter with tags");
+    });
+  });
 });
