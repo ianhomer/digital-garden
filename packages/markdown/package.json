@@ -4,6 +4,7 @@
   "description": "Digital garden markdown library",
   "license": "ISC",
   "keywords": [],
+  "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "eslint": "eslint src --ext .ts",
