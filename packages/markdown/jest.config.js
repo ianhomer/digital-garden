@@ -35,4 +35,4 @@ const config = {
   transformIgnorePatterns: [`/node_modules/(?!${transformIgnores})`],
 };
 
-module.exports = config;
+export default config;
