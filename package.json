@@ -18,7 +18,7 @@
     "build:prepare": "pnpm --filter @garden/site build:prepare",
     "build:prepare:demo": "GARDENS_DIRECTORY=../demo-gardens/content pnpm --filter @garden/site build:prepare",
     "clean": "pnpm --filter {packages/**} clean",
-    "clean:full": "pnpm clean && rimraf node_modules",
+    "clean:full": "pnpm clean && rimraf -g ./**/node_modules",
     "dev": "pnpm --filter @garden/site dev",
     "dev:demo": "GARDENS_DIRECTORY=../demo-gardens/content pnpm --filter @garden/site dev",
     "dev:test": "pnpm --filter @garden/site dev:test",
