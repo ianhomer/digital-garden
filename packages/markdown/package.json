@@ -9,7 +9,7 @@
   "scripts": {
     "eslint": "eslint src --ext .ts",
     "eslint:fix": "eslint src --ext .ts --fix",
-    "test": "jest --no-watchman",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --no-watchman",
     "test:watch": "jest --watch"
   },
   "dependencies": {
