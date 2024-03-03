@@ -59,7 +59,7 @@ export const defaultConfig: GardenConfig = {
   defaultGardenDirectory: ".",
   directory: ".gardens",
   excludedDirectories: ["node_modules", "digital-garden"],
-  excludes: [],
+  excludes: ["archive", "historical", "not"],
   content: {},
   hasMultiple: false,
   gardens: {},

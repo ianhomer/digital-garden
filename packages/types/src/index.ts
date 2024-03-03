@@ -4,11 +4,13 @@ export interface ItemReference {
 }
 
 export interface GardenRepository {
+  description: () => string;
   toUri: (itemReference: ItemReference) => string;
   toValue: (itemReference: ItemReference) => number;
   toItemReference: (name: string) => ItemReference;
   load: (itemReference: ItemReference) => Promise<Item>;
   loadThing: (ItemReference: ItemReference) => Thing;
+  isHidden: (ItemReference: ItemReference) => Promise<boolean>;
   toThing: (
     ItemReference: ItemReference | string,
     content: () => Promise<Content>,

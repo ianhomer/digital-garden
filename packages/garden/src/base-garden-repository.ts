@@ -14,6 +14,10 @@ export class BaseGardenRepository implements GardenRepository {
     );
   }
 
+  description() {
+    return "base repository";
+  }
+
   normaliseName(name: string) {
     return name.toLowerCase();
   }
@@ -45,7 +49,7 @@ export class BaseGardenRepository implements GardenRepository {
     if (name in this.content) {
       return new BaseItem(itemReference, name, this.content[name]);
     }
-    throw `Cannot load ${name} since does not exist in repository`;
+    throw `Cannot load ${name} since does not exist in ${this.description()}`;
   }
 
   toThing(reference: ItemReference | string, content: () => Promise<Content>) {
@@ -61,12 +65,24 @@ export class BaseGardenRepository implements GardenRepository {
     };
   }
 
-  isHidden(item: BaseItem) {
-    for (const tag in item.data.tags) {
-      if (tag in this.excludes) {
+  toTags(tags: string | string[] | undefined): string[] {
+    if (Array.isArray(tags)) {
+      return tags;
+    } else if (tags === undefined) {
+      return [];
+    } else {
+      return tags.split(",");
+    }
+  }
+
+  isLoadedItemHidden(item: BaseItem) {
+    const tags = this.toTags(item.data.tags);
+    for (const tag of tags) {
+      if (this.excludes.includes(tag)) {
         return true;
       }
     }
+    return false;
   }
 
   loadThing(itemReference: ItemReference) {
@@ -77,7 +93,7 @@ export class BaseGardenRepository implements GardenRepository {
           .then((item) => {
             return {
               body: item.content,
-              hidden: this.isHidden(item),
+              hidden: this.isLoadedItemHidden(item),
             };
           })
           .catch((error) => {
@@ -85,6 +101,16 @@ export class BaseGardenRepository implements GardenRepository {
             return error;
           }),
     );
+  }
+
+  async isHidden(itemReference: ItemReference) {
+    try {
+      const item = await this.load(itemReference);
+      return this.isLoadedItemHidden(item);
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 
   async find(name: string) {

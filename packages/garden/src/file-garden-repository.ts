@@ -52,6 +52,10 @@ export class FileGardenRepository extends BaseGardenRepository {
     this.gardenDirectoryLength = resolve(directory).length + 1;
   }
 
+  description(): string {
+    return `file repository ${this.directory}`;
+  }
+
   toItemReference(filename: string) {
     const relativeFileName = (() => {
       if (couldBeRelativeFilename(filename)) {

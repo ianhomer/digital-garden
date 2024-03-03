@@ -140,7 +140,7 @@ describe("markdown", () => {
     });
   });
 
-  describe("file with frontmatter", () => {
+  describe("file with basic frontmatter", () => {
     it("should have title", async () => {
       const meta = await toMultipleThingMeta(
         garden.thing("garden1/frontmatter/frontmatter.md"),
