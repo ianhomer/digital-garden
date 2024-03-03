@@ -64,8 +64,11 @@ export async function getAllItems(
 ): Promise<Item[]> {
   const array: Item[] = [];
   for await (const itemReference of repository.findAll()) {
-    const item = await repository.load(itemReference);
-    array.push(item);
+    const hidden = await repository.isHidden(itemReference);
+    if (!hidden) {
+      const item = await repository.load(itemReference);
+      array.push(item);
+    }
   }
 
   // Add hashed names for entries with duplicate namings so that they

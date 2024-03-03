@@ -1,15 +1,21 @@
 import { hash } from "@garden/core";
-import { GardenRepository, ItemReference } from "@garden/types";
+import { Content, GardenRepository, ItemReference } from "@garden/types";
 
 import { BaseItem } from "./base-item";
 
 export class BaseGardenRepository implements GardenRepository {
   private content;
+  private excludes: string[];
 
-  constructor(content: { [key: string]: string } = {}) {
+  constructor(content: { [key: string]: string } = {}, excludes: string[]) {
+    this.excludes = excludes;
     this.content = Object.fromEntries(
       Object.entries(content).map(([key, value]) => [key.toLowerCase(), value]),
     );
+  }
+
+  description() {
+    return "base repository";
   }
 
   normaliseName(name: string) {
@@ -43,10 +49,10 @@ export class BaseGardenRepository implements GardenRepository {
     if (name in this.content) {
       return new BaseItem(itemReference, name, this.content[name]);
     }
-    throw `Cannot load ${name} since does not exist in repository`;
+    throw `Cannot load ${name} since does not exist in ${this.description()}`;
   }
 
-  toThing(reference: ItemReference | string, content: () => Promise<string>) {
+  toThing(reference: ItemReference | string, content: () => Promise<Content>) {
     const itemReference =
       typeof reference === "object"
         ? reference
@@ -59,17 +65,52 @@ export class BaseGardenRepository implements GardenRepository {
     };
   }
 
+  toTags(tags: string | string[] | undefined): string[] {
+    if (Array.isArray(tags)) {
+      return tags;
+    } else if (tags === undefined) {
+      return [];
+    } else {
+      return tags.split(",");
+    }
+  }
+
+  isLoadedItemHidden(item: BaseItem) {
+    const tags = this.toTags(item.data.tags);
+    for (const tag of tags) {
+      if (this.excludes.includes(tag)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   loadThing(itemReference: ItemReference) {
     return this.toThing(
       itemReference,
-      async (): Promise<string> =>
+      async (): Promise<Content> =>
         this.load(itemReference)
-          .then((item) => item.content)
+          .then((item) => {
+            return {
+              body: item.content,
+              hidden: this.isLoadedItemHidden(item),
+            };
+          })
           .catch((error) => {
             console.error(error);
             return error;
           }),
     );
+  }
+
+  async isHidden(itemReference: ItemReference) {
+    try {
+      const item = await this.load(itemReference);
+      return this.isLoadedItemHidden(item);
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 
   async find(name: string) {

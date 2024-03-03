@@ -128,13 +128,13 @@ describe("garden", () => {
 
   it("should generate multiple things", async () => {
     const sectionTitle = "my-filename#section-title";
-    const thing = garden.repository.toThing(
-      myFilename,
-      async () =>
+    const thing = garden.repository.toThing(myFilename, async () => ({
+      body:
         "# thing title\n\nThing content\n\n" +
         "## section title\n\nSection content\n\n" +
         "### sub-section title\n\nSub-section content",
-    );
+      hidden: false,
+    }));
     const metaMap: Things = {};
     await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(3);
