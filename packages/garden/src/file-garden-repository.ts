@@ -41,8 +41,12 @@ export class FileGardenRepository extends BaseGardenRepository {
   gardenDirectoryLength;
   directory;
 
-  constructor(directory: string, excludedDirectories: string[] = []) {
-    super();
+  constructor(
+    directory: string,
+    excludedDirectories: string[] = [],
+    excludes: string[] = [],
+  ) {
+    super({}, excludes);
     this.excludedDirectories = excludedDirectories;
     this.directory = directory;
     this.gardenDirectoryLength = resolve(directory).length + 1;

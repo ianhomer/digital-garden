@@ -11,7 +11,7 @@ export interface GardenRepository {
   loadThing: (ItemReference: ItemReference) => Thing;
   toThing: (
     ItemReference: ItemReference | string,
-    content: () => Promise<string>,
+    content: () => Promise<Content>,
   ) => Thing;
   find: (name: string) => Promise<ItemReference>;
   findAll: () => AsyncIterable<ItemReference>;
@@ -66,11 +66,19 @@ export enum LinkType {
   NaturalAlias = "naturalAlias",
 }
 
+export type Content = {
+  body: string;
+  hidden: boolean;
+};
 export type Things = { [key: string]: Meta };
+
+export type ThingData = {
+  tags?: string[];
+};
 
 export interface Thing {
   name: string;
   hash: string;
-  content: () => Promise<string>;
+  content: () => Promise<Content>;
   value?: number;
 }

@@ -1,5 +1,5 @@
 import { linkResolver } from "@garden/core";
-import { LinkType, Meta, Thing, ThingType } from "@garden/types";
+import { Content, LinkType, Meta, Thing, ThingType } from "@garden/types";
 import { Heading, Link, Literal } from "mdast";
 import { toString } from "mdast-util-to-string";
 import remarkParse from "remark-parse";
@@ -67,13 +67,17 @@ function toSections(root: Parent) {
   return sections;
 }
 
-export async function parse(content: () => Promise<string>) {
+export async function parse(content: () => Promise<Content>) {
+  const resolvedContent = await content();
+  if (resolvedContent.hidden) {
+    return [];
+  }
   const root: Parent = unified()
     .use(remarkWikiLink, {
       hrefTemplate: (permalink: string) => `${permalink}`,
     })
     .use(remarkParse)
-    .parse(await content());
+    .parse(resolvedContent.body);
 
   return toSections(root);
 }

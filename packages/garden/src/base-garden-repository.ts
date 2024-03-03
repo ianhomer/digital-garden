@@ -1,12 +1,14 @@
 import { hash } from "@garden/core";
-import { GardenRepository, ItemReference } from "@garden/types";
+import { Content, GardenRepository, ItemReference } from "@garden/types";
 
 import { BaseItem } from "./base-item";
 
 export class BaseGardenRepository implements GardenRepository {
   private content;
+  private excludes: string[];
 
-  constructor(content: { [key: string]: string } = {}) {
+  constructor(content: { [key: string]: string } = {}, excludes: string[]) {
+    this.excludes = excludes;
     this.content = Object.fromEntries(
       Object.entries(content).map(([key, value]) => [key.toLowerCase(), value]),
     );
@@ -46,7 +48,7 @@ export class BaseGardenRepository implements GardenRepository {
     throw `Cannot load ${name} since does not exist in repository`;
   }
 
-  toThing(reference: ItemReference | string, content: () => Promise<string>) {
+  toThing(reference: ItemReference | string, content: () => Promise<Content>) {
     const itemReference =
       typeof reference === "object"
         ? reference
@@ -59,12 +61,25 @@ export class BaseGardenRepository implements GardenRepository {
     };
   }
 
+  isHidden(item: BaseItem) {
+    for (const tag in item.data.tags) {
+      if (tag in this.excludes) {
+        return true;
+      }
+    }
+  }
+
   loadThing(itemReference: ItemReference) {
     return this.toThing(
       itemReference,
-      async (): Promise<string> =>
+      async (): Promise<Content> =>
         this.load(itemReference)
-          .then((item) => item.content)
+          .then((item) => {
+            return {
+              body: item.content,
+              hidden: this.isHidden(item),
+            };
+          })
           .catch((error) => {
             console.error(error);
             return error;

@@ -37,6 +37,7 @@ export interface GardenRepositoryConfig {
   type: GardenRepositoryType;
   directory: string;
   excludedDirectories: string[];
+  excludes: string[];
 }
 
 export interface GardenConfig extends GardenRepositoryConfig {
@@ -58,6 +59,7 @@ export const defaultConfig: GardenConfig = {
   defaultGardenDirectory: ".",
   directory: ".gardens",
   excludedDirectories: ["node_modules", "digital-garden"],
+  excludes: [],
   content: {},
   hasMultiple: false,
   gardens: {},
@@ -478,9 +480,10 @@ const toRepository = (config: GardenConfig): GardenRepository => {
     return new FileGardenRepository(
       config.directory,
       config.excludedDirectories,
+      config.excludes,
     );
   }
-  return new BaseGardenRepository(config.content);
+  return new BaseGardenRepository(config.content, config.excludes);
 };
 
 export const createGarden = (options: GardenOptions): Garden => {
