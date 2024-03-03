@@ -12,7 +12,10 @@ const justNaturalLinks = (link: Link) => link.type === LinkType.NaturalTo;
 describe("markdown", () => {
   describe("basic content", () => {
     it("should parse OK", async () => {
-      const sections = await parse(async () => "# My Name");
+      const sections = await parse(async () => ({
+        body: "# My Name",
+        hidden: false,
+      }));
 
       expect(sections).toHaveLength(1);
       expect(sections[0].title).toBe("My Name");
@@ -21,10 +24,10 @@ describe("markdown", () => {
     it("should have title and links", async () => {
       const meta = (
         await toMultipleThingMeta(
-          garden.repository.toThing(
-            "my-name",
-            async () => "# My Name\n\n[[wiki-link]] [link](./my-link.md)",
-          ),
+          garden.repository.toThing("my-name", async () => ({
+            body: "# My Name\n\n[[wiki-link]] [link](./my-link.md)",
+            hidden: false,
+          })),
         )
       )[0];
 
@@ -35,12 +38,12 @@ describe("markdown", () => {
 
     it("should have sections", async () => {
       const meta = await toMultipleThingMeta(
-        garden.repository.toThing(
-          "my-name",
-          async () =>
+        garden.repository.toThing("my-name", async () => ({
+          body:
             "# My Name\n\n[[top-wiki-link]]\n\n" +
             "## My heading\n\nSection content [[child-section-link]]",
-        ),
+          hidden: false,
+        })),
       );
 
       expect(meta[0].title).toBe("My Name");
@@ -50,10 +53,10 @@ describe("markdown", () => {
     it("should not extract links from explicit links", async () => {
       const meta = (
         await toMultipleThingMeta(
-          garden.repository.toThing(
-            "mock",
-            async () => "# Mock\n\nA [[one-day-maybe]]",
-          ),
+          garden.repository.toThing("mock", async () => ({
+            body: "# Mock\n\nA [[one-day-maybe]]",
+            hidden: false,
+          })),
         )
       )[0];
       expect(meta.links).toStrictEqual([
@@ -64,10 +67,10 @@ describe("markdown", () => {
     it("should extra meaning from elements in relative link", async () => {
       const meta = (
         await toMultipleThingMeta(
-          garden.repository.toThing(
-            "title",
-            async () => "# Title\n\nLion, [dog](./animals/mammals/canine/)",
-          ),
+          garden.repository.toThing("title", async () => ({
+            body: "# Title\n\nLion, [dog](./animals/mammals/canine/)",
+            hidden: false,
+          })),
         )
       )[0];
       expect(meta.links.map(toName)).toStrictEqual(["canine", "lion", "dog"]);
@@ -76,12 +79,12 @@ describe("markdown", () => {
     it("should not extra meaning from wiki links and URIs", async () => {
       const meta = (
         await toMultipleThingMeta(
-          garden.repository.toThing(
-            "title",
-            async () =>
+          garden.repository.toThing("title", async () => ({
+            body:
               "# Title\n\nLion and [[giraffe]] <https://cat.com> and " +
               "[dog](https://animal.com)",
-          ),
+            hidden: false,
+          })),
         )
       )[0];
       expect(meta.links.filter(justNaturalLinks).map(toName)).toStrictEqual([
@@ -95,7 +98,10 @@ describe("markdown", () => {
     it("should take title from first line", async () => {
       const meta = (
         await toMultipleThingMeta(
-          garden.repository.toThing("my-name", async () => "My Name"),
+          garden.repository.toThing("my-name", async () => ({
+            body: "My Name",
+            hidden: false,
+          })),
         )
       )[0];
       expect(meta.title).toBe("My Name");
@@ -105,7 +111,10 @@ describe("markdown", () => {
   describe("empty content", () => {
     it("should have explicit no title", async () => {
       const meta = await toMultipleThingMeta(
-        garden.repository.toThing("null", async () => ""),
+        garden.repository.toThing("null", async () => ({
+          body: "",
+          hidden: false,
+        })),
       );
       expect(meta).toHaveLength(1);
       expect(meta[0].title).toBe("no title");
