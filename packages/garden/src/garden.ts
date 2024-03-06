@@ -456,6 +456,17 @@ const enrichOptions = (
     // this is the zero config, clone and run config
     return join(cwd, "../test-gardens/content");
   })();
+  const localConfig = (() => {
+    const GARDEN_CONFIG_FILE = ".garden-config.json";
+    const gardenConfigFile = `${gardenRootDirectory}/${GARDEN_CONFIG_FILE}`;
+    if (fs.existsSync(gardenConfigFile)) {
+      return JSON.parse(
+        fs.readFileSync(gardenConfigFile, { encoding: "utf8", flag: "r" }),
+      );
+    } else {
+      return {};
+    }
+  })();
   return {
     ...{
       gardens,
@@ -463,6 +474,7 @@ const enrichOptions = (
       directory: gardenRootDirectory,
     },
     ...options,
+    ...localConfig,
   };
 };
 
