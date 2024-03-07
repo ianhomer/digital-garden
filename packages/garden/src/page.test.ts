@@ -7,9 +7,8 @@ const garden = createGarden(config);
 
 describe("page", () => {
   it("should list pages", async () => {
-    const things = await garden.meta();
-    const items = await getPageItems(garden.repository, things);
+    const items = await getPageItems(garden.repository);
     const names = items.map((item) => item.name);
-    expect(names).toHaveLength(30);
+    expect(names).toHaveLength(25);
   });
 });
