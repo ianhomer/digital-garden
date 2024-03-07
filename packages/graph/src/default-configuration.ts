@@ -47,7 +47,7 @@ const defaultConfiguration = (
   const minDimension = Math.min(viewWidth, viewHeight);
   const xOffset = viewWidth / 2;
   const yOffset = viewHeight / 2;
-  const depth = minDimension < 600 ? 1 : 3;
+  const depth = minDimension < 600 ? 1 : 2;
 
   return {
     viewHeight,
