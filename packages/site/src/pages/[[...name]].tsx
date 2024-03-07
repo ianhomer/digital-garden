@@ -107,7 +107,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   return {
     props: {
       item: {
-        ...item,
+        name: item.name,
         links,
         content,
       },
