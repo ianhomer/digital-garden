@@ -30,16 +30,20 @@ project and restarting the service. For example:
 Create a deployment from a Git repository that has Markdown content in. Set the
 **framework preset** to **Other**. Set the **build command** to:
 
-    cd digital-garden && pnpm build:static
+    cd dg && pnpm build:static
 
 Set the **output directory** to:
 
-    digital-garden/packages/site/out
+    dg/packages/site/out
 
 Set the **install command** to:
 
-    git clone https://github.com/ianhomer/digital-garden && \
-      cd digital-garden && pnpm install --filter !@garden/end-to-end
+    ( test -d dg || mkdir dg) &&
+      cd dg && git init &&
+      git remote add origin https://github.com/ianhomer/digital-garden &&
+      git fetch origin main &&
+      git checkout -b main --track origin/main &&
+      pnpm install --filter '!@garden/end-to-end'
 
 Set environment variable `GARDENS_DIRECTORY` to `../../..`
 
@@ -52,11 +56,11 @@ To deploy to Vercel with static encryption
 Set `STATICRYPT_PASSWORD` environment variable to appropriately long and secure
 secret. Set the **build command** to:
 
-    cd digital-garden && pnpm build:crypt
+    cd dg && pnpm build:crypt
 
 Set the **output directory** to:
 
-    digital-garden/packages/site/encrypted/out
+    dg/packages/site/encrypted/out
 
 ## Creating static file
 
