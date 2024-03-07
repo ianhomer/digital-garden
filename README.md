@@ -43,6 +43,19 @@ Set the **install command** to:
 
 Then deploy and visit generated site.
 
+## Creating static file
+
+    GARDENS_DIRECTORY=../../../../my-garden
+    pnpm run build:static
+    pnpm run serve
+
+To run encrypted version of static site
+
+    STATICRYPT_PASSWORD=long-secure-password
+    GARDENS_DIRECTORY=../../../../my-garden
+    pnpm run build:crypt
+    pnpm run serve:crypt
+
 ## Environment configuration
 
 Configure environment with variables defined in either via a `.env` in the
