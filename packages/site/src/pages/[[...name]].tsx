@@ -118,7 +118,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const things = await garden.load();
-  const items = await getPageItems(garden.repository, things);
+  const items = await getPageItems(garden.repository, things, false);
 
   const invalidPageNames = items
     .map((item) => item.name)
