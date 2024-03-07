@@ -8,10 +8,12 @@ import { markdownToHtml } from "@garden/react";
 import { Item } from "@garden/types";
 import { GetStaticPaths, GetStaticProps } from "next";
 
-import { ItemPage } from "../components/ItemPage";
+import { ItemPage, ItemPageProps } from "../components/ItemPage";
 import { garden } from "../components/site-garden";
 
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+export const getStaticProps: GetStaticProps<ItemPageProps> = async ({
+  params,
+}) => {
   const itemName = (params?.name && params?.name[0]) ?? false;
   const item = await findItemOrWanted(garden.repository, itemName);
   const links = await findLinks(garden, item);
@@ -30,8 +32,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const things = await garden.load();
-  const items = await getPageItems(garden.repository, things);
+  const items = await getPageItems(garden.repository);
 
   const invalidPageNames = items
     .map((item) => item.name)
