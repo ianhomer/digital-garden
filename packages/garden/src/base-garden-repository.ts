@@ -2,13 +2,17 @@ import { hash } from "@garden/core";
 import { Content, GardenRepository, ItemReference } from "@garden/types";
 
 import { BaseItem } from "./base-item";
+import { BaseGardenRepositoryConfig, TagMatcher } from "./garden";
 
 export class BaseGardenRepository implements GardenRepository {
   private content;
-  private excludes: string[];
+  private publish: TagMatcher;
 
-  constructor(content: { [key: string]: string } = {}, excludes: string[]) {
-    this.excludes = excludes;
+  constructor(
+    content: { [key: string]: string } = {},
+    config: BaseGardenRepositoryConfig,
+  ) {
+    this.publish = config.publish;
     this.content = Object.fromEntries(
       Object.entries(content).map(([key, value]) => [key.toLowerCase(), value]),
     );
@@ -75,14 +79,33 @@ export class BaseGardenRepository implements GardenRepository {
     }
   }
 
-  isLoadedItemHidden(item: BaseItem) {
-    const tags = this.toTags(item.data.tags);
+  isIncluded(tags: string[], include: string[]) {
+    if (include.length === 0) {
+      return true;
+    }
     for (const tag of tags) {
-      if (this.excludes.includes(tag)) {
+      if (include.includes(tag)) {
         return true;
       }
     }
     return false;
+  }
+
+  isExcluded(item: BaseItem, matcher: TagMatcher) {
+    const tags = this.toTags(item.data.tags);
+    if (this.isIncluded(tags, matcher.include)) {
+      for (const tag of tags) {
+        if (matcher.exclude.includes(tag)) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return true;
+  }
+
+  isLoadedItemHidden(item: BaseItem) {
+    return this.isExcluded(item, this.publish);
   }
 
   loadThing(itemReference: ItemReference) {

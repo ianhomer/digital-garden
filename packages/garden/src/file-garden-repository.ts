@@ -5,6 +5,7 @@ import { join, resolve } from "path";
 
 import { BaseGardenRepository } from "./base-garden-repository";
 import { BaseItem } from "./base-item";
+import { BaseGardenRepositoryConfig } from "./garden";
 const { readdir } = fs.promises;
 
 const shouldIncludeDirectory = (excludedDirectories: string[], name: string) =>
@@ -44,9 +45,11 @@ export class FileGardenRepository extends BaseGardenRepository {
   constructor(
     directory: string,
     excludedDirectories: string[] = [],
-    excludes: string[] = [],
+    config: BaseGardenRepositoryConfig = {
+      publish: { include: [], exclude: [] },
+    },
   ) {
-    super({}, excludes);
+    super({}, config);
     this.excludedDirectories = excludedDirectories;
     this.directory = directory;
     this.gardenDirectoryLength = resolve(directory).length + 1;

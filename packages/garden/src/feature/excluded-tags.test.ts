@@ -1,7 +1,11 @@
 import { createGarden } from "../garden";
 
 export const metaFrom = async (content: { [key: string]: string }) =>
-  createGarden({ content, type: "inmemory", excludes: ["excluded"] }).meta();
+  createGarden({
+    content,
+    type: "inmemory",
+    publish: { exclude: ["excluded"], include: [] },
+  }).meta();
 
 const excluded = `---
 tags: excluded

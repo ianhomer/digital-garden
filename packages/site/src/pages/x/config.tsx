@@ -1,8 +1,10 @@
+import { TagMatcher } from "@garden/garden/src/garden";
+
 import { garden } from "../../components/site-garden";
 
 type Props = {
   directory: string;
-  excludes: string[];
+  publish: TagMatcher;
   hasMultiple: string;
   type: string;
 };
@@ -10,7 +12,8 @@ type Props = {
 function Config(props: Props) {
   return (
     <ul>
-      <li>excludes : {props.excludes.join(",")}</li>
+      <li>exclude : {props.publish.exclude.join(",")}</li>
+      <li>include : {props.publish.include.join(",")}</li>
       <li>directory : {props.directory}</li>
       <li>hasMultiple : {props.hasMultiple}</li>
       <li>type : {props.type}</li>
@@ -21,7 +24,7 @@ function Config(props: Props) {
 export async function getStaticProps() {
   return {
     props: {
-      excludes: garden.config.excludes,
+      publish: garden.config.publish,
       hasMultiple: garden.config.hasMultiple ? "true" : "false",
       directory: garden.config.directory,
       type: garden.config.type,
