@@ -33,11 +33,19 @@ export interface Garden {
 
 export type GardenRepositoryType = "file" | "inmemory";
 
-export interface GardenRepositoryConfig {
+export interface TagMatcher {
+  include: string[];
+  exclude: string[];
+}
+
+export interface BaseGardenRepositoryConfig {
+  publish: TagMatcher;
+}
+
+export interface GardenRepositoryConfig extends BaseGardenRepositoryConfig {
   type: GardenRepositoryType;
   directory: string;
   excludedDirectories: string[];
-  excludes: string[];
 }
 
 export interface GardenConfig extends GardenRepositoryConfig {
@@ -59,7 +67,10 @@ export const defaultConfig: GardenConfig = {
   defaultGardenDirectory: ".",
   directory: ".gardens",
   excludedDirectories: ["node_modules", "digital-garden"],
-  excludes: ["archive", "historical", "not"],
+  publish: {
+    include: [],
+    exclude: ["archive", "historical", "not"],
+  },
   content: {},
   hasMultiple: false,
   gardens: {},
@@ -492,10 +503,10 @@ const toRepository = (config: GardenConfig): GardenRepository => {
     return new FileGardenRepository(
       config.directory,
       config.excludedDirectories,
-      config.excludes,
+      { publish: config.publish },
     );
   }
-  return new BaseGardenRepository(config.content, config.excludes);
+  return new BaseGardenRepository(config.content, config);
 };
 
 export const createGarden = (options: GardenOptions): Garden => {
