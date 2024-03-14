@@ -117,10 +117,10 @@ describe("garden", () => {
   const myFilename = "my-filename";
 
   it("should generate single thing", async () => {
-    const thing = garden.repository.toThing(
-      myFilename,
-      async () => "# thing title\n\n" + "thing content",
-    );
+    const thing = garden.repository.toThing(myFilename, async () => ({
+      body: "# thing title\n\n" + "thing content",
+      hidden: false,
+    }));
     const metaMap: Things = {};
     await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(1);
