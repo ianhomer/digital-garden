@@ -59,7 +59,13 @@ export interface GardenConfig extends GardenRepositoryConfig {
   scripts: { [key: string]: string }[];
 }
 
-export type GardenOptions = Partial<GardenConfig>;
+type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;
+
+export type GardenOptions = DeepPartial<GardenConfig>;
 
 export const defaultConfig: GardenConfig = {
   allowGlobalMeta: true,
@@ -493,10 +499,26 @@ export const toConfig = (
   options: GardenOptions,
   cwd?: string,
   env?: ProcessEnv,
-): GardenConfig => ({
-  ...defaultConfig,
-  ...(cwd ? enrichOptions(options, cwd, env) : options),
-});
+): GardenConfig => {
+  const defaultedDeepOptions = options;
+  // default included or exclude if not set
+  if (options.publish) {
+    if (!options.publish.include) {
+      options.publish.include = defaultConfig.publish.include;
+    }
+    if (!options.publish.exclude) {
+      options.publish.exclude = defaultConfig.publish.exclude;
+    }
+  }
+  const enrichedOptions = cwd
+    ? enrichOptions(defaultedDeepOptions, cwd, env)
+    : defaultedDeepOptions;
+
+  return {
+    ...defaultConfig,
+    ...enrichedOptions,
+  };
+};
 
 const toRepository = (config: GardenConfig): GardenRepository => {
   if (config.type === "file") {

@@ -42,7 +42,6 @@ describe("base garden repository", () => {
       content: { noTags, excluded, included },
       publish: {
         exclude: ["excluded"],
-        include: [],
       },
       type: "inmemory",
     }).meta();
@@ -53,7 +52,6 @@ describe("base garden repository", () => {
     const meta = await createGarden({
       content: { noTags, excluded, included },
       publish: {
-        exclude: [],
         include: ["included"],
       },
       type: "inmemory",
