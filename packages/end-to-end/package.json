@@ -14,10 +14,10 @@
     "test:e2e:cucumber": "cucumber-js"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^10.3.1",
-    "@playwright/test": "^1.42.0",
+    "@cucumber/cucumber": "^10.8.0",
+    "@playwright/test": "^1.45.1",
     "allure-playwright": "2.13.0",
-    "playwright": "^1.42.0",
+    "playwright": "^1.45.1",
     "rimraf": "5.0.5"
   }
 }
