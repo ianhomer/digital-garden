@@ -8,16 +8,16 @@ import {
   GardenSimulation,
   Graph,
   GraphConfiguration,
-  GraphNode,
-  NodeLink,
+  GraphLinkDatum,
+  GraphNodeDatum,
 } from "./types";
 
 export type {
   GardenSimulation,
   Graph,
   GraphConfiguration,
-  GraphNode as Node,
-  NodeLink,
+  GraphLinkDatum,
+  GraphNodeDatum,
 };
 
 export { builder, collideRectangle, defaultConfiguration, itemName, render };

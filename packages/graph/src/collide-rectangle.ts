@@ -1,26 +1,28 @@
 import { quadtree, QuadtreeInternalNode, QuadtreeLeaf } from "d3-quadtree";
 
-import { GraphNode } from "./types";
+import { GraphNodeDatum } from "./types";
 
-function x(d: GraphNode) {
+function x(d: GraphNodeDatum) {
   return (d.x ?? 0) + (d.vx ?? 0);
 }
 
-function y(d: GraphNode) {
+function y(d: GraphNodeDatum) {
   return (d.y ?? 0) + (d.vy ?? 0);
 }
 
-function xCenterOfBox(d: GraphNode, box: number[]) {
+function xCenterOfBox(d: GraphNodeDatum, box: number[]) {
   return (d.x ?? 0) + box[0] + box[2] / 2;
 }
 
-function yCenterOfBox(d: GraphNode, box: number[]) {
+function yCenterOfBox(d: GraphNodeDatum, box: number[]) {
   return (d.y ?? 0) + box[1] + box[3] / 2;
 }
 
 // box is [x,y,width,height]
-function apply(d: GraphNode, box: number[], strength: number) {
-  return (quad: QuadtreeInternalNode<GraphNode> | QuadtreeLeaf<GraphNode>) => {
+function apply(d: GraphNodeDatum, box: number[], strength: number) {
+  return (
+    quad: QuadtreeInternalNode<GraphNodeDatum> | QuadtreeLeaf<GraphNodeDatum>,
+  ) => {
     if (quad.length === 4 || !d) {
       return;
     }
@@ -55,7 +57,7 @@ function apply(d: GraphNode, box: number[], strength: number) {
 }
 
 export default function (box: number[], strength = 0.4) {
-  let nodes: GraphNode[];
+  let nodes: GraphNodeDatum[];
   let iterations = 1;
   function force() {
     const tree = quadtree(nodes, x, y);
@@ -71,7 +73,7 @@ export default function (box: number[], strength = 0.4) {
     return arguments.length ? ((iterations = +_), force) : iterations;
   };
 
-  force.initialize = (_: GraphNode[]) =>
+  force.initialize = (_: GraphNodeDatum[]) =>
     (nodes = _.filter((node) => node.showLabel));
   return force;
 }
