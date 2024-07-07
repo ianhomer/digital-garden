@@ -2,7 +2,6 @@ import { LinkType } from "@garden/types";
 import { SimulationNodeDatum } from "d3";
 
 import { GraphConfiguration, GraphLink } from "./types";
-
 const DEPTH_1_RADIUS = 30;
 const boundarySize = DEPTH_1_RADIUS * 4;
 
@@ -14,11 +13,11 @@ const linkTypeForceWeight = (linkType: LinkType) => {
       return 0.8;
     case LinkType.From:
       return 0.7;
-    case LinkType.NaturalTo:
+    case LinkType.ImplicitTo:
       return 0.45;
-    case LinkType.NaturalFrom:
+    case LinkType.ImplicitFrom:
       return 0.35;
-    case LinkType.NaturalAlias:
+    case LinkType.ImplicitAlias:
       return 0.25;
     default:
       return 0.1;

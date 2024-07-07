@@ -94,6 +94,6 @@ export function naturalProcess(
     .filter(allowedLinks)
     .filter((name: string) => !enhancedExcludes.includes(name))
     .filter(unique)
-    .map((name: string) => ({ name, type: LinkType.NaturalTo, value: 1 }));
+    .map((name: string) => ({ name, type: LinkType.ImplicitTo, value: 1 }));
   return { links };
 }

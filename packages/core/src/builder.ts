@@ -1,20 +1,20 @@
-import { LinkType, Meta, Things, ThingType } from "@garden/types";
+import { ItemMeta, Items, ItemType, LinkType } from "@garden/types";
 
 import { toFakeName } from "./fake";
 import { hash } from "./hash";
 
 interface ChainedBuilder {
-  build: () => Things;
+  build: () => Items;
   name: (name: string) => MetaBuilder;
-  and: () => ThingsBuilder;
+  and: () => ItemsBuilder;
 }
 
 class MetaBuilder implements ChainedBuilder {
   private meta;
-  private thingsBuilder;
+  private itemsBuilder;
 
-  constructor(thingsBuilder: ThingsBuilder, meta: Meta) {
-    this.thingsBuilder = thingsBuilder;
+  constructor(itemsBuilder: ItemsBuilder, meta: ItemMeta) {
+    this.itemsBuilder = itemsBuilder;
     this.meta = meta;
   }
 
@@ -31,20 +31,20 @@ class MetaBuilder implements ChainedBuilder {
   }
 
   and() {
-    return this.thingsBuilder;
+    return this.itemsBuilder;
   }
 
   build() {
-    return this.thingsBuilder.build();
+    return this.itemsBuilder.build();
   }
 
   name(name: string) {
-    return this.thingsBuilder.name(name);
+    return this.itemsBuilder.name(name);
   }
 }
 
-class ThingsBuilder implements ChainedBuilder {
-  private things: Things = {};
+class ItemsBuilder implements ChainedBuilder {
+  private items: Items = {};
 
   name(name: string) {
     const meta = {
@@ -53,9 +53,9 @@ class ThingsBuilder implements ChainedBuilder {
       links: [],
       aliases: [],
       value: 1,
-      type: ThingType.Item,
+      type: ItemType.Item,
     };
-    this.things[name] = meta;
+    this.items[name] = meta;
     return new MetaBuilder(this, meta);
   }
 
@@ -113,8 +113,8 @@ class ThingsBuilder implements ChainedBuilder {
   }
 
   build() {
-    return this.things;
+    return this.items;
   }
 }
 
-export const builder = () => new ThingsBuilder();
+export const builder = () => new ItemsBuilder();

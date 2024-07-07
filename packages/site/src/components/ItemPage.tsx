@@ -5,7 +5,7 @@ import {
   useKey,
   useWindowDimensions,
 } from "@garden/react";
-import { Link, Things } from "@garden/types";
+import { Items, Link } from "@garden/types";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Script from "next/script";
@@ -28,7 +28,7 @@ export function ItemPage({ item, scripts }: ItemPageProps) {
   const { height, width } = useWindowDimensions();
   const [scale, setScale] = useState(1.3);
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState<Things>({});
+  const [data, setData] = useState<Items>({});
   const router = useRouter();
 
   useKey(() => setScale(scale / 1.5), ["b"]);
@@ -62,7 +62,7 @@ export function ItemPage({ item, scripts }: ItemPageProps) {
       ))}
 
       <main>
-        <div className="container max-w-4xl px-4">
+        <div className="container px-4 max-w-4xl">
           <div dangerouslySetInnerHTML={{ __html: item.content }} />
         </div>
       </main>

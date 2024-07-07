@@ -1,5 +1,5 @@
 import { builder } from "@garden/core";
-import { Link, LinkType, Things } from "@garden/types";
+import { Items, Link, LinkType } from "@garden/types";
 
 import {
   createGarden,
@@ -19,8 +19,8 @@ const garden = createGarden(gardenConfig);
 const gardenItemCount = 30;
 const NATURAL_LINK_SHARED = "natural-link-shared";
 const NATURAL_LINK_ALONE = "natural-link-alone";
-const noNaturalLinks = (link: Link) => link.type !== LinkType.NaturalTo;
-const naturalLinks = (link: Link) => link.type === LinkType.NaturalTo;
+const noNaturalLinks = (link: Link) => link.type !== LinkType.ImplicitTo;
+const naturalLinks = (link: Link) => link.type === LinkType.ImplicitTo;
 
 describe("garden", () => {
   it("should be created", () => {
@@ -101,15 +101,15 @@ describe("garden", () => {
   });
 
   it("should not find unwanted links", () => {
-    const meta: Things = builder()
+    const meta: Items = builder()
       .name("foo")
       .link("explicit-link")
-      .link(NATURAL_LINK_SHARED, LinkType.NaturalTo)
-      .link(NATURAL_LINK_ALONE, LinkType.NaturalTo)
+      .link(NATURAL_LINK_SHARED, LinkType.ImplicitTo)
+      .link(NATURAL_LINK_ALONE, LinkType.ImplicitTo)
       .name("bar")
-      .link("explicit-link", LinkType.NaturalTo)
-      .link(NATURAL_LINK_SHARED, LinkType.NaturalTo)
-      .link("bar", LinkType.NaturalTo)
+      .link("explicit-link", LinkType.ImplicitTo)
+      .link(NATURAL_LINK_SHARED, LinkType.ImplicitTo)
+      .link("bar", LinkType.ImplicitTo)
       .build();
     expect(findUnwantedLinks(meta)).toStrictEqual([NATURAL_LINK_ALONE]);
   });
@@ -121,7 +121,7 @@ describe("garden", () => {
       body: "# thing title\n\n" + "thing content",
       hidden: false,
     }));
-    const metaMap: Things = {};
+    const metaMap: Items = {};
     await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(1);
   });
@@ -135,7 +135,7 @@ describe("garden", () => {
         "### sub-section title\n\nSub-section content",
       hidden: false,
     }));
-    const metaMap: Things = {};
+    const metaMap: Items = {};
     await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(3);
     expect(

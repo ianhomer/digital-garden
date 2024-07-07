@@ -1,5 +1,5 @@
 import { linkResolver } from "@garden/core";
-import { Content, LinkType, Meta, Thing, ThingType } from "@garden/types";
+import { Content, ItemMeta, ItemType, LinkType, Thing } from "@garden/types";
 import { Heading, Link, Literal } from "mdast";
 import { toString } from "mdast-util-to-string";
 import remarkParse from "remark-parse";
@@ -141,12 +141,12 @@ function extractName(url: string) {
   return match ? match[1] : url;
 }
 
-export async function toMultipleThingMeta(thing: Thing): Promise<Meta[]> {
+export async function toMultipleThingMeta(thing: Thing): Promise<ItemMeta[]> {
   const sections = await parse(thing.content);
   return sections.map((section) => toSingleThingMeta(thing, section));
 }
 
-function toSingleThingMeta(thing: Thing, section: Section): Meta {
+function toSingleThingMeta(thing: Thing, section: Section): ItemMeta {
   const explicitLinks = flatten(section)
     .filter(
       (node) =>
@@ -165,7 +165,7 @@ function toSingleThingMeta(thing: Thing, section: Section): Meta {
     title: section.title,
     hash: thing.hash,
     value: 1,
-    type: section.depth > 1 ? ThingType.Child : ThingType.Item,
+    type: section.depth > 1 ? ItemType.Child : ItemType.Item,
     aliases: [],
     links: [
       ...explicitLinks,

@@ -41,19 +41,19 @@ export interface ItemLink {
   type: LinkType;
 }
 
-export interface Meta {
+export interface ItemMeta {
   title: string;
   hash: string;
-  type: ThingType;
+  type: ItemType;
   aliases: Array<string>;
   links: Array<Link>;
   value: number;
 }
 
-export enum ThingType {
+export enum ItemType {
   Item = "item",
   Wanted = "wanted",
-  NaturallyWanted = "naturallyWanted",
+  ImplicitlyWanted = "implictlyWanted",
   Child = "child",
 }
 
@@ -63,16 +63,16 @@ export enum LinkType {
   Has = "has",
   In = "in",
   Child = "child",
-  NaturalTo = "natural",
-  NaturalFrom = "naturalFrom",
-  NaturalAlias = "naturalAlias",
+  ImplicitTo = "implicit",
+  ImplicitFrom = "implicitFrom",
+  ImplicitAlias = "implicitAlias",
 }
 
 export type Content = {
   body: string;
   hidden: boolean;
 };
-export type Things = { [key: string]: Meta };
+export type Items = { [key: string]: ItemMeta };
 
 export type ThingData = {
   tags?: string[];

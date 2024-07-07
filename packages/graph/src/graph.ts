@@ -1,5 +1,5 @@
 import { toParentName } from "@garden/core";
-import { ItemLink, Things } from "@garden/types";
+import { ItemLink, Items } from "@garden/types";
 
 import { Graph, InitialNodeValueMap, NodeType } from "./types";
 
@@ -19,7 +19,7 @@ const countSiblings = (name: string, links: Array<ItemLink>, depth: number) => {
 
 export const createGraph = (
   root: string,
-  things: Things,
+  items: Items,
   initalValues: InitialNodeValueMap,
   links: Array<ItemLink>,
 ): Graph => {
@@ -30,8 +30,8 @@ export const createGraph = (
 
   const getParentTitle = (name: string) => {
     const parentName = toParentName(name);
-    if (parentName && parentName in things) {
-      return things[parentName].title;
+    if (parentName && parentName in items) {
+      return items[parentName].title;
     }
     return undefined;
   };
@@ -54,13 +54,13 @@ export const createGraph = (
         const depth = getDepth(name);
         const fixedCoordinates = {};
         const siblings = countSiblings(name, links, depth);
-        const thing = things[name];
+        const thing = items[name];
         return {
           id: name || "na",
-          title: name in things ? thing.title : name,
+          title: name in items ? thing.title : name,
           context: getParentTitle(name),
           type: NodeType.Thing,
-          wanted: !(name in things),
+          wanted: !(name in items),
           siblings,
           showLabel: depth < 3 && (depth < 2 || siblings < 20),
           depth,
