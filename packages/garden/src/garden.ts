@@ -1,11 +1,11 @@
 import { hash, linkResolver, unique } from "@garden/core";
 import {
   GardenRepository,
+  Items,
+  ItemType,
   Link,
   LinkType,
   Thing,
-  Things,
-  ThingType,
 } from "@garden/types";
 import fs from "fs";
 import os from "os";
@@ -24,11 +24,11 @@ export interface Garden {
   repository: GardenRepository;
   config: GardenConfig;
   thing: (filename: string) => Thing;
-  findBackLinks: (things: Things, name: string) => Array<Link>;
+  findBackLinks: (things: Items, name: string) => Array<Link>;
   getMetaFilename: () => string;
-  meta: () => Promise<Things>;
-  load: () => Promise<Things>;
-  refresh: (filenameToPatch?: string) => Promise<Things>;
+  meta: () => Promise<Items>;
+  load: () => Promise<Items>;
+  refresh: (filenameToPatch?: string) => Promise<Items>;
 }
 
 export type GardenRepositoryType = "file" | "inmemory";
@@ -101,12 +101,12 @@ const thingToMultipleThingMeta = async (thing: Thing) => {
   };
 };
 
-export const loadThingIntoMetaMap = async (metaMap: Things, thing: Thing) => {
+export const loadThingIntoMetaMap = async (metaMap: Items, thing: Thing) => {
   const { thingName, thingMeta, extra } = await thingToMultipleThingMeta(thing);
 
   thingMeta.forEach((singleThingMeta) => {
     const singleThingName =
-      singleThingMeta.type === ThingType.Child
+      singleThingMeta.type === ItemType.Child
         ? thingName + "#" + linkResolver(singleThingMeta.title)
         : thingName;
 
@@ -143,9 +143,9 @@ export const loadThingIntoMetaMap = async (metaMap: Things, thing: Thing) => {
 const generateMeta = async (
   repository: GardenRepository,
   config: GardenConfig,
-  metaMap: Things = {},
+  metaMap: Items = {},
   filenameToPatch?: string,
-): Promise<Things> => {
+): Promise<Items> => {
   if (Object.keys(config.content).length > 0) {
     for (const key in config.content) {
       await loadThingIntoMetaMap(metaMap, loadThing(repository, `${key}.md`));
@@ -172,7 +172,7 @@ const generateMeta = async (
       metaMap[title] = {
         title,
         hash: hash(title),
-        type: ThingType.ImplicitlyWanted,
+        type: ItemType.ImplicitlyWanted,
         aliases: [],
         value: 1,
         links: links.map(
@@ -187,7 +187,7 @@ const generateMeta = async (
   });
 
   const unwantedLinks = findUnwantedLinks(metaMap);
-  const transformedMeta: Things = {};
+  const transformedMeta: Items = {};
 
   Object.keys(metaMap)
     .filter((key) => !unwantedLinks.includes(key))
@@ -218,18 +218,18 @@ const generateMeta = async (
   return sortMeta(reduceAliases(transformedMeta));
 };
 
-const sortMeta = async (meta: Things) => {
+const sortMeta = async (meta: Items) => {
   const entries = Object.entries(meta);
   entries.sort(([key1], [key2]) => key1.localeCompare(key2));
   return Object.fromEntries(entries);
 };
 
-const reduceAliases = (meta: Things): Things => {
+const reduceAliases = (meta: Items): Items => {
   const naturallyWantedAliases = findWantedThings(meta, justImplicitAliasLinks);
   const reducibleAliases: [string, string[]][] = Object.entries(meta)
     .filter(
       ([, value]) =>
-        value.type === ThingType.ImplicitlyWanted &&
+        value.type === ItemType.ImplicitlyWanted &&
         value.links.length > 0 &&
         value.links.every(
           (link) =>
@@ -276,7 +276,7 @@ const reduceAliases = (meta: Things): Things => {
 };
 
 export const findLinksExcludingExplicit = (
-  meta: Things,
+  meta: Items,
   explicitThingNames: string[],
   references: string[],
   filter: (link: Link) => boolean,
@@ -296,10 +296,10 @@ export const findLinksExcludingExplicit = (
 };
 
 // Unwanted are unique natural links to non-existent things
-export const findUnwantedLinks = (meta: Things) => {
+export const findUnwantedLinks = (meta: Items) => {
   const explicitThingNames = Object.entries(meta)
     .filter(([, value]) => {
-      if (value.type !== ThingType.ImplicitlyWanted) {
+      if (value.type !== ItemType.ImplicitlyWanted) {
         return true;
       }
       return value.links.find((link: Link) => {
@@ -307,7 +307,7 @@ export const findUnwantedLinks = (meta: Things) => {
         if (!thing) {
           return false;
         }
-        return thing.type === ThingType.Item || thing.type === ThingType.Wanted;
+        return thing.type === ItemType.Item || thing.type === ItemType.Wanted;
       });
     })
     .map((entry) => entry[0]);
@@ -396,7 +396,7 @@ async function loadMeta(repository: GardenRepository, config: GardenConfig) {
   }
 }
 
-const findBackLinks = (things: Things, name: string) => {
+const findBackLinks = (things: Items, name: string) => {
   return Object.keys(things)
     .filter((fromName) => {
       return things[fromName].links.map((link) => link.name).includes(name);
@@ -404,18 +404,18 @@ const findBackLinks = (things: Things, name: string) => {
     .map((fromName) => ({ name: fromName, type: LinkType.From, value: 1 }));
 };
 
-export const findKnownThings = (things: Things) => {
+export const findKnownThings = (things: Items) => {
   return Object.keys(
     Object.fromEntries(
       Object.entries(things).filter(
-        ([, thing]) => thing.type === ThingType.Item,
+        ([, thing]) => thing.type === ItemType.Item,
       ),
     ),
   );
 };
 
 export const findLinkedThings = (
-  things: Things,
+  things: Items,
   filter = (link: Link) => !!link,
 ) => {
   return Object.values(things)
@@ -425,7 +425,7 @@ export const findLinkedThings = (
 };
 
 export const findWantedThings = (
-  things: Things,
+  things: Items,
   filter = (link: Link) => !!link,
 ) => {
   const knownThings = findKnownThings(things);
@@ -542,7 +542,7 @@ export const createGarden = (options: GardenOptions): Garden => {
     refresh: async (filenameToPatch?: string) =>
       await refresh(repository, config, filenameToPatch),
     load: async () => await loadMeta(repository, config),
-    findBackLinks: (things: Things, name: string) => {
+    findBackLinks: (things: Items, name: string) => {
       return findBackLinks(things, name);
     },
     getMetaFilename: () => getMetaFilename(config),

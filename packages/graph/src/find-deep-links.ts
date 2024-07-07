@@ -1,4 +1,4 @@
-import { ItemLink, Link, LinkType, Things } from "@garden/types";
+import { ItemLink, Items, Link, LinkType } from "@garden/types";
 
 const valuable = (link: Link) => link.value !== 0;
 
@@ -6,7 +6,7 @@ type BackLinkCache = Map<string, string[]>;
 
 const backLinks = (
   backLinkCache: BackLinkCache,
-  things: Things,
+  items: Items,
   name: string,
   depth: number,
   predicate = (link: Link) =>
@@ -22,7 +22,7 @@ const backLinks = (
   return backLinksAvailable
     .filter((fromName) => {
       return (
-        things[fromName].links
+        items[fromName].links
           .filter(valuable)
           .filter(predicate)
           .map((link) => link.name)
@@ -54,10 +54,10 @@ const goDeeper = (
   return false;
 };
 
-const generateBackLinkCache = (things: Things) => {
+const generateBackLinkCache = (items: Items) => {
   const backLinkCache: BackLinkCache = new Map();
-  for (const name in things) {
-    for (const backLink of things[name].links.map((link) => link.name)) {
+  for (const name in items) {
+    for (const backLink of items[name].links.map((link) => link.name)) {
       const backLinkCacheEntry =
         backLinkCache.get(backLink) ??
         (() => {
@@ -72,27 +72,27 @@ const generateBackLinkCache = (things: Things) => {
 };
 
 const findDeepLinks = (
-  things: Things,
+  items: Items,
   name: string,
   maxDepth: number,
   depth = 1,
   linkType: LinkType | undefined = undefined,
   backLinkCache: BackLinkCache | undefined = undefined,
 ): ItemLink[] => {
-  const populatedBackLinkCache = backLinkCache || generateBackLinkCache(things);
+  const populatedBackLinkCache = backLinkCache || generateBackLinkCache(items);
   const directLinks = [
-    ...(name in things
-      ? things[name].links.filter(valuable).map((link: Link) => ({
+    ...(name in items
+      ? items[name].links.filter(valuable).map((link: Link) => ({
           source: name,
           target: link.name,
           depth,
           type: link.type,
         }))
       : []),
-    ...backLinks(populatedBackLinkCache, things, name, depth),
+    ...backLinks(populatedBackLinkCache, items, name, depth),
     ...backLinks(
       populatedBackLinkCache,
-      things,
+      items,
       name,
       depth,
       (link: Link) => link.type === LinkType.ImplicitTo,
@@ -105,7 +105,7 @@ const findDeepLinks = (
       ? directLinks
           .map((link) =>
             findDeepLinks(
-              things,
+              items,
               link.target,
               maxDepth,
               depth + 1,

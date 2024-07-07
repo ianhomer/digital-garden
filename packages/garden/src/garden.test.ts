@@ -1,5 +1,5 @@
 import { builder } from "@garden/core";
-import { Link, LinkType, Things } from "@garden/types";
+import { Items, Link, LinkType } from "@garden/types";
 
 import {
   createGarden,
@@ -101,7 +101,7 @@ describe("garden", () => {
   });
 
   it("should not find unwanted links", () => {
-    const meta: Things = builder()
+    const meta: Items = builder()
       .name("foo")
       .link("explicit-link")
       .link(NATURAL_LINK_SHARED, LinkType.ImplicitTo)
@@ -121,7 +121,7 @@ describe("garden", () => {
       body: "# thing title\n\n" + "thing content",
       hidden: false,
     }));
-    const metaMap: Things = {};
+    const metaMap: Items = {};
     await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(1);
   });
@@ -135,7 +135,7 @@ describe("garden", () => {
         "### sub-section title\n\nSub-section content",
       hidden: false,
     }));
-    const metaMap: Things = {};
+    const metaMap: Items = {};
     await loadThingIntoMetaMap(metaMap, thing);
     expect(Object.keys(metaMap)).toHaveLength(3);
     expect(

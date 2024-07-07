@@ -4,7 +4,7 @@ import {
   GraphConfiguration,
   render,
 } from "@garden/graph";
-import { Things } from "@garden/types";
+import { Items } from "@garden/types";
 import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 
@@ -13,7 +13,7 @@ interface GraphDiagramProps {
   height: number;
   scale: number;
   start: string;
-  data: Things;
+  data: Items;
   callback?: (name: string, event: MouseEvent) => void;
 }
 

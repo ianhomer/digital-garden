@@ -1,5 +1,5 @@
 import { hash } from "@garden/core";
-import { LinkType, Things, ThingType } from "@garden/types";
+import { Items, ItemType, LinkType } from "@garden/types";
 import { findAllByText } from "@testing-library/dom";
 import * as d3 from "d3";
 import { BaseType } from "d3";
@@ -10,12 +10,12 @@ import { GraphConfiguration } from "./types";
 
 describe("render graph", () => {
   it("should render OK", async () => {
-    const data: Things = {
+    const data: Items = {
       foo: {
         title: "foo",
         hash: hash("foo"),
         aliases: [],
-        type: ThingType.Item,
+        type: ItemType.Item,
         value: 0,
         links: [{ name: "bar", value: 1, type: LinkType.To }],
       },
@@ -23,7 +23,7 @@ describe("render graph", () => {
         title: "bar",
         hash: hash("bar"),
         aliases: [],
-        type: ThingType.Item,
+        type: ItemType.Item,
         value: 0,
         links: [],
       },

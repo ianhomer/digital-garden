@@ -1,4 +1,3 @@
-import { LinkType } from "@garden/types";
 import { SimulationLinkDatum, SimulationNodeDatum } from "d3-force";
 
 export type GardenSimulation = d3.Simulation<SimulationNodeDatum, undefined>;
@@ -19,6 +18,17 @@ export interface GraphNode {
 }
 
 export interface GraphNodeDatum extends SimulationNodeDatum, GraphNode {}
+
+export enum LinkType {
+  To = "to",
+  From = "from",
+  Has = "has",
+  In = "in",
+  Child = "child",
+  ImplicitTo = "implicit",
+  ImplicitFrom = "implicitFrom",
+  ImplicitAlias = "implicitAlias",
+}
 
 export interface GraphLink {
   type: LinkType;

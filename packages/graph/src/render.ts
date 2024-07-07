@@ -1,4 +1,4 @@
-import { Things } from "@garden/types";
+import { Items } from "@garden/types";
 import * as d3 from "d3";
 
 import collideRectangle from "./collide-rectangle";
@@ -56,7 +56,7 @@ const update = (
   svg: GraphSelect,
   simulation: GardenSimulation,
   start: string,
-  data: Things,
+  data: Items,
   updateEvent: (
     this: HTMLAnchorElement,
     event: MouseEvent,
@@ -306,7 +306,7 @@ const applySimulation = (
 
 const render = (
   start: string,
-  data: Things,
+  data: Items,
   config: GraphConfiguration,
   svg: GraphSelect,
   callback = (name: string, event: MouseEvent) => {
