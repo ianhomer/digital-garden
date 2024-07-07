@@ -1,7 +1,7 @@
 {
-  "name": "@garden/graph",
+  "name": "@garden/visualisation",
   "version": "0.0.1",
-  "description": "Digital garden graph client",
+  "description": "Digital garden graph visualisation",
   "license": "ISC",
   "keywords": [],
   "type": "module",

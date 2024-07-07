@@ -3,9 +3,9 @@ import "@testing-library/jest-dom";
 import { builder } from "@garden/core";
 import { render, screen } from "@testing-library/react";
 
-import GraphDiagram from "./graph-diagram";
+import GraphDiagram from "./graph-visualisation";
 
-describe("graph diagram", () => {
+describe("graph visualisation", () => {
   it("should render OK", async () => {
     const data = builder().name("foo").to("bar").name("bar").build();
     render(

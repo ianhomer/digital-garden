@@ -1,14 +1,14 @@
+import { Items } from "@garden/types";
 import {
   defaultConfiguration,
   GardenSimulation,
   GraphConfiguration,
   render,
-} from "@garden/graph";
-import { Items } from "@garden/types";
+} from "@garden/visualisation";
 import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 
-interface GraphDiagramProps {
+interface GraphVisualisationProps {
   width: number;
   height: number;
   scale: number;
@@ -17,11 +17,11 @@ interface GraphDiagramProps {
   callback?: (name: string, event: MouseEvent) => void;
 }
 
-GraphDiagram.defaultProps = {
+GraphVisualisation.defaultProps = {
   className: "fullscreen",
 };
 
-export default function GraphDiagram({
+export default function GraphVisualisation({
   data,
   height,
   scale,
@@ -30,7 +30,7 @@ export default function GraphDiagram({
   callback = (name: string, event: MouseEvent) => {
     console.log(`Linked to ${name} : ${event}`);
   },
-}: GraphDiagramProps) {
+}: GraphVisualisationProps) {
   const ref = useRef(null);
   const [simulation, setSimulation] = useState<GardenSimulation | null>(null);
 
