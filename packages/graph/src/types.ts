@@ -7,7 +7,7 @@ export enum NodeType {
   Thing = "thing",
 }
 
-export interface GraphNode extends SimulationNodeDatum {
+export interface GraphNodeDatum extends SimulationNodeDatum {
   id: string;
   title: string;
   context?: string;
@@ -18,14 +18,14 @@ export interface GraphNode extends SimulationNodeDatum {
   wanted: boolean;
 }
 
-export interface NodeLink extends SimulationLinkDatum<GraphNode> {
+export interface GraphLinkDatum extends SimulationLinkDatum<GraphNodeDatum> {
   type: LinkType;
   depth: number;
 }
 
 export interface Graph {
-  nodes: GraphNode[];
-  links: NodeLink[];
+  nodes: GraphNodeDatum[];
+  links: GraphLinkDatum[];
 }
 
 export interface InitialNodeValue {
@@ -59,11 +59,13 @@ export interface GraphConfiguration {
   centerForceFactor: number;
 
   depth: number;
-  getRadius: (d: GraphNode | SimulationNodeDatum) => number;
-  getCharge: (factor: number) => (d: GraphNode | SimulationNodeDatum) => number;
+  getRadius: (d: GraphNodeDatum | SimulationNodeDatum) => number;
+  getCharge: (
+    factor: number,
+  ) => (d: GraphNodeDatum | SimulationNodeDatum) => number;
   linkTypeForceWeight: (linkType: LinkType) => number;
-  linkDepthForceWeight: (link: NodeLink) => number;
-  getLinkForce: (factor: number) => (d: NodeLink) => number;
+  linkDepthForceWeight: (link: GraphLinkDatum) => number;
+  getLinkForce: (factor: number) => (d: GraphLinkDatum) => number;
 }
 
 export type GraphSelect = d3.Selection<

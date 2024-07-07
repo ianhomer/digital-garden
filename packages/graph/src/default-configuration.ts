@@ -1,7 +1,7 @@
 import { LinkType } from "@garden/types";
 import { SimulationNodeDatum } from "d3";
 
-import { GraphConfiguration, NodeLink } from "./types";
+import { GraphConfiguration, GraphLinkDatum } from "./types";
 
 const DEPTH_1_RADIUS = 30;
 const boundarySize = DEPTH_1_RADIUS * 4;
@@ -25,7 +25,7 @@ const linkTypeForceWeight = (linkType: LinkType) => {
   }
 };
 
-const linkDepthForceWeight = (link: NodeLink) =>
+const linkDepthForceWeight = (link: GraphLinkDatum) =>
   link.depth === 0
     ? 1.0
     : link.depth === 1
@@ -101,7 +101,7 @@ const defaultConfiguration = (
     linkDepthForceWeight,
 
     // How much each link attracts
-    getLinkForce: (factor: number) => (d: NodeLink) =>
+    getLinkForce: (factor: number) => (d: GraphLinkDatum) =>
       factor * linkTypeForceWeight(d.type) * linkDepthForceWeight(d),
   };
 };

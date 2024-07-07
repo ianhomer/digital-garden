@@ -8,34 +8,34 @@ import {
   GardenSimulation,
   Graph,
   GraphConfiguration,
-  GraphNode,
+  GraphLinkDatum,
+  GraphNodeDatum,
   GraphSelect,
   InitialNodeValueMap,
-  NodeLink,
 } from "./types";
 
-const onNodeMouseOver = (_: MouseEvent, current: GraphNode) => {
-  d3.selectAll<SVGAElement, GraphNode>(".group")
-    .filter((d: GraphNode) => d.id === current.id)
+const onNodeMouseOver = (_: MouseEvent, current: GraphNodeDatum) => {
+  d3.selectAll<SVGAElement, GraphNodeDatum>(".group")
+    .filter((d: GraphNodeDatum) => d.id === current.id)
     .classed("active", true);
-  d3.selectAll<SVGAElement, NodeLink>("line")
+  d3.selectAll<SVGAElement, GraphLinkDatum>("line")
     .filter(
-      (d: NodeLink) =>
-        (d.target as GraphNode).id === current.id ||
-        (d.source as GraphNode).id === current.id,
+      (d: GraphLinkDatum) =>
+        (d.target as GraphNodeDatum).id === current.id ||
+        (d.source as GraphNodeDatum).id === current.id,
     )
     .classed("active", true);
 };
 
-const onNodeMouseLeave = (_: MouseEvent, current: GraphNode) => {
-  d3.selectAll<SVGAElement, GraphNode>(".group")
-    .filter((d: GraphNode) => d.id === current.id)
+const onNodeMouseLeave = (_: MouseEvent, current: GraphNodeDatum) => {
+  d3.selectAll<SVGAElement, GraphNodeDatum>(".group")
+    .filter((d: GraphNodeDatum) => d.id === current.id)
     .classed("active", false);
-  d3.selectAll<SVGAElement, NodeLink>("line")
+  d3.selectAll<SVGAElement, GraphLinkDatum>("line")
     .filter(
-      (d: NodeLink) =>
-        (d.target as GraphNode).id === current.id ||
-        (d.source as GraphNode).id === current.id,
+      (d: GraphLinkDatum) =>
+        (d.target as GraphNodeDatum).id === current.id ||
+        (d.source as GraphNodeDatum).id === current.id,
     )
     .classed("active", false);
 };
@@ -60,14 +60,14 @@ const update = (
   updateEvent: (
     this: HTMLAnchorElement,
     event: MouseEvent,
-    d: GraphNode,
+    d: GraphNodeDatum,
   ) => void,
   firstTime = true,
 ) => {
-  const selectGroup = svg.selectAll<SVGElement, GraphNode>(".group");
+  const selectGroup = svg.selectAll<SVGElement, GraphNodeDatum>(".group");
 
   const initialValues: InitialNodeValueMap = {};
-  selectGroup.data().forEach((node: GraphNode) => {
+  selectGroup.data().forEach((node: GraphNodeDatum) => {
     initialValues[node.id] = {
       x: safeInitialValue(node.x),
       y: safeInitialValue(node.y),
@@ -86,7 +86,7 @@ const update = (
   function click(
     this: SVGElement,
     event: { currentTarget: never },
-    d: GraphNode,
+    d: GraphNodeDatum,
   ): void {
     delete d.fx;
     delete d.fy;
@@ -95,13 +95,16 @@ const update = (
   }
 
   svg
-    .selectAll<SVGLineElement, NodeLink>(".link")
-    .data(graph.links, (d: NodeLink) => `${d.source}|${d.target}`)
+    .selectAll<SVGLineElement, GraphLinkDatum>(".link")
+    .data(graph.links, (d: GraphLinkDatum) => `${d.source}|${d.target}`)
     .join(
       (entry) =>
         entry
           .append("line")
-          .attr("class", (d: NodeLink) => `link ${d.type} depth-${d.depth}`)
+          .attr(
+            "class",
+            (d: GraphLinkDatum) => `link ${d.type} depth-${d.depth}`,
+          )
           .attr("x1", config.xOffset)
           .attr("x2", config.xOffset)
           .attr("y1", config.yOffset)
@@ -109,24 +112,27 @@ const update = (
           .lower(),
       (update) =>
         update
-          .attr("class", (d: NodeLink) => `link ${d.type} depth-${d.depth}`)
+          .attr(
+            "class",
+            (d: GraphLinkDatum) => `link ${d.type} depth-${d.depth}`,
+          )
           .lower(),
       (exit) => exit.remove(),
     );
 
   selectGroup
-    .data(graph.nodes, (d: GraphNode) => d.id)
+    .data(graph.nodes, (d: GraphNodeDatum) => d.id)
     .join(
       (entry) => {
         const group = entry
           .append("g")
-          .attr("class", function (d: GraphNode) {
+          .attr("class", function (d: GraphNodeDatum) {
             return `depth-${d.depth}`;
           })
           .classed("group", true)
-          .classed("wanted", (d: GraphNode) => d.wanted)
-          .classed("fixed", (d: GraphNode) => d.fx !== undefined)
-          .classed("hideLabel", (d: GraphNode) => !d.showLabel)
+          .classed("wanted", (d: GraphNodeDatum) => d.wanted)
+          .classed("fixed", (d: GraphNodeDatum) => d.fx !== undefined)
+          .classed("hideLabel", (d: GraphNodeDatum) => !d.showLabel)
           .attr("transform", `translate(${config.xOffset},${config.yOffset})`)
           .raise();
 
@@ -138,7 +144,7 @@ const update = (
           .attr("r", config.getRadius)
           .classed("node", true)
           .append("title")
-          .text((d: GraphNode) => d.id);
+          .text((d: GraphNodeDatum) => d.id);
 
         const anchor = group.append("a").on("click", updateEvent);
 
@@ -146,38 +152,38 @@ const update = (
           .append("text")
           .on("mouseover", onNodeMouseOver)
           .on("mouseleave", onNodeMouseLeave)
-          .text((d: GraphNode) => d.title)
+          .text((d: GraphNodeDatum) => d.title)
           .attr("x", config.xOffsetText)
           .attr("y", config.yOffsetText)
           .classed("label", true)
           .append("text");
 
         anchor
-          .filter((d: GraphNode) => d.showLabel && !!d.context)
+          .filter((d: GraphNodeDatum) => d.showLabel && !!d.context)
           .append("text")
           .attr("x", config.xOffsetText)
           .attr(
             "y",
-            (d: GraphNode) =>
+            (d: GraphNodeDatum) =>
               config.yOffsetText -
               ((depth) =>
                 depth === 0 ? 40 : depth === 1 ? 30 : depth === 2 ? 15 : 10)(
                 d.depth,
               ),
           )
-          .text((d: GraphNode) => d.context || "n/a")
+          .text((d: GraphNodeDatum) => d.context || "n/a")
           .classed("context-label", true);
 
         return group;
       },
       (update) => {
         update
-          .classed("hideLabel", (d: GraphNode) => !d.showLabel)
-          .classed("depth-0", (d: GraphNode) => d.depth === 0)
-          .classed("depth-1", (d: GraphNode) => d.depth === 1)
-          .classed("depth-2", (d: GraphNode) => d.depth === 2)
-          .classed("depth-3", (d: GraphNode) => d.depth === 3)
-          .classed("fixed", (d: GraphNode) => d.fx !== undefined)
+          .classed("hideLabel", (d: GraphNodeDatum) => !d.showLabel)
+          .classed("depth-0", (d: GraphNodeDatum) => d.depth === 0)
+          .classed("depth-1", (d: GraphNodeDatum) => d.depth === 1)
+          .classed("depth-2", (d: GraphNodeDatum) => d.depth === 2)
+          .classed("depth-3", (d: GraphNodeDatum) => d.depth === 3)
+          .classed("fixed", (d: GraphNodeDatum) => d.fx !== undefined)
           .select("circle")
           .attr("r", config.getRadius);
         return update;
@@ -189,23 +195,23 @@ const update = (
       },
     );
 
-  svg.selectAll<SVGElement, GraphNode>(".group");
+  svg.selectAll<SVGElement, GraphNodeDatum>(".group");
 
   return applySimulation(config, graph, svg, simulation, firstTime);
 };
 
 const newTick = (svg: GraphSelect, xOffset: number, yOffset: number) => () => {
   svg
-    .selectAll<SVGLineElement, NodeLink>(".link")
-    .attr("x1", (d) => ((d?.source as GraphNode)?.x ?? 0) + xOffset)
-    .attr("y1", (d) => ((d?.source as GraphNode)?.y ?? 0) + yOffset)
-    .attr("x2", (d) => ((d?.target as GraphNode)?.x ?? 0) + xOffset)
-    .attr("y2", (d) => ((d?.target as GraphNode)?.y ?? 0) + yOffset);
+    .selectAll<SVGLineElement, GraphLinkDatum>(".link")
+    .attr("x1", (d) => ((d?.source as GraphNodeDatum)?.x ?? 0) + xOffset)
+    .attr("y1", (d) => ((d?.source as GraphNodeDatum)?.y ?? 0) + yOffset)
+    .attr("x2", (d) => ((d?.target as GraphNodeDatum)?.x ?? 0) + xOffset)
+    .attr("y2", (d) => ((d?.target as GraphNodeDatum)?.y ?? 0) + yOffset);
   svg
-    .selectAll<SVGElement, GraphNode>(".group")
+    .selectAll<SVGElement, GraphNodeDatum>(".group")
     .attr(
       "transform",
-      (d: GraphNode) =>
+      (d: GraphNodeDatum) =>
         "translate(" +
         (xOffset + (d?.x ?? 0)) +
         "," +
@@ -259,8 +265,8 @@ const applySimulation = (
   simulation.force(
     "link",
     d3
-      .forceLink<GraphNode, NodeLink>(graph.links)
-      .id((d: GraphNode) => d.id)
+      .forceLink<GraphNodeDatum, GraphLinkDatum>(graph.links)
+      .id((d: GraphNodeDatum) => d.id)
       .strength(config.getLinkForce(config.linkForceFactor)),
   );
 
@@ -291,11 +297,11 @@ const applySimulation = (
   }
 
   const drag = d3
-    .drag<SVGElement, GraphNode, never>()
+    .drag<SVGElement, GraphNodeDatum, never>()
     .on("start", dragstart)
     .on("drag", dragged);
 
-  svg.selectAll<SVGElement, GraphNode>(".group").call(drag);
+  svg.selectAll<SVGElement, GraphNodeDatum>(".group").call(drag);
 };
 
 const render = (
@@ -311,7 +317,7 @@ const render = (
   function updateEvent(
     this: HTMLAnchorElement,
     event: MouseEvent,
-    d: GraphNode,
+    d: GraphNodeDatum,
   ): void {
     callback(d.id, event);
     update(config, svg, simulation, d.id, data, updateEvent, false);
