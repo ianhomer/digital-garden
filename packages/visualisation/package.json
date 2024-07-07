@@ -15,8 +15,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@garden/core": "workspace:*",
-    "@garden/types": "workspace:*",
+    "@garden/graph": "workspace:*",
     "d3": "^7.9.0",
     "d3-quadtree": "^3.0.1"
   },

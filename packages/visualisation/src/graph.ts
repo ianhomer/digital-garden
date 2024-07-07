@@ -1,5 +1,4 @@
-import { toParentName } from "@garden/core";
-import { ItemLink, Items } from "@garden/types";
+import { ItemLink, Items, toParentName } from "@garden/graph";
 
 import { Graph, InitialNodeValueMap, NodeType } from "./types";
 

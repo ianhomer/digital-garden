@@ -1,4 +1,4 @@
-import { Items } from "@garden/types";
+import { Items } from "@garden/graph";
 import {
   defaultConfiguration,
   GardenSimulation,

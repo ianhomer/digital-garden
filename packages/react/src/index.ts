@@ -1,4 +1,4 @@
-import { toParentName } from "@garden/core";
+import { toParentName } from "@garden/graph";
 import { markdownToHtml } from "@garden/markdown";
 import { itemName } from "@garden/visualisation";
 

@@ -1,4 +1,4 @@
-import { Items } from "@garden/types";
+import { Items } from "@garden/graph";
 import * as d3 from "d3";
 
 import collideRectangle from "./collide-rectangle";

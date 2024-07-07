@@ -1,4 +1,4 @@
-import { Items } from "@garden/types";
+import { Items } from "@garden/graph";
 
 export default (data: Items, name: string) => {
   const childName = window.location.hash;

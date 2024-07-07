@@ -1,5 +1,4 @@
-import { hash } from "@garden/core";
-import { Items, ItemType, LinkType } from "@garden/types";
+import { hash, Items, ItemType, LinkType } from "@garden/graph";
 import { findAllByText } from "@testing-library/dom";
 import * as d3 from "d3";
 import { BaseType } from "d3";

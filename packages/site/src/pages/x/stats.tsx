@@ -1,5 +1,5 @@
 import { findWantedThings } from "@garden/garden";
-import { LinkType } from "@garden/types";
+import { LinkType } from "@garden/graph";
 
 import { garden } from "../../components/site-garden";
 

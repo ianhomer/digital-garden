@@ -1,4 +1,4 @@
-import { LinkType } from "@garden/types";
+import { LinkType } from "@garden/graph";
 import { SimulationNodeDatum } from "d3";
 
 import { GraphConfiguration, GraphLink } from "./types";

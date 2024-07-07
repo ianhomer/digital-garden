@@ -1,23 +1,12 @@
 import { unique } from "./arrays";
-import { builder } from "./builder";
-import { hash } from "./hash";
-import {
-  bySource,
-  isNotValidPageName,
-  isValidPageName,
-  linkResolver,
-  pageResolver,
-  toParentName,
-} from "./link";
+import { linkResolver } from "./link-resolver";
+import { pageResolver } from "./page-resolver";
+import { isNotValidPageName, isValidPageName } from "./valid-page-name";
 
 export {
-  builder,
-  bySource,
-  hash,
   isNotValidPageName,
   isValidPageName,
   linkResolver,
   pageResolver,
-  toParentName,
   unique,
 };

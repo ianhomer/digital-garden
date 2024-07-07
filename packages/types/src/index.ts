@@ -1,3 +1,5 @@
+import { Nameable } from "@garden/graph";
+
 export interface ItemReference {
   name: string;
   hash: string;
@@ -19,64 +21,20 @@ export interface GardenRepository {
   findAll: () => AsyncIterable<ItemReference>;
 }
 
-export interface Nameable {
-  name: string;
-}
+export type Content = {
+  body: string;
+  hidden: boolean;
+};
+
+export type ThingData = {
+  tags?: string[];
+};
 
 export interface Item extends Nameable {
   filename?: string;
   hash: string;
   content: string;
 }
-
-export interface Link extends Nameable {
-  type: LinkType;
-  value: number;
-}
-
-export interface ItemLink {
-  source: string;
-  target: string;
-  depth: number;
-  type: LinkType;
-}
-
-export interface ItemMeta {
-  title: string;
-  hash: string;
-  type: ItemType;
-  aliases: Array<string>;
-  links: Array<Link>;
-  value: number;
-}
-
-export enum ItemType {
-  Item = "item",
-  Wanted = "wanted",
-  ImplicitlyWanted = "implictlyWanted",
-  Child = "child",
-}
-
-export enum LinkType {
-  To = "to",
-  From = "from",
-  Has = "has",
-  In = "in",
-  Child = "child",
-  ImplicitTo = "implicit",
-  ImplicitFrom = "implicitFrom",
-  ImplicitAlias = "implicitAlias",
-}
-
-export type Content = {
-  body: string;
-  hidden: boolean;
-};
-export type Items = { [key: string]: ItemMeta };
-
-export type ThingData = {
-  tags?: string[];
-};
 
 export interface Thing {
   name: string;

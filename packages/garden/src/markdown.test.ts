@@ -1,4 +1,4 @@
-import { Link, LinkType } from "@garden/types";
+import { Link, LinkType } from "@garden/graph";
 
 import { createGarden } from "./garden";
 import { parse, toMultipleThingMeta } from "./markdown";

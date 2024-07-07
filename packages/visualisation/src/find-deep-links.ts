@@ -1,4 +1,4 @@
-import { ItemLink, Items, Link, LinkType } from "@garden/types";
+import { ItemLink, Items, Link, LinkType } from "@garden/graph";
 
 const valuable = (link: Link) => link.value !== 0;
 

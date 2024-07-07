@@ -1,4 +1,4 @@
-import { hash } from "@garden/core";
+import { hash } from "@garden/graph";
 import { ItemReference } from "@garden/types";
 import fs from "fs";
 import { join, resolve } from "path";

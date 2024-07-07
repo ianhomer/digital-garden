@@ -1,7 +1,6 @@
-import { ItemMeta, Items, ItemType, LinkType } from "@garden/types";
-
 import { toFakeName } from "./fake";
 import { hash } from "./hash";
+import { ItemMeta, Items, ItemType, LinkType } from "./types";
 
 interface ChainedBuilder {
   build: () => Items;

@@ -1,5 +1,4 @@
-import { builder } from "@garden/core";
-import { Items, Link, LinkType } from "@garden/types";
+import { builder, Items, Link, LinkType } from "@garden/graph";
 
 import {
   createGarden,

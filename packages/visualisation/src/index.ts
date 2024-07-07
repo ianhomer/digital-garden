@@ -1,4 +1,4 @@
-import { builder } from "@garden/core";
+import { builder } from "@garden/graph";
 
 import collideRectangle from "./collide-rectangle";
 import defaultConfiguration from "./default-configuration";
