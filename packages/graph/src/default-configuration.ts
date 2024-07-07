@@ -1,7 +1,7 @@
+import { LinkType } from "@garden/types";
 import { SimulationNodeDatum } from "d3";
 
-import { GraphConfiguration, GraphLink, LinkType } from "./types";
-
+import { GraphConfiguration, GraphLink } from "./types";
 const DEPTH_1_RADIUS = 30;
 const boundarySize = DEPTH_1_RADIUS * 4;
 
