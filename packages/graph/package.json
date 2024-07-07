@@ -7,8 +7,6 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "build": "rollup -c --bundleConfigAsCjs",
-    "clean": "rimraf tsconfig.tsbuildinfo bundle.js dist .rollup.cache",
     "eslint": "eslint src --ext .ts",
     "eslint:fix": "eslint src --ext .ts --fix",
     "test": "jest --no-watchman",
