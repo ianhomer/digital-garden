@@ -1,4 +1,4 @@
-import { builder, bySource } from "@garden/core";
+import { builder, bySource } from "@garden/graph";
 
 import findDeepLinks from "../find-deep-links";
 
