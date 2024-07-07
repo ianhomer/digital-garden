@@ -13,7 +13,7 @@ import { isAbsolute, join } from "path";
 
 import { BaseGardenRepository } from "./base-garden-repository";
 import { FileGardenRepository } from "./file-garden-repository";
-import { justNaturalAliasLinks } from "./links";
+import { justImplicitAliasLinks } from "./links";
 import { logger } from "./logger";
 import { toMultipleThingMeta } from "./markdown";
 import { naturalAliases } from "./nlp";
@@ -172,13 +172,13 @@ const generateMeta = async (
       metaMap[title] = {
         title,
         hash: hash(title),
-        type: ThingType.NaturallyWanted,
+        type: ThingType.ImplicitlyWanted,
         aliases: [],
         value: 1,
         links: links.map(
           (name: string): Link => ({
             name: linkResolver(name),
-            type: LinkType.NaturalAlias,
+            type: LinkType.ImplicitAlias,
             value: 1,
           }),
         ),
@@ -225,15 +225,15 @@ const sortMeta = async (meta: Things) => {
 };
 
 const reduceAliases = (meta: Things): Things => {
-  const naturallyWantedAliases = findWantedThings(meta, justNaturalAliasLinks);
+  const naturallyWantedAliases = findWantedThings(meta, justImplicitAliasLinks);
   const reducibleAliases: [string, string[]][] = Object.entries(meta)
     .filter(
       ([, value]) =>
-        value.type === ThingType.NaturallyWanted &&
+        value.type === ThingType.ImplicitlyWanted &&
         value.links.length > 0 &&
         value.links.every(
           (link) =>
-            link.type === LinkType.NaturalAlias &&
+            link.type === LinkType.ImplicitAlias &&
             (link.name in meta ||
               naturallyWantedAliases.indexOf(link.name) > -1),
         ),
@@ -299,7 +299,7 @@ export const findLinksExcludingExplicit = (
 export const findUnwantedLinks = (meta: Things) => {
   const explicitThingNames = Object.entries(meta)
     .filter(([, value]) => {
-      if (value.type !== ThingType.NaturallyWanted) {
+      if (value.type !== ThingType.ImplicitlyWanted) {
         return true;
       }
       return value.links.find((link: Link) => {
@@ -329,11 +329,11 @@ export const findUnwantedLinks = (meta: Things) => {
     explicitThingNames,
     unreferencedExplicitLinks,
     (link) =>
-      link.type === LinkType.NaturalTo || link.type === LinkType.NaturalAlias,
+      link.type === LinkType.ImplicitTo || link.type === LinkType.ImplicitAlias,
   );
 
   // Natural links that referenced multiple times, i.e. keepers
-  const duplicateWantedNaturalToLinks = wantedNaturalLinks.reduce(
+  const duplicateWantedImplicitToLinks = wantedNaturalLinks.reduce(
     (accumulator: string[], linkName, i, array: string[]) => {
       if (array.indexOf(linkName) !== i && accumulator.indexOf(linkName) < 0)
         accumulator.push(linkName);
@@ -343,7 +343,7 @@ export const findUnwantedLinks = (meta: Things) => {
   );
 
   return wantedNaturalLinks.filter(
-    (name) => !duplicateWantedNaturalToLinks.includes(name),
+    (name) => !duplicateWantedImplicitToLinks.includes(name),
   );
 };
 

@@ -35,7 +35,7 @@ export async function getStaticProps() {
     (name) =>
       listOfThings.filter((thing) =>
         thing.links.find(
-          (link) => link.name === name && link.type === LinkType.NaturalTo,
+          (link) => link.name === name && link.type === LinkType.ImplicitTo,
         ),
       ).length === 1,
   );

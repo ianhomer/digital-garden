@@ -11,7 +11,7 @@ const backLinks = (
   depth: number,
   predicate = (link: Link) =>
     link.type === LinkType.To ||
-    link.type === LinkType.NaturalAlias ||
+    link.type === LinkType.ImplicitAlias ||
     link.type === LinkType.Child,
   backLinkType = LinkType.From,
 ): ItemLink[] => {
@@ -95,8 +95,8 @@ const findDeepLinks = (
       things,
       name,
       depth,
-      (link: Link) => link.type === LinkType.NaturalTo,
-      LinkType.NaturalFrom,
+      (link: Link) => link.type === LinkType.ImplicitTo,
+      LinkType.ImplicitFrom,
     ),
   ];
   return [

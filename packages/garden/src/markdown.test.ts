@@ -7,7 +7,7 @@ import { gardenConfig } from "./test-helpers";
 const garden = createGarden(gardenConfig);
 
 const toName = (link: Link) => link.name;
-const justNaturalLinks = (link: Link) => link.type === LinkType.NaturalTo;
+const justNaturalLinks = (link: Link) => link.type === LinkType.ImplicitTo;
 
 describe("markdown", () => {
   describe("basic content", () => {
@@ -134,7 +134,7 @@ describe("markdown", () => {
       });
       expect(meta.links).toContainEqual({
         name: "natural-word",
-        type: LinkType.NaturalTo,
+        type: LinkType.ImplicitTo,
         value: 1,
       });
     });

@@ -53,7 +53,7 @@ export interface Meta {
 export enum ThingType {
   Item = "item",
   Wanted = "wanted",
-  NaturallyWanted = "naturallyWanted",
+  ImplicitlyWanted = "implictlyWanted",
   Child = "child",
 }
 
@@ -63,9 +63,9 @@ export enum LinkType {
   Has = "has",
   In = "in",
   Child = "child",
-  NaturalTo = "natural",
-  NaturalFrom = "naturalFrom",
-  NaturalAlias = "naturalAlias",
+  ImplicitTo = "implicit",
+  ImplicitFrom = "implicitFrom",
+  ImplicitAlias = "implicitAlias",
 }
 
 export type Content = {

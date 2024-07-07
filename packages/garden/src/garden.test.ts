@@ -19,8 +19,8 @@ const garden = createGarden(gardenConfig);
 const gardenItemCount = 30;
 const NATURAL_LINK_SHARED = "natural-link-shared";
 const NATURAL_LINK_ALONE = "natural-link-alone";
-const noNaturalLinks = (link: Link) => link.type !== LinkType.NaturalTo;
-const naturalLinks = (link: Link) => link.type === LinkType.NaturalTo;
+const noNaturalLinks = (link: Link) => link.type !== LinkType.ImplicitTo;
+const naturalLinks = (link: Link) => link.type === LinkType.ImplicitTo;
 
 describe("garden", () => {
   it("should be created", () => {
@@ -104,12 +104,12 @@ describe("garden", () => {
     const meta: Things = builder()
       .name("foo")
       .link("explicit-link")
-      .link(NATURAL_LINK_SHARED, LinkType.NaturalTo)
-      .link(NATURAL_LINK_ALONE, LinkType.NaturalTo)
+      .link(NATURAL_LINK_SHARED, LinkType.ImplicitTo)
+      .link(NATURAL_LINK_ALONE, LinkType.ImplicitTo)
       .name("bar")
-      .link("explicit-link", LinkType.NaturalTo)
-      .link(NATURAL_LINK_SHARED, LinkType.NaturalTo)
-      .link("bar", LinkType.NaturalTo)
+      .link("explicit-link", LinkType.ImplicitTo)
+      .link(NATURAL_LINK_SHARED, LinkType.ImplicitTo)
+      .link("bar", LinkType.ImplicitTo)
       .build();
     expect(findUnwantedLinks(meta)).toStrictEqual([NATURAL_LINK_ALONE]);
   });
