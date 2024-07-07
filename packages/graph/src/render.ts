@@ -85,7 +85,7 @@ const update = (
 
   function click(
     this: SVGElement,
-    event: { currentTarget: never },
+    _: { currentTarget: never },
     d: GraphNodeDatum,
   ): void {
     delete d.fx;
