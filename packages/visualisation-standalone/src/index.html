@@ -3,9 +3,9 @@
   <head>
     <title>graph smoke test</title>
 
-    <script src="../../graph/node_modules/d3/dist/d3.js"></script>
-    <script src="../../graph/node_modules/d3-quadtree/dist/d3-quadtree.js"></script>
-    <script src="../../graph/bundle.js"></script>
+    <script src="../../visualisation/node_modules/d3/dist/d3.js"></script>
+    <script src="../../visualisation/node_modules/d3-quadtree/dist/d3-quadtree.js"></script>
+    <script src="../../visualisation/"></script>
 
     <style>
       line.link {
@@ -52,21 +52,21 @@
 
   <body>
     <h1>graph smoke test</h1>
-    <svg id="graph" />
+    <svg id="visualisation" />
     <script>
       window.onload = function () {
-        var svg = d3.select("#graph");
+        var svg = d3.select("#visualisation");
         var width = window.innerWidth;
         var height = window.innerHeight;
         svg.attr("viewBox", `0 0 ${width} ${height}`);
-        var data = graph
+        var data = visualisation
           .builder()
           .many(1000, { linkCount: 6, linkCluster: 0.2 })
           .build();
-        graph.render(
+        visualisation.render(
           "foo",
           data,
-          graph.defaultConfiguration({ viewWidth: width, viewHeight: height }),
+          visualisation.defaultConfiguration({ viewWidth: width, viewHeight: height }),
           svg,
         );
       };
