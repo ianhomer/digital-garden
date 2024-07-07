@@ -17,6 +17,7 @@
   "dependencies": {
     "@garden/core": "workspace:*",
     "@garden/types": "workspace:*",
+    "@garden/graph": "workspace:*",
     "compromise": "^14.13.0",
     "gray-matter": "^4.0.3",
     "mdast-util-to-string": "^4.0.0",

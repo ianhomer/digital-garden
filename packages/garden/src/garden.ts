@@ -1,12 +1,6 @@
-import { hash, linkResolver, unique } from "@garden/core";
-import {
-  GardenRepository,
-  Items,
-  ItemType,
-  Link,
-  LinkType,
-  Thing,
-} from "@garden/types";
+import { linkResolver, unique } from "@garden/core";
+import { hash, ItemMeta, Items, ItemType, Link, LinkType } from "@garden/graph";
+import { GardenRepository, Thing } from "@garden/types";
 import fs from "fs";
 import os from "os";
 import { isAbsolute, join } from "path";
@@ -104,7 +98,7 @@ const thingToMultipleThingMeta = async (thing: Thing) => {
 export const loadThingIntoMetaMap = async (metaMap: Items, thing: Thing) => {
   const { thingName, thingMeta, extra } = await thingToMultipleThingMeta(thing);
 
-  thingMeta.forEach((singleThingMeta) => {
+  thingMeta.forEach((singleThingMeta: ItemMeta) => {
     const singleThingName =
       singleThingMeta.type === ItemType.Child
         ? thingName + "#" + linkResolver(singleThingMeta.title)

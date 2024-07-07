@@ -1,4 +1,4 @@
-import { LinkType } from "@garden/types";
+import { LinkType } from "@garden/graph";
 import { SimulationLinkDatum, SimulationNodeDatum } from "d3-force";
 
 export type GardenSimulation = d3.Simulation<SimulationNodeDatum, undefined>;

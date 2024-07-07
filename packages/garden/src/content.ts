@@ -1,4 +1,4 @@
-import { hash } from "@garden/core";
+import { hash } from "@garden/graph";
 import { GardenRepository, Item } from "@garden/types";
 import { dirname, sep } from "path";
 

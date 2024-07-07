@@ -1,5 +1,6 @@
 import { linkResolver } from "@garden/core";
-import { Content, ItemMeta, ItemType, LinkType, Thing } from "@garden/types";
+import { ItemMeta, ItemType, LinkType } from "@garden/graph";
+import { Content, Thing } from "@garden/types";
 import { Heading, Link, Literal } from "mdast";
 import { toString } from "mdast-util-to-string";
 import remarkParse from "remark-parse";

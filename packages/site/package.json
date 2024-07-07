@@ -36,6 +36,7 @@
     "@emotion/styled": "^11.11.5",
     "@garden/garden": "workspace:*",
     "@garden/react": "workspace:*",
+    "@garden/graph": "workspace:*",
     "@garden/types": "workspace:*",
     "dotenv": "^16.4.5",
     "highlight.js": "^11.9.0",

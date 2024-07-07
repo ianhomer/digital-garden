@@ -1,4 +1,4 @@
-import { hash } from "@garden/core";
+import { hash } from "@garden/graph";
 import { Content, GardenRepository, ItemReference } from "@garden/types";
 
 import { BaseItem } from "./base-item";

@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { builder } from "@garden/core";
+import { builder } from "@garden/graph";
 import { render, screen } from "@testing-library/react";
 
 import GraphDiagram from "./graph-visualisation";

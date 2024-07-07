@@ -1,5 +1,5 @@
 import { unique } from "@garden/core";
-import { Link, LinkType } from "@garden/types";
+import { Link, LinkType } from "@garden/graph";
 import nlp from "compromise";
 import Three from "compromise/types/view/three";
 

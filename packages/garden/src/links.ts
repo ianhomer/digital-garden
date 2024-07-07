@@ -1,4 +1,5 @@
-import { Item, Link, LinkType } from "@garden/types";
+import { Link, LinkType } from "@garden/graph";
+import { Item } from "@garden/types";
 
 import {
   findBackLinks,
