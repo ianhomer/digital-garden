@@ -240,6 +240,94 @@ importers:
         specifier: ^5.5.3
         version: 5.5.3
 
+  packages/linkmap:
+    dependencies:
+      '@garden/graph':
+        specifier: workspace:*
+        version: link:../graph
+      d3:
+        specifier: ^7.9.0
+        version: 7.9.0
+      d3-quadtree:
+        specifier: ^3.0.1
+        version: 3.0.1
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.24.7
+        version: 7.24.7
+      '@babel/preset-env':
+        specifier: ^7.24.7
+        version: 7.24.7(@babel/core@7.24.7)
+      '@babel/preset-typescript':
+        specifier: ^7.24.7
+        version: 7.24.7(@babel/core@7.24.7)
+      '@rollup/plugin-typescript':
+        specifier: ^11.1.6
+        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@5.5.3)
+      '@testing-library/dom':
+        specifier: ^10.3.1
+        version: 10.3.1
+      '@testing-library/jest-dom':
+        specifier: ^6.4.6
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.10)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3)))
+      '@types/d3':
+        specifier: ^7.4.3
+        version: 7.4.3
+      '@types/d3-force':
+        specifier: ^3.0.10
+        version: 3.0.10
+      '@types/d3-quadtree':
+        specifier: ^3.0.6
+        version: 3.0.6
+      '@types/jest':
+        specifier: ^29.5.12
+        version: 29.5.12
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@20.14.10)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3))
+      rimraf:
+        specifier: 5.0.8
+        version: 5.0.8
+      rollup:
+        specifier: ^4.18.0
+        version: 4.18.0
+      typescript:
+        specifier: ^5.5.3
+        version: 5.5.3
+
+  packages/linkmap-standalone:
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.24.7
+        version: 7.24.7
+      '@testing-library/dom':
+        specifier: ^10.3.1
+        version: 10.3.1
+      '@testing-library/jest-dom':
+        specifier: ^6.4.6
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.10)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3)))
+      '@types/jest':
+        specifier: ^29.5.12
+        version: 29.5.12
+      '@types/jsdom':
+        specifier: ^21.1.7
+        version: 21.1.7
+      babel-jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@babel/core@7.24.7)
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@20.14.10)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3))
+      jsdom:
+        specifier: ^24.1.0
+        version: 24.1.0
+      ts-jest:
+        specifier: ^29.1.5
+        version: 29.1.5(@babel/core@7.24.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.7))(jest@29.7.0(@types/node@20.14.10)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3)))(typescript@5.5.3)
+      typescript:
+        specifier: ^5.5.3
+        version: 5.5.3
+
   packages/markdown:
     dependencies:
       '@babel/core':
@@ -324,12 +412,12 @@ importers:
       '@garden/graph':
         specifier: workspace:*
         version: link:../graph
+      '@garden/linkmap':
+        specifier: workspace:*
+        version: link:../linkmap
       '@garden/markdown':
         specifier: workspace:*
         version: link:../markdown
-      '@garden/visualisation':
-        specifier: workspace:*
-        version: link:../visualisation
       d3:
         specifier: ^7.9.0
         version: 7.9.0
@@ -492,94 +580,6 @@ importers:
       rollup:
         specifier: ^4.18.0
         version: 4.18.0
-      typescript:
-        specifier: ^5.5.3
-        version: 5.5.3
-
-  packages/visualisation:
-    dependencies:
-      '@garden/graph':
-        specifier: workspace:*
-        version: link:../graph
-      d3:
-        specifier: ^7.9.0
-        version: 7.9.0
-      d3-quadtree:
-        specifier: ^3.0.1
-        version: 3.0.1
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.24.7
-        version: 7.24.7
-      '@babel/preset-env':
-        specifier: ^7.24.7
-        version: 7.24.7(@babel/core@7.24.7)
-      '@babel/preset-typescript':
-        specifier: ^7.24.7
-        version: 7.24.7(@babel/core@7.24.7)
-      '@rollup/plugin-typescript':
-        specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@5.5.3)
-      '@testing-library/dom':
-        specifier: ^10.3.1
-        version: 10.3.1
-      '@testing-library/jest-dom':
-        specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.10)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3)))
-      '@types/d3':
-        specifier: ^7.4.3
-        version: 7.4.3
-      '@types/d3-force':
-        specifier: ^3.0.10
-        version: 3.0.10
-      '@types/d3-quadtree':
-        specifier: ^3.0.6
-        version: 3.0.6
-      '@types/jest':
-        specifier: ^29.5.12
-        version: 29.5.12
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@20.14.10)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3))
-      rimraf:
-        specifier: 5.0.8
-        version: 5.0.8
-      rollup:
-        specifier: ^4.18.0
-        version: 4.18.0
-      typescript:
-        specifier: ^5.5.3
-        version: 5.5.3
-
-  packages/visualisation-standalone:
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.24.7
-        version: 7.24.7
-      '@testing-library/dom':
-        specifier: ^10.3.1
-        version: 10.3.1
-      '@testing-library/jest-dom':
-        specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.10)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3)))
-      '@types/jest':
-        specifier: ^29.5.12
-        version: 29.5.12
-      '@types/jsdom':
-        specifier: ^21.1.7
-        version: 21.1.7
-      babel-jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@babel/core@7.24.7)
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@20.14.10)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3))
-      jsdom:
-        specifier: ^24.1.0
-        version: 24.1.0
-      ts-jest:
-        specifier: ^29.1.5
-        version: 29.1.5(@babel/core@7.24.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.7))(jest@29.7.0(@types/node@20.14.10)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3)))(typescript@5.5.3)
       typescript:
         specifier: ^5.5.3
         version: 5.5.3

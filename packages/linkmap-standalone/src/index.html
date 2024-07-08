@@ -3,9 +3,9 @@
   <head>
     <title>graph smoke test</title>
 
-    <script src="../../visualisation/node_modules/d3/dist/d3.js"></script>
-    <script src="../../visualisation/node_modules/d3-quadtree/dist/d3-quadtree.js"></script>
-    <script src="../../visualisation/bundle.js"></script>
+    <script src="../../linkmap/node_modules/d3/dist/d3.js"></script>
+    <script src="../../linkmap/node_modules/d3-quadtree/dist/d3-quadtree.js"></script>
+    <script src="../../linkmap/bundle.js"></script>
 
     <style>
       html {
@@ -45,7 +45,7 @@
 
       line.link.naturalFrom {
         stroke-dasharray: 20, 20;
-        stroke: #c00
+        stroke: #c00;
       }
 
       line.link.from {
@@ -107,21 +107,21 @@
 
   <body>
     <h1>graph smoke test</h1>
-    <svg id="visualisation" />
+    <svg id="linkmap" />
     <script>
       window.onload = function () {
-        var svg = d3.select("#visualisation");
+        var svg = d3.select("#linkmap");
         var width = window.innerWidth;
         var height = window.innerHeight;
         svg.attr("viewBox", `0 0 ${width} ${height}`);
-        var data = visualisation
+        var data = linkmap
           .builder()
           .many(1000, { linkCount: 6, linkCluster: 0.2 })
           .build();
-        visualisation.render(
+        linkmap.render(
           "foo",
           data,
-          visualisation.defaultConfiguration({
+          linkmap.defaultConfiguration({
             viewWidth: width,
             viewHeight: height,
           }),

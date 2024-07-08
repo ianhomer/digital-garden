@@ -4,11 +4,11 @@ import {
   GardenSimulation,
   GraphConfiguration,
   render,
-} from "@garden/visualisation";
+} from "@garden/linkmap";
 import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 
-interface GraphVisualisationProps {
+interface LinkMapProps {
   width: number;
   height: number;
   scale: number;
@@ -17,11 +17,11 @@ interface GraphVisualisationProps {
   callback?: (name: string, event: MouseEvent) => void;
 }
 
-GraphVisualisation.defaultProps = {
+LinkMap.defaultProps = {
   className: "fullscreen",
 };
 
-export default function GraphVisualisation({
+export default function LinkMap({
   data,
   height,
   scale,
@@ -30,7 +30,7 @@ export default function GraphVisualisation({
   callback = (name: string, event: MouseEvent) => {
     console.log(`Linked to ${name} : ${event}`);
   },
-}: GraphVisualisationProps) {
+}: LinkMapProps) {
   const ref = useRef(null);
   const [simulation, setSimulation] = useState<GardenSimulation | null>(null);
 

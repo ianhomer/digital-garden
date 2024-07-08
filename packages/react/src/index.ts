@@ -1,14 +1,14 @@
 import { toParentName } from "@garden/graph";
+import { itemName } from "@garden/linkmap";
 import { markdownToHtml } from "@garden/markdown";
-import { itemName } from "@garden/visualisation";
 
-import GraphDiagram from "./graph-visualisation";
+import LinkMap from "./react-linkmap";
 import useKey from "./use-key";
 import useWindowDimensions from "./use-window-dimensions";
 
 export {
-  GraphDiagram,
   itemName,
+  LinkMap,
   markdownToHtml,
   toParentName,
   useKey,

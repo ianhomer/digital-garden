@@ -4,7 +4,7 @@ import { findAllByText, waitFor } from "@testing-library/dom";
 import { JSDOM } from "jsdom";
 import path from "path";
 
-describe("standalone graph", () => {
+describe("standalone linkmap", () => {
   it("should render OK from bundled package", async () => {
     await JSDOM.fromFile(path.join(__dirname, "index.html"), {
       resources: "usable",

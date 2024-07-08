@@ -1,7 +1,7 @@
 {
-  "name": "@garden/visualisation",
+  "name": "@garden/linkmap",
   "version": "0.0.1",
-  "description": "Digital garden graph visualisation",
+  "description": "Digital garden graph link map visualisation",
   "license": "ISC",
   "keywords": [],
   "type": "module",
