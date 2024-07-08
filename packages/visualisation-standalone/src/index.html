@@ -8,6 +8,15 @@
     <script src="../../visualisation/bundle.js"></script>
 
     <style>
+      html {
+        font-family: "Times New Roman";
+      }
+
+      line {
+        transition: stroke-width 2s;
+        stroke-width: 1;
+      }
+
       line.link {
         stroke: black;
       }
@@ -15,14 +24,6 @@
       line.active {
         stroke-width: 3;
         transition: stroke-width 0s;
-      }
-
-      line {
-        transition: stroke-width 2s;
-      }
-
-      line {
-        stroke-width: 1;
       }
 
       line.depth-0 {
@@ -33,19 +34,73 @@
         stroke-width: 2;
       }
 
-      .wanted .node {
-        stroke: #000;
-        fill: #fff;
+      line.link.child {
+        stroke-dasharray: 2, 2;
+      }
+
+      line.link.natural {
+        stroke-dasharray: 10, 10;
+        stroke: #600;
+      }
+
+      line.link.naturalFrom {
+        stroke-dasharray: 20, 20;
+        stroke: #c00
+      }
+
+      line.link.from {
+        stroke-dasharray: 5, 5;
+        stroke: #009;
       }
 
       .node {
         fill: #555;
       }
 
+      .wanted .node {
+        stroke: #000;
+        fill: #fff;
+      }
+
       .fixed .node {
         stroke: #000;
         fill: #ff0080;
         fill-opacity: 1;
+      }
+
+      rect {
+        fill: none;
+        stroke: #000;
+      }
+
+      g.depth-0 {
+        z-index: 100;
+      }
+      g.depth-1 {
+        z-index: 90;
+      }
+      g.depth-2 {
+        z-index: 80;
+      }
+
+      .depth-0 text {
+        font-size: 4em;
+      }
+      .depth-1 text {
+        font-size: 3em;
+      }
+      .depth-2 text {
+        font-size: 1em;
+      }
+      .depth-3 text {
+        font-size: 0.5em;
+        fill: #aaa;
+      }
+      .depth-null text {
+        fill: #f00;
+      }
+      .depth-Infinity text {
+        fill: #f00;
       }
     </style>
   </head>
