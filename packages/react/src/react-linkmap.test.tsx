@@ -3,19 +3,13 @@ import "@testing-library/jest-dom";
 import { builder } from "@garden/graph";
 import { render, screen } from "@testing-library/react";
 
-import GraphDiagram from "./graph-visualisation";
+import LinkMap from "./react-linkmap";
 
 describe("graph visualisation", () => {
   it("should render OK", async () => {
     const data = builder().name("foo").to("bar").name("bar").build();
     render(
-      <GraphDiagram
-        data={data}
-        height={800}
-        scale={1}
-        start={"foo"}
-        width={800}
-      />,
+      <LinkMap data={data} height={800} scale={1} start={"foo"} width={800} />,
     );
 
     const svg = await screen.findByRole("figure");

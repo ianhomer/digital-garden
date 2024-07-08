@@ -5,7 +5,7 @@ export default {
   output: {
     file: "bundle.js",
     format: "umd",
-    name: "visualisation",
+    name: "forcemap",
     globals: {
       d3: "d3",
       "d3-quadtree": "d3",

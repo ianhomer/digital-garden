@@ -1,7 +1,7 @@
 import { Items, Link } from "@garden/graph";
 import {
-  GraphDiagram,
   itemName,
+  LinkMap,
   toParentName,
   useKey,
   useWindowDimensions,
@@ -69,7 +69,7 @@ export function ItemPage({ item, scripts }: ItemPageProps) {
 
       {!isLoading && data && (
         <div ref={ref}>
-          <GraphDiagram
+          <LinkMap
             data={data}
             height={height}
             scale={scale}
