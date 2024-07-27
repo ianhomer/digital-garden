@@ -257,7 +257,7 @@ const reduceAliases = (meta: Items): Items => {
           ],
           links: links.map(({ name, type, value }) => ({
             name: reducibleAliasLookup.has(name)
-              ? reducibleAliasLookup.get(name) ?? name
+              ? (reducibleAliasLookup.get(name) ?? name)
               : name,
             type,
             value,

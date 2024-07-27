@@ -13,12 +13,12 @@
   "homepage": "https://github.com/ianhomer/digital-garden#readme",
   "scripts": {
     "build": "pnpm --filter @garden/site build",
+    "build:crypt": "pnpm --filter @garden/site build:prepare-and-crypt",
     "build:demo": "GARDENS_DIRECTORY=../demo-gardens/content pnpm --filter @garden/site build",
     "build:packages": "pnpm --filter !{packages/site} build",
     "build:prepare": "pnpm --filter @garden/site build:prepare",
     "build:prepare:demo": "GARDENS_DIRECTORY=../demo-gardens/content pnpm --filter @garden/site build:prepare",
     "build:static": "pnpm --filter @garden/site build:prepare-and-static",
-    "build:crypt": "pnpm --filter @garden/site build:prepare-and-crypt",
     "clean": "pnpm --filter {packages/**} clean",
     "clean:full": "pnpm clean && rimraf -g ./**/node_modules",
     "dev": "pnpm --filter @garden/site dev",
@@ -33,9 +33,9 @@
     "prepare": "husky install",
     "prettier": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
-    "start": "pnpm --filter @garden/site start",
     "serve": "pnpm --filter @garden/site serve",
     "serve:crypt": "pnpm --filter @garden/site serve:crypt",
+    "start": "pnpm --filter @garden/site start",
     "test": "pnpm --filter {packages/**} test",
     "test:build": "pnpm --filter @garden/site test:build",
     "test:build-and-e2e": "pnpm build:prepare && pnpm test:build && pnpm test:e2e",
@@ -44,6 +44,14 @@
     "test:e2e:cucumber:dev": "server-test dev:test 3000 test:e2e:cucumber",
     "test:packages": "pnpm --filter {packages/**} test:package",
     "test:since-main": "pnpm --filter '...[origin/main]' test"
+  },
+  "pnpm": {
+    "updateConfig": {
+      "ignoreDependencies": [
+        "eslint",
+        "eslint-plugin-sonarjs"
+      ]
+    }
   },
   "devDependencies": {
     "@types/node": "^20.14.12",
@@ -61,13 +69,5 @@
     "rimraf": "6.0.1",
     "start-server-and-test": "^2.0.4",
     "typescript": "^5.5.4"
-  },
-  "pnpm": {
-    "updateConfig": {
-      "ignoreDependencies": [
-        "eslint",
-        "eslint-plugin-sonarjs"
-      ]
-    }
   }
 }
