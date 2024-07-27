@@ -9,10 +9,10 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "build:static": "GARDEN_STATIC=true next build",
-    "build:prepare-and-static": "pnpm build:prepare && pnpm build:static",
-    "build:prepare-and-crypt": "pnpm build:prepare-and-static && pnpm crypt",
     "build:prepare": "node --experimental-specifier-resolution=node --loader ts-node/esm src/scripts/pre-build.ts",
+    "build:prepare-and-crypt": "pnpm build:prepare-and-static && pnpm crypt",
+    "build:prepare-and-static": "pnpm build:prepare && pnpm build:static",
+    "build:static": "GARDEN_STATIC=true next build",
     "clean": "rimraf out encrypted .next .gardem-meta.json",
     "crypt": "staticrypt out -r && pnpm rimraf encrypted/out/_next/data",
     "dev": "next dev",
