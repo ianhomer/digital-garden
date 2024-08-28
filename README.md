@@ -104,7 +104,7 @@ tags:
 
 You can render a garden only with the tag "public" with
 
-    GARDEN_INCLUDE=public
+    GARDEN_INCLUDES=public
 
 ## Local garden
 
