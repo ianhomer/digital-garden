@@ -486,6 +486,13 @@ const enrichOptions = (
     },
     ...options,
     ...localConfig,
+    ...(env?.GARDEN_INCLUDES
+      ? {
+          publish: {
+            include: env.GARDEN_INCLUDES.split(","),
+          },
+        }
+      : {}),
   };
 };
 

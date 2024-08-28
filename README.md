@@ -90,6 +90,22 @@ used to integrate site analytics, for example Plausible analytics
 
     SCRIPTS=[{"data-domain":"my-domain.com","src":"https://plausible.io/js/script.js"}]
 
+Only include articles with a given tag in the frontmatter. For example with
+markdown document like:
+
+```txt
+---
+tags:
+  - public
+---
+
+# My note
+```
+
+You can render a garden only with the tag "public" with
+
+    GARDEN_INCLUDE=public
+
 ## Local garden
 
 Install the `garden` global command to render the garden from a given folder.
