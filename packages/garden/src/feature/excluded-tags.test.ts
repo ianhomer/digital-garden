@@ -26,7 +26,7 @@ describe("excluded by tags", () => {
     expect(Object.keys(meta)).toHaveLength(0);
   });
 
-  it("should include content that is no excluded", async () => {
+  it("should include content that is not excluded", async () => {
     const meta = await metaFrom({
       included,
     });
