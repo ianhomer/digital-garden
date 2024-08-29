@@ -63,6 +63,7 @@ export interface GraphConfiguration {
   linkForceFactor: number;
   chargeForceFactor: number;
   centerForceFactor: number;
+  maxNodes: number;
 
   depth: number;
   getRadius: (d: GraphNodeDatum | SimulationNodeDatum) => number;

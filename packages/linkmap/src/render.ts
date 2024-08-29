@@ -80,7 +80,7 @@ const update = (
     start,
     data,
     initialValues,
-    findDeepLinks(data, start, config.depth),
+    findDeepLinks(data, start, config.depth).slice(0, config.maxNodes),
   );
 
   function click(

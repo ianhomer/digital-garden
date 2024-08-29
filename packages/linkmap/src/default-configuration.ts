@@ -47,6 +47,7 @@ const defaultConfiguration = (
   const xOffset = viewWidth / 2;
   const yOffset = viewHeight / 2;
   const depth = minDimension < 600 ? 1 : 2;
+  const maxNodes = 300;
 
   return {
     viewHeight,
@@ -54,6 +55,7 @@ const defaultConfiguration = (
     minDimension,
     xOffset,
     yOffset,
+    maxNodes,
     leftBoundary: -viewWidth / 2 + boundarySize,
     rightBoundary: viewWidth / 2 - boundarySize,
     topBoundary: -yOffset + boundarySize,
