@@ -130,8 +130,7 @@ const findDeepLinks = (
             value.depth >= compareTo.depth,
         ),
     )
-    .sort((a, b) => a.depth - b.depth)
-    .slice(0, 500);
+    .sort((a, b) => a.depth - b.depth);
 };
 
 export default findDeepLinks;
