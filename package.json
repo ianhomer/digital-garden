@@ -30,7 +30,6 @@
     "lint": "pnpm prettier && pnpm eslint:packages",
     "lint:fix": "pnpm package:fix && pnpm prettier:fix && pnpm eslint:fix",
     "package:fix": "format-package -w",
-    "prepare": "husky install",
     "prettier": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
     "serve": "pnpm --filter @garden/site serve",
